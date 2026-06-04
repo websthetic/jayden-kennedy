@@ -1,0 +1,233 @@
+/*-- -------------------------- -->
+<---           Hero             -->
+<--- -------------------------- -*/
+
+/* Mobile - 360px */
+@media only screen and (min-width: 0rem) {
+    #hero-1 {
+        z-index: 1;
+        position: relative;
+        display: flex;
+        align-items: center;
+        min-height: 100svh;
+        padding: clamp(7rem, 14vw, 10rem) 1rem clamp(4rem, 8vw, 6rem);
+        overflow: hidden;
+
+        .cs-container {
+            width: 100%;
+            max-width: (1280/16rem);
+            margin: auto;
+            display: flex;
+            /* Mobile: content stacks and is centered */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cs-content {
+            z-index: 2;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+            width: 100%;
+            max-width: (640/16rem);
+        }
+
+        .cs-topper {
+            color: var(--secondary);
+        }
+
+        .cs-title {
+            /* Larger hero headline: 48px - 80px */
+            font-size: clamp(3rem, 6vw, 5rem);
+            max-width: (640/16rem);
+            color: var(--bodyTextColorWhite);
+            margin-bottom: (16/16rem);
+
+            .accent {
+                color: var(--secondary);
+                font-family: var(--headerFontAccent);
+                font-style: italic;
+                letter-spacing: 0.08em;
+            }
+        }
+
+        .cs-text {
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: (36/16rem);
+            max-width: (480/16rem);
+        }
+
+        .cs-button-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: (20/16rem);
+        }
+
+        /* Inherits .cs-button-solid from core styles */
+        .cs-button-solid {
+            white-space: nowrap;
+        }
+
+        /* Secondary CTA — underline text link */
+        .cs-link {
+            position: relative;
+            display: inline-block;
+            font-size: (15/16rem);
+            font-family: var(--bodyFont);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--bodyTextColorWhite);
+            text-decoration: none;
+            padding-bottom: (4/16rem);
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 1px;
+                background-color: var(--secondary);
+                transform: scaleX(1);
+                transform-origin: left center;
+                transition: background-color 0.3s ease;
+            }
+
+            &:hover {
+                color: var(--secondary);
+
+                &::after {
+                    background-color: var(--secondaryLight);
+                }
+            }
+        }
+
+        /* Video Background */
+        .cs-background {
+            z-index: -1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .cs-overlay {
+            z-index: 1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+        to right,
+        rgba(4, 32, 29, 0.85) 0%,
+        rgba(4, 32, 29, 0.6) 100%
+    );
+        }
+
+        .cs-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+.cs-scroll-indicator {
+            z-index: 2;
+            position: absolute;
+            bottom: (40/16rem);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: (8/16rem);
+        }
+
+        .cs-scroll-label {
+            font-size: (11/16rem);
+            font-family: var(--bodyFont);
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .cs-scroll-line {
+            width: 1px;
+            height: (48/16rem);
+            background: linear-gradient(
+                to bottom,
+                rgba(201, 168, 106, 0.9),
+                rgba(201, 168, 106, 0)
+            );
+            position: relative;
+            overflow: hidden;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: -100%;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(255, 255, 255, 0.8);
+                animation: cs-scroll-drop 1.8s ease-in-out infinite;
+            }
+        }
+
+        @keyframes cs-scroll-drop {
+            0%   { top: -100%; }
+            60%  { top: 100%; }
+            100% { top: 100%; }
+        }
+
+    }
+}
+
+/* Tablet - 768px */
+@media only screen and (min-width: 48rem) {
+    #hero-1 {
+        .cs-button-group {
+            flex-direction: row;
+            align-items: center;
+        }
+    }
+}
+
+/* Desktop - 1024px */
+@media only screen and (min-width: 64rem) {
+    #hero-1 {
+        min-height: 100svh;
+
+        .cs-container {
+            /* Push content to the left */
+            justify-content: flex-start;
+        }
+
+        .cs-overlay {
+    background: linear-gradient(
+        105deg,
+        rgba(4, 32, 29, 0.92) 0%,
+        rgba(4, 32, 29, 0.65) 55%,
+        rgba(4, 32, 29, 0.35) 100%
+    );
+}
+    }
+}
+
+/* Large Desktop - 1300px */
+@media only screen and (min-width: 81.25rem) {
+    #hero-1 {
+        .cs-title {
+            font-size: clamp(4rem, 5vw, 5.5rem);
+        }
+    }
+}

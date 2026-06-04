@@ -1,0 +1,523 @@
+/*-- -------------------------- -->
+<---          Header            -->
+<--- -------------------------- -*/
+
+/* Mobile - 360px */
+@media only screen and (min-width: 0rem) {
+    #cs-navigation {
+        z-index: 100;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: (12/16rem) 1rem;
+        background-color: transparent;
+        transition: background-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease, transform 0.35s ease;
+
+        /* Hidden — slides up out of view */
+        &.cs-hidden {
+            transform: translateY(-100%);
+        }
+
+        /* Revealed on scroll up — white bg, dark text */
+        &.cs-scrolled {
+            background-color: #fff;
+            padding: (8/16rem) 1rem;
+            box-shadow: 0 2px 24px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+
+            /* Dark hamburger lines */
+            .cs-line {
+                background-color: var(--headerColor);
+            }
+        }
+
+        /* Open state */
+        &.cs-active {
+            .cs-toggle {
+                .cs-line1 {
+                    top: 50%;
+                    transform: translate(-50%, -50%) rotate(225deg);
+                }
+                .cs-line2 {
+                    opacity: 0;
+                    transform: scaleX(0);
+                }
+                .cs-line3 {
+                    bottom: 50%;
+                    transform: translate(-50%, 50%) rotate(-225deg);
+                }
+            }
+
+            .cs-ul-wrapper {
+                opacity: 1;
+                transform: translateX(0);
+                pointer-events: all;
+            }
+        }
+
+        .cs-container {
+            width: 100%;
+            max-width: (1280/16rem);
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Logo */
+        .cs-logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .cs-logo-img {
+            width: auto;
+            height: (64/16rem);
+            display: block;
+        }
+
+        /* Show light logo by default, hide dark */
+        .cs-logo-dark {
+            display: none;
+        }
+
+        /* When scrolled: swap to dark logo */
+        &.cs-scrolled {
+            .cs-logo-light { display: none; }
+            .cs-logo-dark  { display: block; }
+        }
+
+        /* Desktop nav — hidden on mobile */
+        .cs-nav {
+            display: none;
+        }
+
+        /* Hamburger */
+        .cs-toggle {
+            width: (44/16rem);
+            height: (44/16rem);
+            background: transparent;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+            flex-shrink: 0;
+        }
+
+        .cs-box {
+            width: (24/16rem);
+            height: (14/16rem);
+            position: relative;
+        }
+
+        .cs-line {
+            width: 100%;
+            height: 1.5px;
+            background-color: var(--bodyTextColorWhite);
+            border-radius: 2px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: transform 0.3s ease, opacity 0.3s ease, top 0.3s ease, bottom 0.3s ease, background-color 0.3s ease;
+        }
+
+        .cs-line1 { top: 0; }
+        .cs-line2 { top: 50%; transform: translate(-50%, -50%); }
+        .cs-line3 { bottom: 0; }
+
+        /* Drawer */
+        .cs-ul-wrapper {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: min(320px, 85vw);
+            height: 100dvh;
+            background-color: rgba(4, 32, 29, 0.98);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-left: 1px solid rgba(201, 168, 106, 0.2);
+            padding: (100/16rem) (40/16rem) (40/16rem);
+            opacity: 0;
+            transform: translateX(100%);
+            pointer-events: none;
+            transition: opacity 0.35s ease, transform 0.35s ease;
+            display: flex;
+            align-items: flex-start;
+            overflow-y: auto;
+        }
+
+        .cs-ul {
+            list-style: none;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .cs-li {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+            &:first-child {
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+            }
+        }
+
+        .cs-li-link {
+            display: block;
+            font-family: var(--headerFont);
+            font-size: (22/16rem);
+            font-weight: 400;
+            letter-spacing: 0.04em;
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            padding: (16/16rem) 0;
+            transition: color 0.2s ease, padding-left 0.2s ease;
+
+            &:hover {
+                color: var(--secondary);
+                padding-left: (8/16rem);
+            }
+        }
+
+        /* Phone in drawer */
+        .cs-li-phone {
+            margin-top: (24/16rem);
+            border: none !important;
+
+            .cs-li-link {
+                font-family: var(--bodyFont);
+                font-size: (15/16rem);
+                font-weight: 600;
+                letter-spacing: 0.12em;
+                color: var(--secondary);
+                padding: 0;
+
+                &:hover {
+                    color: var(--secondaryLight);
+                    padding-left: 0;
+                }
+            }
+        }
+    }
+}
+
+/* Desktop - 1024px */
+@media only screen and (min-width: 64rem) {
+    #cs-navigation {
+        padding: (10/16rem) 2rem;
+
+        &.cs-scrolled {
+            padding: (10/16rem) 2rem;
+            background-color: #fff;
+            box-shadow: 0 2px 24px rgba(0, 0, 0, 0.08);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+
+            /* Dark nav links when scrolled */
+            .cs-link-underline,
+            .cs-nav-item .cs-button-solid,
+            .cs-phone {
+                color: var(--headerColor);
+
+                &:hover {
+                    color: var(--primary);
+                }
+            }
+        }
+
+        /* Show desktop nav */
+        .cs-nav {
+            display: flex;
+            align-items: center;
+            gap: (32/16rem);
+            margin-left: auto;
+        }
+
+        .cs-toggle {
+            display: flex;
+            flex-shrink: 0;
+            border: none;
+            padding: (8/16rem);
+            margin-left: (16/16rem);
+            transition: border-color 0.2s ease;
+
+            &:hover {
+                .cs-line {
+                    background-color: var(--secondary);
+                }
+            }
+        }
+
+        .cs-nav-list {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: (32/16rem);
+        }
+
+        .cs-nav-item {
+            display: flex;
+            align-items: center;
+        }
+
+        /* All nav links */
+        .cs-link-underline,
+        .cs-nav-item .cs-button-solid,
+        .cs-phone {
+            font-family: var(--bodyFont);
+            font-size: (14/16rem);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--bodyTextColorWhite);
+            text-decoration: none;
+            transition: color 0.2s ease;
+
+            &:hover {
+                color: var(--secondary);
+            }
+        }
+
+        /* Strip button styles from Home Search */
+        .cs-nav-item .cs-button-solid {
+            background-color: transparent;
+            padding: 0;
+
+            &:before {
+                display: none;
+            }
+        }
+
+        /* Wider drawer on desktop */
+        .cs-ul-wrapper {
+            width: (400/16rem);
+        }
+
+        .cs-li-link {
+            font-size: (28/16rem);
+        }
+    }
+}
+/*-- -------------------------- -->
+<---          Banner            -->
+<--- -------------------------- -*/
+
+/* Mobile - 360px */
+@media only screen and (min-width: 0px) {
+	#banner-310 {
+		/* 144px - 252px */
+		padding-top: clamp(9rem, 25vw, 15.75rem);
+		/* 80px - 140px */
+		padding-bottom: clamp(5rem, 13vw, 8.75rem);
+		position: relative;
+		z-index: 1;
+
+		.cs-container {
+			width: 100%;
+			max-width: (1280/16rem);
+			margin: auto;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+		}
+
+		.cs-int-title {
+			/* 39px - 49px */
+			font-size: clamp(2.4375rem, 4.5vw, 3.0625rem);
+			font-weight: 900;
+			line-height: 1.2em;
+			text-align: center;
+			max-width: (700/16rem);
+			margin: 0 auto (12/16rem);
+			color: var(--bodyTextColorWhite);
+			position: relative;
+		}
+
+		.cs-breadcrumbs {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.cs-link {
+			/* 14px - 16px */
+			font-size: clamp(0.875rem, 1.5vw, 1rem);
+			line-height: 1.2em;
+			text-decoration: none;
+			color: var(--bodyTextColorWhite);
+			position: relative;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			&:last-of-type {
+				/* remove the chevron on the last list item */
+				&::after {
+					display: none;
+				}
+			}
+
+			&:after {
+				/* chevron - added as pseudo to make adding and removing them easier */
+				content: "";
+				width: (7/16rem);
+				height: (12/16rem);
+				margin-left: (12/16rem);
+				margin-right: (12/16rem);
+				background: url("/assets/svgs/chevron.svg");
+				background-size: contain;
+				background-position: center;
+				background-repeat: no-repeat;
+			}
+
+			&.cs-active {
+				color: var(--primaryLight);
+			}
+		}
+
+		.cs-background {
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			display: block;
+			z-index: -1;
+
+			&:before {
+				/* black overlay box */
+				content: "";
+				width: 100%;
+				height: 100%;
+				background: #000;
+				opacity: 0.72;
+				position: absolute;
+				display: block;
+				top: 0;
+				left: 0;
+				z-index: 1;
+			}
+
+			img {
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: 100%;
+				object-fit: cover;
+			}
+		}
+	}
+}
+
+/*-- -------------------------- -->
+<---            CTA             -->
+<--- -------------------------- -*/
+
+/* Mobile - 360px */
+@media only screen and (min-width: 0px) {
+	#cta-51 {
+		padding: var(--sectionPadding);
+		position: relative;
+
+		.cs-container {
+			width: 100%;
+			max-width: (1280/16rem);
+			margin: auto;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			/* 48px - 64px */
+			gap: clamp(3rem, 6vw, 4rem);
+		}
+
+		.cs-content {
+			/* set text align to left if content needs to be left aligned */
+			text-align: center;
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+			/* centers content horizontally, set to flex-start to left align */
+			align-items: center;
+		}
+
+		.cs-title {
+			color: var(--bodyTextColorWhite);
+		}
+
+		.cs-text {
+			margin-bottom: (16/16rem);
+			color: var(--bodyTextColorWhite);
+			opacity: 0.8;
+			&:last-of-type {
+				margin-bottom: (32/16rem);
+			}
+		}
+
+		.cs-picture {
+			height: 100%;
+			width: 100%;
+			display: block;
+			position: absolute;
+			z-index: -1;
+			top: 0;
+			left: 0;
+			z-index: -1;
+
+			&:before {
+				/* black color overlay */
+				content: "";
+				position: absolute;
+				display: block;
+				height: 100%;
+				width: 100%;
+				background: #000;
+				opacity: 0.8;
+				top: 0;
+				left: 0;
+				z-index: 1;
+			}
+
+			img {
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				width: 100%;
+				object-fit: cover;
+			}
+		}
+	}
+}
+
+/*-- -------------------------- -->
+<---          Footer            -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 0px) {
+    #cs-footer-275 {
+        background-color: #1a1a1a;
+        border-top: 3px solid var(--secondary);
+
+        .cs-bottom-bar {
+            padding: 1.25rem 1rem;
+        }
+
+        .cs-bottom-container {
+            width: 100%;
+            max-width: 80rem;
+            margin: 0 auto;
+        }
+
+        .cs-copyright {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.5em;
+            margin: 0;
+        }
+    }
+}

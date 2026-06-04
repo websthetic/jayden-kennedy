@@ -1,0 +1,303 @@
+/*-- -------------------------- -->
+<---        Core Styles         -->
+<--- -------------------------- -*/
+
+/* CodeStitch Core Styles + Reset */
+@media only screen and (min-width: 0px) {
+	:root {
+		--primary: #09645a;
+		--primaryLight: #0a8a7d;
+		--secondary: #C9A86A;
+		--secondaryLight: #d9be8a;
+		--headerColor: #1a1a1a;
+		--bodyTextColor: #2d2d2d;
+		--bodyTextColorWhite: #FFFFFF;
+
+		/* 13px - 16px */
+		--topperFontSize: clamp(0.8125rem, 1.6vw, 1rem);
+		/* 31px - 49px */
+		--headerFontSize: clamp(1.9375rem, 3.9vw, 3.0625rem);
+		--bodyFontSize: 1rem;
+		/* 60px - 100px top and bottom */
+		--sectionPadding: clamp(3.75rem, 7.82vw, 6.25rem) 1rem;
+
+		--headerFont: "Instrument Serif Regular", Arial, serif;
+		--headerFontAccent: "Instrument Serif Italic", Arial, serif;
+		--bodyFont: "Instrument Sans Regular", Arial, sans-serif;
+	}
+
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+		overflow-x: hidden;
+		font-family: var(--bodyFont);
+		font-size: 100%;
+		transition: background-color 0.3s;
+		color: var(--bodyTextColor);
+	}
+
+	*,
+	*:before,
+	*:after {
+		/* prevents padding from affecting height and width */
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
+	.cs-topper {
+		font-size: var(--topperFontSize);
+		line-height: 1.2em;
+		text-transform: uppercase;
+		text-align: inherit;
+		letter-spacing: 0.1em;
+		font-weight: 700;
+		color: var(--primary);
+		margin-bottom: 0.25rem;
+		display: block;
+	}
+
+	.cs-title {
+    font-size: var(--headerFontSize);
+    font-weight: 400;
+    line-height: 1.2em;
+    letter-spacing: 0.05em;
+    text-align: inherit;
+    max-width: 43.75rem;
+    margin: 0 0 1rem 0;
+    color: var(--headerColor);
+    position: relative;
+}
+
+	.cs-text {
+		font-size: var(--bodyFontSize);
+		line-height: 1.5em;
+		text-align: inherit;
+		width: 100%;
+		max-width: 40.625rem;
+		margin: 0;
+		color: var(--bodyTextColor);
+	}
+
+	.accent {
+    font-family: var(--headerFontAccent);
+    font-style: italic;
+	letter-spacing: 0.05em;
+}
+}
+
+/* Components + Utilities */
+@media only screen and (min-width: 0px) {
+	// Hidden screen reader skip nav button
+	.skip {
+		z-index: -1111111;
+		position: absolute;
+		top: 0;
+		left: 0;
+		opacity: 0;
+	}
+
+	// Buttons - can be replaced using CodeStitch's "Button" Stitches. Make sure to clear the default .cs-button-solid/outline styles from any new stitches you place.
+	.cs-button-solid {
+		z-index: 1;
+		position: relative;
+		display: inline-block;
+		background-color: var(--primary);
+		width: auto;
+		padding: (16/16rem) (32/16rem);
+		text-decoration: none;
+		text-transform: uppercase;
+		font-size: (16/16rem);
+		line-height: (16/16em);
+		font-weight: bold;
+		overflow: hidden;
+
+		// Transition Properties
+		color: var(--bodyTextColorWhite);
+		transition: color 0.3s;
+		transition-delay: 0.1s;
+		text-align: center;
+
+		&:hover {
+			color: #fff;
+
+			&:before {
+				width: 100%;
+			}
+		}
+
+		&:before {
+			z-index: -1;
+			position: absolute;
+			top: 0;
+			left: 0;
+			content: "";
+			opacity: 1;
+			display: block;
+			background-color: var(--secondaryLight);
+			height: 100%;
+
+			//Transition properties
+			width: 0;
+			transition: width 0.3s;
+		}
+	}
+
+	.cs-button-outline {
+		z-index: 1;
+		position: relative;
+		display: inline-block;
+		width: auto;
+		padding: (16/16rem) (32/16rem);
+		text-decoration: none;
+		text-transform: uppercase;
+		font-size: (16/16rem);
+		line-height: (16/16em);
+		font-weight: bold;
+		border: 2px solid var(--secondary);
+
+		// Transition Properties
+		color: var(--secondary);
+		transition: color 0.3s;
+		transition-delay: 0.1s;
+		text-align: center;
+
+		&:hover {
+			color: #fff;
+
+			&:before {
+				width: 100%;
+			}
+		}
+
+		&:before {
+			z-index: -1;
+			position: absolute;
+			top: 0;
+			left: 0;
+			content: "";
+			opacity: 1;
+			display: block;
+			background-color: var(--secondary);
+			height: 100%;
+
+			//Transition properties
+			width: 0;
+			transition: width 0.3s;
+		}
+	}
+
+	// Utilities - small classes useful in various common situations
+	.cs-color {
+		color: var(--primary);
+	}
+
+	.cs-bold {
+		font-weight: 700;
+	}
+
+	.cs-hide-on-mobile {
+		display: none !important;
+	}
+
+}
+
+/* Desktop Utilities */
+@media only screen and (min-width: 64rem) {
+	.cs-hide-on-mobile {
+		display: block !important;
+	}
+
+	.cs-hide-on-desktop {
+		display: none !important;
+	}
+}
+
+/* Base Element Styles */
+@media only screen and (min-width: 0px) {
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: var(--headerFont);
+		line-height: 1.2em;
+		color: var(--headerColor);
+	}
+
+	p,
+	li,
+	a {
+		font-size: (16/16rem);
+		line-height: 1.5em;
+	}
+
+	p,
+	li {
+		color: var(--bodyTextColor);
+
+		a {
+			color: var(--primary);
+		}
+	}
+
+	a,
+	button {
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	body.dark-mode {
+		background-color: var(--dark);
+
+		p,
+		li,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6 {
+			color: #fff;
+		}
+	}
+}
+
+/* Fonts */
+@media only screen and (min-width: 0px) {
+	/* InstrumentSans-Regular - latin */
+	@font-face {
+		font-style: normal;
+		font-family: "Instrument Sans Regular";
+		font-weight: 400;
+		font-display: swap;
+		src: local(""),
+			url("/assets/fonts/InstrumentSans-Regular.woff2") format("woff2"),
+			url("/assets/fonts/InstrumentSans-Regular.woff") format("woff");
+	}
+
+	/* InstrumentSerif-Regular - latin */
+	@font-face {
+		font-style: normal;
+		font-family: "Instrument Serif Regular";
+		font-weight: 400;
+		font-display: swap;
+		src: local(""),
+			url("/assets/fonts/InstrumentSerif-Regular.woff2") format("woff2"),
+			url("/assets/fonts/InstrumentSerif-Regular.woff") format("woff");
+	}
+
+	/* InstrumentSerif-Italic - latin */
+	@font-face {
+		font-style: normal;
+		font-family: "Instrument Serif Italic";
+		font-weight: 400;
+		font-display: swap;
+		src: local(""),
+			url("/assets/fonts/InstrumentSerif-Italic.woff2") format("woff2"),
+			url("/assets/fonts/InstrumentSerif-Italic.woff") format("woff");
+	}
+}
