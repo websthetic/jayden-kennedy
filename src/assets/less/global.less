@@ -1,306 +1,553 @@
 /*-- -------------------------- -->
-<---          Header            -->
+<---         Navigation         -->
 <--- -------------------------- -*/
 
-/* Mobile - 360px */
+/* Mobile - 0rem */
 @media only screen and (min-width: 0rem) {
-    #cs-navigation {
-        z-index: 100;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        padding: (12/16rem) 1rem;
-        background-color: transparent;
-        transition: background-color 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease, transform 0.35s ease;
+	body.cs-open {
+		overflow: hidden;
+	}
 
-        /* Hidden — slides up out of view */
-        &.cs-hidden {
-            transform: translateY(-100%);
-        }
+	#cs-navigation {
+		/* Local dials — scoped to the nav, nothing added to :root.
+		   --navHeight  drives the bar, the sheet offset and its max-height.
+		   --navLine    channel for every hairline, border and stepped-back
+		                ink in here. Light at rest because the bar sits on
+		                the Dark Cocoa hero; flips to the cocoa channel once
+		                the page surface below it goes light. */
+		--navHeight: 4.5rem;
+		--navSurface: var(--darkCocoa);
+		--navInk: #F1E2D1;
+		--navAccent: var(--heritageGreen);
+		--navLine: 254, 251, 247;
 
-        /* Revealed on scroll up — white bg, dark text */
-        &.cs-scrolled {
-            background-color: #fff;
-            padding: (8/16rem) 1rem;
-            box-shadow: 0 2px 24px rgba(0, 0, 0, 0.08);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+		width: 100%;
+		box-sizing: border-box;
+		background-color: var(--navSurface);
 
-            /* Dark hamburger lines */
-            .cs-line {
-                background-color: var(--headerColor);
-            }
-        }
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 10000;
+		transition: transform 0.4s cubic-bezier(0.33, 0, 0.15, 1),
+		            background-color 0.3s ease;
 
-        /* Open state */
-        &.cs-active {
-            .cs-toggle {
-                .cs-line1 {
-                    top: 50%;
-                    transform: translate(-50%, -50%) rotate(225deg);
-                }
-                .cs-line2 {
-                    opacity: 0;
-                    transform: scaleX(0);
-                }
-                .cs-line3 {
-                    bottom: 50%;
-                    transform: translate(-50%, 50%) rotate(-225deg);
-                }
-            }
+		/* Light states. Two conditions, one result — the sheet is a light
+		   panel, and past the hero the page surface is light, so either way
+		   the bar has to flip or it reads as a foreign band. Re-declaring
+		   the dials is the whole change: every colour below reads off them. */
+		&.cs-open,
+		&.cs-past-hero {
+			--navSurface: var(--surfaceCanvas);
+			--navInk: var(--headerColor);
+			--navLine: var(--primary-rgb);
+		}
 
-            .cs-ul-wrapper {
-                opacity: 1;
-                transform: translateX(0);
-                pointer-events: all;
-            }
-        }
+		/* Retracts on scroll down, returns on scroll up. JS owns the class.
+		   1px of slack so the hairline clears with it. */
+		&.cs-hidden {
+			transform: translateY(calc(-100% - 1px));
+		}
 
-        .cs-container {
-            width: 100%;
-            max-width: (1280/16rem);
-            margin: auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+		.cs-container {
+			width: 100%;
+			max-width: (1440/16rem);
+			height: var(--navHeight);
+			margin: auto;
+			box-sizing: border-box;
+			padding: 0 (16/16rem);
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: (24/16rem);
+			position: relative;
+			/* sits above the sheet */
+			z-index: 2;
+		}
 
-        /* Logo */
-        .cs-logo {
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-        }
+		/* -- Logo --
+		   Two files stacked in one grid cell so the bar never reflows on the
+		   swap. The cream mark rides the dark bar; the cocoa mark takes over
+		   whenever the bar goes light. */
+		.cs-logo {
+			width: 50%;
+			max-width: (150/16rem);
+			height: (44/16rem);
+			display: grid;
+			/* the row has to be told the height, or it sizes to the image's
+			   intrinsic dimensions and the parent's height is ignored */
+			grid-template-rows: 100%;
+			grid-template-columns: 100%;
+			flex: none;
 
-        .cs-logo-img {
-            width: auto;
-            height: (64/16rem);
-            display: block;
-        }
+			img {
+				grid-area: 1 / 1;
+				width: 100%;
+				height: 100%;
+				object-fit: contain;
+				object-position: left;
+				display: block;
+				transition: opacity 0.3s ease;
+			}
 
-        /* Show light logo by default, hide dark */
-        .cs-logo-dark {
-            display: none;
-        }
+			.cs-logo-dark {
+				opacity: 0;
+			}
+		}
 
-        /* When scrolled: swap to dark logo */
-        &.cs-scrolled {
-            .cs-logo-light { display: none; }
-            .cs-logo-dark  { display: block; }
-        }
+		&.cs-open .cs-logo,
+		&.cs-past-hero .cs-logo {
+			.cs-logo-light {
+				opacity: 0;
+			}
 
-        /* Desktop nav — hidden on mobile */
-        .cs-nav {
-            display: none;
-        }
+			.cs-logo-dark {
+				opacity: 1;
+			}
+		}
 
-        /* Hamburger */
-        .cs-toggle {
-            width: (44/16rem);
-            height: (44/16rem);
-            background: transparent;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            padding: 0;
-            flex-shrink: 0;
-        }
+		/* -- Bar -- */
+		.cs-nav {
+			display: flex;
+			align-items: center;
+			gap: clamp(1.5rem, 3vw, 2.75rem);
+		}
 
-        .cs-box {
-            width: (24/16rem);
-            height: (14/16rem);
-            position: relative;
-        }
+		.cs-bar-ul {
+			/* folds into the sheet below 64rem */
+			display: none;
+		}
 
-        .cs-line {
-            width: 100%;
-            height: 1.5px;
-            background-color: var(--bodyTextColorWhite);
-            border-radius: 2px;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            transition: transform 0.3s ease, opacity 0.3s ease, top 0.3s ease, bottom 0.3s ease, background-color 0.3s ease;
-        }
+		.cs-bar-li {
+			list-style: none;
+		}
 
-        .cs-line1 { top: 0; }
-        .cs-line2 { top: 50%; transform: translate(-50%, -50%); }
-        .cs-line3 { bottom: 0; }
+		.cs-bar-link {
+			font-family: "Elms Sans Medium", var(--bodyFont);
+			font-size: (14/16rem);
+			line-height: 1.5em;
+			letter-spacing: (0.4/16em);
+			text-decoration: none;
+			color: var(--navInk);
+			display: block;
+			padding: (4/16rem) 0;
+			position: relative;
+			transition: color 0.3s ease;
 
-        /* Drawer */
-        .cs-ul-wrapper {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: min(320px, 85vw);
-            height: 100dvh;
-            background-color: rgba(4, 32, 29, 0.98);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-left: 1px solid rgba(201, 168, 106, 0.2);
-            padding: (100/16rem) (40/16rem) (40/16rem);
-            opacity: 0;
-            transform: translateX(100%);
-            pointer-events: none;
-            transition: opacity 0.35s ease, transform 0.35s ease;
-            display: flex;
-            align-items: flex-start;
-            overflow-y: auto;
-        }
+			&:before {
+				content: "";
+				width: 0%;
+				height: 1px;
+				/* follows the text — goes green with it on hover */
+				background-color: currentColor;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				transition: width 0.35s cubic-bezier(0.33, 0, 0.15, 1);
+			}
 
-        .cs-ul {
-            list-style: none;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-        }
+			&:hover,
+			&.cs-active,
+			&:focus-visible {
+				color: var(--navAccent);
+			}
 
-        .cs-li {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+			&:hover:before,
+			&.cs-active:before,
+			&:focus-visible:before {
+				width: 100%;
+			}
 
-            &:first-child {
-                border-top: 1px solid rgba(255, 255, 255, 0.08);
-            }
-        }
+			&:focus-visible {
+				outline: 1px solid currentColor;
+				outline-offset: (6/16rem);
+			}
+		}
 
-        .cs-li-link {
-            display: block;
-            font-family: var(--headerFont);
-            font-size: (22/16rem);
-            font-weight: 400;
-            letter-spacing: 0.04em;
-            color: rgba(255, 255, 255, 0.85);
-            text-decoration: none;
-            padding: (16/16rem) 0;
-            transition: color 0.2s ease, padding-left 0.2s ease;
+		/* -- Toggle -- */
+		.cs-toggle {
+			-webkit-appearance: none;
+			appearance: none;
+			background: none;
+			border: none;
+			cursor: pointer;
+			padding: (10/16rem) 0 (10/16rem) (4/16rem);
+			display: flex;
+			align-items: center;
+			gap: (12/16rem);
+			color: var(--navInk);
+			transition: color 0.3s ease;
 
-            &:hover {
-                color: var(--secondary);
-                padding-left: (8/16rem);
-            }
-        }
+			&:focus-visible {
+				outline: 1px solid currentColor;
+				outline-offset: (6/16rem);
+			}
+		}
 
-        /* Phone in drawer */
-        .cs-li-phone {
-            margin-top: (24/16rem);
-            border: none !important;
+		.cs-toggle-label {
+			font-family: "Elms Sans Medium", var(--bodyFont);
+			font-size: (13/16rem);
+			line-height: 1;
+			letter-spacing: (1.4/16em);
+			text-transform: uppercase;
+			color: inherit;
+			/* both labels stack in one cell so the bar never reflows on open */
+			display: grid;
+			place-items: center start;
+		}
 
-            .cs-li-link {
-                font-family: var(--bodyFont);
-                font-size: (15/16rem);
-                font-weight: 600;
-                letter-spacing: 0.12em;
-                color: var(--secondary);
-                padding: 0;
+		.cs-label-menu,
+		.cs-label-close {
+			grid-area: 1 / 1;
+			transition: opacity 0.25s ease;
+		}
 
-                &:hover {
-                    color: var(--secondaryLight);
-                    padding-left: 0;
-                }
-            }
-        }
-    }
+		.cs-label-close {
+			opacity: 0;
+		}
+
+		.cs-box {
+			width: (22/16rem);
+			height: (10/16rem);
+			position: relative;
+			flex: none;
+		}
+
+		.cs-line {
+			width: 100%;
+			height: 1px;
+			background-color: currentColor;
+			position: absolute;
+			left: 0;
+			transition: transform 0.4s cubic-bezier(0.33, 0, 0.15, 1), top 0.3s ease;
+		}
+
+		.cs-line1 {
+			top: 0;
+		}
+
+		.cs-line2 {
+			top: 100%;
+		}
+
+		&.cs-open {
+			.cs-label-menu {
+				opacity: 0;
+			}
+
+			.cs-label-close {
+				opacity: 1;
+			}
+
+			.cs-line1 {
+				top: 50%;
+				transform: translateY(-50%) rotate(45deg);
+			}
+
+			.cs-line2 {
+				top: 50%;
+				transform: translateY(-50%) rotate(-45deg);
+			}
+		}
+
+		/* -- Sheet -- */
+		.cs-panel {
+			width: 100%;
+			max-height: calc(100dvh - var(--navHeight));
+			box-sizing: border-box;
+			padding: (48/16rem) (16/16rem) (40/16rem);
+			background-color: var(--navSurface);
+			border-bottom: 1px solid rgba(var(--navLine), 0.14);
+			position: absolute;
+			top: var(--navHeight);
+			left: 0;
+			z-index: 1;
+			overflow-y: auto;
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity 0.45s ease, visibility 0s linear 0.45s;
+		}
+
+		&.cs-open .cs-panel {
+			opacity: 1;
+			visibility: visible;
+			transition: opacity 0.45s ease, visibility 0s linear 0s;
+		}
+
+		.cs-panel-inner {
+			width: 100%;
+			max-width: (1440/16rem);
+			margin: auto;
+		}
+
+		.cs-panel-ul {
+			margin: 0 0 (32/16rem) 0;
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+			gap: (18/16rem);
+		}
+
+		.cs-panel-secondary {
+			padding-top: (28/16rem);
+			border-top: 1px solid rgba(var(--navLine), 0.14);
+		}
+
+		.cs-panel-li {
+			list-style: none;
+			opacity: 0;
+			transform: translateY((8/16rem));
+			transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+		}
+
+		&.cs-open .cs-panel-li {
+			opacity: 1;
+			transform: translateY(0);
+
+			/* Delays ride the 0.45s fade */
+			&:nth-of-type(1) {
+				transition-delay: 0.1s;
+			}
+			&:nth-of-type(2) {
+				transition-delay: 0.15s;
+			}
+			&:nth-of-type(3) {
+				transition-delay: 0.2s;
+			}
+			&:nth-of-type(4) {
+				transition-delay: 0.25s;
+			}
+			&:nth-of-type(5) {
+				transition-delay: 0.3s;
+			}
+		}
+
+		.cs-panel-link {
+			font-family: var(--bodyFont);
+			/* 20px - 26px */
+			font-size: clamp(1.25rem, 1.6vw, 1.625rem);
+			line-height: 1.3em;
+			letter-spacing: (-0.1/16em);
+			text-decoration: none;
+			color: var(--navInk);
+			display: inline-block;
+			position: relative;
+			transition: color 0.3s ease;
+
+			&:before {
+				content: "";
+				width: 0%;
+				height: 1px;
+				background-color: currentColor;
+				position: absolute;
+				bottom: (-4/16rem);
+				left: 0;
+				transition: width 0.4s cubic-bezier(0.33, 0, 0.15, 1);
+			}
+
+			&:hover,
+			&.cs-active,
+			&:focus-visible {
+				color: var(--navAccent);
+			}
+
+			&:hover:before,
+			&.cs-active:before,
+			&:focus-visible:before {
+				width: 100%;
+			}
+
+			&:focus-visible {
+				outline: 1px solid currentColor;
+				outline-offset: (8/16rem);
+			}
+		}
+
+		.cs-panel-foot {
+			padding-top: (28/16rem);
+			border-top: 1px solid rgba(var(--navLine), 0.14);
+			display: flex;
+			flex-direction: column;
+			gap: (24/16rem);
+		}
+
+		.cs-panel-contact {
+			display: flex;
+			flex-direction: column;
+			gap: (10/16rem);
+		}
+
+		.cs-panel-meta {
+			font-family: "Elms Sans Medium", var(--bodyFont);
+			font-size: (12/16rem);
+			line-height: 1.4em;
+			letter-spacing: (1.2/16em);
+			text-transform: uppercase;
+			text-decoration: none;
+			color: rgba(var(--navLine), 0.65);
+			transition: color 0.3s ease;
+
+			&:hover,
+			&:focus-visible {
+				color: var(--navAccent);
+			}
+		}
+
+		/* -- Socials -- */
+		.cs-socials {
+			margin: 0;
+			padding: 0;
+			display: flex;
+			align-items: center;
+			gap: (12/16rem);
+		}
+
+		.cs-social-li {
+			list-style: none;
+		}
+
+		.cs-social {
+			width: (44/16rem);
+			height: (44/16rem);
+			border: 1px solid rgba(var(--navLine), 0.25);
+			border-radius: 50%;
+			color: rgba(var(--navLine), 0.7);
+			display: grid;
+			place-items: center;
+			transition: color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+
+			svg {
+				width: (17/16rem);
+				height: (17/16rem);
+				display: block;
+			}
+
+			&:hover,
+			&:focus-visible {
+				color: var(--navSurface);
+				border-color: var(--navAccent);
+				background-color: var(--navAccent);
+			}
+
+			&:focus-visible {
+				outline: 1px solid var(--navAccent);
+				outline-offset: (3/16rem);
+			}
+		}
+
+		/* -- Click-off --
+		   Starts below the bar. A full-viewport inset would paint over the
+		   bar's own background, since this is a child of the header. */
+		.cs-backdrop {
+			position: fixed;
+			top: var(--navHeight);
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background-color: rgba(var(--primary-rgb), 0);
+			z-index: 0;
+			visibility: hidden;
+			transition: background-color 0.5s ease, visibility 0s linear 0.5s;
+		}
+
+		&.cs-open .cs-backdrop {
+			background-color: rgba(var(--primary-rgb), 0.28);
+			visibility: visible;
+			transition: background-color 0.5s ease, visibility 0s linear 0s;
+		}
+	}
 }
 
-/* Desktop - 1024px */
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+	#cs-navigation {
+		.cs-container {
+			padding: 0 (32/16rem);
+		}
+
+		.cs-panel {
+			padding: (64/16rem) (32/16rem) (48/16rem);
+		}
+
+		.cs-panel-ul {
+			gap: (22/16rem);
+		}
+	}
+}
+
+/* Desktop - 64rem */
 @media only screen and (min-width: 64rem) {
-    #cs-navigation {
-        padding: (10/16rem) 2rem;
+	body.cs-open {
+		/* sheet is short here, page stays scrollable behind it */
+		overflow: visible;
+	}
 
-        &.cs-scrolled {
-            padding: (10/16rem) 2rem;
-            background-color: #fff;
-            box-shadow: 0 2px 24px rgba(0, 0, 0, 0.08);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+	#cs-navigation {
+		--navHeight: 6.25rem;
 
-            /* Dark nav links when scrolled */
-            .cs-link-underline,
-            .cs-nav-item .cs-button-solid,
-            .cs-phone {
-                color: var(--headerColor);
+		.cs-container {
+			padding: 0 (48/16rem);
+		}
 
-                &:hover {
-                    color: var(--primary);
-                }
-            }
-        }
+		.cs-logo {
+			max-width: (200/16rem);
+			height: (64/16rem);
+		}
 
-        /* Show desktop nav */
-        .cs-nav {
-            display: flex;
-            align-items: center;
-            gap: (32/16rem);
-            margin-left: auto;
-        }
+		.cs-bar-ul {
+			margin: 0;
+			padding: 0;
+			display: flex;
+			align-items: center;
+			gap: clamp(1.5rem, 2.6vw, 2.5rem);
+		}
 
-        .cs-toggle {
-            display: flex;
-            flex-shrink: 0;
-            border: none;
-            padding: (8/16rem);
-            margin-left: (16/16rem);
-            transition: border-color 0.2s ease;
+		.cs-panel {
+			padding: (72/16rem) (48/16rem) (56/16rem);
+		}
 
-            &:hover {
-                .cs-line {
-                    background-color: var(--secondary);
-                }
-            }
-        }
+		.cs-panel-ul {
+			margin: 0 0 (56/16rem) 0;
+			/* three in the first column, two in the second */
+			display: grid;
+			grid-auto-flow: column;
+			grid-template-rows: repeat(3, auto);
+			grid-template-columns: repeat(2, minmax(0, (340/16rem)));
+			gap: (24/16rem) (64/16rem);
+		}
 
-        .cs-nav-list {
-            list-style: none;
-            display: flex;
-            align-items: center;
-            gap: (32/16rem);
-        }
+		.cs-panel-secondary {
+			display: none;
+		}
 
-        .cs-nav-item {
-            display: flex;
-            align-items: center;
-        }
+		.cs-panel-foot {
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			gap: (40/16rem);
+		}
 
-        /* All nav links */
-        .cs-link-underline,
-        .cs-nav-item .cs-button-solid,
-        .cs-phone {
-            font-family: var(--bodyFont);
-            font-size: (14/16rem);
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--bodyTextColorWhite);
-            text-decoration: none;
-            transition: color 0.2s ease;
-
-            &:hover {
-                color: var(--secondary);
-            }
-        }
-
-        /* Strip button styles from Home Search */
-        .cs-nav-item .cs-button-solid {
-            background-color: transparent;
-            padding: 0;
-
-            &:before {
-                display: none;
-            }
-        }
-
-        /* Wider drawer on desktop */
-        .cs-ul-wrapper {
-            width: (400/16rem);
-        }
-
-        .cs-li-link {
-            font-size: (28/16rem);
-        }
-    }
+		.cs-panel-contact {
+			flex-direction: row;
+			align-items: center;
+			gap: (32/16rem);
+		}
+	}
 }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	#cs-navigation {
+		&,
+		.cs-panel,
+		.cs-panel-li,
+		.cs-line,
+		.cs-backdrop {
+			transition-duration: 0.01ms !important;
+		}
+	}
+}
+
 /*-- -------------------------- -->
 <---          Banner            -->
 <--- -------------------------- -*/
@@ -415,109 +662,532 @@
 }
 
 /*-- -------------------------- -->
-<---            CTA             -->
+<---             CTA            -->
 <--- -------------------------- -*/
 
-/* Mobile - 360px */
-@media only screen and (min-width: 0px) {
-	#cta-51 {
-		padding: var(--sectionPadding);
-		position: relative;
+/* Mobile - 0rem */
+@media only screen and (min-width: 0rem) {
+    #cta-1190 {
+        /* --stage-h  how tall the band stands. The one dial for the whole
+                      section — the video and the scrim both fill it.
+           --scrim    how hard the footage is knocked back. Raise it if a
+                      brighter clip starts eating the headline; the whole
+                      point of this value is legibility, not mood. Video
+                      needs more than a still did — the frame is always
+                      changing, so the floor has to hold at its brightest. */
+        --stage-h: clamp(30rem, 82svh, 38rem);
+        --scrim: 0.50;
 
-		.cs-container {
-			width: 100%;
-			max-width: (1280/16rem);
-			margin: auto;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			/* 48px - 64px */
-			gap: clamp(3rem, 6vw, 4rem);
-		}
+        width: 100%;
+        min-height: var(--stage-h);
+        padding: (80/16rem) (16/16rem);
+        display: grid;
+        place-items: center;
+        position: relative;
+        /* clip, not hidden — hidden would break any sticky ancestor */
+        overflow: clip;
+        /* the footage's own tone while it loads, so there's no white flash
+           behind white type */
+        background-color: var(--primary);
 
-		.cs-content {
-			/* set text align to left if content needs to be left aligned */
-			text-align: center;
-			width: 100%;
-			display: flex;
-			flex-direction: column;
-			/* centers content horizontally, set to flex-start to left align */
-			align-items: center;
-		}
+        .cs-background {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            object-fit: cover;
+            /* keeps the horizon rather than the sky when the band is
+               short and the footage is wide */
+            object-position: center 60%;
+            display: block;
+            /* video paints on its own layer; this keeps it off the
+               compositing path of anything above it */
+            pointer-events: none;
+        }
 
-		.cs-title {
-			color: var(--bodyTextColorWhite);
-		}
+        
+       /* Flat wash. Matches the hero scrim: Absolute Black, one value, no
+   gradient. --scrim is the dial. */
+.cs-scrim {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, var(--scrim));
+}
 
-		.cs-text {
-			margin-bottom: (16/16rem);
-			color: var(--bodyTextColorWhite);
-			opacity: 0.8;
-			&:last-of-type {
-				margin-bottom: (32/16rem);
-			}
-		}
+        .cs-container {
+            width: 100%;
+            max-width: (900/16rem);
+            /* above both the video and the scrim */
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            /* title-to-body spacing; the button gets its own margin below */
+            gap: (20/16rem);
+        }
 
-		.cs-picture {
-			height: 100%;
-			width: 100%;
-			display: block;
-			position: absolute;
-			z-index: -1;
-			top: 0;
-			left: 0;
-			z-index: -1;
+        .cs-title {
+            font-family: var(--headerFont);
+            font-size: clamp(2rem, 6.5vw, 3.25rem);
+            /* Cinzel Medium is declared at 600 only */
+            font-weight: 600;
+            line-height: 1.15em;
+            letter-spacing: 0.02em;
+            /* the reference sets this in title case; swap to `uppercase`
+               if you'd rather match the other section headings */
+            text-transform: uppercase;
+            /* overrides the global .cs-title max-width and bottom margin */
+            max-width: none;
+            margin: 0;
+            color: var(--bodyTextColorWhite);
+            text-wrap: balance;
+        }
 
-			&:before {
-				/* black color overlay */
-				content: "";
-				position: absolute;
-				display: block;
-				height: 100%;
-				width: 100%;
-				background: #000;
-				opacity: 0.8;
-				top: 0;
-				left: 0;
-				z-index: 1;
-			}
+        .cs-text {
+            font-family: var(--bodyFont);
+            font-size: clamp(1rem, 2.2vw, 1.125rem);
+            line-height: 1.6em;
+            /* narrower than the title so the two shapes don't stack as one
+               block — the body wants a shorter measure than the headline */
+            max-width: (620/16rem);
+            margin: 0;
+            color: rgba(255, 255, 255, 0.86);
+            text-wrap: pretty;
+        }
 
-			img {
-				position: absolute;
-				top: 0;
-				left: 0;
-				height: 100%;
-				width: 100%;
-				object-fit: cover;
-			}
-		}
-	}
+       .cs-button-solid {
+    --btnFill: var(--heritageGreen);
+    --btnInk: var(--primaryLight);
+
+    /* separates the action from the copy block above it */
+    margin-top: (16/16rem);
+    border-color: rgba(254, 251, 247, 0.45);
+    color: var(--primaryLight);
+
+    &:hover,
+    &:focus-visible {
+        /* the green fill defines the shape now */
+        border-color: transparent;
+    }
+
+    &:focus-visible {
+        outline: 1px solid var(--primaryLight);
+        outline-offset: (4/16rem);
+    }
+}
+    }
+}
+
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+    #cta-1190 {
+        --stage-h: clamp(34rem, 62vw, 42rem);
+
+        padding: (100/16rem) (24/16rem);
+
+        .cs-container {
+            gap: (24/16rem);
+        }
+
+        .cs-button-solid {
+            margin-top: (20/16rem);
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #cta-1190 {
+        --stage-h: clamp(30rem, 36vw, 38rem);
+
+        padding: (128/16rem) (32/16rem);
+
+        .cs-container {
+            max-width: (1100/16rem);
+            gap: (28/16rem);
+        }
+
+        .cs-button-solid {
+            margin-top: (24/16rem);
+        }
+    }
+}
+
+/* Reduced motion — the poster holds. Same composition, no movement. */
+@media (prefers-reduced-motion: reduce) {
+    #cta-1190 .cs-background {
+        /* pausing via CSS isn't possible; the JS below handles it, and this
+           is the belt-and-braces in case the script doesn't run */
+        opacity: 1;
+    }
 }
 
 /*-- -------------------------- -->
-<---          Footer            -->
+<---           Footer           -->
 <--- -------------------------- -*/
 
-@media only screen and (min-width: 0px) {
-    #cs-footer-275 {
-        background-color: #1a1a1a;
-        border-top: 3px solid var(--secondary);
+/* Mobile - 0rem */
+@media only screen and (min-width: 0rem) {
+    #cs-footer {
+        /* --gutter  the footer's inset, matching the sections above it.
+           --ink     Cashmere Beige as an rgb triplet, so every tier of text
+                     here is one alpha step off a single value. Literal, not
+                     (n/16rem) — LESS passes custom property values through
+                     untouched and a fraction would reach the browser raw.
+           --rule    hairline opacity for the bottom divider. */
+        --gutter: 5%;
+        --ink: 241, 226, 209;
+        --rule: 0.15;
 
-        .cs-bottom-bar {
-            padding: 1.25rem 1rem;
+        width: 100%;
+        padding: (64/16rem) 0 (32/16rem);
+        background-color: #000;
+
+        .cs-container {
+            width: 100%;
+            max-width: (1440/16rem);
+            margin: 0 auto;
+            padding: 0 var(--gutter);
         }
 
-        .cs-bottom-container {
-            width: 100%;
-            max-width: 80rem;
-            margin: 0 auto;
+        /* -- Columns --
+           Brand is a column now rather than a banner row, so the whole block
+           is one grid and the contact column can sit at the right edge. */
+        .cs-nav {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: (44/16rem);
+            padding-bottom: (48/16rem);
+        }
+
+        /* -- Brand column -- */
+        .cs-brand {
+            min-width: 0;
+        }
+
+        .cs-logo {
+            display: block;
+
+            img {
+                width: auto;
+                height: (29/16rem);
+                display: block;
+            }
+        }
+
+        .cs-brokerage {
+            font-family: "Elms Sans Medium", var(--bodyFont);
+            font-size: (11/16rem);
+            /* Elms Sans Medium is declared at 600 */
+            font-weight: 600;
+            line-height: 1.5em;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: rgba(var(--ink), 0.5);
+            margin: (16/16rem) 0 0;
+            max-width: (26ch);
+        }
+
+        /* Outline pill rather than .cs-button-solid — the solid button is
+           built for light grounds and goes muddy on Dark Cocoa. Swap the
+           class if you'd rather stay inside the three brand tiers. */
+        .cs-cta {
+            margin-top: (28/16rem);
+            padding: (14/16rem) (28/16rem);
+            border: 1px solid rgba(var(--ink), 0.4);
+            border-radius: (999/16rem);
+            font-family: "Elms Sans Medium", var(--bodyFont);
+            font-size: (12/16rem);
+            font-weight: 600;
+            line-height: 1em;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            text-decoration: none;
+            white-space: nowrap;
+            color: rgb(var(--ink));
+            display: inline-block;
+            transition: background-color 300ms, border-color 300ms, color 300ms;
+
+            &:hover {
+                background-color: rgb(var(--ink));
+                border-color: rgb(var(--ink));
+                color: var(--darkCocoa);
+            }
+
+            &:focus-visible {
+                outline: 1px solid rgb(var(--ink));
+                outline-offset: (3/16rem);
+            }
+        }
+
+        /* -- Link columns -- */
+        .cs-group {
+            min-width: 0;
+        }
+
+        .cs-group-label {
+            font-family: "Elms Sans Medium", var(--bodyFont);
+            font-size: (11/16rem);
+            font-weight: 600;
+            line-height: 1.2em;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(var(--ink), 0.45);
+            margin: 0 0 (14/16rem);
+        }
+
+        .cs-group-ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .cs-group-li {
+            list-style: none;
+        }
+
+        .cs-link {
+            padding: (6/16rem) 0;
+            font-family: var(--bodyFont);
+            font-size: (14/16rem);
+            /* Elms Sans Light is declared at 300 */
+            font-weight: 300;
+            line-height: 1.5em;
+            text-decoration: none;
+            color: rgba(var(--ink), 0.72);
+            display: block;
+            transition: color 300ms;
+
+            &:hover {
+                color: rgb(var(--ink));
+            }
+
+            &:focus-visible {
+                outline: 1px solid rgb(var(--ink));
+                outline-offset: (2/16rem);
+            }
+        }
+
+        /* -- Contact column -- */
+        .cs-tel {
+            font-family: var(--headerFont);
+            font-size: (16/16rem);
+            /* Cinzel Medium is declared at 600 only */
+            font-weight: 600;
+            line-height: 1.2em;
+            letter-spacing: 0.02em;
+            text-decoration: none;
+            color: rgb(var(--ink));
+            margin-bottom: (6/16rem);
+            display: block;
+            transition: opacity 300ms;
+
+            &:hover {
+                opacity: 0.75;
+            }
+
+            &:focus-visible {
+                outline: 1px solid rgb(var(--ink));
+                outline-offset: (3/16rem);
+            }
+        }
+
+        .cs-email {
+            /* the mailto is a .cs-link; it just needs to break rather than
+               push the column out on a narrow screen */
+            overflow-wrap: anywhere;
+        }
+
+        .cs-address {
+            font-family: var(--bodyFont);
+            font-size: (14/16rem);
+            font-style: normal;
+            font-weight: 300;
+            line-height: 1.6em;
+            color: rgba(var(--ink), 0.72);
+            margin: (10/16rem) 0 0;
+        }
+
+        .cs-socials {
+            margin: (22/16rem) 0 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: (10/16rem);
+            list-style: none;
+        }
+
+        .cs-social-li {
+            list-style: none;
+        }
+
+        .cs-social {
+            width: (40/16rem);
+            height: (40/16rem);
+            border: 1px solid rgba(var(--ink), 0.25);
+            border-radius: 50%;
+            color: rgba(var(--ink), 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 300ms, color 300ms;
+
+            svg {
+                width: (18/16rem);
+                height: (18/16rem);
+                display: block;
+            }
+
+            &:hover {
+                border-color: rgba(var(--ink), 0.6);
+                color: rgb(var(--ink));
+            }
+
+            &:focus-visible {
+                outline: 1px solid rgb(var(--ink));
+                outline-offset: (3/16rem);
+            }
+        }
+
+        /* -- Bottom bar -- */
+        .cs-bottom {
+            padding-top: (24/16rem);
+            border-top: 1px solid rgba(var(--ink), var(--rule));
+            display: flex;
+            flex-direction: column;
+            gap: (12/16rem);
         }
 
         .cs-copyright {
-            font-size: 1rem;
-            color: rgba(255, 255, 255, 0.65);
+            font-family: var(--bodyFont);
+            font-size: (11/16rem);
+            font-weight: 300;
             line-height: 1.5em;
+            color: rgba(var(--ink), 0.45);
             margin: 0;
+        }
+
+        .cs-meta-ul {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: (8/16rem) (20/16rem);
+            list-style: none;
+        }
+
+        .cs-meta-li {
+            list-style: none;
+        }
+
+        .cs-meta-link {
+            font-family: var(--bodyFont);
+            font-size: (11/16rem);
+            font-weight: 300;
+            line-height: 1.5em;
+            text-decoration: none;
+            color: rgba(var(--ink), 0.45);
+            transition: color 300ms;
+
+            &:hover {
+                color: rgba(var(--ink), 0.8);
+            }
+
+            &:focus-visible {
+                outline: 1px solid rgb(var(--ink));
+                outline-offset: (2/16rem);
+            }
+        }
+
+        .cs-legal {
+            font-family: var(--bodyFont);
+            font-size: (11/16rem);
+            font-weight: 300;
+            line-height: 1.6em;
+            /* quietest tier on the block — required, not read */
+            color: rgba(var(--ink), 0.32);
+            max-width: (90ch);
+            margin: (18/16rem) 0 0;
+        }
+    }
+}
+
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+    #cs-footer {
+        --gutter: 1.5rem;
+
+        padding: (80/16rem) 0 (36/16rem);
+
+        .cs-nav {
+            /* brand across the top, the two link columns beside each other,
+               contact across the bottom */
+            grid-template-columns: repeat(2, 1fr);
+            gap: (44/16rem) (32/16rem);
+            padding-bottom: (56/16rem);
+        }
+
+        .cs-brand,
+        .cs-group-contact {
+            grid-column: span 2;
+        }
+
+        .cs-bottom {
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: (24/16rem);
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #cs-footer {
+        --gutter: 3rem;
+
+        padding: (104/16rem) 0 (40/16rem);
+
+        .cs-logo img {
+            height: (86/16rem);
+        }
+
+        .cs-nav {
+            /* Brand and contact carry more content than the two link
+               columns, so they get the wider tracks. Contact lands in the
+               last one, which is what closes the gap on the right. */
+            grid-template-columns: 1.3fr 1fr 1fr 1.4fr;
+            gap: (48/16rem);
+            padding-bottom: (72/16rem);
+        }
+
+        .cs-brand,
+        .cs-group-contact {
+            /* the tablet spans have to be undone once there are four tracks */
+            grid-column: auto;
+        }
+
+        .cs-tel {
+            font-size: (16/16rem);
+        }
+    }
+}
+
+/* Reduced motion — the hover states still change, they just don't ease. */
+@media (prefers-reduced-motion: reduce) {
+    #cs-footer {
+        .cs-cta,
+        .cs-link,
+        .cs-tel,
+        .cs-social,
+        .cs-meta-link {
+            transition: none;
         }
     }
 }

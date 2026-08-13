@@ -1,395 +1,863 @@
-/* ============================================ */
-/*                   Social                     */
-/* ============================================ */
+/*-- -------------------------- -->
+<---          Curtain           -->
+<--- -------------------------- -*/
 
-/* Mobile - 360px */
+@media only screen and (min-width: 0px) {
+	/* Both cover distances live here, on :root, for the same reason: a curtain
+	   is a *sibling* of the section it covers, not a descendant, and custom
+	   properties inherit down, not sideways. A value declared on #hero-1183
+	   or #metrics-1185 is invisible to .cs-curtain.
+
+	   --frame-h        hero frame height. Read in three places: the hero's
+	                    .cs-track reserves it, .cs-frame is sized by it, and
+	                    .cs-curtain-hero spends it. One dial, three consumers.
+	   --metrics-cover  how far the metrics stage stays pinned while the block
+	                    below rides up over it. */
+	:root {
+		--frame-h: 70vh;
+		--metrics-cover: 100svh;
+	}
+
+	/* Pull-up wrapper. Rides the block inside it over whatever is pinned
+	   above. Three reasons it's a wrapper and not a margin on the first
+	   section:
+	   1. The cover is then guaranteed to be at least as tall as the runway —
+	      a single short section would let the surface below show through.
+	   2. Painting order puts static block backgrounds *below* a positioned
+	      z-index: 0 element, so any section left outside this would render
+	      underneath what it's meant to cover.
+	   3. It makes the pull a single dial per curtain rather than a margin
+	      that has to be re-derived every time a section moves.
+
+	   The base class carries the mechanism; the modifiers carry the distance.
+	   0px default means an unmodified .cs-curtain is inert, which is the safe
+	   failure — a wrong pull distance overlaps content, a missing one just
+	   stacks normally. */
+	.cs-curtain {
+		--curtain-pull: 0px;
+		/* Opaque, and it has to be. A transparent curtain pulls up correctly
+		   and still lets the pinned section show straight through it. */
+		--curtain-surface: #fff;
+
+		margin-top: ~"calc(var(--curtain-pull) * -1)";
+		position: relative;
+		z-index: 1;
+		/* flow-root so a child's top margin can't collapse out through the
+		   wrapper and shift the curtain off its mark */
+		display: flow-root;
+		background-color: var(--surfaceCanvas);
+	}
+
+	/* Over the hero frame. */
+	.cs-curtain-hero {
+		--curtain-pull: var(--frame-h);
+	}
+
+	/* Over the metrics stage. Zero at mobile: metrics doesn't pin below
+	   48rem, so there's nothing to cover and a pull here would just drag
+	   About up over a section in normal flow. */
+	.cs-curtain-metrics {
+		--curtain-pull: 0px;
+
+		/* The seam. About's top edge is the page surface rising over a Dark
+		   Cocoa stage — a hard tonal cut with nothing marking it. The radius
+		   is what makes it read as a panel sliding over rather than the
+		   background changing colour mid-scroll. 4px is the brand's card and
+		   image-container standard, so this introduces no new convention.
+		   Nested curtains inherit nothing here; each sets its own. */
+		border-top-left-radius: (4/16rem);
+		border-top-right-radius: (4/16rem);
+	}
+}
+
+@media only screen and (min-width: 48rem) {
+	:root {
+		--frame-h: 78vh;
+	}
+
+	.cs-curtain-metrics {
+		--curtain-pull: var(--metrics-cover);
+	}
+}
+
+@media only screen and (min-width: 64rem) {
+	:root {
+		--frame-h: 86vh;
+	}
+}
+
+/* Reduced motion — no pull on any curtain, sections stack in normal flow.
+   Set on the base class so it covers every modifier, present and future. */
+@media (prefers-reduced-motion: reduce) {
+	.cs-curtain {
+		--curtain-pull: 0px;
+	}
+}
+
+/*-- -------------------------- -->
+<---           About            -->
+<--- -------------------------- -*/
+
+/* Mobile - 0rem */
 @media only screen and (min-width: 0rem) {
-    #social-1 {
-        padding: var(--sectionPadding);
-        background-color: #fff;
-        overflow: hidden;
+    #about-1186 {
+        /* --gutter  the section's own inset. The bleed image ignores it; every
+                     other band reads off it, so one value moves the whole
+                     composition in from the edges. */
+        --gutter: 5%;
 
-        .cs-container {
+        --aboutSurface: #fff;
+
+        padding: (80/16rem) 0 0;
+        background-color: var(--surfaceCanvas);
+
+        .cs-intro {
             width: 100%;
-            max-width: (1280/16rem);
-            margin: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+            max-width: (760/16rem);
+            margin: 0 auto (56/16rem);
+            padding: 0 var(--gutter);
+            text-align: center;
+        }
+
+       
+
+        .cs-title {
+            font-family: var(--headerFont);
+            font-size: clamp(2rem, 6vw, 3.25rem);
+            /* Cinzel Medium is declared at 600 only */
+            font-weight: 600;
+            line-height: 1.1em;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            /* overrides the global .cs-title max-width and bottom margin */
+            max-width: none;
+            margin: 0 0 (20/16rem);
+            color: var(--headerColor);
+        }
+
+        .cs-lede {
+            font-family: var(--bodyFont);
+            font-size: (16/16rem);
+            font-weight: 300;
+            line-height: 1.6em;
+            max-width: (60ch);
+            margin: 0 auto;
+            color: var(--bodyTextColor);
+        }
+
+        /* -- Stats -- */
+        .cs-stats {
+            width: 100%;
+            max-width: (1200/16rem);
+            margin: 0 auto (72/16rem);
+            padding: 0 var(--gutter);
+            display: grid;
+            grid-template-columns: 1fr;
             gap: (40/16rem);
         }
 
-        /* ── Left: Text Content ── */
-        .cs-content {
-            text-align: left;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-
-            .cs-title {
-                margin-bottom: (16/16rem);
-            }
-
-            .cs-text {
-                margin-bottom: (32/16rem);
-            }
-        }
-
-        /* ── Center: Video ── */
-        .cs-video-wrapper {
-            width: 100%;
-            border-radius: (16/16rem);
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.14);
-            aspect-ratio: 9 / 16;
-            background-color: #111;
-        }
-
-        .cs-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        /* ── Right: Social Stats ── */
-        .cs-stat-group {
-            width: 100%;
-            margin: 0;
-            padding: 0;
+        .cs-stat {
             list-style: none;
+            text-align: center;
             display: flex;
             flex-direction: column;
-        }
-
-        .cs-stat-item {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-
-            &:last-of-type {
-                border-bottom: none;
-            }
-        }
-
-        .cs-stat-link {
-            text-decoration: none;
-            display: block;
-            padding: (16/16rem) 0;
-            transition: opacity 0.2s ease;
-
-            &:hover {
-                opacity: 0.75;
-            }
-        }
-
-        .cs-stat-row {
-            display: flex;
-            align-items: flex-end;
+            align-items: center;
             gap: (12/16rem);
         }
 
-        .cs-big-number {
-            font-size: (52/16rem);
+        .cs-stat-figure {
             font-family: var(--headerFont);
-            font-weight: 400;
-            line-height: 1;
-            letter-spacing: -0.02em;
-            color: var(--headerColor);
-            opacity: 0.6;
-        }
-
-        .cs-stat-labels {
-            display: flex;
-            flex-direction: column;
-            padding-bottom: (6/16rem);
-            gap: (2/16rem);
-        }
-
-        .cs-platform {
-            font-size: (11/16rem);
-            font-family: var(--bodyFont);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--bodyTextColor);
-            opacity: 0.55;
-            line-height: 1.2em;
-        }
-
-        .cs-count-label {
-            font-size: (13/16rem);
-            font-family: var(--bodyFont);
-            font-weight: 700;
-            color: var(--headerColor);
-            line-height: 1.2em;
-        }
-
-        /* ── Small row: Facebook + YouTube side by side ── */
-        .cs-stat-item--small-row {
-            display: flex;
-            flex-direction: column;
-            gap: (8/16rem);
-            border-bottom: none;
-            padding-top: (12/16rem);
-            border-top: 1px solid rgba(0, 0, 0, 0.08);
-        }
-
-        .cs-also-on {
-            font-size: (11/16rem);
-            font-family: var(--bodyFont);
+            font-size: clamp(2.75rem, 8vw, 4rem);
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--bodyTextColor);
-            opacity: 0.4;
+            line-height: 1em;
+            letter-spacing: 0.01em;
+            color: var(--headerColor);
             display: block;
         }
 
-        .cs-small-links {
-            display: flex;
-            flex-direction: row;
-            gap: (24/16rem);
+        .cs-stat-caption {
+            font-family: var(--bodyFont);
+            font-size: (14/16rem);
+            font-weight: 300;
+            line-height: 1.45em;
+            max-width: (26ch);
+            color: var(--bodyTextColor);
+            display: block;
         }
 
-        .cs-stat-link--small {
-            padding: (4/16rem) 0;
+        /* -- Split -- */
+        .cs-split {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr;
+            /* no gutter here — the image runs to the viewport edge */
+        }
 
-            .cs-platform {
-                font-size: (12/16rem);
-                opacity: 0.35;
-                letter-spacing: 0.12em;
+        .cs-bleed {
+            width: 100%;
+            display: block;
+
+            img {
+                width: 100%;
+                height: 100%;
+                /* portrait on mobile, overridden to fill the track at 64rem */
+                aspect-ratio: 4 / 5;
+                object-fit: cover;
+                display: block;
+            }
+        }
+
+        .cs-column {
+            padding: (48/16rem) var(--gutter) (72/16rem);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: (32/16rem);
+        }
+
+        .cs-text {
+            font-family: var(--bodyFont);
+            font-size: (16/16rem);
+            font-weight: 300;
+            line-height: 1.65em;
+            /* overrides the global .cs-text max-width */
+            max-width: (56ch);
+            margin: 0;
+            color: var(--bodyTextColor);
+        }
+
+        .cs-inset {
+            width: 100%;
+            display: block;
+
+            img {
+                width: 100%;
+                aspect-ratio: auto;
+                height: (380/16rem);
+                object-fit: cover;
+                border-radius: (4/16rem);
+                display: block;
             }
         }
     }
 }
 
-/* Tablet - 768px */
+/* Tablet - 48rem */
 @media only screen and (min-width: 48rem) {
-    #social-1 {
-        .cs-container {
-            gap: (48/16rem);
+    #about-1186 {
+        padding-top: (100/16rem);
+
+        .cs-intro {
+            margin-bottom: (72/16rem);
         }
 
-        .cs-content {
-            max-width: (680/16rem);
-        }
-
-        .cs-video-wrapper {
-            width: 48%;
-            aspect-ratio: 9 / 14;
-        }
-
-        .cs-stat-group {
-            width: 48%;
-        }
-    }
-}
-
-/* Desktop - 1024px: all three columns side by side */
-@media only screen and (min-width: 64rem) {
-    #social-1 {
-        .cs-container {
-            flex-direction: row;
-            align-items: stretch;
+        .cs-stats {
+            grid-template-columns: repeat(3, 1fr);
             gap: (32/16rem);
+            margin-bottom: (96/16rem);
         }
 
-        /* Left: vertically centered */
-        .cs-content {
-            flex: 1 1 0;
-            min-width: 0;
-            max-width: unset;
-            justify-content: center;
-            align-self: stretch;
-        }
-
-        /* Center: video fills full column height */
-        .cs-video-wrapper {
-            flex: 1 1 0;
-            width: auto;
-            max-width: (320/16rem);
-            min-width: 0;
-            aspect-ratio: unset;
-            min-height: (480/16rem);
-            align-self: stretch;
-        }
-
-        /* Right: stat list stretches to match video height */
-        .cs-stat-group {
-            flex: 1 1 0;
-            width: auto;
-            min-width: 0;
-            align-self: stretch;
-            justify-content: space-between;
-        }
-
-        .cs-stat-item {
-            flex: 1;
-            display: flex;
-            align-items: center;
-        }
-
-        .cs-stat-link {
-            width: 100%;
-            padding: (12/16rem) 0;
-        }
-
-        .cs-big-number {
-            font-size: (56/16rem);
+        .cs-column {
+            padding: (64/16rem) var(--gutter) (96/16rem);
         }
     }
 }
 
-/* Large Desktop - 1300px */
-@media only screen and (min-width: 81.25rem) {
-    #social-1 {
-        .cs-container {
-            gap: (48/16rem);
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #about-1186 {
+        padding-top: (128/16rem);
+        padding-bottom: (128/16rem);
+
+        .cs-intro {
+            margin-bottom: (88/16rem);
         }
 
-        .cs-video-wrapper {
-            flex: 1 1 0;
-            max-width: (360/16rem);
-            min-height: (560/16rem);
+        .cs-stats {
+            margin-bottom: (120/16rem);
         }
 
-        .cs-big-number {
-            font-size: (64/16rem);
+        .cs-split {
+            /* Left track runs off the edge; right track carries the gutter.
+               align-items: stretch is the default and is what lets the image
+               fill the taller of the two — the column below sets min-width: 0
+               so the text can't blow the track out. */
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .cs-bleed {
+            height: 100%;
+
+            img {
+                /* fills the track rather than holding a ratio */
+                aspect-ratio: auto;
+                min-height: (680/16rem);
+            }
+        }
+
+        .cs-column {
+            min-width: 0;
+            padding: (24/16rem) var(--gutter) (128/16rem) (72/16rem);
+            gap: (40/16rem);
+        }
+
+        .cs-inset {
+            margin-top: (16/16rem);
         }
     }
 }
 
 /*-- -------------------------- -->
-<---         Featured In        -->
+<---          Marquee           -->
 <--- -------------------------- -*/
 
-/* Mobile - 360px */
-@media only screen and (min-width: 0px) {
-    #featured-in {
-        padding: var(--sectionPadding);
-        background-color: #f9f7f4;
+/* Mobile - 0rem */
+@media only screen and (min-width: 0rem) {
+    #marquee-1188 {
+        /* --drift  one full loop. Higher = slower. */
+        --drift: 44s;
+        /* --lock  how fixed the image is to the viewport.
+           1 = fully locked (band is a window onto a stationary photo)
+           0 = scrolls with the page, no effect
+           0.85 leaves a faint drift, which tends to read richer than dead-locked. */
+        --lock: 1;
+        /* --scrim  Dark Cocoa veil opacity. Raise if a photo runs bright. */
+        --scrim: 0.58;
+        /* Cashmere Beige, kept as the figure colour now that the band is a photo. */
+        --marqueeSurface: #F1E2D1;
+        --marqueeSurface-rgb: 241, 226, 209;
+        /* rest state — JS overwrites this on scroll */
+        --offset: 0px;
+
         position: relative;
-        text-align: center;
-        overflow: hidden;
+        width: 100%;
+        padding: (56/16rem) 0;
+        overflow: clip;
 
-        /* Subtle top and bottom border lines */
-        &:before,
-        &:after {
-            content: "";
+        .cs-background {
             position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: clamp(3rem, 8vw, 5rem);
-            height: 1px;
-            background-color: var(--secondary);
-        }
-
-        &:before {
-            top: 0;
-        }
-
-        &:after {
-            bottom: 0;
-        }
-
-        .cs-container {
-            width: 100%;
-            max-width: (1280/16rem);
-            margin: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: (32/16rem);
-        }
-
-        .cs-title {
-            text-align: center;
-            margin: 0;
-        }
-
-        .cs-topper {
-            text-align: center;
-        }
-
-        .cs-logo-strip {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: (40/16rem);
-
-            /* Decorative horizontal rule around logos */
-            position: relative;
-
-            &:before,
-            &:after {
-                content: "";
-                display: block;
-                width: clamp(2rem, 6vw, 4rem);
-                height: 1px;
-                background-color: var(--secondary);
-                opacity: 0.5;
-                margin: 0 auto;
-            }
-        }
-
-        .cs-logo-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0.55;
-            transition: opacity 0.3s ease, filter 0.3s ease;
-            filter: grayscale(1);
-            text-decoration: none;
-
-            &:hover {
-                opacity: 1;
-                filter: grayscale(0);
-            }
-        }
-
-        .cs-logo {
-            width: auto;
-            max-width: (160/16rem);
-            height: (40/16rem);
-            object-fit: contain;
+            inset: 0;
+            z-index: 0;
             display: block;
+            overflow: clip;
+            /* Fallback floor. If the photo 404s or hasn't lazy-loaded yet, the
+               band reads as Dark Cocoa rather than scrim-over-white. */
+            background-color: var(--darkCocoa);
+
+            img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                /* Viewport-tall, plus a buffer for whatever travel --lock
+                   leaves unabsorbed. At --lock: 1 the buffer is zero. */
+                height: calc(100vh + ((1 - var(--lock)) * 100%));
+                object-fit: cover;
+                /* --offset is the section's distance above the viewport top.
+                   Translating by exactly that amount cancels the scroll. */
+                transform: translate3d(0, calc(var(--offset) * var(--lock)), 0);
+                will-change: transform;
+            }
+
+            &::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background-color: rgba(var(--darkCocoa-rgb), var(--scrim));
+            }
+        }
+
+        .cs-marquee {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            overflow: hidden;
+            /* The mask sits above the scrim, so the edges fade into a darkened
+               surface rather than a hard cut. */
+            -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+            mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+        }
+
+        .cs-marquee-track {
+            width: max-content;
+            display: flex;
+            /* the duplicate list is exactly half the track, so -50% loops seamlessly */
+            animation: cs-drift var(--drift) linear infinite;
+        }
+
+        .cs-stats {
+            margin: 0;
+            padding: 0 clamp(3rem, 8vw, 6rem) 0 0;
+            display: flex;
+            align-items: flex-start;
+            /* padding-right matches this so the seam is invisible */
+            gap: clamp(3rem, 8vw, 6rem);
+        }
+
+        .cs-stat {
+            list-style: none;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: (10/16rem);
+        }
+
+        .cs-stat-figure {
+            font-family: var(--headerFont);
+            font-size: clamp(3rem, 9vw, 5.5rem);
+            /* Cinzel Medium is declared at 600 only */
+            font-weight: 600;
+            line-height: 1em;
+            letter-spacing: 0.01em;
+            white-space: nowrap;
+            color: var(--marqueeSurface);
+            display: block;
+        }
+
+        .cs-stat-caption {
+            font-family: "Elms Sans Medium", var(--bodyFont);
+            font-size: (12/16rem);
+            /* Elms Sans Medium is declared at 600 */
+            font-weight: 600;
+            line-height: 1.4em;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            /* was --aboutSurface; needs to hold against a photo now */
+            color: rgba(var(--marqueeSurface-rgb), 0.72);
+            display: block;
+        }
+    }
+
+    @keyframes cs-drift {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(-50%);
         }
     }
 }
 
-/* Tablet - 768px */
+/* Tablet - 48rem */
 @media only screen and (min-width: 48rem) {
-    #featured-in {
-        .cs-logo-strip {
-            flex-direction: row;
-            gap: (48/16rem);
+    #marquee-1188 {
+        padding: (72/16rem) 0;
+    }
+}
 
-            &:before,
-            &:after {
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #marquee-1188 {
+        padding: (88/16rem) 0;
+    }
+}
+
+/* Reduced motion — the row holds still and the image un-pins. Everything
+   stays legible; it just stops moving. */
+@media (prefers-reduced-motion: reduce) {
+    #marquee-1188 {
+        --lock: 0;
+    }
+
+    #marquee-1188 .cs-marquee-track {
+        animation: none;
+    }
+}
+
+/*-- -------------------------- -->
+<---      Featured Listings     -->
+<--- -------------------------- -*/
+
+/* Mobile - 0rem */
+@media only screen and (min-width: 0rem) {
+    #listings-1193 {
+        /* --cardW  width of the centred card. The single dial — the rail's
+                    centring padding and the controls row both read off it.
+           --cardR  photo aspect ratio. Landscape is what makes one card
+                    carry the section on its own.
+           --gap    space between cards, i.e. how much of the neighbour peeks.
+           --panelW how far the green block reaches across the photo.
+           --lift   photo growth on hover. */
+        --cardW: 88vw;
+        --cardR: 3 / 2;
+        --gap: 1.5rem;
+        --panelW: 100%;
+        --lift: 1.03;
+        --panelY: 2rem;
+
+        width: 100%;
+        padding: (72/16rem) 0 (80/16rem);
+        background-color: var(--surfaceCanvas);
+        /* clip, not hidden — hidden would break any sticky ancestor */
+        overflow: clip;
+
+        .cs-intro {
+            width: 100%;
+            padding: 0 (16/16rem);
+            margin: 0 auto (36/16rem);
+            text-align: center;
+        }
+
+        .cs-title {
+            font-family: var(--headerFont);
+            font-size: clamp(2rem, 6vw, 3.25rem);
+            /* Cinzel Medium is declared at 600 only */
+            font-weight: 600;
+            line-height: 1.1em;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            text-align: center;
+            /* overrides the global .cs-title max-width and bottom margin;
+               the intro wrapper carries the spacing now */
+            max-width: none;
+            margin: 0 auto;
+            color: var(--headerColor);
+        }
+
+        /* -- Rail --
+           padding-inline is what lets the first and last card reach the
+           centre. Without it they'd snap to the edges and the section would
+           open off-balance. */
+        .cs-rail {
+            width: 100%;
+            display: flex;
+            gap: var(--gap);
+            padding-inline: ~"calc((100% - var(--cardW)) / 2)";
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+
+            &::-webkit-scrollbar {
                 display: none;
             }
         }
 
-        .cs-logo {
-            max-width: (140/16rem);
+        .cs-card {
+            flex: none;
+            width: var(--cardW);
+            scroll-snap-align: center;
+            display: block;
+            text-decoration: none;
+
+            &:hover,
+            &:focus-visible {
+                .cs-image {
+                    transform: scale(var(--lift));
+                }
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--darkCocoa);
+                outline-offset: (6/16rem);
+            }
+        }
+
+        .cs-picture {
+            width: 100%;
+            aspect-ratio: var(--cardR);
+            display: block;
+            position: relative;
+            /* clip, not hidden */
+            overflow: clip;
+            /* holds the card while the photo loads — green rather than
+               cocoa so the panel doesn't flash against a second tone */
+            background-color: var(--heritageGreen);
+        }
+
+        .cs-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transform: scale(1);
+            transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* -- Info panel --
+           Inset into the photo's bottom-left corner rather than sitting
+           below it. Opaque, because it's carrying light type over whatever
+           the photo happens to be. */
+        .cs-panel {
+            position: absolute;
+            left: 0;
+            bottom: var(--panelY);
+            z-index: 1;
+            width: var(--panelW);
+            max-width: 100%;
+            padding: (20/16rem) (22/16rem);
+            background-color: var(--heritageGreen);
+            display: flex;
+            flex-direction: column;
+            gap: (8/16rem);
+        }
+
+        .cs-address {
+            font-family: "Elms Sans Medium", var(--bodyFont);
+            font-size: (15/16rem);
+            /* Elms Sans Medium is declared at 600 */
+            font-weight: 600;
+            line-height: 1.3em;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--primaryLight);
+            display: block;
+        }
+
+        .cs-meta {
+            font-family: var(--bodyFont);
+            font-size: (14/16rem);
+            /* Elms Sans Light is declared at 300 */
+            font-weight: 300;
+            line-height: 1.5em;
+            /* stepped back from the address so the two lines still read as
+               a hierarchy rather than one block */
+            color: rgba(254, 251, 247, 0.78);
+            display: block;
+        }
+
+        /* -- Controls --
+           Same width as the card so the arrows land on its left edge and the
+           actions on its right. */
+        .cs-controls {
+            width: var(--cardW);
+            margin: (32/16rem) auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: (24/16rem);
+        }
+
+        .cs-arrows {
+            display: flex;
+            gap: (10/16rem);
+        }
+
+        .cs-arrow {
+            width: (48/16rem);
+            height: (48/16rem);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            background-color: transparent;
+            border: 1px solid rgba(var(--darkCocoa-rgb), 0.24);
+            border-radius: 50%;
+            color: rgba(var(--darkCocoa-rgb), 0.7);
+            cursor: pointer;
+            transition: background-color 300ms, border-color 300ms, color 300ms, opacity 300ms;
+
+            svg {
+                width: (18/16rem);
+                height: (18/16rem);
+                display: block;
+            }
+
+            &:hover {
+                background-color: var(--heritageGreen);
+                border-color: var(--heritageGreen);
+                color: var(--primaryLight);
+            }
+
+            &:focus-visible {
+                outline: 1px solid var(--heritageGreen);
+                outline-offset: (3/16rem);
+            }
+
+            /* Not the disabled attribute — a disabled button drops out of
+               the tab order mid-interaction, which is worse than a dimmed
+               one that simply doesn't move. */
+            &.cs-disabled {
+                opacity: 0.35;
+                cursor: default;
+            }
+
+            /* A dead arrow shouldn't advertise itself as live */
+            &.cs-disabled:hover {
+                background-color: transparent;
+                border-color: rgba(var(--darkCocoa-rgb), 0.24);
+                color: rgba(var(--darkCocoa-rgb), 0.7);
+            }
+        }
+
+        .cs-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: (12/16rem);
         }
     }
 }
 
-/* Desktop - 1024px */
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+    #listings-1193 {
+        --cardW: 82vw;
+        --panelW: 72%;
+
+        padding: (96/16rem) 0 (104/16rem);
+
+        .cs-intro {
+            margin-bottom: (48/16rem);
+        }
+
+        .cs-panel {
+            padding: (24/16rem) (28/16rem);
+        }
+
+        .cs-controls {
+            /* arrows left, actions right, as in the reference */
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: (36/16rem);
+        }
+    }
+}
+
+/* Desktop - 64rem */
 @media only screen and (min-width: 64rem) {
-    #featured-in {
-        .cs-logo-strip {
-            gap: (80/16rem);
+    #listings-1193 {
+        --cardW: ~"min(68rem, 74vw)";
+        --gap: 2rem;
+        --panelW: 66%;
+
+        padding: (128/16rem) 0 (136/16rem);
+
+        .cs-intro {
+            margin-bottom: (64/16rem);
+        }
+
+        .cs-address {
+            font-size: (17/16rem);
+        }
+
+        .cs-meta {
+            font-size: (15/16rem);
+        }
+
+        .cs-controls {
+            margin-top: (44/16rem);
+        }
+    }
+}
+
+/* Reduced motion — the rail still scrolls, it just jumps rather than glides,
+   and the photo holds still. */
+@media (prefers-reduced-motion: reduce) {
+    #listings-1193 {
+        .cs-rail {
+            scroll-behavior: auto;
+        }
+
+        .cs-image {
+            transition: none;
+        }
+
+        .cs-card:hover .cs-image,
+        .cs-card:focus-visible .cs-image {
+            transform: none;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---          Featured          -->
+<--- -------------------------- -*/
+
+/* Mobile - 0rem */
+@media only screen and (min-width: 0rem) {
+    #featured-1189 {
+        /* --markHeight  optical height every logo is normalised to. The single
+           dial for the whole strip — raising it scales all three together. */
+        --markHeight: 1.75rem;
+        /* --markTone  how far the marks recede. Lower = quieter. */
+        --markTone: 0.38;
+
+        width: 100%;
+        padding: (48/16rem) (16/16rem);
+        background-color: var(--surfaceCanvas);
+
+        .cs-container {
+            width: 100%;
+            max-width: 80rem;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: (28/16rem);
+        }
+
+        .cs-label {
+            font-family: "Elms Sans Medium", var(--bodyFont);
+            font-size: (11/16rem);
+            font-weight: 600;
+            line-height: 1.4em;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            white-space: nowrap;
+            color: rgba(var(--darkCocoa-rgb), 0.55);
+        }
+
+        .cs-logos {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: (32/16rem) clamp(2rem, 7vw, 4.5rem);
         }
 
         .cs-logo {
-            max-width: (160/16rem);
-            height: (48/16rem);
+            list-style: none;
+            display: flex;
+            align-items: center;
+
+            img {
+                /* Height-normalised, width free. Logos have wildly different
+                   aspect ratios — matching height is what makes a strip of
+                   mismatched marks read as one row. */
+                height: var(--markHeight);
+                width: auto;
+                max-width: (160/16rem);
+                object-fit: contain;
+                opacity: var(--markTone);
+                display: block;
+            }
         }
+    }
+}
+
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+    #featured-1189 {
+        --markHeight: 2rem;
+
+        padding: (56/16rem) (24/16rem);
+
+        .cs-container {
+            /* Label moves inline with the marks — the horizontal reading of
+               the reference. */
+            flex-direction: row;
+            justify-content: center;
+            gap: clamp(2.5rem, 6vw, 4.5rem);
+        }
+
+        .cs-logos {
+            width: auto;
+            flex-wrap: nowrap;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #featured-1189 {
+        --markHeight: 3.75rem;
+
+        padding: (72/16rem) (32/16rem);
     }
 }
 
@@ -397,580 +865,1031 @@
 <---           About            -->
 <--- -------------------------- -*/
 
-/* Mobile - 360px */
+/* Mobile - 0rem */
 @media only screen and (min-width: 0rem) {
-    #about-1 {
-        padding: var(--sectionPadding);
-        background-color: #fff;
-        overflow: hidden;
+    #about-1187 {
+        /* --gutter  the section's inset. The secondary portrait and the
+                     marquee both ignore it and run to the edge; everything
+                     else reads off it. */
+        --gutter: 5%;
+
+        --aboutSurface: #fff;
+
+        padding: (80/16rem) 0 (72/16rem);
+        background-color: var(--surfaceCanvas);
+        overflow: clip;   /* contains the bleeding secondary image */
+
+        .cs-topper {
+    order: 1;
+    /* the title follows immediately — root's 16px would double up
+       against the column's 32px gap */
+    margin-bottom: (-20/16rem);
+}
 
         .cs-container {
             width: 100%;
-            max-width: (1280/16rem);
+            max-width: (1440/16rem);
             margin: auto;
+            padding: 0 var(--gutter);
             display: flex;
             flex-direction: column;
             gap: (48/16rem);
         }
 
-        /* ── Left: Text ── */
-        .cs-content {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            text-align: left;
+        /* -- Portraits --
+           The interior shot sits behind the portrait, faded back so it reads
+           as atmosphere rather than a second subject. Source order does the
+           layering; --portrait-w is the one dial that sizes the pair. */
+        .cs-media {
+            /* Three dials for the pair, declared here so both children can
+               read them — a value set on .cs-secondary is invisible to its
+               parent's padding.
 
-            .cs-title {
-                margin-bottom: (16/16rem);
+               --portrait-w  sizes the portrait (500 x 700)
+               --sec-w       sizes the secondary  (500 x 600)
+               --sec-x       horizontal offset, negative = further left
+               --sec-drop    how far the secondary hangs below the portrait
+
+               Literal values, not (n/16rem) — LESS passes custom property
+               values through untouched and the fraction would reach the
+               browser unevaluated. */
+            --portrait-w: 31.25rem;   /* 500px */
+            --sec-w: 31.25rem;        /* 500px */
+            --sec-x: -6.5rem;         /* 104px left of the portrait's edge */
+            --sec-drop: 4rem;         /* 64px of overhang below it */
+
+            width: 100%;
+            max-width: var(--portrait-w);
+            position: relative;
+            /* Reserves exactly the overhang, so the hanging image can't
+               collide with what follows.
+
+               margin, not padding: padding would grow this box, and the
+               secondary's `bottom` is measured from the padding edge — the
+               drop would land twice, once as padding and again as offset. */
+            margin-bottom: var(--sec-drop);
+        }
+
+        .cs-portrait {
+            width: 100%;
+            display: block;
+            position: relative;   /* lifts it above the faded image behind */
+
+            img {
+                width: 100%;
+                /* 500 x 700 */
+                aspect-ratio: 5 / 7;
+                object-fit: cover;
+                border-radius: (4/16rem);
+                display: block;
             }
         }
 
-        .cs-mb {
-            margin-top: (16/16rem);
-            margin-bottom: (32/16rem);
+        .cs-secondary {
+            /* 500 x 600. Faded well back — it reads as the room behind her,
+               not a second photograph. */
+            width: var(--sec-w);
+            display: block;
+            position: absolute;
+            left: var(--sec-x);
+            bottom: ~"calc(var(--sec-drop) * -1)";
+            opacity: 0.1;
+
+            img {
+                width: 100%;
+                /* 500 x 600 */
+                aspect-ratio: 5 / 6;
+                object-fit: cover;
+                border-radius: (4/16rem);
+                display: block;
+            }
         }
 
-        /* ── Credential List ── */
-        .cs-credential-list {
-            list-style: none;
-            margin: 0 0 (40/16rem) 0;
-            padding: 0;
+        /* -- Column -- */
+        .cs-column {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: (32/16rem);
+        }
+
+        /* -- Reel --
+           Placeholder until the clip lands. The tinted block holds the exact
+           footprint the embed will occupy, so dropping the video in shifts
+           nothing below it. */
+        .cs-reel {
+            width: 100%;
+            max-width: (320/16rem);
+            aspect-ratio: 16 / 9;
+            background-color: rgba(var(--primary-rgb), 0.08);
+            border-radius: (4/16rem);
+            /* sits after the copy on mobile, above it from 64rem */
+            order: 2;
+            display: block;
+            position: relative;
+            overflow: hidden;
+
+            img,
+            video,
+            iframe {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border: none;
+                display: block;
+            }
+        }
+
+        .cs-play {
+            width: (52/16rem);
+            height: (52/16rem);
+            border: 1px solid rgba(var(--primary-rgb), 0.35);
+            border-radius: 50%;
+            color: rgba(var(--primary-rgb), 0.55);
+            display: grid;
+            place-items: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+
+            svg {
+                width: (20/16rem);
+                height: (20/16rem);
+                /* optical centring — the triangle's mass sits left of centre */
+                margin-left: (2/16rem);
+                display: block;
+            }
+        }
+
+        /* -- Heading --
+           One line, matched to #about-1186's .cs-title so section headers read
+           at the same weight across the page. */
+        .cs-title {
+            order: 1;
+            font-family: var(--headerFont);
+            font-size: clamp(2rem, 6vw, 3.25rem);
+            /* Cinzel Medium is declared at 600 only */
+            font-weight: 600;
+            line-height: 1.1em;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            /* overrides the global .cs-title max-width and bottom margin */
+            max-width: none;
+            margin: 0;
+            color: var(--headerColor);
+        }
+
+        .cs-copy {
+            order: 3;
             display: flex;
             flex-direction: column;
             gap: (20/16rem);
-            width: 100%;
         }
 
-        .cs-credential-item {
-            display: flex;
-            align-items: flex-start;
-            gap: (16/16rem);
-            padding-bottom: (20/16rem);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+        .cs-text {
+            font-family: var(--bodyFont);
+            font-size: (16/16rem);
+            /* Elms Sans Light is declared at 300 */
+            font-weight: 300;
+            line-height: 1.7em;
+            /* overrides the global .cs-text max-width */
+            max-width: (68ch);
+            margin: 0;
+            color: var(--bodyTextColor);
+        }
 
-            &:last-of-type {
-                border-bottom: none;
-                padding-bottom: 0;
+        /* -- Signature -- */
+        .cs-signature {
+            order: 4;
+            display: flex;
+            flex-direction: column;
+            gap: (8/16rem);
+        }
+
+        .cs-sign {
+            font-family: var(--headerFont);
+            font-size: (32/16rem);
+            font-weight: 400;
+            line-height: 1em;
+            color: rgba(var(--primary-rgb), 0.55);
+            display: block;
+        }
+
+        .cs-role {
+            font-family: var(--bodyFont);
+            font-size: (14/16rem);
+            font-weight: 300;
+            line-height: 1.5em;
+            margin: 0;
+            color: var(--bodyTextColor);
+        }
+
+        .cs-divider {
+            width: 1px;
+            height: (12/16rem);
+            background-color: rgba(var(--primary-rgb), 0.3);
+            margin: 0 (8/16rem);
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+       /* Root button. The section is a flex column with an explicit order
+   sequence, so this only needs its slot; geometry, type and the green
+   hover all come from core-styles. */
+.cs-button-solid {
+    order: 5;
+}
+    }
+}
+
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+    #about-1187 {
+        padding-top: (100/16rem);
+
+        .cs-media {
+            --sec-drop: 4.5rem;
+        }
+
+        .cs-reel {
+            max-width: (360/16rem);
+            align-self: flex-end;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #about-1187 {
+        padding-top: (128/16rem);
+
+        .cs-container {
+            flex-direction: row;
+            /* required for sticky — a stretched child fills the row and has
+               nowhere to travel */
+            align-items: flex-start;
+            gap: clamp(3rem, 6vw, 6rem);
+        }
+
+        .cs-media {
+            /* --sticky-top  the one dial: distance from the viewport top the
+                             portrait parks at. Raise it to clear a fixed
+                             navbar, lower it to sit closer to the edge.
+                             Literal rem — custom properties don't evaluate
+                             LESS fractions. */
+            --sticky-top: 7rem;
+
+            min-width: 0;
+            flex: none;
+            --sec-x: -3rem;
+            --sec-drop: 5rem;
+
+            /* Sticky replaces the `position: relative` set at 0rem. It's still
+               a positioned ancestor, so .cs-secondary's absolute offsets are
+               unaffected. The travel ends at the container's bottom edge,
+               inset by this element's own margin-bottom — so --sec-drop is
+               still honoured and the faded image can't overrun the section. */
+            position: sticky;
+            top: var(--sticky-top);
+            align-self: flex-start;
+        }
+
+        .cs-column {
+            min-width: 0;
+            flex: 1;
+            gap: (36/16rem);
+        }
+
+        .cs-reel {
+            order: 0;
+            align-self: flex-end;
+            max-width: (400/16rem);
+            margin-bottom: (24/16rem);
+        }
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    #about-1187 {
+        .cs-textlink:before {
+            transition: none;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---        Testimonials        -->
+<--- -------------------------- -*/
+
+/* Mobile - 0rem */
+@media only screen and (min-width: 0rem) {
+  #testimonials-1186 {
+    /* --accent  the gold in the reference, resolved to brand. Heritage Green
+                 carries the topper and the rule as one family.
+       --fade    slide transition duration. The only motion dial.
+       --markW   how wide the watermark sits. Anchored to the right edge, so
+                 growing it pushes further off-canvas rather than moving.
+       --markTone  how far the mark recedes. Above ~0.1 it starts competing
+                 with the quote instead of sitting behind it. */
+    --accent: var(--heritageGreen);
+    --accent-rgb: var(--heritageGreen-rgb);
+    --fade: 420ms;
+    --markW: 24rem;
+    --markTone: 0.06;
+
+    width: 100%;
+    padding: (72/16rem) (16/16rem) (80/16rem);
+    background-color: var(--surfaceCanvas);
+    /* clip, not hidden — hidden would break any sticky ancestor */
+    overflow: clip;
+    position: relative;
+
+    .cs-watermark {
+      /* hidden on mobile — the quote runs nearly edge to edge here, so
+         there's no room for it to sit behind anything */
+      display: none;
+      position: absolute;
+      /* cropped at the right edge — the bleed is what makes it read as
+         composition rather than a logo dropped in the corner */
+      right: (-60/16rem);
+      top: 50%;
+      transform: translateY(-50%);
+      width: var(--markW);
+      /* the file carries its own aspect ratio */
+      height: auto;
+      /* plain opacity, not a CSS mask — the mark is served cross-origin and
+         masks are CORS-restricted, so a mask would silently fail */
+      opacity: var(--markTone);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .cs-container {
+      width: 100%;
+      max-width: (860/16rem);
+      margin: 0 auto;
+      /* above the watermark */
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+   
+
+    .cs-title {
+      font-family: var(--headerFont);
+      font-size: clamp(2rem, 7vw, 3.5rem);
+      /* Cinzel Medium is declared at 600 only */
+      font-weight: 600;
+      line-height: 1.15em;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--primary);
+      /* overrides the global .cs-title max-width and bottom margin */
+      max-width: none;
+      margin: 0;
+      text-wrap: balance;
+    }
+
+    /* Hairline between title and controls — the print-rule the reference
+       uses to separate the heading from the quote. */
+    .cs-rule {
+      width: (72/16rem);
+      height: 1px;
+      margin: (28/16rem) 0 (32/16rem);
+      background-color: rgba(var(--accent-rgb), 0.5);
+      display: block;
+    }
+
+    .cs-controls {
+      display: flex;
+      gap: (14/16rem);
+      margin-bottom: (40/16rem);
+    }
+
+    .cs-arrow {
+    width: (48/16rem);
+    height: (48/16rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background-color: transparent;
+    border: 1px solid rgba(var(--darkCocoa-rgb), 0.24);
+    border-radius: 50%;
+    color: rgba(var(--darkCocoa-rgb), 0.7);
+    cursor: pointer;
+    transition: background-color 300ms, border-color 300ms, color 300ms, opacity 300ms;
+
+    svg {
+        width: (18/16rem);
+        height: (18/16rem);
+        display: block;
+    }
+
+    &:hover {
+        background-color: var(--heritageGreen);
+        border-color: var(--heritageGreen);
+        color: var(--primaryLight);
+    }
+
+    &:focus-visible {
+        outline: 1px solid var(--heritageGreen);
+        outline-offset: (3/16rem);
+    }
+
+    /* Not the disabled attribute — a disabled button drops out of
+       the tab order mid-interaction, which is worse than a dimmed
+       one that simply doesn't move. */
+    &.cs-disabled {
+        opacity: 0.35;
+        cursor: default;
+    }
+}
+
+    .cs-stage {
+      width: 100%;
+      display: grid;
+      margin-bottom: (44/16rem);
+    }
+
+    .cs-slide {
+      /* all slides share one cell — the stage sizes to the longest */
+      grid-area: 1 / 1;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity var(--fade) ease, visibility var(--fade);
+
+      &.cs-active {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    .cs-quote {
+      font-family: "Elms Sans Light", var(--bodyFont);
+      font-size: clamp(1.0625rem, 2.4vw, 1.375rem);
+      font-style: italic;
+      line-height: 1.68em;
+      color: rgba(var(--darkCocoa-rgb), 0.88);
+      max-width: (680/16rem);
+      margin: 0 0 (32/16rem);
+      text-wrap: pretty;
+    }
+
+    .cs-author {
+      font-family: var(--headerFont);
+      font-size: (16/16rem);
+      font-weight: 600;
+      line-height: 1.2em;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--darkCocoa);
+    }
+  }
+}
+
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+  #testimonials-1186 {
+    --markW: 32rem;
+
+    padding: (96/16rem) (24/16rem) (104/16rem);
+
+    .cs-watermark {
+      display: block;
+    }
+
+    .cs-rule {
+      width: (96/16rem);
+      margin: (32/16rem) 0 (36/16rem);
+    }
+
+    .cs-stage {
+      margin-bottom: (52/16rem);
+    }
+  }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+  #testimonials-1186 {
+    --markW: 56rem;
+
+    padding: (128/16rem) (32/16rem) (136/16rem);
+
+    .cs-container {
+      max-width: (960/16rem);
+    }
+
+    .cs-controls {
+      margin-bottom: (48/16rem);
+    }
+
+    .cs-stage {
+      margin-bottom: (60/16rem);
+    }
+
+    .cs-watermark {
+      /* deeper crop at this width — the mark has more room to bleed */
+      right: (-200/16rem);
+    }
+  }
+}
+
+/* Reduced motion — slides swap instantly. Nothing is lost; it just cuts
+   rather than crossfades. */
+@media (prefers-reduced-motion: reduce) {
+  #testimonials-1186 .cs-slide {
+    transition: none;
+  }
+}
+
+/*-- -------------------------- -->
+<---           Gateway          -->
+<--- -------------------------- -*/
+
+/* Mobile - 0rem */
+@media only screen and (min-width: 0rem) {
+    #gateway-1191 {
+        /* --panel-h  how tall each tile stands. The one dial for the section.
+           --scrim    base darkening. The label has to hold over whatever
+                      photography lands here, so this is legibility, not mood.
+           --lift     how much the photo grows on hover. Subtle is the point. */
+        --panel-h: clamp(20rem, 56svh, 26rem);
+        --scrim: 0.28;
+        --lift: 1.05;
+
+        width: 100%;
+        display: grid;
+        /* stacked on mobile — side by side would crop both past legibility */
+        grid-template-columns: 1fr;
+
+        .cs-panel {
+            width: 100%;
+            min-height: var(--panel-h);
+            display: grid;
+            place-items: center;
+            position: relative;
+            text-decoration: none;
+            /* clip, not hidden — hidden would break any sticky ancestor */
+            overflow: clip;
+            /* holds the tile while the photo loads, so there's no white
+               flash behind white type */
+            background-color: var(--darkCocoa);
+
+            .cs-background {
+                width: 100%;
+                height: 100%;
+                display: block;
+                position: absolute;
+                top: 0;
+                left: 0;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    display: block;
+                    transform: scale(1);
+                    transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+                    will-change: transform;
+                }
+            }
+
+            .cs-scrim {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                background-color: rgba(var(--darkCocoa-rgb), var(--scrim));
+                transition: background-color 600ms;
+            }
+
+            .cs-label {
+                /* above both the photo and the scrim */
+                position: relative;
+                z-index: 1;
+                padding: 0 (24/16rem);
+                font-family: var(--headerFont);
+                font-size: clamp(1.5rem, 5.5vw, 2.25rem);
+                /* Cinzel Medium is declared at 600 only */
+                font-weight: 600;
+                line-height: 1.2em;
+                letter-spacing: 0.14em;
+                text-transform: uppercase;
+                text-align: center;
+                text-wrap: balance;
+                color: var(--bodyTextColorWhite);
+            }
+
+            &:hover,
+            &:focus-visible {
+                .cs-background img {
+                    transform: scale(var(--lift));
+                }
+
+                .cs-scrim {
+                    /* deepens slightly so the label stays put as the photo
+                       moves under it */
+                    background-color: rgba(var(--darkCocoa-rgb), calc(var(--scrim) + 0.12));
+                }
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--bodyTextColorWhite);
+                outline-offset: (-6/16rem);
             }
         }
+    }
+}
 
-        .cs-credential-icon {
-            width: (40/16rem);
-            height: (40/16rem);
-            border-radius: (8/16rem);
-            background-color: rgba(9, 100, 90, 0.07);
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+    #gateway-1191 {
+        --panel-h: clamp(24rem, 40vw, 30rem);
+
+        /* the split — equal halves, no gutter, full bleed */
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #gateway-1191 {
+        --panel-h: clamp(28rem, 34vw, 38rem);
+
+        .cs-panel .cs-label {
+            letter-spacing: 0.18em;
+        }
+    }
+}
+
+/* Reduced motion — the photo holds still. The scrim shift stays, so hover
+   still registers as feedback. */
+@media (prefers-reduced-motion: reduce) {
+    #gateway-1191 .cs-panel .cs-background img {
+        transition: none;
+        transform: none;
+    }
+
+    #gateway-1191 .cs-panel:hover .cs-background img,
+    #gateway-1191 .cs-panel:focus-visible .cs-background img {
+        transform: none;
+    }
+}
+
+/*-- -------------------------- -->
+<---        Neighborhoods       -->
+<--- -------------------------- -*/
+
+/* Mobile - 0rem */
+@media only screen and (min-width: 0rem) {
+    #neighborhoods-1192 {
+        /* --panelW  width of one rail panel. The single dial — the rail,
+                     snap points and arrow steps all follow it.
+           --panelR  panel aspect ratio. Portrait is what makes the rail read
+                     as a gallery rather than a row of cards.
+           --gap     space between panels.
+           --scrim   resting darkness over the photo. Bump it if a bright
+                     image ever fights the name. */
+        --panelW: 17rem;
+        --panelR: 3 / 4;
+        --gap: 0.75rem;
+        --scrim: 0.42;
+        --scrimHover: 0.55;
+
+        width: 100%;
+        padding: (72/16rem) 0 (80/16rem);
+        background-color: var(--surfaceCanvas);
+        /* clip, not hidden — hidden would break any sticky ancestor */
+        overflow: clip;
+
+        .cs-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: (36/16rem);
+        }
+
+        .cs-column {
+            /* the rail bleeds full width; only the text column is inset */
+            padding: 0 (16/16rem);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+       
+
+        .cs-title {
+            font-family: var(--headerFont);
+            font-size: clamp(2rem, 8vw, 3.25rem);
+            /* Cinzel Medium is declared at 600 only */
+            font-weight: 600;
+            line-height: 1.1em;
+            letter-spacing: 0.02em;
+            color: var(--primary);
+            /* overrides the global .cs-title max-width and bottom margin */
+            max-width: none;
+            margin: 0 0 (28/16rem);
+        }
+
+        .cs-list {
+            width: 100%;
+            margin: 0 0 (32/16rem);
+            padding: 0;
+            list-style: none;
+        }
+
+        .cs-item {
+            /* hairline between rows, matching the reference's ruled list */
+            border-bottom: 1px solid rgba(var(--darkCocoa-rgb), 0.14);
+        }
+
+        .cs-name {
+            width: 100%;
+            padding: (16/16rem) 0;
             display: flex;
             align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            color: var(--primary);
+            justify-content: space-between;
+            gap: (12/16rem);
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            font-family: "Elms Sans Medium", var(--bodyFont);
+            font-size: (14/16rem);
+            font-weight: 600;
+            line-height: 1.2em;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(var(--darkCocoa-rgb), 0.62);
+            transition: color 300ms;
 
             svg {
                 width: (18/16rem);
                 height: (18/16rem);
+                flex: none;
+                /* the chevron only appears on the active row */
+                opacity: 0;
+                transform: translateX((-6/16rem));
+                transition: opacity 300ms, transform 300ms;
+            }
+
+            &:hover {
+                color: var(--darkCocoa);
+            }
+
+            &.cs-active {
+                color: var(--darkCocoa);
+
+                svg {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            &:focus-visible {
+                outline: 1px solid var(--darkCocoa);
+                outline-offset: (2/16rem);
             }
         }
 
-        .cs-credential-title {
-            display: block;
-            font-size: (15/16rem);
-            font-family: var(--bodyFont);
-            font-weight: 700;
-            color: var(--headerColor);
-            line-height: 1.3em;
-            margin-bottom: (2/16rem);
-        }
-
-        .cs-credential-sub {
-            display: block;
-            font-size: (13/16rem);
-            font-family: var(--bodyFont);
-            color: var(--bodyTextColor);
-            opacity: 0.6;
-            line-height: 1.4em;
-        }
-
-        /* ── Right: Image ── */
-        .cs-image-wrapper {
-            position: relative;
+        .cs-rail-wrap {
             width: 100%;
+            position: relative;
         }
 
-        .cs-picture {
-            display: block;
-            width: 100%;
-            border-radius: (16/16rem);
-            overflow: hidden;
-            position: relative;
+        .cs-controls {
+            display: flex;
+            gap: (10/16rem);
+            padding: 0 (16/16rem);
+            margin-bottom: (20/16rem);
+        }
 
-            img {
+        .cs-arrow {
+    width: (48/16rem);
+    height: (48/16rem);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background-color: transparent;
+    border: 1px solid rgba(var(--darkCocoa-rgb), 0.24);
+    border-radius: 50%;
+    color: rgba(var(--darkCocoa-rgb), 0.7);
+    cursor: pointer;
+    transition: background-color 300ms, border-color 300ms, color 300ms, opacity 300ms;
+
+    svg {
+        width: (18/16rem);
+        height: (18/16rem);
+        display: block;
+    }
+
+    &:hover {
+        background-color: var(--heritageGreen);
+        border-color: var(--heritageGreen);
+        color: var(--primaryLight);
+    }
+
+    &:focus-visible {
+        outline: 1px solid var(--heritageGreen);
+        outline-offset: (3/16rem);
+    }
+
+    /* Not the disabled attribute — a disabled button drops out of
+       the tab order mid-interaction, which is worse than a dimmed
+       one that simply doesn't move. */
+    &.cs-disabled {
+        opacity: 0.35;
+        cursor: default;
+    }
+}
+
+        .cs-rail {
+            width: 100%;
+            display: flex;
+            gap: var(--gap);
+            /* the last panel can still reach the left edge */
+            padding: 0 (16/16rem);
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-padding-left: (16/16rem);
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+        }
+
+        .cs-panel {
+            flex: none;
+            width: var(--panelW);
+            aspect-ratio: var(--panelR);
+            scroll-snap-align: start;
+            position: relative;
+            display: block;
+            /* clip, not hidden */
+            overflow: clip;
+            border-radius: (4/16rem);
+            text-decoration: none;
+            /* holds the panel while the photo loads */
+            background-color: var(--darkCocoa);
+
+            .cs-panel-img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
                 display: block;
+                transform: scale(1);
+                transition: transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
             }
-        }
 
-        /* Decorative accent box */
-        .cs-accent-box {
-            position: absolute;
-            bottom: (32/16rem);
-            left: (-(24/16rem));
-            background-color: var(--secondary);
-            padding: (20/16rem) (24/16rem);
-            border-radius: (12/16rem);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-            z-index: 10;
-        }
-
-        .cs-accent-number {
-            font-size: (48/16rem);
-            font-family: var(--headerFont);
-            font-weight: 400;
-            color: #fff;
-            line-height: 1;
-            letter-spacing: -0.02em;
-        }
-
-        .cs-accent-plus {
-            font-family: var(--headerFontAccent);
-            font-style: italic;
-            font-size: 0.6em;
-            vertical-align: super;
-            color: rgba(255, 255, 255, 0.85);
-        }
-
-        .cs-accent-label {
-            font-size: (11/16rem);
-            font-family: var(--bodyFont);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: rgba(255, 255, 255, 0.85);
-            margin-top: (6/16rem);
-            white-space: nowrap;
-        }
-    }
-}
-
-/* Tablet - 768px */
-@media only screen and (min-width: 48rem) {
-    #about-1 {
-        .cs-image-wrapper {
-            max-width: (560/16rem);
-            margin: 0 auto;
-        }
-
-        .cs-picture {
-            aspect-ratio: 4 / 5;
-
-            img {
+            /* Flat overlay rather than a bottom gradient — the name sits in
+               the middle now, so the darkening has to be even top to bottom. */
+            .cs-panel-scrim {
                 position: absolute;
-                top: 0;
-                left: 0;
+                inset: 0;
+                background-color: rgba(var(--darkCocoa-rgb), var(--scrim));
+                transition: background-color 600ms;
+            }
+
+            .cs-panel-label {
+                position: absolute;
+                inset: 0;
+                z-index: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: (24/16rem);
+                text-align: center;
+                font-family: var(--headerFont);
+                font-size: clamp(1.25rem, 3.4vw, 1.75rem);
+                font-weight: 600;
+                line-height: 1.2em;
+                letter-spacing: 0.04em;
+                color: var(--bodyTextColorWhite);
+                text-wrap: balance;
+            }
+
+            &:hover,
+            &:focus-visible {
+                .cs-panel-img {
+                    transform: scale(1.06);
+                }
+
+                .cs-panel-scrim {
+                    background-color: rgba(var(--darkCocoa-rgb), var(--scrimHover));
+                }
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--darkCocoa);
+                outline-offset: (3/16rem);
             }
         }
     }
 }
 
-/* Desktop - 1024px */
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+    #neighborhoods-1192 {
+        --panelW: 20rem;
+
+        padding: (96/16rem) 0 (104/16rem);
+
+        .cs-column {
+            padding: 0 (24/16rem);
+        }
+
+        .cs-controls,
+        .cs-rail {
+            padding-left: (24/16rem);
+            padding-right: (24/16rem);
+        }
+
+        .cs-rail {
+            scroll-padding-left: (24/16rem);
+        }
+    }
+}
+
+/* Desktop - 64rem */
 @media only screen and (min-width: 64rem) {
-    #about-1 {
+    #neighborhoods-1192 {
+        --panelW: 24rem;
+        --gap: 1rem;
+
+        padding: (128/16rem) 0 (136/16rem);
+
         .cs-container {
             flex-direction: row;
-            align-items: center;
-            gap: (80/16rem);
+            align-items: flex-start;
+            gap: (56/16rem);
         }
 
-        .cs-content {
-            flex: 1 1 0;
-            min-width: 0;
-        }
-
-        .cs-image-wrapper {
-            flex: 0 0 (480/16rem);
-            max-width: unset;
-            margin: 0;
-        }
-
-        .cs-picture {
-            aspect-ratio: 3 / 4;
-            width: 100%;
-
-            img {
-                position: absolute;
-                top: 0;
-                left: 0;
-            }
-        }
-
-        .cs-accent-box {
-            left: (-(32/16rem));
-            bottom: (48/16rem);
-        }
-    }
-}
-
-/* Large Desktop - 1300px */
-@media only screen and (min-width: 81.25rem) {
-    #about-1 {
-        .cs-container {
-            gap: (100/16rem);
-        }
-
-        .cs-image-wrapper {
-            flex: 0 0 (540/16rem);
-        }
-    }
-}
-
-/*-- -------------------------- -->
-<---    Testimonials Marquee    -->
-<--- -------------------------- -*/
-
-/* Mobile - 360px */
-@media only screen and (min-width: 0px) {
-
-    @keyframes marquee-left {
-        0%   { transform: translateX(0); }
-        100% { transform: translateX(-50%); }
-    }
-
-    @keyframes marquee-right {
-        0%   { transform: translateX(-50%); }
-        100% { transform: translateX(0); }
-    }
-
-    #testimonials-marquee {
-        padding: var(--sectionPadding);
-        position: relative;
-        overflow: hidden;
-        background-color: var(--primary);
-
-        // Background image overlay — swap the URL for your own asset
-        &::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: url("/assets/images/testimonials-bg.jpg");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            opacity: 0.12;
-            z-index: 0;
-        }
-
-        .cs-container {
-            width: 100%;
-            max-width: 80rem;
-            margin: 0 auto 3rem auto;
-            padding: 0 1rem;
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .cs-topper {
-            color: var(--secondary);
+        .cs-column {
+            /* fixed column; the rail takes the remainder and bleeds right */
+            width: 32%;
+            flex: none;
+            padding: 0 0 0 (48/16rem);
         }
 
         .cs-title {
-            color: var(--bodyTextColorWhite);
-            text-align: center;
+            margin-bottom: (40/16rem);
         }
 
-        .cs-text {
-            color: rgba(255, 255, 255, 0.72);
-            text-align: center;
-            max-width: 35rem;
-        }
-
-        // ─── Marquee Wrapper ─────────────────────────────────────────
-        .cs-marquee-wrapper {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            overflow: hidden;
-            margin-bottom: 1.25rem;
-
-            // Edge fade masks
-            &::before,
-            &::after {
-                content: "";
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                width: 5rem;
-                z-index: 2;
-                pointer-events: none;
-            }
-
-            &::before {
-                left: 0;
-                background: linear-gradient(to right, var(--primary), transparent);
-            }
-
-            &::after {
-                right: 0;
-                background: linear-gradient(to left, var(--primary), transparent);
-            }
-
-            // Pause on hover
-            &:hover .cs-marquee-track {
-                animation-play-state: paused;
-            }
-
-            &:last-child {
-                margin-bottom: 0;
-            }
-        }
-
-        // ─── Marquee Track ────────────────────────────────────────────
-        .cs-marquee-track {
-            display: flex;
-            flex-wrap: nowrap;
-            gap: 1.25rem;
-            width: max-content;
-            will-change: transform;
-        }
-
-        .cs-left .cs-marquee-track {
-            animation: marquee-left 40s linear infinite;
-        }
-
-        .cs-right .cs-marquee-track {
-            animation: marquee-right 40s linear infinite;
-        }
-
-        // ─── Cards ────────────────────────────────────────────────────
-        .cs-card {
-            flex-shrink: 0;
-            width: 20rem;
-            padding: 1.75rem;
-            background-color: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 0.25rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            transition: background-color 0.3s, border-color 0.3s;
-
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.10);
-                border-color: rgba(201, 168, 106, 0.4);
-            }
-        }
-
-        .cs-card-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .cs-avatar {
-            width: 2.75rem;
-            height: 2.75rem;
-            border-radius: 50%;
-            background-color: var(--secondary);
-            color: var(--primary);
-            font-family: var(--bodyFont);
-            font-weight: 700;
-            font-size: 0.8125rem;
-            letter-spacing: 0.05em;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .cs-author-info {
-            display: flex;
-            flex-direction: column;
-            gap: 0.125rem;
+        .cs-rail-wrap {
+            /* stretch demands this or the flex basis overflows */
+            min-width: 0;
             flex: 1;
         }
 
-        .cs-author-name {
-            font-family: var(--bodyFont);
-            font-size: 0.9375rem;
-            font-weight: 700;
-            color: var(--bodyTextColorWhite);
-            line-height: 1.2;
+        .cs-controls {
+            /* top right, above the rail, as in the reference */
+            justify-content: flex-end;
+            padding: 0 (48/16rem) 0 0;
+            margin-bottom: (64/16rem);
         }
 
-        .cs-author-role {
-            font-family: var(--bodyFont);
-            font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.55);
-            letter-spacing: 0.04em;
-        }
-
-        .cs-stars {
-            font-size: 0.875rem;
-            color: var(--secondary);
-            letter-spacing: 0.05em;
-            margin-left: auto;
-            align-self: flex-start;
-        }
-
-        .cs-card-text {
-            font-family: var(--bodyFont);
-            font-size: 0.9375rem;
-            line-height: 1.65em;
-            color: rgba(255, 255, 255, 0.78);
-            margin: 0;
+        .cs-rail {
+            /* no right padding — panels run off the edge, which is what makes
+               it read as a rail rather than a contained row */
+            padding: 0;
+            scroll-padding-left: 0;
         }
     }
+}
 
-} /* End Mobile */
-
-/* Tablet - 768px */
-@media only screen and (min-width: 48rem) {
-
-    #testimonials-marquee {
-
-        .cs-card {
-            width: 22.5rem;
-        }
-
-        .cs-marquee-wrapper {
-            &::before,
-            &::after {
-                width: 8.75rem;
-            }
-        }
-    }
-
-} /* End Tablet */
-
-/* Desktop - 1024px */
-@media only screen and (min-width: 64rem) {
-
-    #testimonials-marquee {
-
-        .cs-card {
-            width: 23.75rem;
-            padding: 2rem;
-        }
-
-        .cs-marquee-track {
-            gap: 1.5rem;
-        }
-
-        .cs-left .cs-marquee-track {
-            animation-duration: 55s;
-        }
-
-        .cs-right .cs-marquee-track {
-            animation-duration: 55s;
-        }
-    }
-
-} /* End Desktop */
-
-/* Accessibility: Respect reduced-motion preference */
+/* Reduced motion — the rail still scrolls, it just jumps rather than glides,
+   and the panels hold still. */
 @media (prefers-reduced-motion: reduce) {
-
-    #testimonials-marquee {
-
-        .cs-marquee-track {
-            animation: none !important;
+    #neighborhoods-1192 {
+        .cs-rail {
+            scroll-behavior: auto;
         }
 
-        .cs-marquee-wrapper {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-    }
-
-} /* End Reduced Motion */
-
-/*-- -------------------------- -->
-<---            CTA             -->
-<--- -------------------------- -*/
-
-/* Mobile - 360px */
-@media only screen and (min-width: 0px) {
-    #cta-51 {
-        padding: var(--sectionPadding);
-        position: relative;
-
-        .cs-container {
-            width: 100%;
-            max-width: 80rem;
-            margin: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: clamp(3rem, 6vw, 4rem);
+        .cs-panel .cs-panel-img,
+        .cs-panel .cs-panel-scrim {
+            transition: none;
         }
 
-        .cs-content {
-            text-align: center;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .cs-topper {
-            color: var(--secondary);
-        }
-
-        .cs-title {
-            color: var(--bodyTextColorWhite);
-        }
-
-        .cs-text {
-            margin-bottom: 1rem;
-            color: var(--bodyTextColorWhite);
-            opacity: 0.8;
-
-            &:last-of-type {
-                margin-bottom: 2rem;
-            }
-        }
-
-        .cs-picture {
-            height: 100%;
-            width: 100%;
-            display: block;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: -1;
-
-            /* Dark overlay with a subtle warm tint */
-            &:before {
-                content: "";
-                position: absolute;
-                display: block;
-                height: 100%;
-                width: 100%;
-                background: linear-gradient(
-                    135deg,
-                    rgba(9, 100, 90, 0.72) 0%,
-                    rgba(0, 0, 0, 0.82) 60%
-                );
-                top: 0;
-                left: 0;
-                z-index: 1;
-            }
-
-            img {
-                position: absolute;
-                top: 0;
-                left: 0;
-                height: 100%;
-                width: 100%;
-                object-fit: cover;
-            }
+        .cs-panel:hover .cs-panel-img {
+            transform: none;
         }
     }
 }

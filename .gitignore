@@ -1,4 +1,7 @@
 .vscode
 .cache
 node_modules
-public
+publicnode_modules/
+public/
+.cache/
+.DS_Store

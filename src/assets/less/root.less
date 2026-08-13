@@ -2,16 +2,20 @@
 <---        Core Styles         -->
 <--- -------------------------- -*/
 
-/* CodeStitch Core Styles + Reset */
 @media only screen and (min-width: 0px) {
 	:root {
-		--primary: #09645a;
-		--primaryLight: #0a8a7d;
-		--secondary: #C9A86A;
-		--secondaryLight: #d9be8a;
-		--headerColor: #1a1a1a;
-		--bodyTextColor: #2d2d2d;
-		--bodyTextColorWhite: #FFFFFF;
+		--primary: #3B2A20;
+		--darkCocoa-rgb: 59, 42, 32;
+		--primary-rgb: 59, 42, 32;
+		--primaryLight: #fefbf7;
+		--secondary: #20301A;
+--secondaryLight: #20301A;
+--heritageGreen: #20301A;
+--heritageGreen-rgb: 32, 48, 26;
+		--headerColor: #3B2A20;
+		--bodyTextColor: #6B5346;
+		--bodyTextColorWhite: #ffffff;
+		--surfaceCanvas: #FCF8F3;
 
 		/* 13px - 16px */
 		--topperFontSize: clamp(0.8125rem, 1.6vw, 1rem);
@@ -21,21 +25,26 @@
 		/* 60px - 100px top and bottom */
 		--sectionPadding: clamp(3.75rem, 7.82vw, 6.25rem) 1rem;
 
-		--headerFont: "Instrument Serif Regular", Arial, serif;
-		--headerFontAccent: "Instrument Serif Italic", Arial, serif;
-		--bodyFont: "Instrument Sans Regular", Arial, sans-serif;
+		--headerFont: "Cinzel Medium", Arial, sans-serif;
+		--bodyFont: "Elms Sans Light", Arial, sans-serif;
+		--buttonFont: "Rosemartin", Arial, sans-serif;
+		
 	}
 
 	html,
-	body {
-		margin: 0;
-		padding: 0;
-		overflow-x: hidden;
-		font-family: var(--bodyFont);
-		font-size: 100%;
-		transition: background-color 0.3s;
-		color: var(--bodyTextColor);
-	}
+body {
+    margin: 0;
+    padding: 0;
+    /* clip, not hidden. `overflow-x: hidden` forces overflow-y to compute
+       to `auto`, making the root a scroll container and breaking every
+       `position: sticky` on the page. `clip` suppresses overflow without
+       creating a scroll container. */
+    overflow-x: clip;
+    font-family: var(--bodyFont);
+    font-size: 100%;
+    transition: background-color 0.3s;
+    color: var(--bodyTextColor);
+}
 
 	*,
 	*:before,
@@ -47,28 +56,31 @@
 	}
 
 	.cs-topper {
-		font-size: var(--topperFontSize);
-		line-height: 1.2em;
-		text-transform: uppercase;
-		text-align: inherit;
-		letter-spacing: 0.1em;
-		font-weight: 700;
-		color: var(--primary);
-		margin-bottom: 0.25rem;
-		display: block;
-	}
+    /* Medium is the only face above Light — 700 would synthesise a
+       faux bold from the Light file */
+    font-family: var(--bodyFont);
+    font-size: var(--topperFontSize);
+    font-weight: 600;
+    line-height: 1.4em;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-align: inherit;
+    color: rgba(var(--heritageGreen-rgb), 0.6);
+    margin: 0 0 (16/16rem);
+    display: block;
+}
 
 	.cs-title {
-    font-size: var(--headerFontSize);
-    font-weight: 400;
-    line-height: 1.2em;
-    letter-spacing: 0.05em;
-    text-align: inherit;
-    max-width: 43.75rem;
-    margin: 0 0 1rem 0;
-    color: var(--headerColor);
-    position: relative;
-}
+		font-size: var(--headerFontSize);
+		font-weight: 900;
+		line-height: 1.2em;
+		text-align: inherit;
+		max-width: 43.75rem;
+		margin: 0 0 1rem 0;
+		color: var(--headerColor);
+		position: relative;
+		text-transform: uppercase;
+	}
 
 	.cs-text {
 		font-size: var(--bodyFontSize);
@@ -79,12 +91,12 @@
 		margin: 0;
 		color: var(--bodyTextColor);
 	}
-
-	.accent {
-    font-family: var(--headerFontAccent);
-    font-style: italic;
-	letter-spacing: 0.05em;
 }
+
+@property --stroke-p {
+    syntax: "<number>";
+    inherits: false;
+    initial-value: 0;
 }
 
 /* Components + Utilities */
@@ -98,95 +110,106 @@
 		opacity: 0;
 	}
 
-	// Buttons - can be replaced using CodeStitch's "Button" Stitches. Make sure to clear the default .cs-button-solid/outline styles from any new stitches you place.
-	.cs-button-solid {
-		z-index: 1;
-		position: relative;
-		display: inline-block;
-		background-color: var(--primary);
-		width: auto;
-		padding: (16/16rem) (32/16rem);
-		text-decoration: none;
-		text-transform: uppercase;
-		font-size: (16/16rem);
-		line-height: (16/16em);
-		font-weight: bold;
-		overflow: hidden;
+.cs-button-solid {
+    /* --btnFill  the colour that fills in on hover.
+       --btnInk   label colour once it's filled. Warm off-white rather
+                  than #fff — pure white on Heritage Green reads cold. */
+    --btnFill: var(--heritageGreen);
+    --btnInk: var(--surfaceCanvas);
 
-		// Transition Properties
-		color: var(--bodyTextColorWhite);
-		transition: color 0.3s;
-		transition-delay: 0.1s;
-		text-align: center;
+    position: relative;
+    display: inline-block;
+    background-color: transparent;
+    width: auto;
+    padding: (20/16rem) (36/16rem);
+    border: 1px solid rgba(var(--primary-rgb), 0.25);
+    border-radius: (100/16rem);
+    text-decoration: none;
+    text-transform: lowercase;
+    font-size: (14/16rem);
+    line-height: (18/16em);
+    letter-spacing: (1.2/16em);
+    font-weight: 500;
+    text-align: center;
+    color: var(--headerColor);
+    font-family: var(--buttonFont);
+    transition: background-color 0.4s ease,
+                border-color 0.4s ease,
+                color 0.4s ease;
 
-		&:hover {
-			color: #fff;
+    &:hover,
+    &:focus-visible {
+        background-color: var(--btnFill);
+        border-color: var(--btnFill);
+        color: var(--primaryLight);
+    }
 
-			&:before {
-				width: 100%;
-			}
-		}
+    &:focus-visible {
+        outline: 1px solid var(--btnFill);
+        outline-offset: (3/16rem);
+    }
+}
 
-		&:before {
-			z-index: -1;
-			position: absolute;
-			top: 0;
-			left: 0;
-			content: "";
-			opacity: 1;
-			display: block;
-			background-color: var(--secondaryLight);
-			height: 100%;
+// 	.cs-button-outline {
+//     /* --btnFill  the colour that sweeps in. Heritage Green, so the two
+//                   tiers share one interaction vocabulary — the solid draws
+//                   a green ring, this one floods green.
+//        --btnInk   label colour once the fill has landed. */
+//     --btnFill: var(--heritageGreen);
+//     --btnInk: var(--surfaceCanvas);
 
-			//Transition properties
-			width: 0;
-			transition: width 0.3s;
-		}
-	}
+//     z-index: 1;
+//     position: relative;
+//     display: inline-block;
+//     /* clips the sweeping fill to the pill */
+//     overflow: hidden;
+//     background-color: transparent;
+//     width: auto;
+//     /* matched to .cs-button-solid — the two sit side by side */
+//     padding: (20/16rem) (36/16rem);
+//     border: 1px solid rgba(var(--primary-rgb), 0.25);
+//     border-radius: (100/16rem);
+//     text-decoration: none;
+//     text-transform: lowercase;
+//     font-size: (14/16rem);
+//     line-height: (18/16em);
+//     letter-spacing: (1.2/16em);
+//     font-weight: 500;
+//     text-align: center;
+//     color: var(--headerColor);
+//     font-family: var(--buttonFont);
+//     transition: color 0.4s ease, border-color 0.5s ease;
 
-	.cs-button-outline {
-		z-index: 1;
-		position: relative;
-		display: inline-block;
-		width: auto;
-		padding: (16/16rem) (32/16rem);
-		text-decoration: none;
-		text-transform: uppercase;
-		font-size: (16/16rem);
-		line-height: (16/16em);
-		font-weight: bold;
-		border: 2px solid var(--secondary);
+//     &:before {
+//         content: "";
+//         z-index: -1;
+//         position: absolute;
+//         top: 0;
+//         left: 0;
+//         width: 0;
+//         height: 100%;
+//         background-color: var(--btnFill);
+//         display: block;
+//         /* same curve as the solid's ring draw, so the two tiers move
+//            with the same hand */
+//         transition: width 0.6s cubic-bezier(0.33, 0, 0.15, 1);
+//     }
 
-		// Transition Properties
-		color: var(--secondary);
-		transition: color 0.3s;
-		transition-delay: 0.1s;
-		text-align: center;
+//     &:hover,
+//     &:focus-visible {
+//         color: var(--btnInk);
+//         border-color: var(--btnFill);
 
-		&:hover {
-			color: #fff;
+//         &:before {
+//             width: 100%;
+//         }
+//     }
 
-			&:before {
-				width: 100%;
-			}
-		}
-
-		&:before {
-			z-index: -1;
-			position: absolute;
-			top: 0;
-			left: 0;
-			content: "";
-			opacity: 1;
-			display: block;
-			background-color: var(--secondary);
-			height: 100%;
-
-			//Transition properties
-			width: 0;
-			transition: width 0.3s;
-		}
-	}
+//     &:focus-visible {
+//         outline: 1px solid var(--btnFill);
+//         outline-offset: (3/16rem);
+//     }
+// }
 
 	// Utilities - small classes useful in various common situations
 	.cs-color {
@@ -201,6 +224,27 @@
 		display: none !important;
 	}
 
+	.cs-dark,
+	.dark {
+		display: none !important;
+	}
+
+	body.dark-mode {
+		.cs-light,
+		.light {
+			display: none !important;
+		}
+
+		.cs-dark,
+		.dark {
+			display: block !important;
+		}
+
+		.cs-button-outline {
+			border-color: #fff;
+			color: #fff;
+		}
+	}
 }
 
 /* Desktop Utilities */
@@ -268,36 +312,56 @@
 
 /* Fonts */
 @media only screen and (min-width: 0px) {
-	/* InstrumentSans-Regular - latin */
+	
 	@font-face {
 		font-style: normal;
-		font-family: "Instrument Sans Regular";
-		font-weight: 400;
+		font-family: "Cinzel Medium";
+		font-weight: 600;
 		font-display: swap;
-		src: local(""),
-			url("/assets/fonts/InstrumentSans-Regular.woff2") format("woff2"),
-			url("/assets/fonts/InstrumentSans-Regular.woff") format("woff");
+		src: local(""), url("/assets/fonts/Cinzel-Medium.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */ url("/assets/fonts/Cinzel-Medium.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 	}
 
-	/* InstrumentSerif-Regular - latin */
+	
 	@font-face {
 		font-style: normal;
-		font-family: "Instrument Serif Regular";
-		font-weight: 400;
+		font-family: "Elms Sans Light";
+		font-weight: 300;
 		font-display: swap;
-		src: local(""),
-			url("/assets/fonts/InstrumentSerif-Regular.woff2") format("woff2"),
-			url("/assets/fonts/InstrumentSerif-Regular.woff") format("woff");
+		src: local(""), url("/assets/fonts/ElmsSans-Light.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */ url("/assets/fonts/ElmsSans-Light.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 	}
 
-	/* InstrumentSerif-Italic - latin */
 	@font-face {
 		font-style: normal;
-		font-family: "Instrument Serif Italic";
+		font-family: "Elms Sans Light Italic";
+		font-weight: 300;
+		font-display: swap;
+		src: local(""), url("/assets/fonts/ElmsSans-LightItalic.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */ url("/assets/fonts/ElmsSans-LightItalic.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+	}
+
+	@font-face {
+		font-style: normal;
+		font-family: "Elms Sans Medium";
+		font-weight: 600;
+		font-display: swap;
+		src: local(""), url("/assets/fonts/ElmsSans-Medium.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */ url("/assets/fonts/ElmsSans-Medium.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+	}
+
+	@font-face {
+		font-style: normal;
+		font-family: "Elms Sans Medium Italic";
+		font-weight: 600;
+		font-display: swap;
+		src: local(""), url("/assets/fonts/ElmsSans-MediumItalic.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */ url("/assets/fonts/ElmsSans-MediumItalic.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+	}
+
+	
+	@font-face {
+		font-style: normal;
+		font-family: "Rosemartin";
 		font-weight: 400;
 		font-display: swap;
-		src: local(""),
-			url("/assets/fonts/InstrumentSerif-Italic.woff2") format("woff2"),
-			url("/assets/fonts/InstrumentSerif-Italic.woff") format("woff");
+		src: local(""), url("/assets/fonts/Rosemartin.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */ url("/assets/fonts/Rosemartin.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
 	}
 }
+
+

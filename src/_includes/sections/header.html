@@ -1,83 +1,152 @@
 <!-- ============================================ -->
-<!--                   Header                     -->
+<!--                 Navigation                   -->
 <!-- ============================================ -->
 
-<header id="cs-navigation">
-    <div class="cs-container">
-        <!-- Logo — white version by default, dark version on scroll -->
-        <a href="/" class="cs-logo" aria-label="back to home">
-            <!-- Light logo: visible on transparent/dark nav -->
-            <img
-                class="cs-logo-img cs-logo-light"
-                src="https://sample-projects.tor1.cdn.digitaloceanspaces.com/real-estate/jaydent-kennedy-logo.png"
-                alt="Jayden Kennedy"
-                width="160"
-                height="48"
-                decoding="async"
-            />
-            <!-- Dark logo: visible on white scrolled nav — swap src for a dark version of your logo -->
-            <img
-                class="cs-logo-img cs-logo-dark"
-                src="https://sample-projects.tor1.cdn.digitaloceanspaces.com/real-estate/jaydent-kennedy-logo.png"
-                alt="Jayden Kennedy"
-                width="160"
-                height="48"
-                decoding="async"
-            />
-        </a>
+<a class="skip" href="#main">Skip to main content</a>
 
-        <!-- Top Nav Links (desktop) -->
-        <nav class="cs-nav" role="navigation" aria-label="primary navigation">
-            <ul class="cs-nav-list">
-                <li class="cs-nav-item">
-                    <a href="/" class="cs-nav-link cs-button-solid">Home Search</a>
+<header id="cs-navigation">
+    <!-- Persistent bar -->
+    <div class="cs-container">
+       <a href="/" class="cs-logo" aria-label="Jayden Kennedy Real Estate, home page">
+    <img
+        class="cs-logo-light"
+        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-lockup-beige.png"
+        alt=""
+        width="210"
+        height="29"
+        aria-hidden="true"
+        decoding="async">
+    <img
+        class="cs-logo-dark"
+        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-lockup-logo.png"
+        alt=""
+        width="210"
+        height="29"
+        aria-hidden="true"
+        decoding="async">
+</a>
+
+        <nav class="cs-nav" aria-label="Main">
+            <ul class="cs-bar-ul">
+                <li class="cs-bar-li">
+                    <a href="/" class="cs-bar-link {% if page.url == '/home-search/' %} cs-active {% endif %}" {% if page.url == '/home-search/' %}aria-current="page"{% endif %}>
+                        Home Search
+                    </a>
                 </li>
-                <li class="cs-nav-item">
-                    <a href="/" class="cs-nav-link cs-link-underline">Let's Connect</a>
+                <li class="cs-bar-li">
+                    <a href="/" class="cs-bar-link {% if page.url == '/contact/' %} cs-active {% endif %}" {% if page.url == '/contact/' %}aria-current="page"{% endif %}>
+                        Let's Connect
+                    </a>
                 </li>
-                <li class="cs-nav-item cs-phone-item">
-                    <a href="tel:2899437934" class="cs-nav-link cs-phone">(289) 943-7934</a>
+                <li class="cs-bar-li">
+                    <a href="tel:2899437934" class="cs-bar-link cs-bar-tel">(289) 943-7934</a>
                 </li>
             </ul>
+
+            <button
+                class="cs-toggle"
+                id="cs-toggle"
+                type="button"
+                aria-expanded="false"
+                aria-controls="cs-panel"
+                aria-label="Open menu">
+                <span class="cs-toggle-label" aria-hidden="true">
+                    <span class="cs-label-menu">Menu</span>
+                    <span class="cs-label-close">Close</span>
+                </span>
+                <span class="cs-box" aria-hidden="true">
+                    <span class="cs-line cs-line1"></span>
+                    <span class="cs-line cs-line2"></span>
+                </span>
+            </button>
         </nav>
+    </div>
 
-        <!-- Hamburger Button -->
-        <button class="cs-toggle" aria-label="mobile menu toggle" aria-expanded="false" aria-controls="cs-expanded-ul">
-            <div class="cs-box" aria-hidden="true">
-                <span class="cs-line cs-line1"></span>
-                <span class="cs-line cs-line2"></span>
-                <span class="cs-line cs-line3"></span>
+    <!-- Menu sheet -->
+    <div class="cs-panel" id="cs-panel" aria-label="Menu">
+        <div class="cs-panel-inner">
+            <ul class="cs-panel-ul">
+                <li class="cs-panel-li">
+                    <a href="/" class="cs-panel-link {% if page.url == '/about/' %} cs-active {% endif %}" {% if page.url == '/about/' %}aria-current="page"{% endif %}>About Jayden</a>
+                </li>
+                <li class="cs-panel-li">
+                    <a href="/" class="cs-panel-link {% if page.url == '/results/' %} cs-active {% endif %}" {% if page.url == '/results/' %}aria-current="page"{% endif %}>Results</a>
+                </li>
+                <li class="cs-panel-li">
+                    <a href="/" class="cs-panel-link {% if page.url == '/media-hub/' %} cs-active {% endif %}" {% if page.url == '/media-hub/' %}aria-current="page"{% endif %}>Media Hub</a>
+                </li>
+                <li class="cs-panel-li">
+                    <a href="/" class="cs-panel-link {% if page.url == '/community-speaking/' %} cs-active {% endif %}" {% if page.url == '/community-speaking/' %}aria-current="page"{% endif %}>Community Speaking</a>
+                </li>
+                <li class="cs-panel-li">
+                    <a href="/" class="cs-panel-link {% if page.url == '/contact/' %} cs-active {% endif %}" {% if page.url == '/contact/' %}aria-current="page"{% endif %}>Contact</a>
+                </li>
+            </ul>
+
+            <!-- Bar links fold in here below 64rem, where the bar is logo + toggle only -->
+            <ul class="cs-panel-ul cs-panel-secondary">
+                <li class="cs-panel-li">
+                    <a href="/" class="cs-panel-link">Home Search</a>
+                </li>
+                <li class="cs-panel-li">
+                    <a href="/" class="cs-panel-link">Let's Connect</a>
+                </li>
+            </ul>
+
+            <div class="cs-panel-foot">
+                <div class="cs-panel-contact">
+                    <a href="tel:2899437934" class="cs-panel-meta">(289) 943-7934</a>
+                    <a href="mailto:jayden@soldbykennedy.ca" class="cs-panel-meta">jayden@soldbykennedy.ca</a>
+                </div>
+
+                <!-- Delete any row Jayden doesn't have an account for. -->
+                <ul class="cs-socials">
+                    <li class="cs-social-li">
+                        <a href="https://www.instagram.com/jaydenkennedyrealestate/" class="cs-social" target="_blank" rel="noopener" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+                                <circle cx="12" cy="12" r="4"></circle>
+                                <circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"></circle>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="cs-social-li">
+                        <a href="https://www.youtube.com/" class="cs-social" target="_blank" rel="noopener" aria-label="YouTube">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="M22 12s0-3.2-.4-4.7a2.4 2.4 0 0 0-1.7-1.7C18.4 5.2 12 5.2 12 5.2s-6.4 0-7.9.4a2.4 2.4 0 0 0-1.7 1.7C2 8.8 2 12 2 12s0 3.2.4 4.7a2.4 2.4 0 0 0 1.7 1.7c1.5.4 7.9.4 7.9.4s6.4 0 7.9-.4a2.4 2.4 0 0 0 1.7-1.7c.4-1.5.4-4.7.4-4.7Z"></path>
+                                <path d="m10.2 15 4.6-3-4.6-3v6Z"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="cs-social-li">
+                        <a href="https://www.facebook.com/" class="cs-social" target="_blank" rel="noopener" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="M15 3h-2.2A3.8 3.8 0 0 0 9 6.8V9.5H7v3h2V21h3v-8.5h2.4l.6-3H12V7.2c0-.5.4-.9.9-.9H15V3Z"></path>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="cs-social-li">
+                        <a href="https://www.linkedin.com/" class="cs-social" target="_blank" rel="noopener" aria-label="LinkedIn">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="M16 8a5 5 0 0 1 5 5v7h-3.5v-7a1.5 1.5 0 0 0-3 0v7H11v-7a5 5 0 0 1 5-5Z"></path>
+                                <rect x="3.5" y="9" width="3.5" height="11"></rect>
+                                <circle cx="5.25" cy="4.75" r="1.5"></circle>
+                            </svg>
+                        </a>
+                    </li>
+                    <li class="cs-social-li">
+                        <a href="https://www.tiktok.com/" class="cs-social" target="_blank" rel="noopener" aria-label="TikTok">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                                <path d="M14 3v11.2a3.3 3.3 0 1 1-2.8-3.3"></path>
+                                <path d="M14 6.2A4.8 4.8 0 0 0 18.8 10"></path>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
             </div>
-        </button>
+        </div>
     </div>
 
-    <!-- Mobile / Drawer Menu -->
-    <div class="cs-ul-wrapper" id="cs-expanded-ul" aria-hidden="true">
-        <ul class="cs-ul">
-            <li class="cs-li">
-                <a href="/" class="cs-li-link">Home</a>
-            </li>
-            <li class="cs-li">
-                <a href="/" class="cs-li-link">About</a>
-            </li>
-            <li class="cs-li">
-                <a href="/" class="cs-li-link">Results</a>
-            </li>
-            <li class="cs-li">
-                <a href="/" class="cs-li-link">Media Hub</a>
-            </li>
-            <li class="cs-li">
-                <a href="/" class="cs-li-link">Community Speaking</a>
-            </li>
-            <li class="cs-li">
-                <a href="/" class="cs-li-link">Contact</a>
-            </li>
-            <li class="cs-li cs-li-phone">
-                <a href="tel:2899437934" class="cs-li-link">289.943.7934</a>
-            </li>
-        </ul>
-    </div>
+    <!-- Click-off area beneath the sheet -->
+    <div class="cs-backdrop" id="cs-backdrop" aria-hidden="true"></div>
 </header>
-
-<!-- Header scroll behaviour -->
-<script src="/assets/js/header-scroll.js" defer></script>
