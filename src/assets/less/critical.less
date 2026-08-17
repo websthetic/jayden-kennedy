@@ -20,6 +20,14 @@
 		   stage at 64rem. */
 		overflow-x: clip;
 
+		/* The column every piece of copy in this section aligns to — hero
+		   title, statement line, rows, payoff. Inert below 64rem, where the
+		   viewport never reaches it. Two caps in the desktop block are
+		   derived from this and need rechecking if it moves: .cs-ghost
+		   (clearance to the landed frame) and .cs-payoff (nowrap line vs
+		   the content box, which is this minus 6rem of padding). */
+		--heroMax: 100rem;
+
 		.cs-track {
 			width: 100%;
 			position: relative;
@@ -79,7 +87,7 @@
 
 		.cs-container {
 			width: 100%;
-			max-width: 90rem;
+			max-width: var(--heroMax);
 			margin: auto;
 			display: flex;
 			position: relative;
@@ -138,7 +146,7 @@
 		   up over the hero copy. */
 		.cs-statement {
 			width: 100%;
-			max-width: 90rem;
+			max-width: var(--heroMax);
 			margin: auto;
 			padding: 3.5rem 1rem var(--sectionPadding);
 			box-sizing: border-box;
@@ -296,7 +304,7 @@
 		   screen where an inset can only close inward.
 
 		   These three numbers are one system. The frame's left edge lands at
-		   roughly 50vw + translateX - (scale x 50vw) — about 55vw here — and
+		   roughly 50vw + translateX - (scale x 50vw) — about 57vw here — and
 		   that is the width the statement line has to live in. Change one and
 		   the other two need checking. */
 		.cs-frame {
@@ -344,7 +352,7 @@
 		   multiplies against it — peak opacity here is 0.8, not 1. */
 		.cs-ghost {
 			width: 100%;
-			max-width: 90rem;
+			max-width: var(--heroMax);
 			margin: 0 auto;
 			padding: 0 3rem;
 			box-sizing: border-box;
@@ -353,12 +361,15 @@
 			left: 0;
 			right: 0;
 			transform: translateY(-50%);
-			/* The vw term tracks the viewport, but this box stops growing at
-			   90rem — so the type has to stop with it or a nowrap line runs
-			   out of the box. 5.4% of 90rem = 4.86rem. Current copy is short
-			   enough to clear it anyway; the ceiling is here so longer copy
-			   can't reopen the overflow. */
-			font-size: min(5.4vw, 4.86rem);
+			/* The ceiling is the frame's left edge, not the container. The
+			   copy breaks at the <br>, so the widest line is one word.
+			   Frame lands with its left edge near 57vw; this text starts at
+			   (100vw - --heroMax)/2 + 3rem, so the clear run above --heroMax
+			   is roughly 7vw + (--heroMax / 2) - 3rem — about 873px on a
+			   1728 screen at 100rem. 6.25rem sits well inside that. Longer
+			   copy in this line needs this rechecked: it's a clearance
+			   number, not a taste one. */
+			font-size: min(6.2vw, 6.25rem);
 			line-height: 1em;
 			white-space: nowrap;
 			/* Arrives as the frame is settling rather than competing with it */
@@ -393,7 +404,8 @@
 		}
 
 		.cs-picture {
-			/* Runs to the viewport edge. 50vw covers any width above 64rem. */
+			/* Runs to the viewport edge. 50vw covers any width above 64rem,
+			   and keeps covering it whatever --heroMax is set to. */
 			width: calc(100% + 50vw);
 			margin-left: -50vw;
 			/* Height-capped rather than ratio-locked, so a wide viewport
@@ -403,23 +415,25 @@
 		}
 
 		.cs-approach {
-			font-size: clamp(1.125rem, 1.7vw, 1.5rem);
+			font-size: clamp(1.125rem, 2.05vw, 1.875rem);
 			line-height: 1.3em;
 			margin: 0 0 1rem 0;
 			text-align: right;
-			max-width: 22rem;
+			/* Column two is far wider than this — the cap is here to hold
+			   the caption at two or three lines, not to fit the column. */
+			max-width: 26rem;
 			justify-self: end;
 		}
 
 		/* Fills the line edge to edge. The vw term keeps it spanning as the
 		   viewport widens; the min() caps it where the container stops
-		   widening — .cs-statement freezes at max-width 90rem, and 7.5% of
-		   90rem is 6.75rem. Past that point the type would keep growing
-		   against a fixed box and, being nowrap and centred, spill both
-		   sides — the right-hand half of that spill is what stretches the
-		   document's scroll width. Not a styling ceiling: it's the width the
-		   container actually stops at. If max-width above ever changes, this
-		   number changes with it. */
+		   widening. The box this has to fit is --heroMax minus 6rem of
+		   padding — 94rem at the current token — and 7.5% of that is
+		   7.05rem. Past that point the type would keep growing against a
+		   fixed box and, being nowrap and centred, spill both sides — the
+		   right-hand half of that spill is what stretches the document's
+		   scroll width. Not a styling ceiling: it's the width the container
+		   actually stops at. */
 		.cs-payoff {
 			font-size: min(7.5vw, 6.75rem);
 			line-height: 0.95em;

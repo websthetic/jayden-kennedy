@@ -1,102 +1,166 @@
-
-
 /* Mobile - 0rem
    Dark band between two canvas sections. Every ink value in here is
    overridden off the light-surface defaults in root — that inversion is the
-   whole reason this file carries so many colour rules. */
+   whole reason this file carries so many colour rules.
+
+   Nothing sticks below 64rem. A sticky photo needs a second column beside
+   it to scroll past; stacked, it would just pin over the copy. */
 @media only screen and (min-width: 0rem) {
 	#results {
-		/* --gutter  the section's own inset. The bleed image ignores it;
-		             every other band reads off it, so one value moves the
-		             whole composition in from the edges. */
+		/* --gutter    the section's own inset at this width.
+		   --maxWidth  the container cap. Both are dropped at 64rem — see
+		               the note there. */
 		--gutter: 5%;
+		--maxWidth: 84rem;
+		/* --rule  hairline under each stat row. Cashmere at low alpha rather
+		           than a solid — it has to sit on Cocoa and would need
+		           re-picking on any other surface. */
+		--rule: rgba(var(--cashmereBeige-rgb), 0.18);
 
 		width: 100%;
+		/* On the section here, not the column — at this width the band is an
+		   ordinary stacked section and nothing reaches its edges. At 64rem
+		   this moves to .cs-column so the photo can. */
 		padding: 5rem 0;
 		background-color: var(--darkCocoa);
 		position: relative;
 		z-index: 1;
 
-        font-variant-numeric: tabular-nums;
+		/* clip, not hidden. Cheap insurance against a wide element opening a
+		   strip of dead canvas down the right of the whole page. clip
+		   contains that without creating a scroll container — which hidden
+		   would, and which would stop the sticky photo from ever sticking. */
+		overflow-x: clip;
 
-		.cs-intro {
+		font-variant-numeric: tabular-nums;
+
+		.cs-container {
 			width: 100%;
-			max-width: 47.5rem;
-			margin: 0 auto 3.5rem;
+			max-width: var(--maxWidth);
+			margin: 0 auto;
 			padding: 0 var(--gutter);
 			box-sizing: border-box;
-			text-align: center;
 		}
 
-		/* GLOBAL OVERRIDE — root sets .cs-topper to Heritage Green, which
-		   disappears against Cocoa. Cashmere at partial strength keeps it
-		   subordinate to the title without vanishing. */
-		.cs-topper {
-			color: rgba(var(--cashmereBeige-rgb), 0.75);
+		.cs-column {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 2.5rem;
 		}
 
-		/* GLOBAL OVERRIDE — root's .cs-title is Cocoa, capped at 43.75rem
-		   and left aligned by inheritance. Inverted, centred, and uncapped
-		   so the intro's own max-width does the measuring. */
+		/* GLOBAL OVERRIDE — root's .cs-title is Cocoa and capped at
+		   43.75rem. Inverted here, and the cap dropped because the column
+		   is what measures it. */
 		.cs-title {
-			font-size: clamp(2rem, 6vw, 3.25rem);
+			font-size: clamp(2rem, 6vw, 3rem);
 			/* 500, not 600. Cinzel is registered at 500 and 700 only, and CSS
 			   weight matching searches upward first — a requested 600 would
 			   resolve to Bold, not Medium. */
 			font-weight: 500;
 			line-height: 1.1em;
 			letter-spacing: 0.02em;
+			text-align: left;
 			max-width: none;
 			margin: 0 0 1.25rem;
 			color: var(--cashmereBeige);
 		}
 
+		/* GLOBAL OVERRIDE — root sets .cs-topper to Heritage Green, which
+		   disappears against Cocoa. Kept in case the topper comes back. */
+		.cs-topper {
+			color: rgba(var(--cashmereBeige-rgb), 0.75);
+		}
+
+		/* Brighter and a touch stronger than .cs-copy. These two are body
+		   paragraphs stacked in one column, so something has to rank them —
+		   the lede leads, the copy supports. */
 		.cs-lede {
 			font-family: var(--bodyFont);
 			font-size: var(--bodyFontSize);
 			font-weight: 300;
 			line-height: 1.6em;
-			max-width: 60ch;
-			margin: 0 auto;
-			color: rgba(var(--cashmereBeige-rgb), 0.82);
+			max-width: 52ch;
+			margin: 0 0 1.25rem;
+			color: rgba(var(--cashmereBeige-rgb), 0.85);
+		}
+
+		/* Own class rather than .cs-text — the global is capped at 40.625rem
+		   in rem and coloured for the light canvas. */
+		.cs-copy {
+			font-family: var(--bodyFont);
+			font-size: var(--bodyFontSize);
+			font-weight: 300;
+			line-height: 1.65em;
+			max-width: 52ch;
+			margin: 0;
+			color: rgba(var(--cashmereBeige-rgb), 0.65);
+		}
+
+		.cs-socials {
+			width: 100%;
+		}
+
+		/* Labels the table below rather than heading a section — sized and
+		   tracked like the stat captions, not like .cs-title, so it reads as
+		   a column header and doesn't compete with the h2 above. */
+		.cs-socials-title {
+			font-family: var(--bodyFont);
+			font-size: 0.75rem;
+			font-weight: 500;
+			line-height: 1.4em;
+			letter-spacing: 0.13em;
+			text-transform: uppercase;
+			margin: 0 0 1.25rem;
+			color: rgba(var(--cashmereBeige-rgb), 0.7);
 		}
 
 		/* -- Stats --
-		   No rules. Spacing and the size jump between figure and captions are
-		   what group these now, so the gaps do the work the borders used to —
-		   keep the gap between stats generous and the gap within them tight. */
+		   Ruled rows. Spacing alone grouped these when they sat centred in
+		   their own full-width band; stacked in a column they need the
+		   hairline or three figures read as one block. */
 		.cs-stats {
 			width: 100%;
-			max-width: 75rem;
-			margin: 0 auto 4.5rem;
-			padding: 0 var(--gutter);
-			box-sizing: border-box;
-			display: grid;
-			grid-template-columns: 1fr;
-			gap: 2.5rem;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			border-top: 1px solid var(--rule);
 		}
 
 		.cs-stat {
 			list-style: none;
-			text-align: center;
 			display: flex;
-			flex-direction: column;
-			align-items: center;
-			/* Tight — this gap now falls between all three lines, so the
-			   figure carries the vertical space rather than the gap. */
-			gap: 0.375rem;
+			/* baseline, not center — the figure is well over twice the
+			   caption's size, and centring would float the caption in the
+			   middle of the numeral rather than sitting it on the same
+			   line. */
+			align-items: baseline;
+			justify-content: space-between;
+			gap: 1rem;
+			padding: 1.125rem 0;
+			border-bottom: 1px solid var(--rule);
 		}
 
 		/* Full-strength Cashmere. These are the loudest thing in the band
 		   and the reason it's dark at all. */
 		.cs-stat-figure {
 			font-family: var(--headerFont);
-			font-size: clamp(2.5rem, 8vw, 3.5rem);
+			font-size: clamp(1.75rem, 6vw, 2.5rem);
 			font-weight: 500;
 			line-height: 1em;
 			letter-spacing: 0.01em;
 			color: var(--cashmereBeige);
 			display: block;
+		}
+
+		/* Holds the two caption lines together so the row stays a two-part
+		   split rather than a three-item flex. */
+		.cs-stat-label {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
+			gap: 0.125rem;
+			text-align: right;
 		}
 
 		.cs-stat-caption {
@@ -123,57 +187,14 @@
 			display: block;
 		}
 
-		/* -- Split -- */
-		.cs-split {
+		.cs-visual {
 			width: 100%;
-			display: grid;
-			grid-template-columns: 1fr;
-			/* no gutter here — the image runs to the viewport edge */
-		}
-
-		.cs-bleed {
-			width: 100%;
+			margin-top: 3rem;
 			display: block;
 
 			img {
 				width: 100%;
-				height: 100%;
-				/* portrait on mobile, fills the track at 64rem */
-				aspect-ratio: 4 / 5;
-				object-fit: cover;
-				display: block;
-			}
-		}
-
-		.cs-column {
-			padding: 3rem var(--gutter) 4.5rem;
-			display: flex;
-			flex-direction: column;
-			align-items: flex-start;
-			gap: 2rem;
-		}
-
-		/* Own class rather than .cs-text — the global is capped at 40.625rem
-		   in rem and coloured for the light canvas. */
-		.cs-copy {
-			font-family: var(--bodyFont);
-			font-size: var(--bodyFontSize);
-			font-weight: 300;
-			line-height: 1.65em;
-			max-width: 56ch;
-			margin: 0;
-			color: rgba(var(--cashmereBeige-rgb), 0.85);
-		}
-
-		/* Second image. Fixed height rather than a ratio so it fills whatever
-		   the column has left after the copy and CTA. */
-		.cs-inset {
-			width: 100%;
-			display: block;
-
-			img {
-				width: 100%;
-				height: 15rem;
+				height: 20rem;
 				object-fit: cover;
 				display: block;
 			}
@@ -186,79 +207,130 @@
 	#results {
 		padding-top: 6.25rem;
 
-		.cs-intro {
-			margin-bottom: 4.5rem;
-		}
-
-		.cs-stats {
-			margin-bottom: 6rem;
-			grid-template-columns: repeat(3, 1fr);
-			gap: 2rem;
-		}
-
 		.cs-column {
-			padding: 4rem var(--gutter) 6rem;
-		}
-
-		.cs-inset img {
-			height: 20rem;
-		}
-	}
-}
-
-/* Desktop - 64rem */
-@media only screen and (min-width: 64rem) {
-	#results {
-		padding-top: 8rem;
-		padding-bottom: 8rem;
-
-		.cs-intro {
-			margin-bottom: 5.5rem;
-		}
-
-		.cs-stats {
-			margin-bottom: 7.5rem;
 			gap: 3rem;
 		}
 
-		.cs-split {
-			/* Left track runs off the edge; right track carries the gutter.
-			   The column sets min-width: 0 so long copy can't blow the track
-			   out and squeeze the image. */
-			grid-template-columns: 1fr 1fr;
-			align-items: stretch;
+		.cs-stat {
+			padding: 1.375rem 0;
 		}
 
-		.cs-bleed {
-	height: 100%;
-
-	img {
-		aspect-ratio: auto;
-		/* The height knob. cover keeps her undistorted and crops the
-		   overflow instead of squashing it. */
-		height: 43rem;
-		min-height: 0;
-		object-fit: cover;
-		/* bottom anchor — the crop comes off the top, where the ceiling
-		   and hanging lamps are. */
-		object-position: center bottom;
+		.cs-visual img {
+			height: 26rem;
+		}
 	}
 }
 
-		.cs-column {
-			min-width: 0;
-			/* flex-start, not center — with three items the column reads
-			   better anchored to the top of the row than floated in it. */
-			padding: 1.5rem var(--gutter) 0 4.5rem;
-			justify-content: flex-start;
-			gap: 2.25rem;
+/* Desktop - 64rem
+   Copy column scrolls, photo sticks. No JS — the only moving part is
+   position: sticky, and the travel comes from the column being taller
+   than the viewport. */
+@media only screen and (min-width: 64rem) {
+	#results {
+		/* The copy's distance from the left viewport edge, full stop.
+		   The container is NOT capped or centred at this width — that cap
+		   was the real left inset, not the gutter: at 84rem on a 1728px
+		   screen it spent ~12rem a side on centring margin before any
+		   padding applied. One rem-ish value instead, and what you set is
+		   what you get.
+		   It also removes the need for a bleed calc. With no right padding
+		   and no cap, column two already ends at the viewport edge. */
+		--edge: clamp(2.5rem, 4vw, 5rem);
+
+		/* How wide the copy runs. Without this the column is half an
+		   uncapped viewport, which strands the stat captions far right of
+		   their figures on a wide screen — the table is as wide as its
+		   column, unlike the paragraphs, which cap themselves in ch. */
+		--columnMax: 46rem;
+
+		/* How tall the copy column runs. This is the sticky's travel: the
+		   photo holds for (this - 100svh) of scroll, so 150svh gives about
+		   50svh of hold. It's a min-height, not a height — longer copy
+		   grows past it and gets more travel, never less.
+		   It has to be a floor rather than natural height because the
+		   content measures shorter than one viewport on a 16" screen.
+		   Without it the photo would pin for a few dozen pixels and the
+		   effect would be invisible. */
+		--columnRun: 150svh;
+
+		/* The vertical air the copy needs. It sits on .cs-column, NOT on the
+		   section — the section has none at this width, which is what lets
+		   the photo reach the top and bottom viewport edges. */
+		--columnPad: 6rem;
+
+		/* Zero, deliberately. Any padding here is a Cocoa band the photo
+		   can't cross. The copy's air moved to .cs-column — don't put it
+		   back. */
+		padding: 0;
+
+		.cs-container {
+			/* Uncapped and uncentred. Left inset only; the right side is the
+			   photo's and it runs to the edge. */
+			max-width: none;
+			margin: 0;
+			padding: 0 0 0 var(--edge);
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			/* align-items: start, NOT the default stretch. A stretched grid
+			   item is exactly as tall as its row, which leaves the sticky
+			   photo nothing to travel within — it would never move. This
+			   one line is what makes the sticky work. */
+			align-items: start;
+			column-gap: 5rem;
 		}
 
-		.cs-inset {
-			margin-top: 0.5rem;
+		.cs-column {
+			max-width: var(--columnMax);
+			min-height: var(--columnRun);
+			padding: var(--columnPad) 0;
+			box-sizing: border-box;
+			/* Head at the top, socials through the middle, CTA at the bottom.
+			   With a min-height taller than the content, something has to
+			   distribute the slack — bunched at the top it would leave a
+			   long empty tail beside the photo. */
+			justify-content: space-between;
+			gap: 3rem;
+		}
+
+		.cs-title {
+			font-size: clamp(2.5rem, 4vw, 4rem);
+		}
+
+		.cs-socials-title {
+			font-size: 0.8125rem;
+			margin-bottom: 1.5rem;
+		}
+
+		.cs-stat {
+			padding: 1.75rem 0;
+		}
+
+		.cs-stat-figure {
+			font-size: clamp(2rem, 3.6vw, 3.25rem);
+		}
+
+		.cs-stat-caption {
+			font-size: 0.8125rem;
+		}
+
+		.cs-stat-meta {
+			font-size: 0.9375rem;
+		}
+
+		/* Full viewport height and pinned. No width calc — the grid track
+		   already reaches the right edge. top: 0 with no offset because the
+		   photo is meant to fill the viewport; if a fixed header ever lands
+		   over this section, that height goes here and comes off the height
+		   in the same edit. */
+		.cs-visual {
+			width: 100%;
+			height: 100svh;
+			margin-top: 0;
+			position: sticky;
+			top: 0;
 
 			img {
-				height: 17.5rem;
+				height: 100%;
 			}
 		}
 	}

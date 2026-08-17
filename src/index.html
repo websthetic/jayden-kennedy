@@ -90,7 +90,7 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
         <div class="cs-row cs-row-approach">
             <picture class="cs-picture cs-reveal" data-reveal>
                 <img
-                    src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/hero-skyline.jpg"
+                    src="https://media-production.lp-cdn.com/media/8f85c836-5a78-483a-8cd9-3a9fac506c6f"
                     alt="A quiet street of family homes in the Greater Toronto Area"
                     width="2000"
                     height="1333"
@@ -119,73 +119,79 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 
 <div class="cs-curtain cs-curtain-statement">
 
-    <!-- ============================================ -->
-    <!--                   Results                    -->
-    <!-- ============================================ -->
+<!-- ============================================ -->
+<!--                   Results                    -->
+<!--   Left column scrolls, right photo sticks.    -->
+<!--   Native sticky — no JS, no track, no pin.    -->
+<!-- ============================================ -->
 
-    <section id="results">
-        <div class="cs-intro">
-            <h2 class="cs-title">Real Exposure for Your Property</h2>
-            <p class="cs-lede">
-                With a combined audience of more than 64,000, your listing is
-                introduced to an engaged network of people already paying
-                attention to the market.
-            </p>
-        </div>
+<section id="results">
+	<div class="cs-container">
+		<div class="cs-column">
+			<div class="cs-head">
+				<h2 class="cs-title">Real Exposure for Your Property</h2>
+				<p class="cs-lede">
+					With a combined audience of more than 64,000, your listing is
+					introduced to an engaged network of people already paying
+					attention to the market.
+				</p>
+				<p class="cs-copy">
+					Visibility is a major factor when it comes to selling your home
+					in a timely manner. An integrated marketing plan ensures your
+					listing reaches the right buyers.
+				</p>
+			</div>
 
-        <ul class="cs-stats">
-            <li class="cs-stat">
-                <span class="cs-stat-figure" data-count="60" data-suffix="K+">60K+</span>
-                <span class="cs-stat-caption">Instagram</span>
-                <span class="cs-stat-meta">Followers</span>
-            </li>
-            <li class="cs-stat">
-                <span class="cs-stat-figure" data-count="4" data-suffix="K+">4K+</span>
-                <span class="cs-stat-caption">TikTok</span>
-                <span class="cs-stat-meta">Followers</span>
-            </li>
-            <li class="cs-stat">
-                <span class="cs-stat-figure" data-count="500" data-suffix="+">500+</span>
-                <span class="cs-stat-caption">LinkedIn</span>
-                <span class="cs-stat-meta">Connections</span>
-            </li>
-        </ul>
+			<!-- Wrapper so the column stays three flex children — head,
+			     socials, CTA — and space-between still has three things to
+			     distribute. Without it the heading and the list separate. -->
+			<div class="cs-socials">
+				<h3 class="cs-socials-title">My socials</h3>
 
-        <div class="cs-split">
-            <picture class="cs-bleed">
-                <img
-                    loading="lazy"
-                    decoding="async"
-                    src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-sitting-portrait.jpg"
-                    alt="Aerial view of a Greater Toronto Area neighbourhood"
-                    width="900"
-                    height="1200">
-            </picture>
+				<ul class="cs-stats">
+					<li class="cs-stat">
+						<span class="cs-stat-figure" data-count="60" data-suffix="K+">60K+</span>
+						<span class="cs-stat-label">
+							<span class="cs-stat-caption">Instagram</span>
+							<span class="cs-stat-meta">Followers</span>
+						</span>
+					</li>
+					<li class="cs-stat">
+						<span class="cs-stat-figure" data-count="4" data-suffix="K+">4K+</span>
+						<span class="cs-stat-label">
+							<span class="cs-stat-caption">TikTok</span>
+							<span class="cs-stat-meta">Followers</span>
+						</span>
+					</li>
+					<li class="cs-stat">
+						<span class="cs-stat-figure" data-count="500" data-suffix="+">500+</span>
+						<span class="cs-stat-label">
+							<span class="cs-stat-caption">LinkedIn</span>
+							<span class="cs-stat-meta">Connections</span>
+						</span>
+					</li>
+				</ul>
+			</div>
 
-            <div class="cs-column">
-                <p class="cs-copy">
-                    Visibility is a major factor when it comes to selling your home
-                    in a timely manner. An integrated marketing plan ensures your
-                    listing reaches the right buyers.
-                </p>
+			<!-- Light, not solid — .cs-button-solid is a Cocoa fill, which
+			     disappears on this Cocoa field. -->
+			<a href="/results/" class="cs-button-light">See recent sales</a>
+		</div>
 
-                <!-- Light, not solid — .cs-button-solid is a Cocoa fill, which
-                     disappears on this Cocoa field. -->
-                <a href="/results/" class="cs-button-light">See recent sales</a>
-
-                <!-- Second image, balancing the column against the bleed. -->
-                <picture class="cs-inset">
-                    <img
-                        loading="lazy"
-                        decoding="async"
-                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg"
-                        alt="Interior of a recently sold listing"
-                        width="1200"
-                        height="825">
-                </picture>
-            </div>
-        </div>
-    </section>
+		<!-- Second in the DOM, so it lands in column two at 64rem without
+		     explicit placement, and stacks under the copy on mobile where
+		     the heading should lead. -->
+		<picture class="cs-visual">
+			<img
+				loading="lazy"
+				decoding="async"
+				src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg"
+				alt="Interior of a recently sold listing"
+				width="1200"
+				height="825">
+		</picture>
+	</div>
+</section>
 
     <!-- ============================================ -->
     <!--              Visitor Pathways                -->
@@ -350,7 +356,7 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 <section id="featured" aria-label="Featured in" data-parallax>
     <!-- Decorative ground. The frame clips; the media inside is taller than
          it and travels. -->
-    <div class="cs-frame" aria-hidden="true">
+    <!-- <div class="cs-frame" aria-hidden="true">
         <img
             class="cs-media"
             src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg"
@@ -359,7 +365,7 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
             height="1333"
             loading="lazy"
             decoding="async">
-    </div>
+    </div> -->
 
     <div class="cs-container">
         <span class="cs-label"> Also Featured In</span>

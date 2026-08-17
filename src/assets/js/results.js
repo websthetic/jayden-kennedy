@@ -1,56 +1,88 @@
-// ============================================
-//                   RESULTS
-// ============================================
-//
-// Counts each figure up once when the stats row enters view. The final value
-// is already in the markup, so with JS off or reduced motion on, the numbers
-// simply sit there — nothing here is load-bearing.
+/* results.js
+   Pairs the stat panels with the photos by index and drives both off the
+   track's scroll position. Deliberately not a scrubbed animation — the
+   panels cut between discrete states, so this only needs to know which
+   third of the track it's in, not a continuous progress value.
 
-(() => {
-	const stats = document.querySelector("#results .cs-stats");
-	if (!stats) return;
+   Nothing here runs below 64rem or under reduced motion. The .cs-live
+   class is the switch: the CSS pins and stacks only when it's present, so
+   a teardown returns the section to the plain two-column layout. */
+(function () {
+	const section = document.querySelector('#results');
+	if (!section) return;
 
-	const figures = stats.querySelectorAll("[data-count]");
-	if (!figures.length) return;
+	const track = section.querySelector('.cs-track');
+	const stage = section.querySelector('.cs-stage');
+	const panels = Array.from(section.querySelectorAll('.cs-stat'));
+	const shots = Array.from(section.querySelectorAll('.cs-shot'));
+	const ticks = Array.from(section.querySelectorAll('.cs-tick'));
 
-	if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+	if (!track || !stage || panels.length === 0) return;
 
-	const DURATION = 1600;
+	const wide = window.matchMedia('(min-width: 64rem)');
+	const still = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-	// Ease-out. A linear count reads like a loading spinner; decelerating
-	// into the final value reads like an arrival.
-	const ease = (t) => 1 - Math.pow(1 - t, 3);
+	let active = -1;
+	let queued = false;
 
-	const run = (el) => {
-		const target = Number(el.dataset.count);
-		const suffix = el.dataset.suffix || "";
-		if (!Number.isFinite(target)) return;
+	function mark(list, index) {
+		list.forEach(function (el, n) {
+			el.classList.toggle('cs-in', n === index);
+		});
+	}
 
-		const start = performance.now();
+	function setActive(index) {
+		if (index === active) return;
+		active = index;
+		mark(panels, index);
+		mark(shots, index);
+		mark(ticks, index);
+	}
 
-		const step = (now) => {
-			const t = Math.min(1, (now - start) / DURATION);
-			el.textContent = Math.round(ease(t) * target) + suffix;
-			if (t < 1) requestAnimationFrame(step);
-		};
+	function measure() {
+		/* Travel is the track minus the pinned stage — the distance the
+		   track moves while the stage stays put. */
+		const travel = track.offsetHeight - stage.offsetHeight;
+		if (travel <= 0) return;
 
-		// Start from zero rather than letting the first frame land mid-count
-		el.textContent = "0" + suffix;
-		requestAnimationFrame(step);
-	};
+		const scrolled = -track.getBoundingClientRect().top;
+		const p = Math.min(1, Math.max(0, scrolled / travel));
 
-	// Watches the row, not each figure — the three should count together
-	// rather than firing as each one crosses the line.
-	const seen = new IntersectionObserver(
-		(entries, obs) => {
-			entries.forEach((entry) => {
-				if (!entry.isIntersecting) return;
-				figures.forEach(run);
-				obs.disconnect();
-			});
-		},
-		{ rootMargin: "0px 0px -20% 0px", threshold: 0 }
-	);
+		/* Equal thirds. Math.min catches p === 1 exactly, which would
+		   otherwise index one past the last panel. */
+		setActive(Math.min(panels.length - 1, Math.floor(p * panels.length)));
+	}
 
-	seen.observe(stats);
+	function onScroll() {
+		if (queued) return;
+		queued = true;
+		requestAnimationFrame(function () {
+			measure();
+			queued = false;
+		});
+	}
+
+	function teardown() {
+		window.removeEventListener('scroll', onScroll);
+		window.removeEventListener('resize', onScroll);
+		section.classList.remove('cs-live');
+		active = -1;
+		mark(panels, -1);
+		mark(shots, -1);
+		mark(ticks, -1);
+	}
+
+	function sync() {
+		teardown();
+		if (!wide.matches || still.matches) return;
+
+		section.classList.add('cs-live');
+		window.addEventListener('scroll', onScroll, { passive: true });
+		window.addEventListener('resize', onScroll);
+		measure();
+	}
+
+	wide.addEventListener('change', sync);
+	still.addEventListener('change', sync);
+	sync();
 })();
