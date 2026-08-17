@@ -1,35 +1,32 @@
 <!-- ============================================ -->
 <!--                     CTA                      -->
+<!--   Full-bleed photo with a vertical parallax   -->
+<!--   scrub. cta.js sets --p; the CSS does the    -->
+<!--   rest, so with JS off the image simply sits  -->
+<!--   centred.                                    -->
 <!-- ============================================ -->
 
-<section id="cta-1190">
-
-    <!-- muted + playsinline are what let this autoplay on iOS at all.
-         The poster carries the band until the first frame paints, and is
-         all that shows for reduced-motion or data-saver users. -->
-    <video
-        class="cs-background"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata"
-        poster="https://sample-projects.tor1.cdn.digitaloceanspaces.com/real-estate/pexels-pu-ca-adryan-163345030-32791637.jpg"
-        aria-hidden="true"
-        tabindex="-1"
-        width="2560"
-        height="1440">
-        <source src="https://res.cloudinary.com/luxuryp/videos/f_webm,vc_vp9,w_1920,c_limit/midiol4emm8dubjhn2xk/ztxr2x3akrehqho9cvxh.webm" type="video/webm">
-        <source src="https://res.cloudinary.com/luxuryp/videos/f_webm,vc_vp9,w_1920,c_limit/midiol4emm8dubjhn2xk/ztxr2x3akrehqho9cvxh.webm" type="video/mp4">
-    </video>
-
-    <!-- Sits between the video and the copy. Decorative only. -->
-    <div class="cs-scrim" aria-hidden="true"></div>
-
-    <div class="cs-container">
-        <h2 class="cs-title">Build Wealth Through<br> Real Estate</h2>
-        <p class="cs-text">Whether you're buying your first home or growing your investment portfolio, Jayden Kennedy brings the expertise and financial insight to guide every step of the process.</p>
-        <a href="/contact" class="cs-button-solid">Let's Connect</a>
+<section id="cta">
+    <!-- The frame clips; the media inside is taller than it and travels. -->
+    <div class="cs-frame">
+        <img
+            class="cs-media"
+            src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg"
+            alt=""
+            width="2000"
+            height="1333"
+            loading="lazy"
+            decoding="async"
+            aria-hidden="true">
     </div>
 
+    <div class="cs-content">
+        <h2 class="cs-title">Let&rsquo;s talk about what&rsquo;s next</h2>
+        <p class="cs-text">
+            Whether you&rsquo;re buying your first place, selling a home you&rsquo;ve
+            outgrown, or building something longer-term, the conversation starts
+            the same way &mdash; with your numbers and what you actually want.
+        </p>
+        <a href="/contact/" class="cs-button-light">Let&rsquo;s Connect</a>
+    </div>
 </section>

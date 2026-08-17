@@ -1,6 +1,6 @@
 ---
-title: "Jayden Kennedy | Real Estate"
-description: "Meta description for the page"
+title: "Jayden Kennedy Real Estate | Greater Toronto Area"
+description: "Bridging the gap between financial literacy and real estate acquisition so that you can build generational wealth through real estate."
 permalink: "/"
 tags: "sitemap" # content/content.json will make sure that all pages in content/ are marked with a "sitemap" tag, for automatic sitemap generation. As index.html is not in content/, we need to add it here to ensure the root page is included in the sitemap generation
 ---
@@ -17,529 +17,277 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
         <noscript>
             <link rel="stylesheet" href="/assets/css/local.css">
         </noscript>
-
     {% else %}
         <link rel="stylesheet" href="/assets/css/local.css"/>
     {% endif %}
 
-    <!-- To ensure proper validation, prevent errors, and encourage developers to check, schema's are an opt-in feature. They're very bespoke and requires some customising  -->
-    <!-- Uncomment the code below to enable Structured Data, and test it when you deploy to Netlify - https://developers.google.com/search/docs/appearance/structured-data -->
-    <!-- {% include "components/home-schema.html" %} -->
+    <!-- Outside the branch — these have to load in development too, or the
+         scroll effects do nothing while you're looking at them. -->
+    <script defer src="/assets/js/hero.js"></script>
+    <script defer src="/assets/js/pathways.js"></script>
+    <script defer src="/assets/js/results.js"></script>
+    <script defer src="/assets/js/curtain.js"></script>
+    <script defer src="/assets/js/listings.js"></script>
+    <script defer src="/assets/js/testimonials.js"></script>
+    <script defer src="/assets/js/neighbourhoods.js"></script>
+    <script defer src="/assets/js/parallax.js"></script>
+
 {% endblock %}
 
 {% block body %}
 
 <!-- ============================================ -->
-<!--                     Hero                     -->
+<!--              Hero + Statement                -->
+<!--   One section. The frame travels from full   -->
+<!--   bleed into the composed row, and the copy   -->
+<!--   below reveals on entry. The statement then  -->
+<!--   pins while the curtain rides over it.       -->
 <!-- ============================================ -->
 
-<section id="hero-1183">
-
-    <div class="cs-intro">
-        <!-- <span class="cs-watermark" aria-hidden="true">Jayden Kennedy</span> -->
-        <div class="cs-container">
-            <div class="cs-content">
-                <h1 class="cs-title">Build Through<br>Real Estate</h1>
-                <p class="cs-text">
-                    Bridging the gap between financial literacy &amp; real estate acquisition so that you can build generational wealth through real estate.
-                </p>
-            </div>
-        </div>
-    </div>
-
+<section id="hero">
     <div class="cs-track">
-        <div class="cs-frame">
-            <!-- muted + playsinline are what let this autoplay on iOS at all.
-                 The poster carries the frame until the first paint. -->
-            <video
-                class="cs-video"
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                poster="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/hero-img-interior.jpg"
-                aria-hidden="true"
-                tabindex="-1"
-                width="1280"
-                height="854">
-                <source src="https://res.cloudinary.com/luxuryp/videos/f_webm,vc_vp9,w_1920,c_limit/midiol4emm8dubjhn2xk/ztxr2x3akrehqho9cvxh.webm" type="video/webm">
-                <source src="https://res.cloudinary.com/luxuryp/videos/f_webm,vc_vp9,w_1920,c_limit/midiol4emm8dubjhn2xk/ztxr2x3akrehqho9cvxh.webm" type="video/mp4">
-            </video>
-
-            <div class="cs-scrim" aria-hidden="true"></div>
-
-            <div class="cs-statement">
-                <!-- Decorative rotation — the h1 above and the statement text
-                     below carry the meaning. Hidden from assistive tech so a
-                     screen reader isn't interrupted every three seconds. -->
-                <div class="cs-rotator" aria-hidden="true">
-                    <div class="cs-phrase cs-active">
-                        <span class="cs-phrase-topper">Exceptional</span>
-                        <span class="cs-phrase-headline">Representation</span>
-                    </div>
-                    <div class="cs-phrase">
-                        <span class="cs-phrase-topper">Considered</span>
-                        <span class="cs-phrase-headline">Strategy</span>
-                    </div>
-                    <div class="cs-phrase">
-                        <span class="cs-phrase-topper">Enduring</span>
-                        <span class="cs-phrase-headline">Value</span>
-                    </div>
-                    <div class="cs-phrase">
-                        <span class="cs-phrase-topper">Proven</span>
-                        <span class="cs-phrase-headline">Results</span>
-                    </div>
-                    <div class="cs-phrase">
-                        <span class="cs-phrase-topper">Generational</span>
-                        <span class="cs-phrase-headline">Wealth</span>
-                    </div>
-                </div>
-
-                <p class="cs-statement-text">
-                    Clear guidance. Thoughtful strategy. Decisions made with the bigger picture in mind.
-                </p>
-                <div class="cs-cta-group">
-                    <a href="/contact" class="cs-button-solid">Let's Connect</a>
+        <div class="cs-stage">
+            <!-- The travelling frame. Two nested transforms: the window
+                 shrinks and moves, the media counter-scales inside it so the
+                 landed frame reads as a composed shot rather than a slice. -->
+            <div class="cs-frame">
+                <div class="cs-window">
+                    <img
+                        class="cs-media"
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder-1.jpg"
+                        alt=""
+                        width="2000"
+                        height="1333"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
+                        aria-hidden="true">
                 </div>
             </div>
+
+            <!-- Fades out as the frame leaves -->
+            <div class="cs-container">
+                <div class="cs-content">
+                    <h1 class="cs-hero-title">Built Through Real Estate</h1>
+                    <p class="cs-hero-text">
+                        Bridging the gap between financial literacy and real estate
+                        acquisition so that you can build generational wealth through
+                        real estate.
+                    </p>
+                    <a href="/contact/" class="cs-button-light">Let&rsquo;s Connect</a>
+                </div>
+            </div>
+
+            <!-- Revealed behind the frame as it lands. Real copy, so not
+                 aria-hidden — it appears nowhere else on the page. -->
+            <h2 class="cs-ghost">Beyond the<br>transaction</h2>
         </div>
     </div>
 
+    <!-- Reveals on entry rather than scrubbing, so these arrive rather than
+         being dragged. Pins at 64rem while the curtain covers it. -->
+    <div class="cs-statement">
+        <div class="cs-row cs-row-approach">
+            <picture class="cs-picture cs-reveal" data-reveal>
+                <img
+                    src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/hero-skyline.jpg"
+                    alt="A quiet street of family homes in the Greater Toronto Area"
+                    width="2000"
+                    height="1333"
+                    loading="lazy"
+                    decoding="async">
+            </picture>
+
+            <p class="cs-approach cs-reveal" data-reveal>
+                Decisions made with the bigger picture in mind.
+            </p>
+        </div>
+
+        <div class="cs-row cs-row-payoff">
+            <h2 class="cs-payoff cs-reveal" data-reveal>Built for generations.</h2>
+        </div>
+    </div>
 </section>
 
-<script>
-(function () {
-    /* Fraction of the viewport the frame travels before it's fully open.
-       Lower = opens sooner and faster. */
-    const OPEN_AT = 0.62;
-    /* How long each phrase holds, in ms. The only rotation dial —
-       the crossfade duration lives in LESS as --phraseFade. */
-    const HOLD = 3000;
-
-    function init() {
-        const section = document.querySelector("#hero-1183");
-        if (!section) return;
-
-        const frame = section.querySelector(".cs-frame");
-        if (!frame) return;
-
-        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-        /* ---- frame open ---- */
-
-        if (reduced) {
-            section.style.setProperty("--hero-p", "1");
-            section.classList.add("cs-open");
-        } else {
-            let ticking = false;
-            let visible = true;
-            let last = -1;
-
-            const update = () => {
-                ticking = false;
-
-                const vh = window.innerHeight;
-                const top = frame.getBoundingClientRect().top;
-                const travel = vh * OPEN_AT;
-
-                let p = (vh - top) / travel;
-                p = Math.min(1, Math.max(0, p));
-
-                // Skip writes that wouldn't move a rendered pixel.
-                if (Math.abs(p - last) < 0.001) return;
-                last = p;
-
-                section.style.setProperty("--hero-p", p.toFixed(4));
-                section.classList.toggle("cs-open", p > 0.9);
-            };
-
-            const schedule = () => {
-                if (!ticking && visible) {
-                    ticking = true;
-                    window.requestAnimationFrame(update);
-                }
-            };
-
-            if ("IntersectionObserver" in window) {
-                const observer = new IntersectionObserver(
-                    (entries) => {
-                        visible = entries[0].isIntersecting;
-                        if (visible) schedule();
-                    },
-                    { rootMargin: "0px" }
-                );
-                observer.observe(section);
-            }
-
-            window.addEventListener("scroll", schedule, { passive: true });
-            window.addEventListener("resize", () => {
-                last = -1;
-                schedule();
-            });
-
-            update();
-        }
-
-        /* ---- phrase rotation ---- */
-
-        const phrases = Array.from(section.querySelectorAll(".cs-phrase"));
-
-        // Reduced motion holds on the first phrase — no rotation at all.
-        if (!reduced && phrases.length > 1) {
-            let index = 0;
-            let timer = null;
-
-            const advance = () => {
-                phrases[index].classList.remove("cs-active");
-                index = (index + 1) % phrases.length;
-                phrases[index].classList.add("cs-active");
-            };
-
-            const start = () => {
-                if (timer === null) timer = window.setInterval(advance, HOLD);
-            };
-
-            const stop = () => {
-                if (timer !== null) {
-                    window.clearInterval(timer);
-                    timer = null;
-                }
-            };
-
-            // Only rotate once the frame has actually opened — cycling behind
-            // a closed frame spends the sequence before anyone sees it.
-            const observer = new MutationObserver(() => {
-                section.classList.contains("cs-open") && !document.hidden
-                    ? start()
-                    : stop();
-            });
-            observer.observe(section, { attributes: true, attributeFilter: ["class"] });
-
-            // Background tabs don't need to keep cycling.
-            document.addEventListener("visibilitychange", () => {
-                document.hidden || !section.classList.contains("cs-open")
-                    ? stop()
-                    : start();
-            });
-
-            if (section.classList.contains("cs-open")) start();
-        }
-
-        /* ---- video ---- */
-
-        const video = section.querySelector(".cs-video");
-        if (video && reduced) {
-            video.removeAttribute("autoplay");
-            video.pause();
-        }
-    }
-
-    // Runs correctly whether the script is deferred or dropped in the head.
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", init);
-    } else {
-        init();
-    }
-})();
-</script>
-
 <!-- ============================================ -->
-<!--                 Hero Curtain                 -->
-<!--   Everything below the hero lives in here.   -->
-<!--   Pull distance: --frame-h.                  -->
+<!--              Curtain: Statement              -->
+<!--   Everything below the statement lives in    -->
+<!--   here. Pull distance: --statement-cover.    -->
+<!--   A section left outside this wrapper would  -->
+<!--   paint underneath what it means to cover.   -->
 <!-- ============================================ -->
 
-<div class="cs-curtain cs-curtain-hero">
+<div class="cs-curtain cs-curtain-statement">
 
-<!-- ============================================ -->
-<!--                    About                     -->
-<!-- ============================================ -->
+    <!-- ============================================ -->
+    <!--                   Results                    -->
+    <!-- ============================================ -->
 
-<section id="about-1186">
-    <div class="cs-intro">
-         <span class="cs-topper">Representing the Greater Toronto Area</span>
-        <h2 class="cs-title">Real Exposure for Your Property</h2>
-         <p class="cs-lede">
-            Placeholder lede — one sentence, the single strongest credibility claim.
-        </p>
-       
-    </div>
-
-    <!-- <ul class="cs-stats">
-        <li class="cs-stat">
-            <span class="cs-stat-figure">60K+</span>
-            <span class="cs-stat-caption">Instagram Followers</span>
-        </li>
-        <li class="cs-stat">
-            <span class="cs-stat-figure">4k+</span>
-            <span class="cs-stat-caption">Tiktok Followers</span>
-        </li>
-        <li class="cs-stat">
-            <span class="cs-stat-figure">500+</span>
-            <span class="cs-stat-caption">LinkedIn Connections</span>
-        </li>
-    </ul> -->
-
-    <div class="cs-split">
-        <picture class="cs-bleed">
-            <img
-                loading="lazy"
-                decoding="async"
-                src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/about-me-house-img.jpg"
-                alt="Aerial view of a Greater Toronto Area neighbourhood"
-                width="900"
-                height="1200">
-        </picture>
-
-        <div class="cs-column">
-            <p class="cs-text">
-                Visibility is a major factor when it comes to selling your home in a
-                    timely manner. Our integrated marketing plan, including a
-                    combined social following of 64K+, ensures your listing
-                    reaches the right buyers.
+    <section id="results">
+        <div class="cs-intro">
+            <h2 class="cs-title">Real Exposure for Your Property</h2>
+            <p class="cs-lede">
+                With a combined audience of more than 64,000, your listing is
+                introduced to an engaged network of people already paying
+                attention to the market.
             </p>
+        </div>
 
-            <a href="/about/" class="cs-button-solid">get in touch</a>
+        <ul class="cs-stats">
+            <li class="cs-stat">
+                <span class="cs-stat-figure" data-count="60" data-suffix="K+">60K+</span>
+                <span class="cs-stat-caption">Instagram</span>
+                <span class="cs-stat-meta">Followers</span>
+            </li>
+            <li class="cs-stat">
+                <span class="cs-stat-figure" data-count="4" data-suffix="K+">4K+</span>
+                <span class="cs-stat-caption">TikTok</span>
+                <span class="cs-stat-meta">Followers</span>
+            </li>
+            <li class="cs-stat">
+                <span class="cs-stat-figure" data-count="500" data-suffix="+">500+</span>
+                <span class="cs-stat-caption">LinkedIn</span>
+                <span class="cs-stat-meta">Connections</span>
+            </li>
+        </ul>
 
-            <picture class="cs-inset">
+        <div class="cs-split">
+            <picture class="cs-bleed">
                 <img
                     loading="lazy"
                     decoding="async"
-                    src="https://media-production.lp-cdn.com/media/267827af-b16d-4956-98b3-e84bb6463582"
-                    alt="Interior of a recently sold listing"
-                    width="1200"
-                    height="825">
+                    src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-sitting-portrait.jpg"
+                    alt="Aerial view of a Greater Toronto Area neighbourhood"
+                    width="900"
+                    height="1200">
             </picture>
+
+            <div class="cs-column">
+                <p class="cs-copy">
+                    Visibility is a major factor when it comes to selling your home
+                    in a timely manner. An integrated marketing plan ensures your
+                    listing reaches the right buyers.
+                </p>
+
+                <!-- Light, not solid — .cs-button-solid is a Cocoa fill, which
+                     disappears on this Cocoa field. -->
+                <a href="/results/" class="cs-button-light">See recent sales</a>
+
+                <!-- Second image, balancing the column against the bleed. -->
+                <picture class="cs-inset">
+                    <img
+                        loading="lazy"
+                        decoding="async"
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg"
+                        alt="Interior of a recently sold listing"
+                        width="1200"
+                        height="825">
+                </picture>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-</div><!-- /.cs-curtain-hero -->
+    <!-- ============================================ -->
+    <!--              Visitor Pathways                -->
+    <!-- ============================================ -->
 
-<!-- ============================================ -->
-<!--                   Marquee                    -->
-<!-- ============================================ -->
+    <section id="pathways">
+        <!-- The track is the scroll distance the horizontal travel consumes.
+             The stage inside stays pinned for that distance while the rail
+             translates across it. -->
+        <div class="cs-track">
+            <div class="cs-stage">
+                <div class="cs-rail">
+                    <div class="cs-panel">
+                        <img
+                            class="cs-panel-img"
+                            src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/hero-img-interior.jpg"
+                            alt=""
+                            width="2000"
+                            height="1333"
+                            loading="lazy"
+                            decoding="async"
+                            aria-hidden="true">
+                        <span class="cs-panel-label" aria-hidden="true">Buy</span>
+                    </div>
 
-<section id="marquee-1188" aria-label="Career highlights">
-    <!-- Decorative only — the stats carry the meaning. Viewport-tall so the
-         band reads as a window onto a stationary photo. -->
-    <picture class="cs-background" aria-hidden="true">
-        <source media="(min-width: 48rem)" srcset="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/hero-img-interior.jpg">
-        <img src="/assets/images/marquee-bg-m.webp" alt="" loading="lazy" decoding="async" width="1920" height="1080">
-    </picture>
+                    <div class="cs-panel">
+                        <img
+                            class="cs-panel-img"
+                            src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/selling-home-image.jpg"
+                            alt=""
+                            width="2000"
+                            height="1333"
+                            loading="lazy"
+                            decoding="async"
+                            aria-hidden="true">
+                        <span class="cs-panel-label" aria-hidden="true">Sell</span>
+                    </div>
 
-    <div class="cs-marquee">
-        <div class="cs-marquee-track">
-            <ul class="cs-stats">
-                <li class="cs-stat">
-                    <span class="cs-stat-figure">10+</span>
-                    <span class="cs-stat-caption">Years in Business</span>
-                </li>
-                <li class="cs-stat">
-                    <span class="cs-stat-figure">64K+</span>
-                    <span class="cs-stat-caption">Combined Social Following</span>
-                </li>
-                <li class="cs-stat">
-                    <span class="cs-stat-figure">$00M+</span>
-                    <span class="cs-stat-caption">In Closed Sales</span>
-                </li>
-                <li class="cs-stat">
-                    <span class="cs-stat-figure">000+</span>
-                    <span class="cs-stat-caption">Families Served</span>
-                </li>
-            </ul>
+                    <div class="cs-panel">
+                        <img
+                            class="cs-panel-img"
+                            src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/investing-image.jpg"
+                            alt=""
+                            width="2000"
+                            height="1333"
+                            loading="lazy"
+                            decoding="async"
+                            aria-hidden="true">
+                        <span class="cs-panel-label" aria-hidden="true">Invest</span>
+                    </div>
+                </div>
 
-            <!-- Duplicate, hidden from assistive tech — the seamless loop needs it.
-                 If you add or remove a stat above, mirror it here or the loop
-                 will jump at the seam. -->
-            <ul class="cs-stats" aria-hidden="true">
-                <li class="cs-stat">
-                    <span class="cs-stat-figure">10+</span>
-                    <span class="cs-stat-caption">Years in Business</span>
-                </li>
-                <li class="cs-stat">
-                    <span class="cs-stat-figure">64K+</span>
-                    <span class="cs-stat-caption">Combined Social Following</span>
-                </li>
-                <li class="cs-stat">
-                    <span class="cs-stat-figure">$00M+</span>
-                    <span class="cs-stat-caption">In Closed Sales</span>
-                </li>
-                <li class="cs-stat">
-                    <span class="cs-stat-figure">000+</span>
-                    <span class="cs-stat-caption">Families Served</span>
-                </li>
-            </ul>
+                <!-- Pinned card. All three sit in the DOM; only the active one
+                     is visible and focusable. Placeholder copy throughout. -->
+                <div class="cs-card">
+                    <div class="cs-slot">
+                        <div class="cs-pathway cs-active" data-pathway>
+                            <h3 class="cs-pathway-title">Buying</h3>
+                            <p class="cs-pathway-text">
+                                Find the right property with guidance that accounts
+                                for the numbers, not just the finish.
+                            </p>
+                            <a href="/home-search/" class="cs-button-solid">Start your search</a>
+                        </div>
+
+                        <div class="cs-pathway" data-pathway>
+                            <h3 class="cs-pathway-title">Selling</h3>
+                            <p class="cs-pathway-text">
+                                Position your home to reach the buyers who value
+                                what it actually offers.
+                            </p>
+                            <a href="/contact/" class="cs-button-solid">Get a valuation</a>
+                        </div>
+
+                        <div class="cs-pathway" data-pathway>
+                            <h3 class="cs-pathway-title">Investing</h3>
+                            <p class="cs-pathway-text">
+                                Build a portfolio that compounds, with strategy
+                                grounded in real numbers.
+                            </p>
+                            <a href="/contact/" class="cs-button-solid">Talk strategy</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Progress only. Not controls — decorative, so hidden from AT. -->
+                <div class="cs-dots" aria-hidden="true">
+                    <span class="cs-dot cs-active" data-dot></span>
+                    <span class="cs-dot" data-dot></span>
+                    <span class="cs-dot" data-dot></span>
+                </div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<script>
-(function () {
-    const section = document.querySelector("#marquee-1188");
-    if (!section) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let ticking = false;
-    let visible = false;
-
-    function update() {
-        ticking = false;
-        // How far the section's top edge sits above the viewport top.
-        // Feeding this straight back as a counter-translate pins the image.
-        const offset = -section.getBoundingClientRect().top;
-        section.style.setProperty("--offset", offset.toFixed(1) + "px");
-    }
-
-    function onScroll() {
-        if (!visible || ticking) return;
-        ticking = true;
-        requestAnimationFrame(update);
-    }
-
-    new IntersectionObserver((entries) => {
-        visible = entries[0].isIntersecting;
-        if (visible) update();
-    }).observe(section);
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", update, { passive: true });
-    update();
-})();
-</script>
-
-<!-- ============================================ -->
-<!--              Featured Listings               -->
-<!-- ============================================ -->
-
-<section id="listings-1193" aria-labelledby="listings-1193-title">
-  <div class="cs-intro">
-        <span class="cs-topper">Currently on the market</span>
-        <h2 class="cs-title" id="listings-1193-title">Featured Properties</h2>
-    </div>
-
-    <!-- Full-bleed rail. The padding-inline on .cs-rail is what centres the
-         first and last card; the neighbours peek past the card edges. -->
-    <div class="cs-rail">
-        <a href="https://www.realtor.ca/real-estate/30032666/338-dowson-loop-newmarket-woodland-hill" class="cs-card" data-index="0" target="_blank" rel="noopener">
-            <span class="cs-picture">
-                <img class="cs-image" src="https://cdn.realtor.ca/listings/TS639196433613700000/reb88/highres/0/n13563210_1.jpg" alt="Exterior of 338 Dowson Loop, Newmarket" loading="lazy" decoding="async" width="1024" height="683">
-                <span class="cs-panel">
-                    <span class="cs-address">338 Dowson Loop, Newmarket</span>
-                    <span class="cs-meta">$1,275,000 / 4 Beds / 3 Baths / 2,500&ndash;3,000 Sq.Ft.</span>
-                </span>
-            </span>
-        </a>
-
-        <a href="https://www.realtor.ca/real-estate/30145062/16-streathern-way-clarington-bowmanville" class="cs-card" data-index="1" target="_blank" rel="noopener">
-            <span class="cs-picture">
-                <img class="cs-image" src="https://cdn.realtor.ca/listings/TS639221267563470000/reb88/highres/8/e13666008_1.jpg" alt="Exterior of 16 Streathern Way, Bowmanville" loading="lazy" decoding="async" width="1024" height="683">
-                <span class="cs-panel">
-                    <span class="cs-address">16 Streathern Way, Bowmanville</span>
-                    <span class="cs-meta">$649,900 / 3 + 1 Beds / 3 Baths / 1,500&ndash;2,000 Sq.Ft.</span>
-                </span>
-            </span>
-        </a>
-
-        <a href="https://www.realtor.ca/real-estate/29630254/b-660-grey-street-brantford" class="cs-card" data-index="2" target="_blank" rel="noopener">
-            <span class="cs-picture">
-                <img class="cs-image" src="https://cdn.realtor.ca/listings/TS639122934814200000/reb88/highres/0/x13021090_1.jpg" alt="Exterior of 660 Grey Street Unit B, Brantford" loading="lazy" decoding="async" width="1024" height="683">
-                <span class="cs-panel">
-                    <span class="cs-address">660 Grey St Unit B, Brantford</span>
-                    <span class="cs-meta">$460,000 / 3 Beds / 2 Baths / 1,000&ndash;1,199 Sq.Ft.</span>
-                </span>
-            </span>
-        </a>
-    </div>
-
-    <!-- Aligned to the card's own width, so the arrows sit on its left edge
-         and the buttons on its right. -->
-    <div class="cs-controls">
-        <div class="cs-arrows">
-            <button class="cs-arrow" type="button" data-dir="prev" aria-label="Previous property">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-                    <path d="M15 5L8 12l7 7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                </svg>
-            </button>
-            <button class="cs-arrow" type="button" data-dir="next" aria-label="Next property">
-                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-                    <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                </svg>
-            </button>
-        </div>
-
-      <div class="cs-actions">
-    <a href="/home-search" class="cs-button-solid">search all homes</a>
-    <a href="/results" class="cs-button-solid">recent sales</a>
-</div>
-    </div>
-</section>
-
-<script>
-(function () {
-    const section = document.querySelector("#listings-1193");
-    if (!section) return;
-
-    const rail = section.querySelector(".cs-rail");
-    const cards = Array.from(section.querySelectorAll(".cs-card"));
-    const arrows = Array.from(section.querySelectorAll(".cs-arrow"));
-    if (!rail || !cards.length) return;
-
-    let index = 0;
-
-    function setActive(next) {
-        index = Math.min(cards.length - 1, Math.max(0, next));
-        // Ends are dead — say so rather than leaving a control that does
-        // nothing when pressed.
-        arrows.forEach((btn) => {
-            const atEnd = btn.dataset.dir === "next"
-                ? index === cards.length - 1
-                : index === 0;
-            btn.classList.toggle("cs-disabled", atEnd);
-            btn.setAttribute("aria-disabled", String(atEnd));
-        });
-    }
-
-    function scrollTo(next) {
-        const target = cards[Math.min(cards.length - 1, Math.max(0, next))];
-        if (!target) return;
-        // Centres the card in the rail. scrollIntoView would also move the
-        // page vertically; this keeps it to the rail's own axis.
-        const left = target.offsetLeft - rail.offsetLeft
-            - (rail.clientWidth - target.offsetWidth) / 2;
-        rail.scrollTo({ left: left, behavior: "smooth" });
-    }
-
-    arrows.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const next = index + (btn.dataset.dir === "next" ? 1 : -1);
-            if (next < 0 || next > cards.length - 1) return;
-            setActive(next);
-            scrollTo(next);
-        });
-    });
-
-    // Swiping the rail directly keeps the arrow states in sync. 0.6 so the
-    // index flips once a card is meaningfully centred, not on a sliver.
-    cards.forEach((card) => {
-        new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting) setActive(Number(card.dataset.index));
-            },
-            { root: rail, threshold: 0.6 }
-        ).observe(card);
-    });
-
-    setActive(0);
-})();
-</script>
+</div><!-- /.cs-curtain-statement -->
 
 <!-- ============================================ -->
 <!--                    About                     -->
 <!-- ============================================ -->
 
-<section id="about-1187">
+<section id="about">
     <div class="cs-container">
         <!-- Left: stacked portraits -->
         <div class="cs-media">
@@ -549,7 +297,7 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
                 <img
                     loading="lazy"
                     decoding="async"
-                    src="https://media-production.lp-cdn.com/media/d6fe6a2e-69cf-437d-9f13-f2fb3319aefc"
+                    src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg"
                     alt=""
                     width="800"
                     height="500">
@@ -566,30 +314,21 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
             </picture>
         </div>
 
-        <!-- Right: reel, heading, copy -->
+        <!-- Right: heading, copy, signature -->
         <div class="cs-column">
-            <!-- Video placeholder. Swap this div for the embed when the
-                 clip is ready — keep the .cs-reel class and the aspect ratio
-                 so nothing below it shifts. -->
-            <div class="cs-reel">
-                <span class="cs-play" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="currentColor" focusable="false">
-                        <path d="M9 6.5v11l9-5.5-9-5.5Z"></path>
-                    </svg>
-                </span>
-            </div>
-<span class="cs-topper">About Me</span>
+            <span class="cs-topper">About Me</span>
             <h2 class="cs-title">Giving it <br>everything I have</h2>
 
             <div class="cs-copy">
                 <p class="cs-text">
-                    Leaving professional volleyball behind, I made myself one promise: no matter where life takes me, I'll give it everything I have. Almost 5 years into real estate, I've taken time to reflect on how this career has challenged, shaped, and rewarded me in ways I could have never imagined.
+                    Leaving professional volleyball behind, I made myself one promise: wherever life takes me, I’ll give it everything I have. Nearly five years into real estate, that same discipline, resilience, and competitive spirit continue to shape how I show up.
                 </p>
                 <p class="cs-text">
-                    The discipline, resilience, and competitive spirit I developed through sport have stayed with me every step of the way. Real estate has given me a new arena to grow, push beyond my comfort zone, and create meaningful opportunities for the people I serve. What began as a new chapter has become something I’m incredibly proud to continue building.
+                    What began as a new chapter has become a career I’m incredibly proud of, one that has challenged me, pushed me to grow, and created meaningful opportunities for the people I serve.
                 </p>
                 <p class="cs-text">
-                    Every milestone I've reached is because of this community. Your support — whether through engagement, referrals, or simply believing in me — has opened doors I once only dreamed of. I'm forever grateful, and I can't wait to continue blazing trails together.
+                   Every milestone has been made possible by this community. Through your support, referrals, and belief in me, doors have opened that I once only dreamed of. I’m deeply grateful and excited for what’s ahead.
+                </p>
             </div>
 
             <div class="cs-signature">
@@ -608,343 +347,394 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 <!--                  Featured                    -->
 <!-- ============================================ -->
 
-<section id="featured-1189" aria-label="Featured in">
+<section id="featured" aria-label="Featured in" data-parallax>
+    <!-- Decorative ground. The frame clips; the media inside is taller than
+         it and travels. -->
+    <div class="cs-frame" aria-hidden="true">
+        <img
+            class="cs-media"
+            src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg"
+            alt=""
+            width="2000"
+            height="1333"
+            loading="lazy"
+            decoding="async">
+    </div>
+
     <div class="cs-container">
-        <span class="cs-label">Featured In</span>
+        <span class="cs-label"> Also Featured In</span>
+
+        <!-- Decorative. The rule is drawn by CSS, not a character — a border
+             on an empty span keeps it out of the accessibility tree. -->
+        <span class="cs-rule" aria-hidden="true"></span>
 
         <ul class="cs-logos">
             <li class="cs-logo">
-                <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/forbes-logo.png" alt="Publication name" loading="lazy" decoding="async" width="200" height="40">
+                <img
+                    src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/forbes-logo.png"
+                    alt="Forbes"
+                    loading="lazy"
+                    decoding="async"
+                    width="200"
+                    height="40">
             </li>
             <li class="cs-logo">
-                <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/the-new-york-times-seeklogo.png" alt="Publication name" loading="lazy" decoding="async" width="200" height="40">
+                <img
+                    src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/the-new-york-times-seeklogo.png"
+                    alt="The New York Times"
+                    loading="lazy"
+                    decoding="async"
+                    width="200"
+                    height="40">
             </li>
             <li class="cs-logo">
-                <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/business-insider-seeklogo.png" alt="Publication name" loading="lazy" decoding="async" width="200" height="40">
+                <img
+                    src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/business-insider-seeklogo.png"
+                    alt="Business Insider"
+                    loading="lazy"
+                    decoding="async"
+                    width="200"
+                    height="40">
             </li>
         </ul>
     </div>
 </section>
 
 <!-- ============================================ -->
-<!--                  Gateway                     -->
+<!--              Featured Listings               -->
+<!--   Cards are hardcoded for now. When the real  -->
+<!--   listings land, move them to a data file and -->
+<!--   loop it twice — six near-identical blocks   -->
+<!--   is three edits per change otherwise.        -->
 <!-- ============================================ -->
 
-<section id="gateway-1191" aria-label="Explore listings">
-    <a href="/home-search" class="cs-panel">
-        <picture class="cs-background">
-            <img
-                src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/home-search-img.jpg"
-                alt=""
-                loading="lazy"
-                decoding="async"
-                width="1600"
-                height="1200">
-        </picture>
-        <span class="cs-scrim" aria-hidden="true"></span>
-        <span class="cs-label">Home Search</span>
-    </a>
+<section id="listings">
+    <div class="cs-intro">
+        <div class="cs-heading">
+            <span class="cs-topper">Featured Listings</span>
+            <h2 class="cs-title">Currently on the Market</h2>
+        </div>
 
-    <a href="/office-listings" class="cs-panel">
-        <picture class="cs-background">
-            <img
-                src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/sell-with-jayden.jpg"
-                alt=""
-                loading="lazy"
-                decoding="async"
-                width="1600"
-                height="1200">
-        </picture>
-        <span class="cs-scrim" aria-hidden="true"></span>
-        <span class="cs-label">Sell With Jayden</span>
-    </a>
+        <div class="cs-aside">
+            <p class="cs-lede">
+                A selection of homes across the Greater Toronto Area, priced and
+                positioned against what the numbers actually support.
+            </p>
+            <a href="/home-search/" class="cs-button-solid">View all listings</a>
+        </div>
+    </div>
+
+    <!-- The rail holds the same three listings twice. The first pass is the
+         real content; the second is the loop's duplicate and is hidden from
+         assistive tech, or every listing would be announced twice. -->
+    <div class="cs-marquee">
+        <ul class="cs-rail">
+
+            <!-- ---------- Pass one: the real listings ---------- -->
+
+            <li class="cs-item">
+                <a href="/home-search/" class="cs-card">
+                    <img
+                        class="cs-card-img"
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/about-me-house-img.jpg"
+                        alt="215 Oakridge Lane, a detached home with a deep rear garden"
+                        width="900"
+                        height="1200"
+                        loading="lazy"
+                        decoding="async">
+                    <span class="cs-status">Featured Listing</span>
+                    <span class="cs-card-body">
+                        <span class="cs-address">215 Oakridge Lane</span>
+                        <span class="cs-blurb">A quiet street minutes from the lake, with a rear garden that runs the full depth of the lot.</span>
+                        <span class="cs-specs">4 Bedrooms / 3 Bathroom</span>
+                    </span>
+                </a>
+            </li>
+
+            <li class="cs-item">
+                <a href="/home-search/" class="cs-card">
+                    <img
+                        class="cs-card-img"
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/hero-img-interior.jpg"
+                        alt="12 Elmbank Court, a corner-lot detached home"
+                        width="2000"
+                        height="1333"
+                        loading="lazy"
+                        decoding="async">
+                    <span class="cs-status">Featured Listing</span>
+                    <span class="cs-card-body">
+                        <span class="cs-address">12 Elmbank Court</span>
+                        <span class="cs-blurb">Detached on a corner lot, walking distance to the GO line and the older shopping strip.</span>
+                        <span class="cs-specs">4 Bedrooms / 3 Bathroom</span>
+                    </span>
+                </a>
+            </li>
+
+            <li class="cs-item">
+                <a href="/home-search/" class="cs-card">
+                    <img
+                        class="cs-card-img"
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg"
+                        alt="88 Harbourview, a two-bedroom with north light"
+                        width="2000"
+                        height="1333"
+                        loading="lazy"
+                        decoding="async">
+                    <span class="cs-status">Featured Listing</span>
+                    <span class="cs-card-body">
+                        <span class="cs-address">88 Harbourview</span>
+                        <span class="cs-blurb">A two-bedroom with north light and a parking spot, priced under the neighbourhood median.</span>
+                        <span class="cs-specs">2 Bedrooms / 2 Bathroom</span>
+                    </span>
+                </a>
+            </li>
+
+            <!-- ---------- Pass two: the loop's duplicate ----------
+                 aria-hidden, and not links — a keyboard user should not be
+                 able to tab into a copy of something they've already passed. -->
+
+            <li class="cs-item" aria-hidden="true">
+                <span class="cs-card">
+                    <img
+                        class="cs-card-img"
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/about-me-house-img.jpg"
+                        alt=""
+                        width="900"
+                        height="1200"
+                        loading="lazy"
+                        decoding="async">
+                    <span class="cs-status">Featured Listing</span>
+                    <span class="cs-card-body">
+                        <span class="cs-address">215 Oakridge Lane</span>
+                        <span class="cs-blurb">A quiet street minutes from the lake, with a rear garden that runs the full depth of the lot.</span>
+                        <span class="cs-specs">4 Bedrooms / 3 Bathroom</span>
+                    </span>
+                </span>
+            </li>
+
+            <li class="cs-item" aria-hidden="true">
+                <span class="cs-card">
+                    <img
+                        class="cs-card-img"
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/hero-img-interior.jpg"
+                        alt=""
+                        width="2000"
+                        height="1333"
+                        loading="lazy"
+                        decoding="async">
+                    <span class="cs-status">Featured Listing</span>
+                    <span class="cs-card-body">
+                        <span class="cs-address">12 Elmbank Court</span>
+                        <span class="cs-blurb">Detached on a corner lot, walking distance to the GO line and the older shopping strip.</span>
+                        <span class="cs-specs">4 Bedrooms / 3 Bathroom</span>
+                    </span>
+                </span>
+            </li>
+
+            <li class="cs-item" aria-hidden="true">
+                <span class="cs-card">
+                    <img
+                        class="cs-card-img"
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg"
+                        alt=""
+                        width="2000"
+                        height="1333"
+                        loading="lazy"
+                        decoding="async">
+                    <span class="cs-status">Featured Listing</span>
+                    <span class="cs-card-body">
+                        <span class="cs-address">88 Harbourview</span>
+                        <span class="cs-blurb">A two-bedroom with north light and a parking spot, priced under the neighbourhood median.</span>
+                        <span class="cs-specs">2 Bedrooms / 2 Bathroom</span>
+                    </span>
+                </span>
+            </li>
+
+        </ul>
+    </div>
 </section>
 
 <!-- ============================================ -->
 <!--               Testimonials                   -->
 <!-- ============================================ -->
 
-<section id="testimonials-1186">
-  <!-- Decorative — the mark bleeds off the right edge, as on the card. -->
-  <img class="cs-watermark"
-       src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-icon-logo.png"
-       alt=""
-       aria-hidden="true"
-       loading="lazy"
-       decoding="async">
+<section id="testimonials">
+    <!-- Decorative — the mark bleeds off the right edge, as on the card. -->
+    <img
+        class="cs-watermark"
+        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-icon-logo.png"
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async">
 
-  <div class="cs-container">
-    <span class="cs-topper">What our clients say</span>
-    <h2 class="cs-title">Success Stories</h2>
-    <span class="cs-rule" aria-hidden="true"></span>
-
-    <div class="cs-controls">
-      <button class="cs-arrow" type="button" data-dir="prev" aria-label="Previous testimonial">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-          <path d="M15 5L8 12l7 7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-        </svg>
-      </button>
-      <button class="cs-arrow" type="button" data-dir="next" aria-label="Next testimonial">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-          <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </div>
-
-    <!-- Every slide sits in the same grid cell, so the stage is as tall as
-         the longest quote and never resizes between slides. -->
-    <div class="cs-stage" aria-live="polite">
-      <figure class="cs-slide cs-active">
-        <blockquote class="cs-quote">In a very difficult market, I felt very well represented. You were realistic, helpful and always available throughout.</blockquote>
-        <figcaption class="cs-author">— Mike &amp; Betsie Smith</figcaption>
-      </figure>
-
-      <figure class="cs-slide" aria-hidden="true">
-        <blockquote class="cs-quote">Our house was listed on a Thursday and under offer by the following weekend, over asking. Jayden knew exactly which buyers to reach.</blockquote>
-        <figcaption class="cs-author">— Jane Mitchell</figcaption>
-      </figure>
-
-      <figure class="cs-slide" aria-hidden="true">
-        <blockquote class="cs-quote">I have bought four investment properties and this was the first time I felt someone was reading the numbers as carefully as I was.</blockquote>
-        <figcaption class="cs-author">— Robert Langley</figcaption>
-      </figure>
-
-      <figure class="cs-slide" aria-hidden="true">
-        <blockquote class="cs-quote">We looked at eleven houses and Jayden talked us out of two of them. That is the part I remember — being told when something was not right for us.</blockquote>
-        <figcaption class="cs-author">— David Kim</figcaption>
-      </figure>
-
-      <figure class="cs-slide" aria-hidden="true">
-        <blockquote class="cs-quote">The listing sat with another agent for four months. Relisted with Jayden and it was gone in eighteen days at a better number.</blockquote>
-        <figcaption class="cs-author">— Claire O'Brien</figcaption>
-      </figure>
-
-      <figure class="cs-slide" aria-hidden="true">
-        <blockquote class="cs-quote">First place of my own and I understood nothing going in. Every stage was explained before it happened, so nothing caught me off guard.</blockquote>
-        <figcaption class="cs-author">— Lena Park</figcaption>
-      </figure>
-    </div>
-
-    <a href="/testimonials" class="cs-button-solid">View All</a>
-  </div>
-</section>
-
-<script>(function () {
-  const section = document.querySelector("#testimonials-1186");
-  if (!section) return;
-
-  const slides = Array.from(section.querySelectorAll(".cs-slide"));
-  if (slides.length < 2) return;
-
-  let index = 0;
-
-  function show(next) {
-    // wraps in both directions
-    index = (next + slides.length) % slides.length;
-    slides.forEach((slide, i) => {
-      const active = i === index;
-      slide.classList.toggle("cs-active", active);
-      // aria-hidden follows the visual state so screen readers only ever
-      // encounter the quote that's actually on screen
-      slide.setAttribute("aria-hidden", String(!active));
-    });
-  }
-
-  section.querySelectorAll(".cs-arrow").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      show(index + (btn.dataset.dir === "next" ? 1 : -1));
-    });
-  });
-
-  // Arrow keys work when focus is anywhere in the section
-  section.addEventListener("keydown", (e) => {
-    if (e.key === "ArrowLeft") show(index - 1);
-    if (e.key === "ArrowRight") show(index + 1);
-  });
-})();</script>
-
-<!-- ============================================ -->
-<!--                Neighborhoods                 -->
-<!-- ============================================ -->
-
-<section id="neighborhoods-1192">
     <div class="cs-container">
+        <span class="cs-topper">What our clients say</span>
+        <h2 class="cs-title">Success Stories</h2>
+        <span class="cs-rule" aria-hidden="true"></span>
 
-        <div class="cs-column">
-            <span class="cs-topper">Areas of Expertise</span>
-            <h2 class="cs-title">Neighbourhoods</h2>
-
-            <!-- Buttons, not links — these drive the rail. The panel itself
-                 carries the link to the neighbourhood page. -->
-            <ul class="cs-list">
-                <li class="cs-item">
-                    <button class="cs-name cs-active" type="button" data-index="0">
-                        <span>Whitby</span>
-                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-                            <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                        </svg>
-                    </button>
-                </li>
-                <li class="cs-item">
-                    <button class="cs-name" type="button" data-index="1">
-                        <span>Ajax</span>
-                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-                            <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                        </svg>
-                    </button>
-                </li>
-                <li class="cs-item">
-                    <button class="cs-name" type="button" data-index="2">
-                        <span>Pickering</span>
-                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-                            <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                        </svg>
-                    </button>
-                </li>
-                <li class="cs-item">
-                    <button class="cs-name" type="button" data-index="3">
-                        <span>Courtice</span>
-                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-                            <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                        </svg>
-                    </button>
-                </li>
-                <li class="cs-item">
-                    <button class="cs-name" type="button" data-index="4">
-                        <span>Bowmanville</span>
-                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-                            <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                        </svg>
-                    </button>
-                </li>
-                <li class="cs-item">
-                    <button class="cs-name" type="button" data-index="5">
-                        <span>Oshawa</span>
-                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-                            <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                        </svg>
-                    </button>
-                </li>
-               
-            </ul>
-
-            <a href="/neighbourhoods" class="cs-button-solid">View All</a>
+        <div class="cs-controls">
+            <button class="cs-arrow" type="button" data-dir="prev" aria-label="Previous testimonial">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                    <path d="M15 5L8 12l7 7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+                </svg>
+            </button>
+            <button class="cs-arrow" type="button" data-dir="next" aria-label="Next testimonial">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                    <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+                </svg>
+            </button>
         </div>
 
-        <div class="cs-rail-wrap">
-            <div class="cs-controls">
-                <button class="cs-arrow" type="button" data-dir="prev" aria-label="Previous neighbourhood">
-                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-                        <path d="M15 5L8 12l7 7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                    </svg>
-                </button>
-                <button class="cs-arrow" type="button" data-dir="next" aria-label="Next neighbourhood">
-                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
-                        <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
-                    </svg>
-                </button>
-            </div>
+        <!-- Every slide sits in the same grid cell, so the stage is as tall as
+             the longest quote and never resizes between slides. -->
+        <div class="cs-stage" aria-live="polite">
+            <figure class="cs-slide cs-active">
+                <blockquote class="cs-quote">In a very difficult market, I felt very well represented. You were realistic, helpful and always available throughout.</blockquote>
+                <figcaption class="cs-author">&mdash; Mike &amp; Betsie Smith</figcaption>
+            </figure>
 
-            <!-- Native scroll with snap — no transform maths, and swipe works
-                 for free on touch. -->
-            <div class="cs-rail">
-                <a href="/neighbourhoods/whitby" class="cs-panel" data-index="0">
-                    <img class="cs-panel-img" src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/neighborhood-img/whitby-area.jpg" alt="" loading="lazy" decoding="async" width="900" height="1200">
-                    <span class="cs-panel-scrim" aria-hidden="true"></span>
-                    <span class="cs-panel-label">Whitby</span>
-                </a>
+            <figure class="cs-slide" aria-hidden="true">
+                <blockquote class="cs-quote">Our house was listed on a Thursday and under offer by the following weekend, over asking. Jayden knew exactly which buyers to reach.</blockquote>
+                <figcaption class="cs-author">&mdash; Jane Mitchell</figcaption>
+            </figure>
 
-                <a href="/neighbourhoods/ajax" class="cs-panel" data-index="1">
-                    <img class="cs-panel-img" src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/neighborhood-img/ajax-area.jpg" alt="" loading="lazy" decoding="async" width="900" height="1200">
-                    <span class="cs-panel-scrim" aria-hidden="true"></span>
-                    <span class="cs-panel-label">Ajax</span>
-                </a>
+            <figure class="cs-slide" aria-hidden="true">
+                <blockquote class="cs-quote">I have bought four investment properties and this was the first time I felt someone was reading the numbers as carefully as I was.</blockquote>
+                <figcaption class="cs-author">&mdash; Robert Langley</figcaption>
+            </figure>
 
-                <a href="/neighbourhoods/pickering" class="cs-panel" data-index="2">
-                    <img class="cs-panel-img" src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/neighborhood-img/pickering-area.jpg" alt="" loading="lazy" decoding="async" width="900" height="1200">
-                    <span class="cs-panel-scrim" aria-hidden="true"></span>
-                    <span class="cs-panel-label">Pickering</span>
-                </a>
+            <figure class="cs-slide" aria-hidden="true">
+                <blockquote class="cs-quote">We looked at eleven houses and Jayden talked us out of two of them. That is the part I remember &mdash; being told when something was not right for us.</blockquote>
+                <figcaption class="cs-author">&mdash; David Kim</figcaption>
+            </figure>
 
-                <a href="/neighbourhoods/courtice" class="cs-panel" data-index="3">
-                    <img class="cs-panel-img" src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/neighborhood-img/courtice-area.jpg" alt="" loading="lazy" decoding="async" width="900" height="1200">
-                    <span class="cs-panel-scrim" aria-hidden="true"></span>
-                    <span class="cs-panel-label">Courtice</span>
-                </a>
+            <figure class="cs-slide" aria-hidden="true">
+                <blockquote class="cs-quote">The listing sat with another agent for four months. Relisted with Jayden and it was gone in eighteen days at a better number.</blockquote>
+                <figcaption class="cs-author">&mdash; Claire O&rsquo;Brien</figcaption>
+            </figure>
 
-                <a href="/neighbourhoods/bowmanville" class="cs-panel" data-index="4">
-                    <img class="cs-panel-img" src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/neighborhood-img/bowmanville-area.jpg" alt="" loading="lazy" decoding="async" width="900" height="1200">
-                    <span class="cs-panel-scrim" aria-hidden="true"></span>
-                    <span class="cs-panel-label">Bowmanville</span>
-                </a>
-
-                <a href="/neighbourhoods/oshawa" class="cs-panel" data-index="5">
-                    <img class="cs-panel-img" src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/neighborhood-img/oshawa-area.jpg" alt="" loading="lazy" decoding="async" width="900" height="1200">
-                    <span class="cs-panel-scrim" aria-hidden="true"></span>
-                    <span class="cs-panel-label">Oshawa</span>
-                </a>
-
-            </div>
+            <figure class="cs-slide" aria-hidden="true">
+                <blockquote class="cs-quote">First place of my own and I understood nothing going in. Every stage was explained before it happened, so nothing caught me off guard.</blockquote>
+                <figcaption class="cs-author">&mdash; Lena Park</figcaption>
+            </figure>
         </div>
 
+        <a href="/testimonials/" class="cs-button-solid">View All</a>
     </div>
 </section>
 
-<script>
-(function () {
-    const section = document.querySelector("#neighborhoods-1192");
-    if (!section) return;
+<!-- ============================================ -->
+<!--                Neighbourhoods                -->
+<!-- ============================================ -->
 
-    const rail = section.querySelector(".cs-rail");
-    const panels = Array.from(section.querySelectorAll(".cs-panel"));
-    const names = Array.from(section.querySelectorAll(".cs-name"));
-    if (!rail || !panels.length) return;
+<section id="neighbourhoods">
+    <div class="cs-intro">
+        <span class="cs-topper">Areas of Expertise</span>
+        <h2 class="cs-title">PLACES TO CALL HOME</h2>
+    </div>
 
-    let index = 0;
+    <div class="cs-stage">
+        <!-- Every slide sits in the same cell. neighbourhoods.js moves them by
+             class, so with JS off the first one simply shows. -->
+        <ul class="cs-track">
+                <li class="cs-slide cs-active">
+                    <img
+                        class="cs-slide-img"
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/neighborhood-img/whitby-area.jpg"
+                        alt="Whitby, Ontario"
+                        loading="lazy"
+                        decoding="async"
+                        width="900"
+                        height="1200">
+                </li>
+                <li class="cs-slide">
+                    <img
+                        class="cs-slide-img"
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/neighborhood-img/ajax-area.jpg"
+                        alt="Ajax, Ontario"
+                        loading="lazy"
+                        decoding="async"
+                        width="900"
+                        height="1200">
+                </li>
+                <li class="cs-slide">
+                    <img
+                        class="cs-slide-img"
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/neighborhood-img/pickering-area.jpg"
+                        alt="Pickering, Ontario"
+                        loading="lazy"
+                        decoding="async"
+                        width="900"
+                        height="1200">
+                </li>
+                <li class="cs-slide">
+                    <img
+                        class="cs-slide-img"
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/neighborhood-img/courtice-area.jpg"
+                        alt="Courtice, Ontario"
+                        loading="lazy"
+                        decoding="async"
+                        width="900"
+                        height="1200">
+                </li>
+                <li class="cs-slide">
+                    <img
+                        class="cs-slide-img"
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/neighborhood-img/bowmanville-area.jpg"
+                        alt="Bowmanville, Ontario"
+                        loading="lazy"
+                        decoding="async"
+                        width="900"
+                        height="1200">
+                </li>
+                <li class="cs-slide">
+                    <img
+                        class="cs-slide-img"
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/neighborhood-img/oshawa-area.jpg"
+                        alt="Oshawa, Ontario"
+                        loading="lazy"
+                        decoding="async"
+                        width="900"
+                        height="1200">
+                </li>
+        </ul>
 
-    function setActive(next) {
-        index = Math.min(panels.length - 1, Math.max(0, next));
-        names.forEach((n, i) => n.classList.toggle("cs-active", i === index));
-    }
+        <!-- Outside .cs-track on purpose. The slides clip their overflow, and
+             the name has to survive a switch independently of the card
+             underneath it. -->
+        <p class="cs-namestack">
+            <span class="cs-name cs-active" aria-hidden="false">Whitby</span>
+            <span class="cs-name" aria-hidden="true">Ajax</span>
+            <span class="cs-name" aria-hidden="true">Pickering</span>
+            <span class="cs-name" aria-hidden="true">Courtice</span>
+            <span class="cs-name" aria-hidden="true">Bowmanville</span>
+            <span class="cs-name" aria-hidden="true">Oshawa</span>
+        </p>
 
-    function scrollTo(next) {
-        const target = panels[Math.min(panels.length - 1, Math.max(0, next))];
-        if (!target) return;
-        // scrollIntoView would also scroll the page vertically; this keeps
-        // the movement to the rail's own axis.
-        rail.scrollTo({ left: target.offsetLeft - rail.offsetLeft, behavior: "smooth" });
-    }
+        <button class="cs-arrow cs-prev" type="button" data-dir="prev" aria-label="Previous neighbourhood">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <path d="M15 5L8 12l7 7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+        </button>
+        <button class="cs-arrow cs-next" type="button" data-dir="next" aria-label="Next neighbourhood">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+                <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            </svg>
+        </button>
+    </div>
 
-    names.forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const i = Number(btn.dataset.index);
-            setActive(i);
-            scrollTo(i);
-        });
-    });
+    <!-- Display only, not a control. Decorative to assistive tech, since the
+         arrow labels already describe the movement. -->
+    <div class="cs-progress" aria-hidden="true">
+        <span class="cs-bar"></span>
+    </div>
 
-    section.querySelectorAll(".cs-arrow").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const next = index + (btn.dataset.dir === "next" ? 1 : -1);
-            setActive(next);
-            scrollTo(next);
-        });
-    });
+    <div class="cs-foot">
+        <a href="/neighbourhoods/" class="cs-button-solid">View All Neighbourhoods</a>
+    </div>
+</section>
 
-    // Swiping the rail directly keeps the list in sync. threshold 0.6 so the
-    // active name flips once a panel is meaningfully in view, not on a sliver.
-    panels.forEach((panel) => {
-        new IntersectionObserver(
-            (entries) => {
-                if (entries[0].isIntersecting) setActive(Number(panel.dataset.index));
-            },
-            { root: rail, threshold: 0.6 }
-        ).observe(panel);
-    });
-})();
-</script>
+{% include 'sections/cta.html' %}
 
-
-
- {% include 'sections/cta.html' %}
 {% endblock %}

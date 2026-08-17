@@ -3,48 +3,82 @@
 <--- -------------------------- -*/
 
 @media only screen and (min-width: 0px) {
+	/* All elements in the library derive their variables and base styles from this central sheet, simplifying site-wide edits. For instance, if you want to modify how your h2's appear across the site, you just update it once in the global styles, and the changes apply everywhere. */
 	:root {
-		--primary: #3B2A20;
+		/* ---------- Brand palette (Jayden Kennedy Kit, 2026) ---------- */
+		/* Primary */
+		--cashmereBeige: #f1e2d1;
+		--cashmereBeige-rgb: 241, 226, 209;
+		--darkCocoa: #3b2a20;
 		--darkCocoa-rgb: 59, 42, 32;
-		--primary-rgb: 59, 42, 32;
-		--primaryLight: #fefbf7;
-		--secondary: #20301A;
---secondaryLight: #20301A;
---heritageGreen: #20301A;
---heritageGreen-rgb: 32, 48, 26;
-		--headerColor: #3B2A20;
-		--bodyTextColor: #6B5346;
-		--bodyTextColorWhite: #ffffff;
-		--surfaceCanvas: #FCF8F3;
 
+		/* Secondary */
+		--heritageGreen: #20301a;
+		--heritageGreen-rgb: 32, 48, 26;
+		--absoluteBlack: #000000;
+		--pearlWhite: #ffffff;
+
+		/* ---------- Semantic aliases ---------- */
+		/* The .cs-* globals and any CodeStitch stitch you paste reach for
+		   these names, so they stay. Only the values change. */
+		--primary: var(--darkCocoa);
+		--primary-rgb: var(--darkCocoa-rgb);
+		--secondary: var(--heritageGreen);
+		--secondary-rgb: var(--heritageGreen-rgb);
+
+		/* Stopgap. The stock nav and footer in global.less reference this
+		   five times as a hover accent. Pointed at Cashmere so nothing
+		   collapses before those get rewritten. */
+		--primaryLight: var(--cashmereBeige);
+
+		/* Large fields. Swap to var(--cashmereBeige) for the full kit tone
+		   edge to edge. */
+		--surfaceCanvas: #faf6f0;
+
+		--headerColor: var(--darkCocoa);
+		/* Cocoa lightened for long-form reading. Full #3b2a20 at body size
+		   is heavy on the eye over a paragraph. */
+		--bodyTextColor: #6b5346;
+		--bodyTextColorWhite: var(--pearlWhite);
+
+		/* ---------- Type scale ---------- */
 		/* 13px - 16px */
 		--topperFontSize: clamp(0.8125rem, 1.6vw, 1rem);
 		/* 31px - 49px */
 		--headerFontSize: clamp(1.9375rem, 3.9vw, 3.0625rem);
+		/* 40px - 72px */
+		--heroFontSize: clamp(2.5rem, 5.2vw, 4.5rem);
 		--bodyFontSize: 1rem;
 		/* 60px - 100px top and bottom */
 		--sectionPadding: clamp(3.75rem, 7.82vw, 6.25rem) 1rem;
 
-		--headerFont: "Cinzel Medium", Arial, sans-serif;
-		--bodyFont: "Elms Sans Light", Arial, sans-serif;
+		/* One family name per typeface — the weight selects the real cut */
+		--headerFont: "Cinzel", "Times New Roman", serif;
+		--bodyFont: "Elms Sans", Arial, sans-serif;
 		--buttonFont: "Rosemartin", Arial, sans-serif;
-		
+
+		/* No faux bolds or obliques. If a weight has no file behind it,
+		   this makes it fall back visibly instead of smearing. */
+		font-synthesis: none;
+	}
+
+	html {
+		overflow-x: clip;
 	}
 
 	html,
-body {
-    margin: 0;
-    padding: 0;
-    /* clip, not hidden. `overflow-x: hidden` forces overflow-y to compute
-       to `auto`, making the root a scroll container and breaking every
-       `position: sticky` on the page. `clip` suppresses overflow without
-       creating a scroll container. */
-    overflow-x: clip;
-    font-family: var(--bodyFont);
-    font-size: 100%;
-    transition: background-color 0.3s;
-    color: var(--bodyTextColor);
-}
+	body {
+		margin: 0;
+		padding: 0;
+		font-family: var(--bodyFont);
+		font-size: 100%;
+		/* Elms Sans Light is the default body cut. Stated explicitly so the
+		   browser doesn't resolve an unrequested 400 to whichever face is
+		   nearer. */
+		font-weight: 300;
+		background-color: var(--surfaceCanvas);
+		color: var(--bodyTextColor);
+	}
 
 	*,
 	*:before,
@@ -56,30 +90,51 @@ body {
 	}
 
 	.cs-topper {
-    /* Medium is the only face above Light — 700 would synthesise a
-       faux bold from the Light file */
-    font-family: var(--bodyFont);
-    font-size: var(--topperFontSize);
-    font-weight: 600;
-    line-height: 1.4em;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    text-align: inherit;
-    color: rgba(var(--heritageGreen-rgb), 0.6);
-    margin: 0 0 (16/16rem);
-    display: block;
-}
+		font-size: var(--topperFontSize);
+		line-height: 1.2em;
+		text-transform: uppercase;
+		text-align: inherit;
+		letter-spacing: 0.1em;
+		/* Elms Sans tops out at Medium 500 */
+		font-weight: 500;
+		/* Heritage Green rather than Cocoa — as Cocoa it shares a hue with
+		   the title directly beneath it and stops reading as its own mark. */
+		color: var(--secondary);
+		margin-bottom: 0.25rem;
+		display: block;
+	}
 
 	.cs-title {
 		font-size: var(--headerFontSize);
-		font-weight: 900;
+		/* Stated explicitly because .cs-title lands on spans and divs as
+		   often as on headings, and only h1-h6 inherit the header font. */
+		font-family: var(--headerFont);
+		font-weight: 700;
 		line-height: 1.2em;
 		text-align: inherit;
+		/* Cinzel is set uppercase throughout the kit */
+		text-transform: uppercase;
+		letter-spacing: 0.02em;
 		max-width: 43.75rem;
 		margin: 0 0 1rem 0;
 		color: var(--headerColor);
 		position: relative;
+	}
+
+	/* Display scale, hero only. Tighter leading and looser tracking than
+	   .cs-title — large type needs less of both than text sizes do. */
+	.cs-hero-title {
+		font-size: var(--heroFontSize);
+		font-family: var(--headerFont);
+		font-weight: 500;
+		line-height: 1.1em;
+		text-align: inherit;
 		text-transform: uppercase;
+		letter-spacing: 0.01em;
+		max-width: 43.75rem;
+		margin: 0 0 1rem 0;
+		color: var(--pearlWhite);
+		position: relative;
 	}
 
 	.cs-text {
@@ -93,12 +148,6 @@ body {
 	}
 }
 
-@property --stroke-p {
-    syntax: "<number>";
-    inherits: false;
-    initial-value: 0;
-}
-
 /* Components + Utilities */
 @media only screen and (min-width: 0px) {
 	// Hidden screen reader skip nav button
@@ -110,106 +159,110 @@ body {
 		opacity: 0;
 	}
 
-.cs-button-solid {
-    /* --btnFill  the colour that fills in on hover.
-       --btnInk   label colour once it's filled. Warm off-white rather
-                  than #fff — pure white on Heritage Green reads cold. */
-    --btnFill: var(--heritageGreen);
-    --btnInk: var(--surfaceCanvas);
+	.cs-button-solid {
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		width: auto;
+		min-height: 3.25rem;
+		padding: 0 2.25rem;
+		background-color: var(--primary);
+		border: 1px solid var(--primary);
+		border-radius: 0;
+		text-align: center;
+		text-decoration: none;
+		/* Rosemartin is lowercase-only per the kit, so the class enforces it.
+		   Type "Let's Connect" in the markup and it still renders correctly. */
+		text-transform: lowercase;
+		font-family: var(--buttonFont);
+		font-size: 0.875rem;
+		font-weight: 400;
+		line-height: 1em;
+		letter-spacing: 0.02em;
+		color: var(--cashmereBeige);
+		transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 
-    position: relative;
-    display: inline-block;
-    background-color: transparent;
-    width: auto;
-    padding: (20/16rem) (36/16rem);
-    border: 1px solid rgba(var(--primary-rgb), 0.25);
-    border-radius: (100/16rem);
-    text-decoration: none;
-    text-transform: lowercase;
-    font-size: (14/16rem);
-    line-height: (18/16em);
-    letter-spacing: (1.2/16em);
-    font-weight: 500;
-    text-align: center;
-    color: var(--headerColor);
-    font-family: var(--buttonFont);
-    transition: background-color 0.4s ease,
-                border-color 0.4s ease,
-                color 0.4s ease;
+		&:hover {
+			background-color: var(--secondary);
+			border-color: var(--secondary);
+			color: var(--cashmereBeige);
+		}
 
-    &:hover,
-    &:focus-visible {
-        background-color: var(--btnFill);
-        border-color: var(--btnFill);
-        color: var(--primaryLight);
-    }
+		&:focus-visible {
+			outline: 2px solid var(--primary);
+			outline-offset: 3px;
+		}
+	}
 
-    &:focus-visible {
-        outline: 1px solid var(--btnFill);
-        outline-offset: (3/16rem);
-    }
-}
+	.cs-button-outline {
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		width: auto;
+		min-height: 3.25rem;
+		padding: 0 2.25rem;
+		background-color: transparent;
+		border: 1px solid var(--primary);
+		border-radius: 0;
+		text-align: center;
+		text-decoration: none;
+		text-transform: lowercase;
+		font-family: var(--buttonFont);
+		font-size: 0.875rem;
+		font-weight: 400;
+		line-height: 1em;
+		letter-spacing: 0.02em;
+		color: var(--primary);
+		transition: background-color 0.3s, color 0.3s;
 
-// 	.cs-button-outline {
-//     /* --btnFill  the colour that sweeps in. Heritage Green, so the two
-//                   tiers share one interaction vocabulary — the solid draws
-//                   a green ring, this one floods green.
-//        --btnInk   label colour once the fill has landed. */
-//     --btnFill: var(--heritageGreen);
-//     --btnInk: var(--surfaceCanvas);
+		&:hover {
+			background-color: var(--primary);
+			color: var(--cashmereBeige);
+		}
 
-//     z-index: 1;
-//     position: relative;
-//     display: inline-block;
-//     /* clips the sweeping fill to the pill */
-//     overflow: hidden;
-//     background-color: transparent;
-//     width: auto;
-//     /* matched to .cs-button-solid — the two sit side by side */
-//     padding: (20/16rem) (36/16rem);
-//     border: 1px solid rgba(var(--primary-rgb), 0.25);
-//     border-radius: (100/16rem);
-//     text-decoration: none;
-//     text-transform: lowercase;
-//     font-size: (14/16rem);
-//     line-height: (18/16em);
-//     letter-spacing: (1.2/16em);
-//     font-weight: 500;
-//     text-align: center;
-//     color: var(--headerColor);
-//     font-family: var(--buttonFont);
-//     transition: color 0.4s ease, border-color 0.5s ease;
+		&:focus-visible {
+			outline: 2px solid var(--primary);
+			outline-offset: 3px;
+		}
+	}
 
-//     &:before {
-//         content: "";
-//         z-index: -1;
-//         position: absolute;
-//         top: 0;
-//         left: 0;
-//         width: 0;
-//         height: 100%;
-//         background-color: var(--btnFill);
-//         display: block;
-//         /* same curve as the solid's ring draw, so the two tiers move
-//            with the same hand */
-//         transition: width 0.6s cubic-bezier(0.33, 0, 0.15, 1);
-//     }
+	/* For dark fields only — hero photo, Cocoa CTA band, footer. Fills
+	   Cashmere and hollows out on hover, the reverse of the light-canvas
+	   buttons above. */
+	.cs-button-light {
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		width: auto;
+		min-height: 3.25rem;
+		padding: 0 2.25rem;
+		background-color: var(--cashmereBeige);
+		/* The border is on the solid state too, matching the hover width, so
+		   the box never resizes mid-transition. */
+		border: 1px solid var(--cashmereBeige);
+		border-radius: 0;
+		text-align: center;
+		text-decoration: none;
+		text-transform: lowercase;
+		font-family: var(--buttonFont);
+		font-size: 0.875rem;
+		font-weight: 400;
+		line-height: 1em;
+		letter-spacing: 0.02em;
+		color: var(--darkCocoa);
+		transition: background-color 0.3s, color 0.3s;
 
-//     &:hover,
-//     &:focus-visible {
-//         color: var(--btnInk);
-//         border-color: var(--btnFill);
+		&:hover {
+			background-color: transparent;
+			color: var(--cashmereBeige);
+		}
 
-//         &:before {
-//             width: 100%;
-//         }
-//     }
-
-//     &:focus-visible {
-//         outline: 1px solid var(--btnFill);
-//         outline-offset: (3/16rem);
-//     }
-// }
+		&:focus-visible {
+			/* Cashmere, not Cocoa — a Cocoa ring is invisible on a dark field */
+			outline: 2px solid var(--cashmereBeige);
+			outline-offset: 3px;
+		}
+	}
 
 	// Utilities - small classes useful in various common situations
 	.cs-color {
@@ -217,33 +270,12 @@ body {
 	}
 
 	.cs-bold {
-		font-weight: 700;
+		/* Medium is the heaviest real Elms Sans cut */
+		font-weight: 500;
 	}
 
 	.cs-hide-on-mobile {
 		display: none !important;
-	}
-
-	.cs-dark,
-	.dark {
-		display: none !important;
-	}
-
-	body.dark-mode {
-		.cs-light,
-		.light {
-			display: none !important;
-		}
-
-		.cs-dark,
-		.dark {
-			display: block !important;
-		}
-
-		.cs-button-outline {
-			border-color: #fff;
-			color: #fff;
-		}
 	}
 }
 
@@ -274,7 +306,7 @@ body {
 	p,
 	li,
 	a {
-		font-size: (16/16rem);
+		font-size: 1rem;
 		line-height: 1.5em;
 	}
 
@@ -293,75 +325,74 @@ body {
 			cursor: pointer;
 		}
 	}
-
-	body.dark-mode {
-		background-color: var(--dark);
-
-		p,
-		li,
-		h1,
-		h2,
-		h3,
-		h4,
-		h5,
-		h6 {
-			color: #fff;
-		}
-	}
 }
 
 /* Fonts */
 @media only screen and (min-width: 0px) {
-	
+
+	/* ---------- Cinzel — headings, wordmark ---------- */
 	@font-face {
+		font-family: "Cinzel";
 		font-style: normal;
-		font-family: "Cinzel Medium";
-		font-weight: 600;
+		font-weight: 500;
 		font-display: swap;
-		src: local(""), url("/assets/fonts/Cinzel-Medium.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */ url("/assets/fonts/Cinzel-Medium.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+		src: url("/assets/fonts/Cinzel-Medium.woff2") format("woff2"),
+			 url("/assets/fonts/Cinzel-Medium.woff") format("woff");
 	}
 
-	
 	@font-face {
+		font-family: "Cinzel";
 		font-style: normal;
-		font-family: "Elms Sans Light";
+		font-weight: 700;
+		font-display: swap;
+		src: url("/assets/fonts/Cinzel-Bold.woff2") format("woff2"),
+			 url("/assets/fonts/Cinzel-Bold.woff") format("woff");
+	}
+
+	/* ---------- Elms Sans — body copy ---------- */
+	@font-face {
+		font-family: "Elms Sans";
+		font-style: normal;
 		font-weight: 300;
 		font-display: swap;
-		src: local(""), url("/assets/fonts/ElmsSans-Light.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */ url("/assets/fonts/ElmsSans-Light.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+		src: url("/assets/fonts/ElmsSans-Light.woff2") format("woff2"),
+			 url("/assets/fonts/ElmsSans-Light.woff") format("woff");
 	}
 
 	@font-face {
-		font-style: normal;
-		font-family: "Elms Sans Light Italic";
+		font-family: "Elms Sans";
+		font-style: italic;
 		font-weight: 300;
 		font-display: swap;
-		src: local(""), url("/assets/fonts/ElmsSans-LightItalic.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */ url("/assets/fonts/ElmsSans-LightItalic.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+		src: url("/assets/fonts/ElmsSans-LightItalic.woff2") format("woff2"),
+			 url("/assets/fonts/ElmsSans-LightItalic.woff") format("woff");
 	}
 
 	@font-face {
+		font-family: "Elms Sans";
 		font-style: normal;
-		font-family: "Elms Sans Medium";
-		font-weight: 600;
+		font-weight: 500;
 		font-display: swap;
-		src: local(""), url("/assets/fonts/ElmsSans-Medium.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */ url("/assets/fonts/ElmsSans-Medium.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+		src: url("/assets/fonts/ElmsSans-Medium.woff2") format("woff2"),
+			 url("/assets/fonts/ElmsSans-Medium.woff") format("woff");
 	}
 
 	@font-face {
-		font-style: normal;
-		font-family: "Elms Sans Medium Italic";
-		font-weight: 600;
+		font-family: "Elms Sans";
+		font-style: italic;
+		font-weight: 500;
 		font-display: swap;
-		src: local(""), url("/assets/fonts/ElmsSans-MediumItalic.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */ url("/assets/fonts/ElmsSans-MediumItalic.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+		src: url("/assets/fonts/ElmsSans-MediumItalic.woff2") format("woff2"),
+			 url("/assets/fonts/ElmsSans-MediumItalic.woff") format("woff");
 	}
 
-	
+	/* ---------- Rosemartin — calls to action ---------- */
 	@font-face {
-		font-style: normal;
 		font-family: "Rosemartin";
+		font-style: normal;
 		font-weight: 400;
 		font-display: swap;
-		src: local(""), url("/assets/fonts/Rosemartin.woff2") format("woff2"), /* Chrome 26+, Opera 23+, Firefox 39+ */ url("/assets/fonts/Rosemartin.woff") format("woff"); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+		src: url("/assets/fonts/Rosemartin.woff2") format("woff2"),
+			 url("/assets/fonts/Rosemartin.woff") format("woff");
 	}
 }
-
-

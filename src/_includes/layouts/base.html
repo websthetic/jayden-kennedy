@@ -25,18 +25,25 @@
         <link rel="icon" type="image/svg+xml" href="/assets/favicons/favicon.svg"/>
         <link rel="shortcut icon" href="/assets/favicons/favicon.ico"/>
         <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png"/>
-        <meta name="apple-mobile-web-app-title" content="Starter Kit"/>
+        <meta name="apple-mobile-web-app-title" content="{{ client.name }}"/>
         <link rel="manifest" href="/assets/favicons/site.webmanifest"/>
 
         <!-- Preloads -->
-        <link rel="preload" as="image" href="/assets/svgs/logo-black.svg">
-        <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/roboto-v29-latin-regular.woff2" crossorigin>
-        <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/roboto-v29-latin-700.woff2" crossorigin>
+        <!-- Nav lockup. Rename once the Cashmere logo asset is in place. -->
+        <link rel="preload" as="image" href="/assets/svgs/logo-light.svg">
+
+        <!-- Only the two faces that paint above the fold: the hero headline
+             and body copy. woff2 only, since anything reaching for the woff
+             fallback isn't running preload either. crossorigin is required
+             on font preloads even for same-origin files. -->
+        <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Cinzel-Bold.woff2" crossorigin>
+        <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/ElmsSans-Light.woff2" crossorigin>
 
         <!-- Sitewide Stylesheets and Scripts -->
         <link rel="stylesheet" href="/assets/css/root.css">
         <link rel="stylesheet" href="/assets/css/global.css">
         <script defer src="/assets/js/nav.js"></script>
+        <script defer src="/assets/js/cta.js"></script>
 
         {% block head %}{% endblock %}
 

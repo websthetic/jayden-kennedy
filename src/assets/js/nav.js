@@ -16,6 +16,7 @@
 	const nav = document.querySelector("#cs-navigation");
 	if (!nav) return;
 
+	const hero = document.querySelector("#hero");
 	const body = document.body;
 	const toggle = nav.querySelector("#cs-toggle");
 	const panel = nav.querySelector("#cs-panel");
@@ -58,18 +59,13 @@
 		},
 	};
 
-	/* -- Surface --
-	   The bar sits on Dark Cocoa over the hero and flips light once the
-	   curtain reaches it. Anchored to the curtain's top edge rather than
-	   the hero's bottom: the hero's track runs two frame heights past the
-	   point where the frame finishes opening, so watching the hero would
-	   leave a dark bar sitting on an already-light page. */
 	const readSurface = () => {
-		if (!curtain) {
+		if (!hero) {
 			nav.classList.add(CONFIG.CLASSES.pastHero);
 			return;
 		}
-		const past = curtain.getBoundingClientRect().top <= nav.offsetHeight;
+		// Flip when the hero's bottom edge reaches the underside of the bar
+		const past = hero.getBoundingClientRect().bottom <= nav.offsetHeight;
 		nav.classList.toggle(CONFIG.CLASSES.pastHero, past);
 	};
 

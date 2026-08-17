@@ -1,339 +1,481 @@
 /*-- -------------------------- -->
-<---           Hero             -->
+<---       Hero + Statement     -->
 <--- -------------------------- -*/
 
-/* Mobile - 0rem */
+/* Mobile - 0rem
+   No track, no travel. Below 64rem this is a full-viewport hero followed by
+   ordinary stacked rows — a 200svh scroll to move an image is a long,
+   confusing scroll on a phone. The reveal still runs. */
 @media only screen and (min-width: 0rem) {
-    #hero-1183 {
-        /* --frame-w      image width at rest, as a % of the section; scroll
-                          takes it to 100%. A percentage, not vw — 100vw
-                          includes the scrollbar gutter and would push a
-                          horizontal scroll.
-           --frame-h      NOT declared here. It lives on :root in curtain.less
-                          because .cs-curtain-hero is a sibling of this section
-                          and can't read a value scoped to it. Inherited down
-                          from :root, so the three tiers are set there.
-           --scrim        flat wash over the video, Absolute Black. The value
-                          at full open; the opacity ramp multiplies it.
-           --curtainHold  how long the frame holds open before the curtain
-                          takes over.
-           --hero-p       written by the inline script, clamped 0–1. Declared
-                          here so the rest state renders with no JS. */
-        --frame-w: 84%;
-        --scrim: 0.50;
-        --curtainHold: 0vh;
-        --hero-p: 0;
+	#hero {
+		width: 100%;
+		background-color: var(--surfaceCanvas);
+		position: relative;
+		z-index: 1;
+		/* clip, not hidden. The picture bleeds -50vw and the payoff line is
+		   nowrap — either can push the document's scroll width past the
+		   viewport and open a strip of dead canvas down the right of the
+		   whole page. clip contains that without creating a scroll
+		   container, which hidden would, and which would break the sticky
+		   stage at 64rem. */
+		overflow-x: clip;
 
-        --heroSurface: var(--primary);
-        --heroLight: #f1e2d1;
+		.cs-track {
+			width: 100%;
+			position: relative;
+		}
 
-        position: relative;
-        z-index: 0;   /* own stacking context, held below the curtain */
-        background-color: var(--heroSurface);
+		.cs-stage {
+			width: 100%;
+			/* svh, not vh — mobile chrome would otherwise push the CTA below
+			   the fold on load and leave a gap when the bar retracts */
+			min-height: 100svh;
+			padding: 6rem 1rem 3rem;
+			box-sizing: border-box;
+			display: flex;
+			align-items: center;
+			position: relative;
+			overflow: hidden;
+		}
 
-        .cs-intro {
-            width: 100%;
-            /* Top padding clears the fixed nav (4.5rem at this tier) */
-            padding: (128/16rem) 5% (56/16rem);
-        }
+		.cs-frame {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: -2;
+		}
 
-        .cs-watermark {
-            font-family: var(--headerFont);
-            font-size: clamp(3.25rem, 10vw, 6rem);
-            /* Cinzel Medium is declared at 600 only — anything above
-               synthesises a faux bold */
-            font-weight: 600;
-            line-height: 1em;
-            letter-spacing: 0.01em;
-            text-transform: capitalize;
-            text-align: right;
-            white-space: nowrap;
-            /* light on dark now — reads as a faint emboss rather than a
-               shadow. Raise to 0.08 if it disappears on a bright display. */
-            color: rgba(254, 251, 247, 0.06);
-            width: 100%;
-            margin: 0 0 (24/16rem) 0;
-            display: block;
-            user-select: none;
-            pointer-events: none;
-        }
+		.cs-window {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+		}
 
-        .cs-container {
-            width: 100%;
-            max-width: (1440/16rem);
-            margin: auto;
-        }
+		.cs-media {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: 65% center;
+			display: block;
+		}
 
-        .cs-content {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: (28/16rem);
-        }
+		/* Scrim. Horizontal pass is the readable bed for the copy; vertical
+		   pass protects the nav's cream ink from a bright top corner.
+		   On .cs-frame so it travels and scales with the window. */
+		.cs-frame:after {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			display: block;
+			background:
+				linear-gradient(to bottom, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 22%),
+				linear-gradient(to right, rgba(0, 0, 0, 0.72) 0%, rgba(0, 0, 0, 0.42) 30%, rgba(0, 0, 0, 0.06) 80%);
+		}
 
-        .cs-title {
-            font-family: var(--headerFont);
-            font-size: clamp(2rem, 7.5vw, 4.25rem);
-            font-weight: 600;
-            line-height: 1.14em;
-            letter-spacing: 0;
-            text-transform: uppercase;
-            /* 13ch–18ch all keep the same break; "Dream" needs 19ch to pull up */
-            max-width: (16ch);
-            /* overrides the global .cs-title bottom margin */
-            margin: 0;
-            color: #F1E2D1;
-        }
+		.cs-container {
+			width: 100%;
+			max-width: 90rem;
+			margin: auto;
+			display: flex;
+			position: relative;
+			z-index: 2;
+		}
 
-        .cs-text {
-            font-family: var(--bodyFont);
-            font-size: (16/16rem);
-            /* Elms Sans Light is declared at 300 */
-            font-weight: 300;
-            /* Tight leading — reads as a caption block, not body copy */
-            line-height: 1.42em;
-            letter-spacing: 0.01em;
-            width: 100%;
-            max-width: (48ch);
-            margin: 0;
-            /* stepped back from the headline so the caption block stays
-               subordinate */
-            color: rgba(254, 251, 247, 0.75);
-        }
+		.cs-content {
+			width: 100%;
+			max-width: 34rem;
+			text-align: left;
+		}
 
-        /* The runway. A sticky box travels (containing block height − its own
-           height), so the track is one frame height plus the travel we want:
-           the frame holds open for curtainHold, then the curtain takes one
-           frame height to cover the screen, landing on the same scroll
-           position where the frame releases. */
-        .cs-track {
-            height: ~"calc(var(--curtainHold) + var(--frame-h) * 2)";
-        }
+		/* Colour comes from root. Only spacing and wrap are hero-specific. */
+		.cs-hero-title {
+			margin-bottom: 1.25rem;
+			text-wrap: balance;
+		}
 
-        /* The whole animation: one interpolation on width. */
-        .cs-frame {
-            width: ~"calc(var(--frame-w) + (100% - var(--frame-w)) * var(--hero-p))";
-            height: var(--frame-h);
-            margin: 0 auto;
-            position: sticky;
-            top: 0;
-            overflow: hidden;
-            border-radius: ~"calc(4px * (1 - var(--hero-p)))";
-            will-change: width;
-        }
+		/* Not .cs-text — that global is capped at 40.625rem and coloured for
+		   the light canvas. Own class rather than a pile of overrides. */
+		.cs-hero-text {
+			width: 100%;
+			max-width: 30rem;
+			margin: 0 0 2rem 0;
+			font-size: var(--bodyFontSize);
+			/* Medium, not Light. Light strokes disappear against detailed
+			   photography no matter how heavy the scrim is. */
+			font-weight: 500;
+			line-height: 1.6em;
+			color: var(--cashmereBeige);
+		}
 
-        .cs-video {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            /* Eases out of a slight push-in as the frame opens */
-            transform: ~"scale(calc(1.06 - var(--hero-p) * 0.06))";
-        }
+		/* -- Statement line --
+		   Below 64rem it sits under the hero in normal flow. */
+		.cs-ghost {
+			font-family: var(--headerFont);
+			font-weight: 500;
+			font-size: clamp(2.75rem, 11vw, 6.5rem);
+			line-height: 1em;
+			letter-spacing: 0.01em;
+			text-transform: uppercase;
+			/* Cocoa at 80%. Stepped back from the payoff line below rather
+			   than a different hue — same ink, less presence. Alpha rather
+			   than a lighter solid so it sits correctly on any surface. */
+			color: rgba(var(--darkCocoa-rgb), 0.8);
+			margin: 0;
+			padding: 3rem 1rem 0;
+			position: relative;
+			z-index: 1;
+		}
 
-        /* Flat wash, Absolute Black. Legibility, not mood — the frame is
-           video, so the floor has to hold at the clip's brightest moment.
-           --scrim is the dial; the opacity ramp fades the whole layer in
-           as the frame opens, so nothing darkens before the statement
-           arrives. */
-        .cs-scrim {
-            position: absolute;
-            inset: 0;
-            background-color: rgba(0, 0, 0, var(--scrim));
-            opacity: ~"max(0, calc((var(--hero-p) - 0.45) * 1.8))";
-            pointer-events: none;
-        }
+		/* -- Statement rows --
+		   Normal flow here. The negative pull-up is desktop only: it exists
+		   to close the empty lower half of the sticky stage, and there is no
+		   sticky stage below 64rem — applying it here would drag these rows
+		   up over the hero copy. */
+		.cs-statement {
+			width: 100%;
+			max-width: 90rem;
+			margin: auto;
+			padding: 3.5rem 1rem var(--sectionPadding);
+			box-sizing: border-box;
+			position: relative;
+			z-index: 2;
+		}
 
-        .cs-statement {
-            padding: 0 8% (24/16rem);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: (28/16rem);
-            text-align: center;
-            position: absolute;
-            inset: 0;
-            /* Lands in the back half of the widening. Values over 1 are
-               clamped by opacity itself, so max() alone is enough. */
-            opacity: ~"max(0, calc((var(--hero-p) - 0.65) * 2.9))";
-            transform: ~"translateY(calc((1 - var(--hero-p)) * 20px))";
-            pointer-events: none;   /* JS adds .cs-open at 0.9 */
-        }
+		.cs-row {
+			width: 100%;
+			margin-bottom: 3.5rem;
 
-        &.cs-open .cs-statement {
-            pointer-events: auto;
-        }
+			&:last-of-type {
+				margin-bottom: 0;
+			}
+		}
 
-        /* Every phrase occupies the same grid cell, so the block is as tall
-           as the tallest pair and nothing below it shifts on rotation. */
-        .cs-rotator {
-            /* --phraseFade  crossfade duration. The hold between phrases is
-                             the HOLD constant in JS. */
-            --phraseFade: 700ms;
+		/* The payoff needs more air above it than the rows need between
+		   themselves — it reads as a closing statement, not the next item
+		   in a list. */
+		.cs-row-payoff {
+			margin-top: 2rem;
+		}
 
-            display: grid;
-            place-items: center;
-        }
+		.cs-picture {
+			width: calc(100% + 2rem);
+			margin-left: -1rem;
+			aspect-ratio: 16 / 9;
+			display: block;
 
-        .cs-phrase {
-            grid-area: 1 / 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: (12/16rem);
-            opacity: 0;
-            transform: translateY((8/16rem));
-            transition:
-                opacity var(--phraseFade) ease,
-                transform var(--phraseFade) cubic-bezier(0.22, 1, 0.36, 1);
-            pointer-events: none;
+			img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				display: block;
+			}
+		}
 
-            &.cs-active {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+		/* Cinzel uppercase — a caption hanging off the image, not body copy */
+		.cs-approach {
+			font-family: var(--headerFont);
+			font-weight: 500;
+			font-size: 1.125rem;
+			line-height: 1.35em;
+			letter-spacing: 0.01em;
+			text-transform: uppercase;
+			color: var(--headerColor);
+			margin: 2rem 0 0 0;
+			max-width: 26rem;
+		}
 
-        .cs-phrase-topper {
-            font-family: var(--bodyFont);
-            font-size: ~"clamp(0.75rem, 1.4vw, 0.875rem)";
-            font-weight: 300;
-            line-height: 1.2em;
-            letter-spacing: 0.28em;
-            text-transform: uppercase;
-            /* the tracking is all trailing — nudges the block back to centre */
-            text-indent: 0.28em;
-            white-space: nowrap;
-            color: var(--primaryLight);
-            display: block;
-        }
+		.cs-payoff {
+			font-family: var(--headerFont);
+			font-weight: 500;
+			font-size: clamp(1.875rem, 7.2vw, 3rem);
+			line-height: 1.08em;
+			letter-spacing: 0.01em;
+			text-transform: uppercase;
+			color: var(--headerColor);
+			margin: 0;
+		}
 
-        .cs-phrase-headline {
-            font-family: var(--headerFont);
-            font-size: clamp(2rem, 6vw, 3.25rem);
-            /* Cinzel Medium is declared at 600 only */
-            font-weight: 600;
-            line-height: 1.05em;
-            letter-spacing: 0.02em;
-            text-transform: uppercase;
-            /* one-word phrases — a wrap would look broken. Remove this line
-               if a two-word headline ever goes in. */
-            white-space: nowrap;
-            color: var(--primaryLight);
-            /* neutral, matching the scrim — a cocoa halo on a black wash
-               reads as a colour cast at this size */
-            text-shadow: 0 (1/16rem) (28/16rem) rgba(0, 0, 0, 0.42);
-            display: block;
-        }
+		/* -- Reveal on entry --
+		   hero.js adds .cs-in once, then stops observing. Deliberately not
+		   tied to scroll position: these arrive, they don't get dragged. */
+		.cs-reveal {
+			opacity: 0;
+			transform: translateY(1.25rem);
+			transition:
+				opacity 0.8s ease,
+				transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+		}
 
-        /* Sans over the photograph — Cinzel at this size competes with it */
-        .cs-statement-text {
-            font-family: var(--bodyFont);
-            font-size: ~"clamp(1.0625rem, 1.9vw, 1.5rem)";
-            font-weight: 300;
-            line-height: 1.5em;
-            letter-spacing: 0.01em;
-            max-width: (52ch);
-            margin: 0;
-            color: var(--primaryLight);
-            text-shadow: 0 (1/16rem) (24/16rem) rgba(0, 0, 0, 0.38);
-        }
+		.cs-picture.cs-reveal {
+			transform: translateX(-2.5rem);
+		}
 
-        /* The root button, lit for the scrim. Root ships a Cocoa hairline
-           and Cocoa ink, both invisible over the footage — so this lights
-           the outline and label and leaves the fill transparent. Hover
-           floods Heritage Green and drops the edge. */
-        .cs-button-solid {
-            --btnFill: var(--heritageGreen);
-            --btnInk: var(--primaryLight);
+		.cs-reveal.cs-in {
+			opacity: 1;
+			transform: none;
+		}
 
-            border-color: rgba(254, 251, 247, 0.45);
-            color: var(--primaryLight);
+		/* Stagger. The caption follows the band, the payoff follows both. */
+		.cs-approach.cs-reveal {
+			transition-delay: 0.25s;
+		}
 
-            &:hover,
-            &:focus-visible {
-                /* the green fill defines the shape now — the hairline would
-                   just be a slightly lighter edge on it */
-                border-color: transparent;
-            }
-        }
-    }
+		.cs-payoff.cs-reveal {
+			transition-delay: 0.45s;
+		}
+	}
 }
 
 /* Tablet - 48rem */
 @media only screen and (min-width: 48rem) {
-    #hero-1183 {
-        --frame-w: 60%;
+	#hero {
+		.cs-stage {
+			padding: 6rem 2rem 3rem;
+		}
 
-        .cs-intro {
-            padding: (140/16rem) 5% (72/16rem);
-        }
+		.cs-content {
+			max-width: 38rem;
+		}
 
-        .cs-watermark {
-            margin-bottom: (28/16rem);
-        }
+		.cs-hero-text {
+			font-size: 1.0625rem;
+		}
 
-        .cs-content {
-            flex-direction: row;
-            justify-content: space-between;
-            /* Paragraph sits optically centred against the two headline lines */
-            align-items: center;
-            gap: (48/16rem);
-        }
+		.cs-ghost {
+			padding: 4rem 2rem 0;
+		}
 
-        .cs-text {
-            width: 30%;
-            max-width: (40ch);
-            margin: (12/16rem) 0 0 0;
-        }
+		.cs-statement {
+			padding: 4rem 2rem var(--sectionPadding);
+		}
 
-        .cs-phrase {
-            gap: (16/16rem);
-        }
-    }
+		.cs-row-payoff {
+			margin-top: 3rem;
+		}
+
+		.cs-picture {
+			width: calc(100% + 4rem);
+			margin-left: -2rem;
+		}
+	}
 }
 
-/* Desktop - 64rem */
+/* Desktop - 64rem
+   The travel lives here and nowhere else. */
 @media only screen and (min-width: 64rem) {
-    #hero-1183 {
-        --frame-w: 44%;
+	#hero {
+		/* Progress through the track, 0 to 1. hero.js owns this. With JS off
+		   it resolves to 0 and everything sits at its opening state. */
+		--p: 0;
 
-        .cs-intro {
-            /* Top padding clears the fixed nav (6.25rem at this tier) */
-            padding: (180/16rem) 5% (96/16rem);
-        }
+		.cs-track {
+			/* One extra viewport of scrolling — enough to feel deliberate,
+			   short enough that nobody wonders why the page isn't moving. */
+			height: 200svh;
+		}
 
-        .cs-text {
-            width: 24%;
-        }
+		.cs-stage {
+			height: 100svh;
+			min-height: 0;
+			/* No vertical padding. The statement line centres absolutely
+			   against the padding box while the flex centring works off the
+			   content box — top padding here makes the two disagree and the
+			   composed row sits high. */
+			padding: 0 3rem;
+			position: sticky;
+			top: 0;
+		}
 
-        .cs-phrase {
-            gap: (20/16rem);
-        }
-    }
+		/* The window shrinks and travels. Transform rather than clip-path:
+		   it composites more cheaply, and it can move the frame anywhere on
+		   screen where an inset can only close inward.
+
+		   These three numbers are one system. The frame's left edge lands at
+		   roughly 50vw + translateX - (scale x 50vw) — about 55vw here — and
+		   that is the width the statement line has to live in. Change one and
+		   the other two need checking. */
+		.cs-frame {
+			transform:
+				translateX(calc(var(--p) * 26vw))
+				translateY(calc(var(--p) * -4vh))
+				scale(calc(1 - (var(--p) * 0.62)));
+			transform-origin: center center;
+		}
+
+		/* Counter-scale. Without this the photo would shrink with its window
+		   and the landed frame would show the same composition in miniature.
+		   Scaling up inside a shrinking window gives a crop instead — which
+		   is what makes the small frame read as a real photograph.
+		   Net content scale at rest: 0.38 x 2.1 = 0.80. Raising this tightens
+		   the crop; lowering it shows more of the room. */
+		.cs-media {
+			object-position: center;
+			transform: scale(calc(1 + (var(--p) * 1.1)));
+			transform-origin: center center;
+		}
+
+		/* Scrim has no job once the copy has gone — fading it lets the
+		   landed frame show the photograph at full strength. */
+		.cs-frame:after {
+			opacity: clamp(0, calc(1 - (var(--p) * 1.6)), 1);
+		}
+
+		.cs-container {
+			/* Gone well before the frame lands */
+			opacity: clamp(0, calc(1 - (var(--p) * 2.2)), 1);
+		}
+
+		.cs-content {
+			max-width: 42rem;
+		}
+
+		.cs-hero-text {
+			max-width: 33rem;
+			margin-bottom: 2.5rem;
+		}
+
+		/* Sits in the stage, left column, clear of where the frame lands.
+		   The 0.8 alpha is baked into the colour, so the fade-in below
+		   multiplies against it — peak opacity here is 0.8, not 1. */
+		.cs-ghost {
+			width: 100%;
+			max-width: 90rem;
+			margin: 0 auto;
+			padding: 0 3rem;
+			box-sizing: border-box;
+			position: absolute;
+			top: 50%;
+			left: 0;
+			right: 0;
+			transform: translateY(-50%);
+			/* The vw term tracks the viewport, but this box stops growing at
+			   90rem — so the type has to stop with it or a nowrap line runs
+			   out of the box. 5.4% of 90rem = 4.86rem. Current copy is short
+			   enough to clear it anyway; the ceiling is here so longer copy
+			   can't reopen the overflow. */
+			font-size: min(5.4vw, 4.86rem);
+			line-height: 1em;
+			white-space: nowrap;
+			/* Arrives as the frame is settling rather than competing with it */
+			opacity: clamp(0, calc((var(--p) - 0.45) * 2.8), 1);
+		}
+
+		.cs-statement {
+			/* The stage is a full viewport but the composed row only occupies
+			   its middle band. Without this pull-up the lower half of the
+			   stage sits as empty canvas between the row and these rows. The
+			   z-index above keeps this over the sticky stage, not under it. */
+			margin-top: -28svh;
+			padding: 0 3rem var(--sectionPadding);
+		}
+
+		.cs-row {
+			margin-bottom: clamp(2rem, 6vh, 5rem);
+		}
+
+		/* Roughly double the gap between the other rows. The payoff is the
+		   closing line — it wants isolation, not rhythm. */
+		.cs-row-payoff {
+			margin-top: clamp(4rem, 11vh, 9rem);
+		}
+
+		/* Image left and bleeding, caption right and hanging off it */
+		.cs-row-approach {
+			display: grid;
+			grid-template-columns: 52% minmax(0, 1fr);
+			align-items: end;
+			gap: 3rem;
+		}
+
+		.cs-picture {
+			/* Runs to the viewport edge. 50vw covers any width above 64rem. */
+			width: calc(100% + 50vw);
+			margin-left: -50vw;
+			/* Height-capped rather than ratio-locked, so a wide viewport
+			   doesn't produce a very tall band */
+			aspect-ratio: auto;
+			height: clamp(11rem, 38vh, 24rem);
+		}
+
+		.cs-approach {
+			font-size: clamp(1.125rem, 1.7vw, 1.5rem);
+			line-height: 1.3em;
+			margin: 0 0 1rem 0;
+			text-align: right;
+			max-width: 22rem;
+			justify-self: end;
+		}
+
+		/* Fills the line edge to edge. The vw term keeps it spanning as the
+		   viewport widens; the min() caps it where the container stops
+		   widening — .cs-statement freezes at max-width 90rem, and 7.5% of
+		   90rem is 6.75rem. Past that point the type would keep growing
+		   against a fixed box and, being nowrap and centred, spill both
+		   sides — the right-hand half of that spill is what stretches the
+		   document's scroll width. Not a styling ceiling: it's the width the
+		   container actually stops at. If max-width above ever changes, this
+		   number changes with it. */
+		.cs-payoff {
+			font-size: min(7.5vw, 6.75rem);
+			line-height: 0.95em;
+			letter-spacing: -0.005em;
+			text-align: center;
+			white-space: nowrap;
+		}
+	}
 }
 
-/* Reduced motion — the track collapses, the frame drops out of sticky, the
-   clip holds on its poster and the rotator stays on the first phrase.
-   Sections stack plainly. */
+/* Reduced motion — no track, no travel, no reveal transition. Everything
+   sits at its end state and the page reads as ordinary stacked sections. */
 @media (prefers-reduced-motion: reduce) {
-    #hero-1183 {
-        .cs-track {
-            height: auto;
-        }
+	#hero {
+		.cs-track {
+			/* auto, not a fixed height — with no travel to scrub, extra
+			   scroll distance is just empty canvas to scroll past. */
+			height: auto;
+		}
 
-        .cs-frame {
-            position: relative;
-            top: auto;
-        }
+		.cs-stage {
+			position: relative;
+			height: auto;
+			min-height: 100svh;
+		}
 
-        .cs-video {
-            transform: none;
-        }
+		.cs-frame,
+		.cs-media {
+			transform: none;
+		}
 
-        .cs-phrase {
-            transition: none;
-        }
-    }
+		.cs-container,
+		.cs-frame:after {
+			opacity: 1;
+		}
+
+		.cs-ghost {
+			position: relative;
+			top: auto;
+			transform: none;
+			opacity: 1;
+			padding: 3rem 3rem 0;
+			white-space: normal;
+		}
+
+		/* The pull-up assumes a sticky stage with an empty lower half.
+		   There isn't one in this mode. */
+		.cs-statement {
+			margin-top: 0;
+			padding-top: 3.5rem;
+		}
+
+		.cs-reveal {
+			opacity: 1;
+			transform: none;
+			transition: none;
+		}
+	}
 }
