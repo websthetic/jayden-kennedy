@@ -23,10 +23,10 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 
     <!-- Outside the branch — these have to load in development too, or the
          scroll effects do nothing while you're looking at them. -->
-    <script defer src="/assets/js/hero.js"></script>
+    <!-- <script defer src="/assets/js/hero.js"></script> -->
     <script defer src="/assets/js/pathways.js"></script>
+     <script defer src="/assets/js/statement.js"></script>
     <script defer src="/assets/js/results.js"></script>
-    <script defer src="/assets/js/curtain.js"></script>
     <script defer src="/assets/js/listings.js"></script>
     <script defer src="/assets/js/testimonials.js"></script>
     <script defer src="/assets/js/neighbourhoods.js"></script>
@@ -37,87 +37,114 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 {% block body %}
 
 <!-- ============================================ -->
-<!--              Hero + Statement                -->
-<!--   One section. The frame travels from full   -->
-<!--   bleed into the composed row, and the copy   -->
-<!--   below reveals on entry. The statement then  -->
-<!--   pins while the curtain rides over it.       -->
+<!--              Curtain: Hero                  -->
+<!--   Holds the hero and the statement only.    -->
+<!--   The hero pins inside this box while the   -->
+<!--   statement scrolls up over it; the box     -->
+<!--   ending is what releases the pin, so        -->
+<!--   nothing else may be added in here.         -->
+<!-- ============================================ -->
+
+<div class="cs-curtain-hero">
+
+<!-- ============================================ -->
+<!--                    Hero                    -->
+<!--   Sticky at 64rem. Static below, and under  -->
+<!--   reduced motion. No JS.                     -->
 <!-- ============================================ -->
 
 <section id="hero">
-    <div class="cs-track">
-        <div class="cs-stage">
-            <!-- The travelling frame. Two nested transforms: the window
-                 shrinks and moves, the media counter-scales inside it so the
-                 landed frame reads as a composed shot rather than a slice. -->
-            <div class="cs-frame">
-                <div class="cs-window">
-                    <img
-                        class="cs-media"
-                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder-1.jpg"
-                        alt=""
-                        width="2000"
-                        height="1333"
-                        loading="eager"
-                        fetchpriority="high"
-                        decoding="async"
-                        aria-hidden="true">
-                </div>
-            </div>
-
-            <!-- Fades out as the frame leaves -->
-            <div class="cs-container">
-                <div class="cs-content">
-                    <h1 class="cs-hero-title">Built Through Real Estate</h1>
-                    <p class="cs-hero-text">
-                        Bridging the gap between financial literacy and real estate
-                        acquisition so that you can build generational wealth through
-                        real estate.
-                    </p>
-                    <a href="/contact/" class="cs-button-light">Let&rsquo;s Connect</a>
-                </div>
-            </div>
-
-            <!-- Revealed behind the frame as it lands. Real copy, so not
-                 aria-hidden — it appears nowhere else on the page. -->
-            <h2 class="cs-ghost">Beyond the<br>transaction</h2>
-        </div>
+    <!-- Background layer. Behind the copy rather than a CSS background so
+         the browser can preload it and honour fetchpriority. -->
+    <div class="cs-frame">
+        <img
+            class="cs-media"
+            src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder-1.jpg"
+            alt=""
+            width="2000"
+            height="1333"
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+            aria-hidden="true">
     </div>
 
-    <!-- Reveals on entry rather than scrubbing, so these arrive rather than
-         being dragged. Pins at 64rem while the curtain covers it. -->
-    <div class="cs-statement">
-        <div class="cs-row cs-row-approach">
-            <picture class="cs-picture cs-reveal" data-reveal>
-                <img
-                    src="https://media-production.lp-cdn.com/media/8f85c836-5a78-483a-8cd9-3a9fac506c6f"
-                    alt="A quiet street of family homes in the Greater Toronto Area"
-                    width="2000"
-                    height="1333"
-                    loading="lazy"
-                    decoding="async">
-            </picture>
-
-            <p class="cs-approach cs-reveal" data-reveal>
-                Decisions made with the bigger picture in mind.
+    <div class="cs-container">
+        <div class="cs-content">
+            <h1 class="cs-hero-title">Built Through Real Estate</h1>
+            <p class="cs-hero-text">
+                Bridging the gap between financial literacy and real estate
+                acquisition so that you can build generational wealth through
+                real estate.
             </p>
-        </div>
-
-        <div class="cs-row cs-row-payoff">
-            <h2 class="cs-payoff cs-reveal" data-reveal>Built for generations.</h2>
+            <a href="/contact/" class="cs-button-light">Let&rsquo;s Connect</a>
         </div>
     </div>
 </section>
 
 <!-- ============================================ -->
-<!--              Curtain: Statement              -->
-<!--   Everything below the statement lives in    -->
-<!--   here. Pull distance: --statement-cover.    -->
-<!--   A section left outside this wrapper would  -->
-<!--   paint underneath what it means to cover.   -->
+<!--               Brand Statement              -->
+<!--   Overlaps the hero on a rounded top edge.  -->
+<!--   Fact ticker over a centred statement on   -->
+<!--   a ruled field. Pure CSS, no JS.           -->
 <!-- ============================================ -->
 
-<div class="cs-curtain cs-curtain-statement">
+<section id="statement">
+    <!-- aria-hidden on the track, not the items: the ticker is decorative
+         repetition of facts stated plainly elsewhere, and a moving element
+         announcing itself mid-scroll is noise. -->
+    <div class="cs-ticker">
+        <!-- One set, then an identical duplicate. The track translates -50%,
+             which lands the duplicate exactly where the original started —
+             that exactness is what makes the loop seamless, so the two halves
+             must stay character-for-character identical. -->
+        <div class="cs-ticker-track" aria-hidden="true">
+            <span class="cs-fact">Keller Williams Energy</span>
+            <span class="cs-dot"></span>
+            <span class="cs-fact">Greater Toronto Area</span>
+            <span class="cs-dot"></span>
+            <span class="cs-fact">Licensed Realtor</span>
+            <span class="cs-dot"></span>
+            <span class="cs-fact">Financial literacy first</span>
+            <span class="cs-dot"></span>
+
+            <span class="cs-fact">Keller Williams Energy</span>
+            <span class="cs-dot"></span>
+            <span class="cs-fact">Greater Toronto Area</span>
+            <span class="cs-dot"></span>
+            <span class="cs-fact">Licensed Realtor</span>
+            <span class="cs-dot"></span>
+            <span class="cs-fact">Financial literacy first</span>
+            <span class="cs-dot"></span>
+        </div>
+    </div>
+
+   <div class="cs-body">
+    <!-- Decorative texture only. Sits under the ruled field, masked top and
+         bottom so it never presents an edge. The img is 130% tall with a
+         -15% offset: that headroom is the parallax travel budget, so the
+         frame is never uncovered at either extreme of the scrub. -->
+    <div class="cs-backdrop" aria-hidden="true">
+        <img
+            class="cs-backdrop-img"
+            src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg"
+            alt=""
+            loading="lazy"
+            decoding="async"
+            width="1600"
+            height="1067"
+        >
+    </div>
+
+    <div class="cs-container">
+        <span class="cs-topper">Jayden Kennedy</span>
+        <h2 class="cs-statement">
+Every real estate decision should create opportunity today and lasting wealth for tomorrow.        </h2>
+    </div>
+</div>
+</section>
+
+</div><!-- /.cs-curtain-hero -->
 
 <!-- ============================================ -->
 <!--                   Results                    -->
@@ -286,8 +313,6 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
             </div>
         </div>
     </section>
-
-</div><!-- /.cs-curtain-statement -->
 
 <!-- ============================================ -->
 <!--                    About                     -->

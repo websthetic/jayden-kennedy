@@ -1,3 +1,291 @@
+/*-- -------------------------- -->
+<---        Brand Statement     -->
+<--- -------------------------- -*/
+
+/* Mobile - 0rem */
+@media only screen and (min-width: 0rem) {
+	#statement {
+		width: 100%;
+		background-color: var(--surfaceCanvas);
+		/* No negative pull. The top edge sits exactly at the hero's bottom,
+		   which puts this whole panel below the fold on load — the ticker
+		   peeking over the hero photo at scroll 0 is what a negative margin
+		   here produces. The overlap is the curtain's job now: the hero pins
+		   and this rides up over it, so the rounded corners cut into the
+		   photograph the entire way up. */
+		margin-top: 0;
+		min-height: 100svh;
+		border-radius: 1rem 1rem 0 0;
+		/* Column so the body can absorb whatever the ticker doesn't use */
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		/* Above #hero, which sits at 1. The overlap is why this matters —
+		   source order alone wouldn't lift it over a positioned sibling. */
+		z-index: 2;
+		/* Clips the ticker track, which is far wider than the viewport, and
+		   keeps the rounded corners cutting the marquee rule. clip rather
+		   than hidden so no scroll container is created. */
+		overflow-x: clip;
+	}
+
+	#statement .cs-topper {
+		display: block;
+		margin-bottom: 1rem;
+	}
+
+	/* -- Fact ticker -- */
+	#statement .cs-ticker {
+		width: 100%;
+		/* Natural height. Everything left over goes to .cs-body. */
+		flex: none;
+		padding: 1.25rem 0;
+		/* Same alpha as the vertical rules below, so the horizontal and
+		   vertical hairlines read as one system rather than two weights. */
+		border-bottom: 1px solid rgba(var(--darkCocoa-rgb), 0.16);
+		overflow: hidden;
+		/* Above the backdrop, which is clipped to .cs-body anyway — this is
+		   insurance against the image ever being promoted upward. */
+		position: relative;
+		z-index: 1;
+	}
+
+	#statement .cs-ticker-track {
+		display: flex;
+		align-items: center;
+		/* max-content, not a percentage — the track has to be as wide as its
+		   contents for the -50% translate to mean "one full set". */
+		width: max-content;
+		animation: cs-ticker-scroll 60s linear infinite;
+	}
+
+	#statement .cs-fact {
+		font-family: var(--headerFont);
+		font-weight: 500;
+		font-size: 1rem;
+		letter-spacing: 0.02em;
+		color: rgba(var(--darkCocoa-rgb), 0.78);
+		white-space: nowrap;
+		padding: 0 1.25rem;
+		text-transform: uppercase;
+	}
+
+	/* Flex sibling rather than a pseudo-element on .cs-fact: the dots have to
+	   travel with the facts, and a duplicated set needs its separators to
+	   duplicate identically. */
+	#statement .cs-dot {
+		width: 0.375rem;
+		height: 0.375rem;
+		border-radius: 50%;
+		background-color: rgba(var(--darkCocoa-rgb), 0.35);
+		flex: none;
+	}
+
+	/* -- Statement -- */
+	#statement .cs-body {
+		width: 100%;
+		/* Takes the remaining column height, then centres the copy in it.
+		   The padding is now a floor rather than the actual spacing — it
+		   only governs at short viewports where the content would otherwise
+		   touch the edges. */
+		flex: 1;
+		display: flex;
+		align-items: center;
+		padding: var(--sectionPadding) 1rem;
+		box-sizing: border-box;
+		position: relative;
+	}
+
+	/* -- Parallax backdrop -- */
+	/* Own clipping context so #statement's overflow-x stays as-is. clip, not
+	   hidden, for the same reason it is everywhere else in this file. */
+	#statement .cs-backdrop {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		overflow: clip;
+		pointer-events: none;
+		/* Fully masked through the top half — the image doesn't begin to
+		   surface until 50% and isn't at full strength until 62%. That
+		   12% ramp is doing the real work: a hard stop at 50% would read
+		   as a horizontal seam across the panel, which is the one thing
+		   this treatment exists to avoid. The bottom fade runs out by 100%
+		   so nothing butts against the section's lower edge either.
+		   Percentages, so both fades scale with the panel rather than
+		   collapsing at short viewports. */
+		mask-image: linear-gradient(
+			to bottom,
+			transparent 0%,
+			transparent 50%,
+			rgba(0, 0, 0, 1) 62%,
+			rgba(0, 0, 0, 1) 88%,
+			transparent 100%
+		);
+		-webkit-mask-image: linear-gradient(
+			to bottom,
+			transparent 0%,
+			transparent 50%,
+			rgba(0, 0, 0, 1) 62%,
+			rgba(0, 0, 0, 1) 88%,
+			transparent 100%
+		);
+	}
+
+	#statement .cs-backdrop-img {
+		position: absolute;
+		top: -15%;
+		left: 0;
+		width: 100%;
+		/* 130% against a -15% offset leaves 15% of overhang at each end.
+		   The scrub never exceeds that, so the wrapper is always covered. */
+		height: 130%;
+		object-fit: cover;
+		object-position: center;
+		display: block;
+		/* Swap for a pre-desaturated asset before launch — a live filter on
+		   a full-bleed image costs a repaint layer on every frame. */
+		filter: grayscale(1) contrast(1.04);
+		/* Barely there. At this alpha the image is closer to paper grain
+		   than to photography — you should have to look for it. Contrast is
+		   nudged up above to stop the mid-tones dissolving entirely once
+		   the opacity is this low. */
+		opacity: 0.07;
+		/* --statement-parallax is written by nav-adjacent scroll JS; the
+		   fallback keeps the frame correct with JS off or blocked. */
+		transform: translate3d(0, var(--statement-parallax, 0px), 0);
+		will-change: transform;
+	}
+
+	/* The ruled field. Scoped to .cs-body so the rules stop at the marquee's
+	   bottom border rather than running the full section height.
+	   Percentage interval, not pixels: five even columns at any width. A
+	   fixed interval leaves a partial column at the right edge. */
+	#statement .cs-body:before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		display: block;
+		pointer-events: none;
+		/* Lifted above the backdrop. Without this the positioned backdrop
+		   paints after the pseudo-element in tree order and the rules end up
+		   buried under the photograph. */
+		z-index: 1;
+		background-image: repeating-linear-gradient(
+			to right,
+			rgba(var(--darkCocoa-rgb), 0.05) 0 1px,
+			transparent 1px 20%
+		);
+	}
+
+	#statement .cs-container {
+		width: 100%;
+		max-width: 100rem;
+		margin: auto;
+		text-align: center;
+		/* Lifts the copy off the ruled field above */
+		position: relative;
+		z-index: 2;
+	}
+
+	/* Sentence case, deliberately. Cinzel is a display face and every other
+	   use of it on the page is uppercase — but this is thirty words, and at
+	   that length caps stop reading as a statement. */
+	#statement .cs-statement {
+		font-family: var(--headerFont);
+		font-weight: 500;
+		font-size: clamp(1.375rem, 5.2vw, 1.875rem);
+		line-height: 1.28em;
+		letter-spacing: 0.005em;
+		text-transform: none;
+		color: var(--darkCocoa);
+		margin: 0 auto;
+		/* Effectively uncapped on a phone — the body's 1rem padding is what
+		   sets the measure here, not this. */
+		max-width: 34rem;
+		text-wrap: balance;
+	}
+}
+
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+	#statement {
+		border-radius: 1.25rem 1.25rem 0 0;
+	}
+
+	#statement .cs-ticker {
+		padding: 1.5rem 0;
+	}
+
+	#statement .cs-fact {
+		font-size: 1.3rem;
+		padding: 0 2rem;
+	}
+
+	#statement .cs-body {
+		padding: var(--sectionPadding) 2rem;
+	}
+
+	#statement .cs-statement {
+		max-width: 44rem;
+	}
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+	#statement {
+		border-radius: 1.5rem 1.5rem 0 0;
+	}
+
+	#statement .cs-ticker {
+		padding: 1.75rem 0;
+	}
+
+	#statement .cs-body {
+		padding: 6rem 3rem 6.5rem;
+	}
+
+	/* A touch stronger on desktop. Same image spread across a much wider
+	   panel reads thinner than it does on a phone, so the mobile alpha
+	   would effectively vanish here. */
+	#statement .cs-backdrop-img {
+		opacity: 0.09;
+	}
+
+	/* Wider box, so the same copy resolves to fewer and longer lines. The
+	   size is stepped up with it — a wide measure at small type reads thin
+	   and the centred block loses its shape. */
+	#statement .cs-statement {
+		font-size: 2.25rem;
+		max-width: 54rem;
+	}
+}
+
+/* Track resets to 0 on each loop, and at that moment the duplicate half is
+   sitting exactly where the original was — so the reset is invisible. */
+@keyframes cs-ticker-scroll {
+	from {
+		transform: translateX(0);
+	}
+
+	to {
+		transform: translateX(-50%);
+	}
+}
+
+/* Reduced motion — the ticker holds still and the backdrop parks at centre.
+   The facts that happen to be in view stay in view; nothing is lost, since
+   the set repeats. */
+@media (prefers-reduced-motion: reduce) {
+	#statement .cs-ticker-track {
+		animation: none;
+	}
+
+	#statement .cs-backdrop-img {
+		transform: none;
+		will-change: auto;
+	}
+}
+
 /* Mobile - 0rem
    Dark band between two canvas sections. Every ink value in here is
    overridden off the light-surface defaults in root — that inversion is the

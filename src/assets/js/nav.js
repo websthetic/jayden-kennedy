@@ -17,14 +17,12 @@
 	if (!nav) return;
 
 	const hero = document.querySelector("#hero");
+	// The panel that rides up over the pinned hero.
+	const curtain = document.querySelector("#statement");
 	const body = document.body;
 	const toggle = nav.querySelector("#cs-toggle");
 	const panel = nav.querySelector("#cs-panel");
 	const backdrop = nav.querySelector("#cs-backdrop");
-
-	// The light surface that rides up over the hero frame. Absent on inner
-	// pages, in which case the bar just stays light from the start.
-	const curtain = document.querySelector(".cs-curtain-hero");
 
 	const isDesktop = () => window.innerWidth >= CONFIG.DESKTOP;
 
@@ -60,11 +58,22 @@
 	};
 
 	const readSurface = () => {
-		if (!hero) {
+		if (!hero && !curtain) {
 			nav.classList.add(CONFIG.CLASSES.pastHero);
 			return;
 		}
-		// Flip when the hero's bottom edge reaches the underside of the bar
+
+		// With the hero pinned, its own bottom edge never rises — it sits at
+		// the viewport floor for the whole curtain and the bar would stay
+		// transparent over a cream panel. The curtain's TOP edge is what
+		// actually passes under the bar, so that's what the flip reads.
+		if (curtain) {
+			const past = curtain.getBoundingClientRect().top <= nav.offsetHeight;
+			nav.classList.toggle(CONFIG.CLASSES.pastHero, past);
+			return;
+		}
+
+		// Inner pages: no curtain, so the hero's bottom edge still works.
 		const past = hero.getBoundingClientRect().bottom <= nav.offsetHeight;
 		nav.classList.toggle(CONFIG.CLASSES.pastHero, past);
 	};
