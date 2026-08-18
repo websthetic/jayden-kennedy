@@ -2,52 +2,106 @@
 <---        Brand Statement     -->
 <--- -------------------------- -*/
 
-/* Mobile - 0rem */
+/* Mobile - 0rem
+   An ordinary section below the hero. Centred copy with the ticker at the
+   foot. The aside image is absent here — it exists to counterweight the
+   landed frame, and there is no landed frame at this width. */
 @media only screen and (min-width: 0rem) {
 	#statement {
 		width: 100%;
 		background-color: var(--surfaceCanvas);
-		/* No negative pull. The top edge sits exactly at the hero's bottom,
-		   which puts this whole panel below the fold on load — the ticker
-		   peeking over the hero photo at scroll 0 is what a negative margin
-		   here produces. The overlap is the curtain's job now: the hero pins
-		   and this rides up over it, so the rounded corners cut into the
-		   photograph the entire way up. */
-		margin-top: 0;
 		min-height: 100svh;
-		border-radius: 1rem 1rem 0 0;
-		/* Column so the body can absorb whatever the ticker doesn't use */
+		/* Column, and the ticker is last in the DOM — that is what puts it at
+		   the foot without any explicit ordering. */
 		display: flex;
 		flex-direction: column;
 		position: relative;
-		/* Above #hero, which sits at 1. The overlap is why this matters —
-		   source order alone wouldn't lift it over a positioned sibling. */
 		z-index: 2;
-		/* Clips the ticker track, which is far wider than the viewport, and
-		   keeps the rounded corners cutting the marquee rule. clip rather
-		   than hidden so no scroll container is created. */
+		/* Clips the ticker track, which is far wider than the viewport. clip
+		   rather than hidden so no scroll container is created. */
 		overflow-x: clip;
 	}
 
+	/* -- Statement -- */
+	#statement .cs-body {
+		width: 100%;
+		/* Takes everything the ticker doesn't, then centres the copy in it */
+		flex: 1;
+		display: flex;
+		align-items: center;
+		padding: var(--sectionPadding) 1rem;
+		box-sizing: border-box;
+		position: relative;
+	}
+
+	/* The ruled field. Scoped to .cs-body so the rules stop at the ticker's
+	   top border rather than running the full section height. Percentage
+	   interval, not pixels: five even columns at any width. A fixed interval
+	   leaves a partial column at the right edge. */
+	#statement .cs-body:before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		display: block;
+		pointer-events: none;
+		z-index: 0;
+		background-image: repeating-linear-gradient(
+			to right,
+			rgba(var(--darkCocoa-rgb), 0.05) 0 1px,
+			transparent 1px 20%
+		);
+	}
+
+	/* Decorative counterweight, desktop only */
+	#statement .cs-aside {
+		display: none;
+	}
+
+	#statement .cs-container {
+		width: 100%;
+		max-width: 100rem;
+		margin: auto;
+		text-align: center;
+		/* Lifts the copy off the ruled field */
+		position: relative;
+		z-index: 1;
+	}
+
+	/* Root already styles this. Block display is the override that matters —
+	   a span is inline, so margin-bottom would be silently discarded. */
 	#statement .cs-topper {
 		display: block;
 		margin-bottom: 1rem;
 	}
 
+	/* Sentence case, deliberately. Cinzel is a display face and every other
+	   use of it on the page is uppercase — but this is a full sentence, and
+	   at that length caps stop reading as a statement. */
+	#statement .cs-statement {
+		font-family: var(--headerFont);
+		font-weight: 500;
+		font-size: clamp(1.375rem, 5.2vw, 1.875rem);
+		line-height: 1.28em;
+		letter-spacing: 0.005em;
+		text-transform: none;
+		color: var(--darkCocoa);
+		margin: 0 auto;
+		max-width: 34rem;
+		text-wrap: balance;
+	}
+
 	/* -- Fact ticker -- */
 	#statement .cs-ticker {
 		width: 100%;
-		/* Natural height. Everything left over goes to .cs-body. */
+		/* Natural height. Everything else went to .cs-body. */
 		flex: none;
 		padding: 1.25rem 0;
-		/* Same alpha as the vertical rules below, so the horizontal and
-		   vertical hairlines read as one system rather than two weights. */
-		border-bottom: 1px solid rgba(var(--darkCocoa-rgb), 0.16);
+		/* Top, not bottom — the ticker sits at the foot now, and the hairline
+		   has to separate it from the copy above rather than below. Same
+		   alpha as the vertical rules, so the horizontal and vertical
+		   hairlines read as one system rather than two weights. */
+		border-top: 1px solid rgba(var(--darkCocoa-rgb), 0.16);
 		overflow: hidden;
-		/* Above the backdrop, which is clipped to .cs-body anyway — this is
-		   insurance against the image ever being promoted upward. */
-		position: relative;
-		z-index: 1;
 	}
 
 	#statement .cs-ticker-track {
@@ -80,136 +134,16 @@
 		background-color: rgba(var(--darkCocoa-rgb), 0.35);
 		flex: none;
 	}
-
-	/* -- Statement -- */
-	#statement .cs-body {
-		width: 100%;
-		/* Takes the remaining column height, then centres the copy in it.
-		   The padding is now a floor rather than the actual spacing — it
-		   only governs at short viewports where the content would otherwise
-		   touch the edges. */
-		flex: 1;
-		display: flex;
-		align-items: center;
-		padding: var(--sectionPadding) 1rem;
-		box-sizing: border-box;
-		position: relative;
-	}
-
-	/* -- Parallax backdrop -- */
-	/* Own clipping context so #statement's overflow-x stays as-is. clip, not
-	   hidden, for the same reason it is everywhere else in this file. */
-	#statement .cs-backdrop {
-		position: absolute;
-		inset: 0;
-		z-index: 0;
-		overflow: clip;
-		pointer-events: none;
-		/* Fully masked through the top half — the image doesn't begin to
-		   surface until 50% and isn't at full strength until 62%. That
-		   12% ramp is doing the real work: a hard stop at 50% would read
-		   as a horizontal seam across the panel, which is the one thing
-		   this treatment exists to avoid. The bottom fade runs out by 100%
-		   so nothing butts against the section's lower edge either.
-		   Percentages, so both fades scale with the panel rather than
-		   collapsing at short viewports. */
-		mask-image: linear-gradient(
-			to bottom,
-			transparent 0%,
-			transparent 50%,
-			rgba(0, 0, 0, 1) 62%,
-			rgba(0, 0, 0, 1) 88%,
-			transparent 100%
-		);
-		-webkit-mask-image: linear-gradient(
-			to bottom,
-			transparent 0%,
-			transparent 50%,
-			rgba(0, 0, 0, 1) 62%,
-			rgba(0, 0, 0, 1) 88%,
-			transparent 100%
-		);
-	}
-
-	#statement .cs-backdrop-img {
-		position: absolute;
-		top: -15%;
-		left: 0;
-		width: 100%;
-		/* 130% against a -15% offset leaves 15% of overhang at each end.
-		   The scrub never exceeds that, so the wrapper is always covered. */
-		height: 130%;
-		object-fit: cover;
-		object-position: center;
-		display: block;
-		/* Swap for a pre-desaturated asset before launch — a live filter on
-		   a full-bleed image costs a repaint layer on every frame. */
-		filter: grayscale(1) contrast(1.04);
-		/* Barely there. At this alpha the image is closer to paper grain
-		   than to photography — you should have to look for it. Contrast is
-		   nudged up above to stop the mid-tones dissolving entirely once
-		   the opacity is this low. */
-		opacity: 0.07;
-		/* --statement-parallax is written by nav-adjacent scroll JS; the
-		   fallback keeps the frame correct with JS off or blocked. */
-		transform: translate3d(0, var(--statement-parallax, 0px), 0);
-		will-change: transform;
-	}
-
-	/* The ruled field. Scoped to .cs-body so the rules stop at the marquee's
-	   bottom border rather than running the full section height.
-	   Percentage interval, not pixels: five even columns at any width. A
-	   fixed interval leaves a partial column at the right edge. */
-	#statement .cs-body:before {
-		content: "";
-		position: absolute;
-		inset: 0;
-		display: block;
-		pointer-events: none;
-		/* Lifted above the backdrop. Without this the positioned backdrop
-		   paints after the pseudo-element in tree order and the rules end up
-		   buried under the photograph. */
-		z-index: 1;
-		background-image: repeating-linear-gradient(
-			to right,
-			rgba(var(--darkCocoa-rgb), 0.05) 0 1px,
-			transparent 1px 20%
-		);
-	}
-
-	#statement .cs-container {
-		width: 100%;
-		max-width: 100rem;
-		margin: auto;
-		text-align: center;
-		/* Lifts the copy off the ruled field above */
-		position: relative;
-		z-index: 2;
-	}
-
-	/* Sentence case, deliberately. Cinzel is a display face and every other
-	   use of it on the page is uppercase — but this is thirty words, and at
-	   that length caps stop reading as a statement. */
-	#statement .cs-statement {
-		font-family: var(--headerFont);
-		font-weight: 500;
-		font-size: clamp(1.375rem, 5.2vw, 1.875rem);
-		line-height: 1.28em;
-		letter-spacing: 0.005em;
-		text-transform: none;
-		color: var(--darkCocoa);
-		margin: 0 auto;
-		/* Effectively uncapped on a phone — the body's 1rem padding is what
-		   sets the measure here, not this. */
-		max-width: 34rem;
-		text-wrap: balance;
-	}
 }
 
 /* Tablet - 48rem */
 @media only screen and (min-width: 48rem) {
-	#statement {
-		border-radius: 1.25rem 1.25rem 0 0;
+	#statement .cs-body {
+		padding: var(--sectionPadding) 2rem;
+	}
+
+	#statement .cs-statement {
+		max-width: 44rem;
 	}
 
 	#statement .cs-ticker {
@@ -220,43 +154,95 @@
 		font-size: 1.3rem;
 		padding: 0 2rem;
 	}
-
-	#statement .cs-body {
-		padding: var(--sectionPadding) 2rem;
-	}
-
-	#statement .cs-statement {
-		max-width: 44rem;
-	}
 }
 
-/* Desktop - 64rem */
+/* Desktop - 64rem
+   The static panel. Absolute inside the stage at z-index 2, under the hero
+   layer, at its final position from the first frame — the hero frame is what
+   hides it, and the frame shrinking away is the reveal.
+
+   Three fixed regions: aside left, copy centred, and the landing slot at
+   70%–94% which is left deliberately empty. Those percentages have to stay in
+   agreement with the scale factors in hero.js. */
 @media only screen and (min-width: 64rem) {
 	#statement {
-		border-radius: 1.5rem 1.5rem 0 0;
+		position: absolute;
+		inset: 0;
+		min-height: 0;
+		z-index: 2;
+	}
+
+	#statement .cs-body {
+		flex: 1;
+		padding: 0 3rem;
+		/* Nothing else is in flow here — the aside is absolute and the
+		   container is centred by auto margins. */
+		align-items: center;
+		justify-content: center;
+	}
+
+	/* Left counterweight. Absolute rather than a grid column: the copy is
+	   centred on the stage, not on the space left over beside the image, and
+	   a three-column grid would push it off centre. Portrait-ish box —
+	   6%–30% wide against 28%–78% tall. */
+	#statement .cs-aside {
+		display: block;
+		position: absolute;
+		left: 6%;
+		width: 24%;
+		top: 28%;
+		bottom: 22%;
+		z-index: 1;
+		overflow: hidden;
+		/* Arrives after the copy, so the panel resolves in beats rather than
+		   all at once. */
+		opacity: var(--aside, 1);
+		transform: translateY(var(--asideY, 0px));
+		will-change: transform;
+	}
+
+	#statement .cs-aside img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	#statement .cs-container {
+		/* Centred between the aside's right edge at 30% and the landing
+		   slot's left edge at 70%. Widened past the visual gap so the
+		   sentence isn't forced into six short lines — the copy overhangs
+		   both gutters slightly, which is fine because neither neighbour is
+		   full height. */
+		width: 40%;
+		max-width: none;
+		margin: 0 auto;
+		z-index: 2;
+		opacity: var(--stmt, 1);
+		transform: translateY(var(--stmtY, 0px));
+	}
+
+	#statement .cs-topper {
+		margin-bottom: 1.5rem;
+	}
+
+	/* 1.875rem, not the 2.125rem a full-width panel would take. The measure
+	   here is roughly a third of the viewport, and a larger size resolves the
+	   sentence into six lines that read as a paragraph rather than a
+	   statement. */
+	#statement .cs-statement {
+		font-size: 1.875rem;
+		line-height: 1.32em;
+		max-width: none;
 	}
 
 	#statement .cs-ticker {
 		padding: 1.75rem 0;
-	}
-
-	#statement .cs-body {
-		padding: 6rem 3rem 6.5rem;
-	}
-
-	/* A touch stronger on desktop. Same image spread across a much wider
-	   panel reads thinner than it does on a phone, so the mobile alpha
-	   would effectively vanish here. */
-	#statement .cs-backdrop-img {
-		opacity: 0.09;
-	}
-
-	/* Wider box, so the same copy resolves to fewer and longer lines. The
-	   size is stepped up with it — a wide measure at small type reads thin
-	   and the centred block loses its shape. */
-	#statement .cs-statement {
-		font-size: 2.25rem;
-		max-width: 54rem;
+		/* Last thing to arrive. A marquee that is already running when it
+		   appears is slightly odd, but the alternative is having it visible
+		   from the start underneath a full-bleed photo, where nobody sees it
+		   anyway. */
+		opacity: var(--tick, 1);
 	}
 }
 
@@ -272,17 +258,27 @@
 	}
 }
 
-/* Reduced motion — the ticker holds still and the backdrop parks at centre.
-   The facts that happen to be in view stay in view; nothing is lost, since
-   the set repeats. */
+/* Reduced motion — the ticker holds still, the panel returns to normal flow
+   under the hero, and every scrubbed value sits at rest. */
 @media (prefers-reduced-motion: reduce) {
+	#statement {
+		position: relative;
+		inset: auto;
+		min-height: 100svh;
+	}
+
 	#statement .cs-ticker-track {
 		animation: none;
 	}
 
-	#statement .cs-backdrop-img {
+	#statement .cs-aside {
+		display: none;
+	}
+
+	#statement .cs-container,
+	#statement .cs-ticker {
+		opacity: 1;
 		transform: none;
-		will-change: auto;
 	}
 }
 

@@ -2,7 +2,9 @@
 <---            Hero            -->
 <--- -------------------------- -*/
 
-/* Mobile - 0rem */
+/* Mobile - 0rem
+   No stage, no scrub. The track and stage are inert wrappers and #hero is an
+   ordinary full-viewport section. */
 @media only screen and (min-width: 0rem) {
 	#hero {
 		width: 100%;
@@ -107,30 +109,101 @@
 }
 
 /* Desktop - 64rem
-   The curtain. The hero pins at the top of the viewport while #statement —
-   opaque, and one z-index above — scrolls up and covers it. No JS: the only
-   moving part is position: sticky, and the travel comes from .cs-curtain-hero
-   being taller than the hero.
+   The scrub. .cs-stage pins at the top of the viewport and holds for the
+   track's surplus height; hero.js writes the scrub values across that hold.
 
-   Desktop only, matching every other scroll effect on this page. Below 64rem
-   the hero is min-height rather than height, and a sticky box taller than the
-   viewport pins its top and scrolls its own bottom out of reach — the CTA
-   would become unreachable on a short phone. */
+   There is no curtain. #statement is a static layer sitting at its final
+   position from the start, and #hero is a full-bleed layer on top of it. The
+   frame shrinking off the panel IS the reveal — which is why the statement
+   needs no transform of its own and no rounded top edge.
+
+   Desktop only. Below 64rem the frame would land in a composition that does
+   not exist. */
 @media only screen and (min-width: 64rem) {
-	/* No styles of its own beyond containing the pin. Its height is the hero
-	   plus the statement, and that sum is exactly how long the hero holds.
-	   Adding a third section inside it would extend the pin under that
-	   section too. */
+	/* 190svh: 100 for the stage, 90 of scroll to spend. The scrub completes
+	   at 70% of that surplus, so roughly 27svh passes with the composed
+	   layout held still. Shorten this and the payoff flashes past. */
+	.cs-hero-track {
+		position: relative;
+		height: 190svh;
+	}
 
-	#hero {
+	/* Descendant-scoped. #pathways, #testimonials and #neighbourhoods all use
+	   .cs-stage too — an unscoped rule here pins every one of them. */
+	.cs-hero-track .cs-stage {
 		height: 100svh;
-		min-height: 0;
-		padding: 0 3rem;
-		/* Pins here. z-index stays at 1 from the base tier — #statement sits
-		   at 2, and that one step is what makes this occlusion rather than
-		   two sections sharing a scroll. */
 		position: sticky;
 		top: 0;
+		/* The frame is over its landing size for most of the travel. clip,
+		   not hidden, so no scroll container is created inside a sticky box. */
+		overflow: clip;
+	}
+
+		#hero {
+		/* Absolute layer, not a flow section. Transparent — this box covers
+		   the whole stage at z-index 3, and the canvas colour it inherits
+		   from the mobile tier would paint straight over #statement. The
+		   frame is the only thing in here that should be opaque. */
+		position: absolute;
+		inset: 0;
+		height: auto;
+		min-height: 0;
+		padding: 0;
+		background-color: transparent;
+		z-index: 3;
+		/* Transparent, but still a full-stage box on top of #statement for
+		   the entire scrub — left armed it swallows every pointer event
+		   aimed at the panel below, including selecting the statement copy.
+		   Re-armed on the copy column only, and only while that is lit. */
+		pointer-events: none;
+	}
+
+	#hero .cs-frame {
+		/* The fixed point of the scale, solved rather than chosen: with
+		   scaleX 0.24 it puts the landed card's left edge at 70% and its
+		   right edge at 94% of the stage. Vertically, 35.83% with scaleY 0.52
+		   lands it at 17.2%–69.2% — deliberately not centred, since a card
+		   sitting slightly high is what stops the pair reading as symmetric.
+		   Change either scale factor in hero.js and this origin has to be
+		   re-solved, or the card drifts off its margins. Because the origin
+		   does all the placement, there is no translate in the transform. */
+				transform-origin: 92.11% 35.83%;
+		transform: scale(var(--fx, 1), var(--fy, 1));
+		overflow: hidden;
+		/* Above the -2 of the mobile tier: the frame is the subject now, not
+		   a background layer. */
+		z-index: 0;
+		will-change: transform;
+	}
+
+	#hero .cs-media {
+		/* Undoes the parent's distortion and applies the net content scale in
+		   one step: fx·mx and fy·my both resolve to 0.6, so the photograph
+		   stays square while the window crops in on it. The net figure is
+		   tighter than it would be for a larger card — a small window needs a
+		   harder crop to still read as a photograph rather than a thumbnail. */
+		transform: scale(var(--mx, 1), var(--my, 1));
+		transform-origin: center center;
+		will-change: transform;
+	}
+
+	/* Fades out as the frame leaves full bleed — the scrim exists to bed the
+	   copy, and the copy is going. */
+	#hero .cs-frame:after {
+		opacity: var(--scrim, 1);
+	}
+
+	#hero .cs-container {
+		position: absolute;
+		inset: 0;
+		align-items: center;
+		padding: 0 3rem;
+		box-sizing: border-box;
+		z-index: 1;
+		opacity: var(--copy, 1);
+		/* hero.js writes none once --copy reaches 0. Paired with inert on the
+		   same element — this handles the mouse, inert handles the keyboard. */
+		pointer-events: var(--copyEvents, auto);
 	}
 
 	#hero .cs-content {
@@ -143,11 +216,47 @@
 	}
 }
 
-/* Reduced motion — no pin. The hero scrolls away normally and the statement
-   follows it, which is what the sub-64rem tier already describes. */
+/* Reduced motion — no track, no pin, no scrub. The stage collapses to normal
+   flow and the two sections stack, which is what the sub-64rem tier already
+   describes. hero.js bails out before writing anything, so every var falls
+   back to its identity value. */
 @media (prefers-reduced-motion: reduce) {
-	#hero {
+	.cs-hero-track {
+		height: auto;
+	}
+
+	.cs-hero-track .cs-stage {
+		height: auto;
 		position: relative;
 		top: auto;
+		overflow: visible;
+	}
+
+		#hero {
+		position: relative;
+		inset: auto;
+		min-height: 100svh;
+		padding: 6rem 3rem 3rem;
+		background-color: var(--surfaceCanvas);
+		/* hero.js bails out at this tier, so nothing ever writes the var that
+		   re-arms the copy — the layer has to hand its events back itself. */
+		pointer-events: auto;
+	}
+
+	#hero .cs-frame {
+		transform: none;
+		z-index: -2;
+	}
+
+	#hero .cs-media {
+		transform: none;
+	}
+
+	#hero .cs-container {
+		position: relative;
+		inset: auto;
+		padding: 0;
+		opacity: 1;
+		pointer-events: auto;
 	}
 }

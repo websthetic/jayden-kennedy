@@ -25,7 +25,7 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
          scroll effects do nothing while you're looking at them. -->
     <!-- <script defer src="/assets/js/hero.js"></script> -->
     <script defer src="/assets/js/pathways.js"></script>
-     <script defer src="/assets/js/statement.js"></script>
+    <script defer src="/assets/js/hero.js"></script>
     <script defer src="/assets/js/results.js"></script>
     <script defer src="/assets/js/listings.js"></script>
     <script defer src="/assets/js/testimonials.js"></script>
@@ -45,106 +45,107 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 <!--   nothing else may be added in here.         -->
 <!-- ============================================ -->
 
-<div class="cs-curtain-hero">
+<!-- <div class="cs-curtain-hero"> -->
 
 <!-- ============================================ -->
-<!--                    Hero                    -->
-<!--   Sticky at 64rem. Static below, and under  -->
-<!--   reduced motion. No JS.                     -->
+<!--              Hero → Statement                -->
+<!--   One pinned stage. The frame shrinks off     -->
+<!--   the panel to reveal it; no curtain. The     -->
+<!--   panel is static and sits underneath from    -->
+<!--   the start. Desktop only.                    -->
 <!-- ============================================ -->
 
-<section id="hero">
-    <!-- Background layer. Behind the copy rather than a CSS background so
-         the browser can preload it and honour fetchpriority. -->
-    <div class="cs-frame">
-        <img
-            class="cs-media"
-            src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder-1.jpg"
-            alt=""
-            width="2000"
-            height="1333"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-            aria-hidden="true">
+<div class="cs-hero-track">
+    <!-- Pins at top:0. Everything below shares this coordinate space —
+         that is what makes the frame's landing slot a fixed rectangle.
+         Nothing else may be added inside the track. -->
+    <div class="cs-stage">
+
+        <section id="hero">
+            <div class="cs-frame">
+                <img
+                    class="cs-media"
+                    src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder-1.jpg"
+                    alt=""
+                    width="2000"
+                    height="1333"
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
+                    aria-hidden="true">
+            </div>
+
+            <div class="cs-container">
+                <div class="cs-content">
+                    <h1 class="cs-hero-title">Built Through Real Estate</h1>
+                    <p class="cs-hero-text">
+                        Bridging the gap between financial literacy and real estate
+                        acquisition so that you can build generational wealth through
+                        real estate.
+                    </p>
+                    <a href="/contact/" class="cs-button-light">Let&rsquo;s Connect</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="statement">
+            <div class="cs-body">
+                <!-- The counterweight to the landed frame. Decorative — it
+                     carries no information the copy doesn't, and it is absent
+                     entirely below 64rem. Wants a portrait or square crop:
+                     two landscape photos flanking the copy read as a
+                     slideshow rather than a composition. -->
+                <picture class="cs-aside" aria-hidden="true">
+                    <img
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg"
+                        alt=""
+                        width="900"
+                        height="1200"
+                        loading="lazy"
+                        decoding="async">
+                </picture>
+
+                <div class="cs-container">
+                    <span class="cs-topper">Jayden Kennedy</span>
+                    <h2 class="cs-statement">
+                        Every real estate decision should create opportunity today and lasting wealth for tomorrow.
+                    </h2>
+                </div>
+            </div>
+
+            <!-- Last in the DOM so the column places it at the foot without
+                 any explicit ordering. -->
+            <div class="cs-ticker">
+                <!-- One set, then an identical duplicate. The track translates
+                     -50%, which lands the duplicate exactly where the original
+                     started — the two halves must stay character-for-character
+                     identical or the loop seams. -->
+                <div class="cs-ticker-track" aria-hidden="true">
+                    <span class="cs-fact">Keller Williams Energy</span>
+                    <span class="cs-dot"></span>
+                    <span class="cs-fact">Greater Toronto Area</span>
+                    <span class="cs-dot"></span>
+                    <span class="cs-fact">Licensed Realtor</span>
+                    <span class="cs-dot"></span>
+                    <span class="cs-fact">Financial literacy first</span>
+                    <span class="cs-dot"></span>
+
+                    <span class="cs-fact">Keller Williams Energy</span>
+                    <span class="cs-dot"></span>
+                    <span class="cs-fact">Greater Toronto Area</span>
+                    <span class="cs-dot"></span>
+                    <span class="cs-fact">Licensed Realtor</span>
+                    <span class="cs-dot"></span>
+                    <span class="cs-fact">Financial literacy first</span>
+                    <span class="cs-dot"></span>
+                </div>
+            </div>
+        </section>
+
     </div>
+</div><!-- /.cs-hero-track -->
 
-    <div class="cs-container">
-        <div class="cs-content">
-            <h1 class="cs-hero-title">Built Through Real Estate</h1>
-            <p class="cs-hero-text">
-                Bridging the gap between financial literacy and real estate
-                acquisition so that you can build generational wealth through
-                real estate.
-            </p>
-            <a href="/contact/" class="cs-button-light">Let&rsquo;s Connect</a>
-        </div>
-    </div>
-</section>
-
-<!-- ============================================ -->
-<!--               Brand Statement              -->
-<!--   Overlaps the hero on a rounded top edge.  -->
-<!--   Fact ticker over a centred statement on   -->
-<!--   a ruled field. Pure CSS, no JS.           -->
-<!-- ============================================ -->
-
-<section id="statement">
-    <!-- aria-hidden on the track, not the items: the ticker is decorative
-         repetition of facts stated plainly elsewhere, and a moving element
-         announcing itself mid-scroll is noise. -->
-    <div class="cs-ticker">
-        <!-- One set, then an identical duplicate. The track translates -50%,
-             which lands the duplicate exactly where the original started —
-             that exactness is what makes the loop seamless, so the two halves
-             must stay character-for-character identical. -->
-        <div class="cs-ticker-track" aria-hidden="true">
-            <span class="cs-fact">Keller Williams Energy</span>
-            <span class="cs-dot"></span>
-            <span class="cs-fact">Greater Toronto Area</span>
-            <span class="cs-dot"></span>
-            <span class="cs-fact">Licensed Realtor</span>
-            <span class="cs-dot"></span>
-            <span class="cs-fact">Financial literacy first</span>
-            <span class="cs-dot"></span>
-
-            <span class="cs-fact">Keller Williams Energy</span>
-            <span class="cs-dot"></span>
-            <span class="cs-fact">Greater Toronto Area</span>
-            <span class="cs-dot"></span>
-            <span class="cs-fact">Licensed Realtor</span>
-            <span class="cs-dot"></span>
-            <span class="cs-fact">Financial literacy first</span>
-            <span class="cs-dot"></span>
-        </div>
-    </div>
-
-   <div class="cs-body">
-    <!-- Decorative texture only. Sits under the ruled field, masked top and
-         bottom so it never presents an edge. The img is 130% tall with a
-         -15% offset: that headroom is the parallax travel budget, so the
-         frame is never uncovered at either extreme of the scrub. -->
-    <div class="cs-backdrop" aria-hidden="true">
-        <img
-            class="cs-backdrop-img"
-            src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg"
-            alt=""
-            loading="lazy"
-            decoding="async"
-            width="1600"
-            height="1067"
-        >
-    </div>
-
-    <div class="cs-container">
-        <span class="cs-topper">Jayden Kennedy</span>
-        <h2 class="cs-statement">
-Every real estate decision should create opportunity today and lasting wealth for tomorrow.        </h2>
-    </div>
-</div>
-</section>
-
-</div><!-- /.cs-curtain-hero -->
+<!-- </div>/.cs-curtain-hero -->
 
 <!-- ============================================ -->
 <!--                   Results                    -->
