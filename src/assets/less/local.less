@@ -949,27 +949,43 @@
             max-width: none;
             scroll-snap-align: start;
             aspect-ratio: 9 / 16;
-            text-decoration: none;
+            background-color: var(--darkCocoa, #3B2A20);
             position: relative;
             display: block;
             overflow: hidden;
-
-            &:hover .cs-picture img {
-                transform: scale(1.03);
-            }
         }
 
+        /* Poster layer. Sits under the video permanently — the video
+           fades in over it once it has a first frame, so there is no
+           gap while the CDN clip buffers. */
         .cs-picture {
             width: 100%;
             height: 100%;
             display: block;
+            position: absolute;
+            inset: 0;
+            z-index: 0;
 
             img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
-                transition: transform var(--dur-slow) var(--ease);
             }
+        }
+
+        .cs-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            opacity: 0;
+            transition: opacity var(--dur-slow) var(--ease);
+        }
+
+        .cs-frame.is-ready .cs-video {
+            opacity: 1;
         }
 
         /* The only permitted overlay on photography. No capsule
@@ -981,7 +997,63 @@
             position: absolute;
             top: 0;
             left: 0;
+            z-index: 2;
             pointer-events: none;
+        }
+
+        /* Whole-card sound toggle. The card is not a link — tapping
+           it unmutes that clip and mutes the others. */
+        .cs-sound {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            margin: 0;
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+
+            &:focus-visible {
+                outline: 2px solid var(--ink-invert);
+                outline-offset: -4px;
+            }
+        }
+
+        /* Mute-state indicator only. Not interactive — the tap target
+           is .cs-sound behind it. */
+        .cs-sound-state {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: var(--ink-invert);
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            z-index: 4;
+            display: block;
+            opacity: 0.85;
+            pointer-events: none;
+
+            svg {
+                width: 100%;
+                height: 100%;
+                fill: currentColor;
+                display: block;
+            }
+
+            .cs-icon-loud {
+                display: none;
+            }
+        }
+
+        .cs-frame.is-unmuted .cs-sound-state {
+            .cs-icon-muted {
+                display: none;
+            }
+
+            .cs-icon-loud {
+                display: block;
+            }
         }
 
         .cs-frame-title {
@@ -989,9 +1061,58 @@
             line-height: 1.35;
             color: var(--ink-invert);
             position: absolute;
-            right: 1rem;
+            right: 4rem;
             bottom: 1rem;
             left: 1rem;
+            z-index: 4;
+            pointer-events: none;
+        }
+
+        /* 44px pause control — deck slide 17 */
+        .cs-control {
+            width: 2.75rem;
+            height: 2.75rem;
+            color: var(--ink-invert);
+            background: rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            border-radius: 50%;
+            position: absolute;
+            right: 0.75rem;
+            bottom: 0.75rem;
+            z-index: 5;
+            display: grid;
+            place-items: center;
+            padding: 0;
+            cursor: pointer;
+            -webkit-backdrop-filter: blur(4px);
+            backdrop-filter: blur(4px);
+            -webkit-tap-highlight-color: transparent;
+
+            svg {
+                width: 0.875rem;
+                height: 0.875rem;
+                fill: currentColor;
+                display: block;
+            }
+
+            .cs-icon-pause {
+                display: none;
+            }
+
+            &:focus-visible {
+                outline: 2px solid var(--ink-invert);
+                outline-offset: 2px;
+            }
+        }
+
+        .cs-frame.is-playing .cs-control {
+            .cs-icon-play {
+                display: none;
+            }
+
+            .cs-icon-pause {
+                display: block;
+            }
         }
 
         /* Under the track, not beside it. Reverts to a row child at
@@ -1032,27 +1153,59 @@
 /* Desktop - 64rem */
 @media only screen and (min-width: 64rem) {
     #notes {
-        /* The aside rejoins the frames. .cs-body carries the split now
-           that it is no longer a row child. */
+        /* Widest a single 9:16 frame is allowed to get. */
+        --notes-frame-max: 18rem;
+
+        /* Space between the last card and the copy. This is the only
+           value to touch to tighten or loosen that seam. */
+        --notes-split: 3rem;
+
+        /* Grid, not flex. Every child of .cs-frame is absolutely
+           positioned, so the frames contribute no content width and a
+           flex .cs-body hands the track whatever the aside doesn't
+           claim. Explicit columns take that guesswork out.
+
+           Column one is sized to the track rather than 1fr — as 1fr it
+           outran the capped row and the surplus opened up as a gap.
+           minmax lets it shrink below the cap on a narrower desktop
+           instead of overflowing. */
         .cs-body {
-            display: flex;
-            gap: 1.5rem;
+            display: grid;
+            grid-template-columns:
+                minmax(0, calc(var(--notes-frame-max) * 3 + 3rem))
+                minmax(0, 1fr);
+            gap: var(--notes-split);
+            align-items: center;
         }
 
         .cs-row {
-            flex: 1 1 auto;
+            min-width: 0;
             flex-wrap: nowrap;
             gap: 1.5rem;
         }
 
+        /* Release the tablet cap. flex-basis 0 makes the frames share
+           the track equally regardless of how wide it lands. */
+        .cs-frame {
+            flex: 1 1 0;
+            max-width: none;
+        }
+
+        /* padding-left is gone — it stacked on top of the grid gap and
+           was half the seam you were seeing. */
         .cs-aside {
-            flex: 1 1 16.25rem;
             margin-top: 0;
             justify-content: center;
-            padding-left: 1.5rem;
+        }
+
+        /* The aside column is now much wider than 16.25rem, so hold the
+           measure here or the paragraph runs to 90-odd characters. */
+        .cs-text {
+            max-width: 26rem;
         }
     }
 }
+
 /*-- -------------------------- -->
 <---       Reveal Indices       -->
 <--- -------------------------- -*/

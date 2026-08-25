@@ -324,72 +324,112 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
     </section>
 
     <!-- ============================================ -->
-    <!--                 Market Notes                 -->
-    <!-- ============================================ -->
+<!--                 Market Notes                 -->
+<!-- ============================================ -->
 
-    <!--! Poster frames for now. Deck slide 17 specifies this as the
-          video row — self-hosted MP4 1080x1920, poster required,
-          muted autoplay while 50% in view, one clip at a time, 44px
-          pause control, burned-in captions. Blocked on the open
-          hosting-budget CONFIRM. The poster markup below becomes the
-          poster layer, so the upgrade is additive, not a rewrite. -->
+<!--! Deck slide 17: 1080x1920 clips, poster required, muted
+      autoplay while 50% in view, one clip at a time, 44px pause
+      control, burned-in captions. Clips are served from the CDN.
+      Cards are no longer links — tapping a card toggles its sound. -->
 
-    <section id="notes" data-reveal>
-        <div class="cs-container">
-            <div class="cs-header cs-reveal">
-                <h2>Market notes</h2>
-                <a href="/" class="cs-button-ghost">All notes</a>
-            </div>
+<section id="notes" data-reveal>
+  <div class="cs-container">
+    <div class="cs-header cs-reveal">
+      <h2>Market notes</h2>
+      <a href="/" class="cs-button-ghost">All notes</a>
+    </div>
 
-            <!-- .cs-body exists so the aside can sit outside .cs-row.
-                 Below 48rem the row is a snap scroller, and anything
-                 inside it becomes a slide — the copy and the button
-                 belong under the track, not in it. -->
-            <div class="cs-body">
-                <div class="cs-row">
-                    <a href="/" class="cs-frame cs-reveal">
-                        <picture class="cs-picture">
-                            <img src="/assets/images/portfolio/port4.jpg"
-                                 alt=""
-                                 width="1080" height="1920"
-                                 loading="lazy" decoding="async">
-                        </picture>
-                        <span class="cs-scrim" aria-hidden="true"></span>
-                        <span class="cs-frame-title">What deposit structure signals to a seller</span>
-                    </a>
-
-                    <a href="/" class="cs-frame cs-reveal">
-                        <picture class="cs-picture">
-                            <img src="/assets/images/portfolio/port5.jpg"
-                                 alt=""
-                                 width="1080" height="1920"
-                                 loading="lazy" decoding="async">
-                        </picture>
-                        <span class="cs-scrim" aria-hidden="true"></span>
-                        <span class="cs-frame-title">Reading ninety days of comparables on one street</span>
-                    </a>
-
-                    <a href="/" class="cs-frame cs-reveal">
-                        <picture class="cs-picture">
-                            <img src="/assets/images/portfolio/port6.jpg"
-                                 alt=""
-                                 width="1080" height="1920"
-                                 loading="lazy" decoding="async">
-                        </picture>
-                        <span class="cs-scrim" aria-hidden="true"></span>
-                        <span class="cs-frame-title">The five numbers I check before writing an offer</span>
-                    </a>
-                </div>
-
-                <div class="cs-aside cs-reveal">
-                    <p class="cs-text">
-                        Short pieces on the mechanics: what a comparable really proves, how deposits are read, where the carrying cost hides.
-                    </p>
-                    <a href="/" class="cs-button-ghost">Ask me anything</a>
-                </div>
-            </div>
+    <!-- .cs-body exists so the aside can sit outside .cs-row.
+         Below 48rem the row is a snap scroller, and anything
+         inside it becomes a slide — the copy and the button
+         belong under the track, not in it. -->
+    <div class="cs-body">
+      <div class="cs-row">
+        <div class="cs-frame cs-reveal">
+          <picture class="cs-picture">
+            <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-poster-1.jpg"
+                 alt=""
+                 width="1080" height="1920"
+                 loading="lazy" decoding="async">
+          </picture>
+          <video class="cs-video"
+                 src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-reel-1.mp4"
+                 poster="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-poster-1.jpg"
+                 muted playsinline webkit-playsinline
+                 preload="auto" disablepictureinpicture></video>
+          <span class="cs-scrim" aria-hidden="true"></span>
+          <button class="cs-sound" type="button" aria-label="Turn sound on"></button>
+          <span class="cs-sound-state" aria-hidden="true">
+            <svg class="cs-icon-muted" viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm15.5 3l2.5 2.5-1 1L18.5 13 16 15.5l-1-1L17.5 12 15 9.5l1-1 2.5 2.5L21 8.5l1 1L19.5 12z"/></svg>
+            <svg class="cs-icon-loud" viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm12.5 3a4.5 4.5 0 00-2.5-4v8a4.5 4.5 0 002.5-4zM14 1.2v2.1a8.5 8.5 0 010 17.4v2.1A10.6 10.6 0 0014 1.2z"/></svg>
+          </span>
+          <span class="cs-frame-title">What deposit structure signals to a seller</span>
+          <button class="cs-control" type="button" aria-label="Play">
+            <svg class="cs-icon-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>
+            <svg class="cs-icon-pause" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+          </button>
         </div>
-    </section>
+
+        <div class="cs-frame cs-reveal">
+          <picture class="cs-picture">
+            <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-poster-2.jpg"
+                 alt=""
+                 width="1080" height="1920"
+                 loading="lazy" decoding="async">
+          </picture>
+          <video class="cs-video"
+                 src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-reel-2.mp4"
+                 poster="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-poster-2.jpg"
+                 muted playsinline webkit-playsinline
+                 preload="metadata" disablepictureinpicture></video>
+          <span class="cs-scrim" aria-hidden="true"></span>
+          <button class="cs-sound" type="button" aria-label="Turn sound on"></button>
+          <span class="cs-sound-state" aria-hidden="true">
+            <svg class="cs-icon-muted" viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm15.5 3l2.5 2.5-1 1L18.5 13 16 15.5l-1-1L17.5 12 15 9.5l1-1 2.5 2.5L21 8.5l1 1L19.5 12z"/></svg>
+            <svg class="cs-icon-loud" viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm12.5 3a4.5 4.5 0 00-2.5-4v8a4.5 4.5 0 002.5-4zM14 1.2v2.1a8.5 8.5 0 010 17.4v2.1A10.6 10.6 0 0014 1.2z"/></svg>
+          </span>
+          <span class="cs-frame-title">Reading ninety days of comparables on one street</span>
+          <button class="cs-control" type="button" aria-label="Play">
+            <svg class="cs-icon-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>
+            <svg class="cs-icon-pause" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+          </button>
+        </div>
+
+        <div class="cs-frame cs-reveal">
+          <picture class="cs-picture">
+            <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-poster-3.jpg"
+                 alt=""
+                 width="1080" height="1920"
+                 loading="lazy" decoding="async">
+          </picture>
+          <video class="cs-video"
+                 src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-reel-3.mp4"
+                 poster="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-poster-3.jpg"
+                 muted playsinline webkit-playsinline
+                 preload="metadata" disablepictureinpicture></video>
+          <span class="cs-scrim" aria-hidden="true"></span>
+          <button class="cs-sound" type="button" aria-label="Turn sound on"></button>
+          <span class="cs-sound-state" aria-hidden="true">
+            <svg class="cs-icon-muted" viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm15.5 3l2.5 2.5-1 1L18.5 13 16 15.5l-1-1L17.5 12 15 9.5l1-1 2.5 2.5L21 8.5l1 1L19.5 12z"/></svg>
+            <svg class="cs-icon-loud" viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm12.5 3a4.5 4.5 0 00-2.5-4v8a4.5 4.5 0 002.5-4zM14 1.2v2.1a8.5 8.5 0 010 17.4v2.1A10.6 10.6 0 0014 1.2z"/></svg>
+          </span>
+          <span class="cs-frame-title">The five numbers I check before writing an offer</span>
+          <button class="cs-control" type="button" aria-label="Play">
+            <svg class="cs-icon-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>
+            <svg class="cs-icon-pause" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="cs-aside cs-reveal">
+        <p class="cs-text">
+          Short pieces on the mechanics: what a comparable really proves, how deposits are read, where the carrying cost hides.
+        </p>
+        <a href="/" class="cs-button-ghost">Ask me anything</a>
+      </div>
+    </div>
+  </div>
+</section>
 
     {% include 'sections/cta.html' %}
 
