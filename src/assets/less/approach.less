@@ -322,10 +322,29 @@
                 display: block;
                 width: 100%;
                 height: auto;
-                aspect-ratio: 3 / 2;
+                /* Was 3/2. These bleed the full width of the screen,
+                   so the ratio is measured against the viewport rather
+                   than a column — at 3/2 a phone gave up 260px to each
+                   of two consecutive images and the copy between them
+                   never shared a screen with either. Matches the
+                   desktop ratio below, so the blocks read the same at
+                   every width. */
+                aspect-ratio: 16 / 9;
                 object-fit: cover;
             }
         }
+    }
+
+    /* Half of the gap between the two blocks, and the half that reads
+       as the larger error: #buying's bottom padding is doing the same
+       work from above, so at full --section-padding the two stack to
+       roughly 8rem of empty paper between an image and the heading it
+       leads into.
+
+       Mobile-first with no reset needed — the 64rem block sets its own
+       padding-block-start for the same reason, and overrides this. */
+    #selling {
+        padding-block-start: clamp(2rem, 5vw, 3rem);
     }
 
     /* The script control's 44px min-height is a fingertip target for

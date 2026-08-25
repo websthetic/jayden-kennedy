@@ -17,6 +17,13 @@ function labelFor(select) {
   return option ? option.textContent.trim() : "";
 }
 
+/**
+ * Restores the selects from the query string and writes the applied
+ * label. Returns the count of meaningful filters so the collapsed
+ * toggle can show it — see initFilterToggle.
+ *
+ * @returns {number} filters in effect, excluding sort and the default status
+ */
 function restoreState() {
   const params = new URLSearchParams(window.location.search);
   const applied = [];
@@ -32,11 +39,11 @@ function restoreState() {
     if (select.value) applied.push(labelFor(select));
   });
 
+  const meaningful = applied.filter((text) => text && text !== "Active");
+
   const appliedEl = document.querySelector("[data-applied]");
   const labelEl = document.querySelector("[data-applied-label]");
-  if (!appliedEl || !labelEl) return;
-
-  const meaningful = applied.filter((text) => text && text !== "Active");
+  if (!appliedEl || !labelEl) return meaningful.length;
 
   if (meaningful.length) {
     labelEl.textContent = meaningful.join(" \u00B7 ");
@@ -44,6 +51,8 @@ function restoreState() {
   } else {
     appliedEl.hidden = true;
   }
+
+  return meaningful.length;
 }
 
 function syncCount() {
@@ -74,7 +83,44 @@ function initSort() {
   });
 }
 
+/**
+ * Collapses the filter form behind a button on phones.
+ *
+ * The collapse itself is CSS — .cs-open on the form, gated on .js in
+ * listings.less — so there is no flash of an open form before this
+ * runs, and no-JS gets the form open with no button at all.
+ *
+ * The count is the whole point of the pattern. A collapsed bar reading
+ * only "Filters" lets someone stare at four homes without registering
+ * that a filter is hiding the rest; "Filters (2)" does not.
+ *
+ * @param {number} count - filters in effect, from restoreState
+ */
+function initFilterToggle(count) {
+  const toggle = document.querySelector("[data-filter-toggle]");
+  const form = document.getElementById("listings-form");
+  if (!toggle || !form) return;
+
+  const countEl = toggle.querySelector("[data-filter-count]");
+  if (countEl) {
+    countEl.textContent = count;
+    countEl.hidden = count === 0;
+  }
+
+  // Open on arrival when something is already applied — landing on a
+  // filtered URL behind a closed bar hides the reason for the result.
+  if (count > 0) {
+    form.classList.add("cs-open");
+    toggle.setAttribute("aria-expanded", "true");
+  }
+
+  toggle.addEventListener("click", () => {
+    const open = form.classList.toggle("cs-open");
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+}
+
 window.revealScan?.();
-restoreState();
+initFilterToggle(restoreState());
 syncCount();
 initSort();

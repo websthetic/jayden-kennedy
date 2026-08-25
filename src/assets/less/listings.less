@@ -92,6 +92,87 @@
     .cs-form > .cs-button {
         align-self: flex-start;
     }
+
+    /* Hidden by default so a no-JS phone gets the open form and no
+       dead control. The .js rules below reverse both. */
+    /* Sets the toggle apart from the fields it controls, and from the
+       results summary when it is closed. Lives here rather than on the
+       open form so it needs no counterpart at 64rem — the bar is
+       display: none up there, and a hidden element's margin never
+       applies. */
+    .cs-bar {
+        display: none;
+        margin-bottom: 2rem;
+    }
+
+    /* Built to match .cs-select, not .cs-button — it sits directly
+       above a stack of them and stands in for the whole set when
+       collapsed, so it should read as the first field rather than as a
+       control of a different order. Same hairline, same hover, same
+       inline-SVG affordance on the right; only the glyph differs.
+
+       Three decreasing rules rather than a funnel. At 0.875rem a funnel
+       loses its taper and reads as a blob, and the horizontal strokes
+       already rhyme with the borders under the fields below. */
+    .cs-toggle {
+        appearance: none;
+        width: 100%;
+        padding: 0 1.75rem 0.625rem 0;
+        font-family: var(--font-body);
+        font-size: var(--fs-body);
+        font-weight: 300;
+        line-height: 1.4;
+        text-align: left;
+        color: var(--ink);
+        background-color: transparent;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 12'%3E%3Cg fill='none' stroke='%233b2a20' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M1 2.5h12'/%3E%3Cpath d='M3 6h8'/%3E%3Cpath d='M5.5 9.5h3'/%3E%3C/g%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.125rem center;
+        background-size: 0.875rem auto;
+        border: none;
+        border-bottom: 1px solid var(--rule);
+        border-radius: 0;
+        cursor: pointer;
+        transition: border-color var(--dur) var(--ease);
+
+        &:hover {
+            border-bottom-color: var(--rule-strong);
+        }
+    }
+
+    /* Parenthesised rather than a badge shape — the page has no pills
+       outside .cs-status, and inventing one here for a digit would
+       read as a notification. */
+    .cs-toggle-count {
+        margin-left: 0.375rem;
+
+        &:before {
+            content: "(";
+        }
+
+        &:after {
+            content: ")";
+        }
+    }
+}
+
+/* The collapse itself, gated on .js for the reason above. Unwound at
+   64rem, not 48rem: the tablet range is where #listings-results is
+   still only two cards wide, and a filter set standing open above a
+   pair of cards outweighs what it is filtering. It stays grouped for
+   as long as the results are. */
+.js #listings-filters {
+    .cs-bar {
+        display: block;
+    }
+
+    .cs-form {
+        display: none;
+    }
+
+    .cs-form.cs-open {
+        display: flex;
+    }
 }
 
 /*-- -------------------------- -->
@@ -392,6 +473,8 @@
 <--- -------------------------- -*/
 
 @media only screen and (min-width: 48rem) {
+    /* Layout only — the form is still collapsed here, so this is what
+       it looks like once the toggle opens it. */
     #listings-filters {
         .cs-form {
             flex-direction: row;
@@ -415,6 +498,20 @@
 <--- -------------------------- -*/
 
 @media only screen and (min-width: 64rem) {
+    /* Same specificity as the collapse rule, later in the file, so it
+       wins. The toggle goes with it: the grid is three-up from here and
+       the form is one row, so there is nothing left worth hiding. */
+    .js #listings-filters {
+        .cs-bar {
+            display: none;
+        }
+
+        .cs-form,
+        .cs-form.cs-open {
+            display: flex;
+        }
+    }
+
     #listings-results {
         .cs-card-group {
             grid-template-columns: repeat(3, minmax(0, 1fr));

@@ -14,8 +14,12 @@ permalink: "/contact/"
 
 {% block body %}
 
-    <!-- The reveal items sit on the children of .cs-content rather than on
-         .cs-content itself, which is sticky at 64rem. -->
+    <!-- .cs-details is a direct child of .cs-container, not of .cs-content.
+         Below 64rem the container is a column and source order alone puts
+         the office and direct lines under the form; above it the grid
+         returns them to the left column beneath the copy. Nested inside
+         .cs-content there is no CSS that moves them past the form, because
+         order only reorders siblings of the same flex container. -->
     <section id="contact-main" data-reveal>
         <div class="cs-container">
             <div class="cs-content">
@@ -25,25 +29,6 @@ permalink: "/contact/"
                     Tell me what you are weighing up. I answer every enquiry myself,
                     usually within a day.
                 </p>
-
-                <ul class="cs-details cs-reveal">
-                    <li class="cs-detail">
-                        <span class="cs-detail-label">Office</span>
-                        <address class="cs-detail-value">
-                            {{ client.address.lineOne }}<br>
-                            {{ client.address.city }}, {{ client.address.state }} {{ client.address.zip }}
-                        </address>
-                    </li>
-
-                    <li class="cs-detail">
-                        <span class="cs-detail-label">Direct</span>
-                        <span class="cs-detail-value">
-                            <a class="cs-detail-link" href="tel:{{ client.phoneForTel }}">{{ client.phoneFormatted }}</a><br>
-                            <a class="cs-detail-link" href="mailto:{{ client.email }}">{{ client.email }}</a>
-                        </span>
-                    </li>
-
-                </ul>
             </div>
 
             <div class="cs-form-wrap cs-reveal">
@@ -115,6 +100,24 @@ permalink: "/contact/"
                     <p class="cs-form-note" data-form-status role="status" aria-live="polite" hidden></p>
                 </form>
             </div>
+
+            <ul class="cs-details cs-reveal">
+                <li class="cs-detail">
+                    <span class="cs-detail-label">Office</span>
+                    <address class="cs-detail-value">
+                        {{ client.address.lineOne }}<br>
+                        {{ client.address.city }}, {{ client.address.state }} {{ client.address.zip }}
+                    </address>
+                </li>
+
+                <li class="cs-detail">
+                    <span class="cs-detail-label">Direct</span>
+                    <span class="cs-detail-value">
+                        <a class="cs-detail-link" href="tel:{{ client.phoneForTel }}">{{ client.phoneFormatted }}</a><br>
+                        <a class="cs-detail-link" href="mailto:{{ client.email }}">{{ client.email }}</a>
+                    </span>
+                </li>
+            </ul>
         </div>
     </section>
 

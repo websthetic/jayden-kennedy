@@ -8,6 +8,12 @@ permalink: "/listings/"
 
 {% block head %}
     <link rel="stylesheet" href="/assets/css/listings.css">
+    <!-- base.html has no scripts block, so page scripts load here with
+         defer — the same as contact.html. This used to sit in a
+         {% raw %}{% block scripts %}{% endraw %} at the foot of the file, which Nunjucks
+         discarded silently: the filters, the sort and Load more were
+         all inert. -->
+    <script defer src="/assets/js/listings.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -25,6 +31,22 @@ permalink: "/listings/"
 
     <section id="listings-filters">
       <div class="cs-container">
+        <!-- Phone only, and JS only. CSS keeps this hidden until the .js
+             class lands, so without a script the form is simply open and
+             the button never appears — nothing is reachable only by a
+             control that cannot work. -->
+        <div class="cs-bar">
+          <button
+            class="cs-toggle"
+            type="button"
+            data-filter-toggle
+            aria-expanded="false"
+            aria-controls="listings-form"
+          >
+            Filters<span class="cs-toggle-count" data-filter-count hidden></span>
+          </button>
+        </div>
+
         <form class="cs-form" id="listings-form" method="get" action="/listings/" role="search" aria-label="Filter listings">
           <div class="cs-field">
             <label class="cs-label" for="municipality">Municipality</label>
@@ -280,8 +302,4 @@ permalink: "/listings/"
       </div>
     </section>
 
-{% endblock %}
-
-{% block scripts %}
-    <script src="/assets/js/listings.js" defer></script>
 {% endblock %}
