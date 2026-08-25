@@ -1,0 +1,650 @@
+/*-- -------------------------- -->
+<---            Intro           -->
+<--- -------------------------- -*/
+
+/* A nameplate band above a two-column body.
+
+   The name runs on its own line at display size and "Broker" moves out
+   to a standing role line beside it — Cinzel only reads as a display
+   face when it is given the width, and the old three-line wrap was
+   fighting the typeface. One hairline under the band spans the full
+   page and separates the plate from everything beneath it.
+
+   The copy column holds two anchored blocks: the prose at the top,
+   capped at --measure, and the contact list pinned to the bottom of the
+   portrait by margin-top: auto. The air between them is deliberate —
+   the block closes on a shared baseline rather than trailing off. */
+
+@media only screen and (min-width: 0rem) {
+    #about-intro {
+        padding: var(--section-padding);
+    padding-top: clamp(8rem, 13vw, 12rem);
+    background-color: var(--paper);
+
+        .cs-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Nameplate ── */
+
+        .cs-masthead {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: clamp(0.875rem, 2vw, 1.25rem);
+        }
+
+        .cs-nameplate {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.625rem;
+        }
+
+        /* No ::after rule here any more. The band's own hairline is the
+           rule — a second short one under the title read as clutter. */
+        .cs-title {
+            margin: 0;
+        }
+
+        /* Shares .cs-topper's type, but this is information rather than a
+           label, so it holds full ink. */
+        .cs-role {
+            margin: 0;
+            color: var(--ink);
+        }
+
+        /* ── Body ── */
+
+        .cs-body {
+            margin-top: clamp(1.75rem, 4vw, 2.5rem);
+            padding-top: clamp(2rem, 5vw, 3.5rem);
+            border-top: 1px solid var(--rule);
+            display: flex;
+            flex-direction: column;
+            gap: clamp(2rem, 5vw, 3rem);
+        }
+
+        /* The image is absolutely positioned inside the picture at every
+           width. On mobile the aspect-ratio gives the picture its height;
+           at 64rem the grid stretch does, and the image follows either
+           without needing a resolvable percentage height of its own. */
+        .cs-picture {
+            width: 100%;
+            aspect-ratio: 3 / 4;
+            position: relative;
+            display: block;
+            overflow: hidden;
+            background-color: var(--cashmere-300);
+        }
+
+        .cs-img {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            inset: 0;
+            display: block;
+            object-fit: cover;
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        /* The one thing the old layout got wrong at width: prose ran the
+           full track, past 100 characters a line. */
+        .cs-prose {
+            max-width: var(--measure);
+        }
+
+        .cs-lede {
+            margin-bottom: 1.25rem;
+        }
+
+        .cs-text-soft {
+            margin-bottom: 0;
+            color: var(--ink-soft);
+            font-size: var(--fs-body);
+        }
+
+        /* Grid rather than flex-wrap: the hairlines have to terminate on
+           column lines, and wrapped flex items size to content. */
+        .cs-details {
+            width: 100%;
+            margin: clamp(2rem, 5vw, 3rem) 0 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.5rem clamp(2rem, 5vw, 3.5rem);
+            list-style: none;
+        }
+
+        .cs-detail {
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--rule);
+            font-size: inherit;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cs-detail .cs-topper {
+            margin-bottom: 0.5rem;
+        }
+
+        .cs-detail-value {
+            font-size: var(--fs-body-sm);
+            font-style: normal;
+            line-height: 1.6;
+        }
+
+        .cs-detail-link {
+            text-decoration: none;
+            border-bottom: 1px solid var(--rule);
+            transition: border-color var(--dur) var(--ease);
+
+            &:hover {
+                border-bottom-color: var(--ink);
+            }
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---          Tablet            -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 48rem) {
+    #about-intro {
+        /* Still stacked here, so a 3/4 portrait at full width would run
+           most of a viewport tall. */
+        .cs-picture {
+            aspect-ratio: 16 / 10;
+        }
+
+        .cs-details {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---          Desktop           -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 64rem) {
+    #about-intro {
+        padding-top: clamp(8rem, 13vw, 12rem);
+        /* Baseline, not center — the role has to sit on the name's
+           baseline, and centring would float it off. */
+        .cs-nameplate {
+            flex-direction: row;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: clamp(1.5rem, 4vw, 3rem);
+        }
+
+        .cs-role {
+            white-space: nowrap;
+        }
+
+        /* stretch, so the copy column takes the portrait's height and
+           margin-top: auto below has something to push against. */
+        .cs-body {
+            display: grid;
+            grid-template-columns: minmax(0, 0.36fr) minmax(0, 0.64fr);
+            column-gap: clamp(2.5rem, 6vw, 5rem);
+            align-items: stretch;
+        }
+
+        .cs-picture {
+            aspect-ratio: 3 / 4;
+        }
+
+        .cs-content {
+            justify-content: flex-start;
+        }
+
+        .cs-details {
+            /* Bottom-aligns the contact row to the portrait's lower edge.
+               The gap above it is the layout's one piece of held air. */
+            margin-top: auto;
+            padding-top: clamp(2.5rem, 5vw, 4rem);
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---      Before real estate    -->
+<--- -------------------------- -*/
+
+/* The page's one warm ground. Green appears only as the rules on the table. */
+
+@media only screen and (min-width: 0rem) {
+    #about-honours {
+        padding: var(--section-padding);
+        background-color: var(--paper-warm);
+
+        .cs-container {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(2rem, 4vw, 3rem);
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .cs-title {
+            font-size: var(--fs-h2);
+            max-width: 14ch;
+        }
+
+        .cs-text {
+            max-width: 46ch;
+        }
+
+        .cs-table {
+            width: 100%;
+            border-top: 1px solid var(--rule-strong);
+        }
+
+        .cs-row {
+            padding: 1.125rem 0;
+            border-bottom: 1px solid var(--rule);
+            display: flex;
+            flex-direction: column;
+            gap: 0.4375rem;
+        }
+
+        /* A held item keeps full contrast and is marked, not dimmed —
+           dimming would read as less important rather than unconfirmed. */
+        .cs-row-held {
+            border-bottom: 1px dashed var(--heritage-500);
+        }
+
+        .cs-honour {
+            font-family: var(--font-display);
+            font-size: var(--fs-h3);
+            font-weight: 500;
+            line-height: var(--lh-title);
+            letter-spacing: var(--track-title);
+            text-transform: uppercase;
+        }
+
+        .cs-year,
+        .cs-body-name {
+            font-size: var(--fs-body-sm);
+            line-height: 1.5;
+            color: var(--ink-soft);
+        }
+
+        .cs-tag {
+            display: inline-block;
+            padding: 0.3125rem 0.625rem;
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            color: var(--heritage-500);
+            border: 1px solid var(--heritage-500);
+        }
+
+        /* --ink-soft fails AA on beige, so the caption takes full ink here */
+        .cs-caption {
+            max-width: 62ch;
+            margin-top: 1.5rem;
+            color: var(--ink);
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---           Results          -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 0rem) {
+    #about-results {
+        padding: var(--section-padding);
+        background-color: var(--paper);
+
+        .cs-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.75rem;
+        }
+
+        .cs-title {
+            font-size: var(--fs-h2);
+            margin-bottom: 0;
+        }
+
+        .cs-figures {
+            width: 100%;
+            display: grid;
+            gap: 1.75rem;
+            list-style: none;
+        }
+
+        .cs-figure {
+            font-size: inherit;
+            padding-top: 1rem;
+            border-top: 2px solid var(--heritage-500);
+            display: flex;
+            flex-direction: column;
+            gap: 0.375rem;
+        }
+
+        .cs-value {
+            font-family: var(--font-display);
+            font-size: var(--fs-h2);
+            font-weight: 500;
+            line-height: 1.1;
+            letter-spacing: var(--track-title);
+        }
+
+        .cs-label {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+        }
+
+        .cs-note {
+            font-size: var(--fs-body-sm);
+            line-height: 1.5;
+            color: var(--ink-soft);
+        }
+
+        .cs-caption {
+            max-width: 60ch;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---          Speaking          -->
+<--- -------------------------- -*/
+
+/* Cocoa, not green. .cs-on-dark in root.less inverts the type and the
+   outline button, so nothing here declares a colour it already owns. */
+
+@media only screen and (min-width: 0rem) {
+    #about-speaking {
+        padding: var(--section-padding);
+        background-color: var(--paper-deep);
+
+        .cs-container {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(1.5rem, 3vw, 2.5rem);
+        }
+
+        .cs-title {
+            margin-bottom: 0;
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.125rem;
+        }
+
+        .cs-lede,
+        .cs-text {
+            max-width: 52ch;
+        }
+
+        .cs-text {
+            color: var(--ink-invert-soft);
+        }
+
+        .cs-button-outline {
+            margin-top: 0.5rem;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---           Tablet           -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 48rem) {
+    #about-honours {
+        .cs-row {
+            flex-direction: row;
+            align-items: baseline;
+            gap: clamp(1rem, 3vw, 2.5rem);
+        }
+
+        .cs-honour {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .cs-year {
+            flex: 0 0 4rem;
+        }
+
+        .cs-body-name {
+            flex: 0 0 14rem;
+        }
+    }
+
+    #about-results {
+        .cs-figures {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: clamp(1.5rem, 3vw, 2.5rem);
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---           Desktop          -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 64rem) {
+    #about-honours {
+        .cs-container {
+            flex-direction: row;
+            align-items: flex-start;
+            gap: clamp(3rem, 7vw, 5.5rem);
+        }
+
+        .cs-content {
+            flex: 0 0 20rem;
+            position: sticky;
+            top: 8rem;
+        }
+
+        .cs-table-wrap {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+    }
+
+    #about-speaking {
+        .cs-container {
+            flex-direction: row;
+            align-items: flex-start;
+            gap: clamp(3rem, 7vw, 5.5rem);
+        }
+
+        .cs-title {
+            flex: 0 0 20rem;
+        }
+
+        .cs-content {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---            CTA             -->
+<--- -------------------------- -*/
+
+/* Display word left, copy right, script CTA closing the column.
+
+   .cs-on-dark in root.less inverts headings, body, toppers and
+   controls. Nothing here declares a text colour it already owns —
+   including the script link, which resolves everything from
+   currentColor and inverts for free. */
+
+@media only screen and (min-width: 0rem) {
+    #cta {
+        padding: var(--section-padding);
+        background-color: var(--cocoa-500);
+
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2.5rem;
+        }
+
+        /* Caps applied here rather than in the markup — the source
+           stays sentence case so a screen reader doesn't spell it. */
+        .cs-title {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            font-size: var(--fs-h2);
+            font-weight: 400;
+            line-height: 1;
+            /* Cinzel's caps are already widely set; the sitewide
+               title tracking opens them past the reference. */
+            letter-spacing: 0.01em;
+            margin: 0;
+            max-width: none;
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.75rem;
+        }
+
+        /* The two paragraphs are a hierarchy, not a block: the first
+           carries the offer, the second the detail. Size and colour
+           both step down. */
+        .cs-lede {
+            font-size: var(--fs-body-lg, 1.25rem);
+            line-height: 1.55;
+            letter-spacing: normal;
+            max-width: 54ch;
+            margin: 0;
+            text-wrap: pretty;
+        }
+
+        .cs-text {
+            max-width: 54ch;
+            margin: 0;
+            color: var(--ink-invert-soft);
+            text-wrap: pretty;
+        }
+
+        /* The script control carries its own hairline half a rem
+           below the baseline, so the flex gap above it reads a touch
+           wide. Pull it back rather than shrinking the gap, which
+           would also close the space between the paragraphs. */
+        .cs-button-script {
+            margin-block-start: -0.375rem;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #cta {
+        /* The split lives in two tokens rather than inline in the
+           template, because the word column and the gap have to move
+           together — widening one without the other either crowds
+           the copy or strands the word mid-field.
+
+           The word column is sized to the longest display word the
+           section might carry, not to "Enquire" specifically. Swap
+           in a longer one and nothing reflows. */
+        --enquire-word: 26rem;
+        --enquire-gap: clamp(6rem, 15vw, 18rem);
+
+        .cs-container {
+            /* Fixed word column, copy takes the rest. An fr-based
+               split would let the word's column stretch on a wide
+               monitor and open a dead gutter between the two. */
+            grid-template-columns: minmax(0, var(--enquire-word)) minmax(0, 1fr);
+            column-gap: var(--enquire-gap);
+            align-items: start;
+        }
+
+        .cs-title {
+            /* Optical, not structural. Cinzel's cap height sits below
+               the sans's ascender, so a shared grid row leaves the
+               word reading high against the first line of copy. */
+            margin-block-start: -0.35rem;
+        }
+
+        /* The measure has to be capped here or the gap is spent for
+           nothing: with the copy column free to run to the container
+           edge, widening the gutter just makes the lines longer
+           rather than moving the column right. 54ch is already on
+           both paragraphs from the base rule — this holds the block
+           as a whole so the two stay flush. */
+        .cs-content {
+            max-width: 68ch;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---       Reveal Indices       -->
+<--- -------------------------- -*/
+
+/* File scope on purpose — every rule above sits inside a media query,
+   and these are unconditional. The mechanism lives in root.less.
+
+   #about-intro sits above the fold, so the observer fires it on the
+   first callback rather than on scroll. That is deliberate: it gives
+   the page the same load-in the homepage hero has, without a second
+   mechanism to maintain.
+
+   The portrait leads the copy here rather than trailing it. On the
+   homepage the image is the ground the copy resolves onto; on about it
+   is the subject, and the prose reads as caption to it. */
+
+#about-intro {
+    .cs-masthead {
+        --reveal-i: 0;
+    }
+
+    .cs-picture {
+        --reveal-i: 1;
+    }
+
+    .cs-content {
+        --reveal-i: 2;
+    }
+}
+
+#about-honours {
+    .cs-content {
+        --reveal-i: 0;
+    }
+
+    /* The table is one item, not seven rows. Staggering the rows would
+       put ~900ms between the first honour and the last and turn a
+       reference block into a performance. */
+    .cs-table-wrap {
+        --reveal-i: 1;
+    }
+}

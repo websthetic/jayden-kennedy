@@ -1,0 +1,620 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// JOURNAL
+// ─────────────────────────────────────────────────────────────────────────────
+
+/*-- -------------------------- -->
+<---            Intro           -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 0rem) {
+    #journal-intro {
+        padding: clamp(8rem, 13vw, 12rem) var(--gutter) 0;
+        background-color: var(--paper);
+
+        .cs-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.25rem;
+        }
+
+        .cs-topper {
+            margin-bottom: 0;
+        }
+
+        .cs-title {
+            font-size: var(--fs-h2);
+            max-width: 20ch;
+            margin: 0;
+        }
+
+        .cs-text {
+            font-size: var(--fs-lede);
+            max-width: 52ch;
+            color: var(--ink-soft);
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---            List            -->
+<--- -------------------------- -*/
+
+/* Each entry is one hairline-separated row. The whole row is the link, so the
+   target is the full width rather than the title alone — the dek and the date
+   are part of the same decision. */
+
+@media only screen and (min-width: 0rem) {
+    #journal-list {
+        padding: clamp(3rem, 6vw, 4.5rem) var(--gutter) clamp(4rem, 8vw, 7.5rem);
+        background-color: var(--paper);
+
+        .cs-list {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            border-top: 1px solid var(--rule);
+        }
+
+        .cs-item {
+            font-size: inherit;
+            border-bottom: 1px solid var(--rule);
+        }
+
+        .cs-link {
+            width: 100%;
+            padding: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: inherit;
+            transition: opacity var(--dur) var(--ease);
+
+            &:hover {
+                .cs-item-title {
+                    border-bottom-color: var(--ink);
+                }
+            }
+        }
+
+        .cs-date,
+        .cs-read {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            color: var(--ink-soft);
+        }
+
+        .cs-body {
+            display: flex;
+            flex-direction: column;
+            gap: 0.625rem;
+        }
+
+        .cs-item-title {
+            font-family: var(--font-display);
+            font-size: var(--fs-h3);
+            font-weight: 500;
+            line-height: var(--lh-title);
+            letter-spacing: var(--track-title);
+            text-transform: uppercase;
+            max-width: 28ch;
+            margin: 0;
+            /* Transparent until hover so the row does not read as underlined
+               type at rest — the hairline row is already the affordance. */
+            border-bottom: 1px solid transparent;
+            display: inline;
+            transition: border-color var(--dur) var(--ease);
+        }
+
+        .cs-dek {
+            font-size: var(--fs-body);
+            line-height: var(--lh-body);
+            max-width: 60ch;
+            margin: 0;
+            color: var(--ink-soft);
+        }
+
+        /* ── Empty ───────────────────────────────────── */
+
+        .cs-empty {
+            max-width: 52ch;
+            padding: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.125rem;
+        }
+
+        .cs-empty-title {
+            font-family: var(--font-display);
+            font-size: var(--fs-h3);
+            font-weight: 500;
+            line-height: var(--lh-title);
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        .cs-text {
+            font-size: var(--fs-body);
+            line-height: var(--lh-body);
+            margin: 0;
+            color: var(--ink-soft);
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---           Tablet           -->
+<--- -------------------------- -*/
+
+/* Three columns: date, body, read time. The date and the read time hold fixed
+   measures so every row's title starts on the same optical line. */
+
+@media only screen and (min-width: 48rem) {
+    #journal-list {
+        .cs-link {
+            flex-direction: row;
+            align-items: baseline;
+            gap: clamp(1.5rem, 4vw, 3.5rem);
+            padding: 2.5rem 0;
+        }
+
+        .cs-date {
+            flex: 0 0 9rem;
+        }
+
+        .cs-body {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .cs-read {
+            flex: 0 0 4rem;
+            text-align: right;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---         Essay page         -->
+<--- -------------------------- -*/
+
+/* One measure column, centred. The image is the only element permitted to
+   break wider than the text, so it reads as an event rather than an inline
+   illustration. No subheading styles: the deck's brief is that these pieces
+   carry on paragraphs alone. */
+
+@media only screen and (min-width: 0rem) {
+    #essay {
+        display: block;
+        background-color: var(--paper);
+
+        /* Same container as every other page, so the essay's left edge lines
+           up with the nav logo and the sections above and below it. The
+           reading measure is applied to the prose itself, not the container. */
+        .cs-container {
+            width: 100%;
+            max-width: var(--container);
+            margin-inline: auto;
+        }
+
+        /* ── Header ──────────────────────────────────── */
+
+        /* A beige band is the essay's front door: it spends the page's one
+           warm ground, and its lower edge marks where the article begins.
+           The header runs to a wider measure than the body so a long title
+           breaks over fewer lines — the body stays at --measure for reading. */
+
+        .cs-header {
+            padding: clamp(8rem, 13vw, 12rem) var(--gutter) clamp(2.5rem, 5vw, 3.5rem);
+            background-color: var(--paper-warm);
+
+            .cs-container {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.125rem;
+            }
+        }
+
+        /* --ink-soft fails AA on the beige ground, so everything inside the
+           band carries full --ink or Heritage Green. */
+        .cs-back {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--heritage-500);
+            border-bottom: 1px solid transparent;
+            transition: border-color var(--dur) var(--ease);
+
+            &:hover {
+                border-bottom-color: var(--heritage-500);
+            }
+        }
+
+        .cs-title {
+            font-family: var(--font-display);
+            font-size: var(--fs-h2);
+            font-weight: 500;
+            line-height: var(--lh-title);
+            letter-spacing: var(--track-title);
+            text-transform: uppercase;
+            text-wrap: balance;
+            max-width: 24ch;
+            margin: 0;
+            color: var(--ink);
+        }
+
+        .cs-dek {
+            font-size: var(--fs-lede);
+            line-height: 1.5;
+            max-width: 52ch;
+            margin: 0;
+            color: var(--ink);
+        }
+
+        /* Date, length and author moved to the rail beside the prose, which
+           leaves the band carrying only eyebrow, title and dek. */
+
+        /* ── Body ────────────────────────────────────── */
+
+        /* These selectors style markdown output, so they target elements
+           rather than classes. Nothing here has a class to hook. */
+
+        .cs-body {
+            padding: clamp(3rem, 6vw, 4.5rem) var(--gutter) clamp(3rem, 6vw, 4.5rem);
+
+            /* Mobile: rail first, prose after. On desktop the grid puts them
+               side by side and the source order stops mattering. */
+            .cs-container {
+                display: flex;
+                flex-direction: column-reverse;
+                align-items: flex-start;
+                gap: 2.5rem;
+            }
+
+            /* Same rule as the rail, so both columns start on one line.
+
+               Every markdown selector below is scoped to .cs-prose, NOT to
+               .cs-body — the rail is also inside .cs-body, so `.cs-body a`
+               was styling the rail's links with the prose link border. */
+            .cs-prose {
+                width: 100%;
+                max-width: 52rem;
+                padding-top: 0.875rem;
+                border-top: 2px solid var(--heritage-500);
+
+                p {
+                    font-size: var(--fs-lede);
+                    line-height: 1.75;
+                    margin: 0 0 1.5rem;
+                    color: var(--ink);
+                }
+
+                p:last-child {
+                    margin-bottom: 0;
+                }
+
+                a {
+                    color: var(--ink);
+                    text-decoration: none;
+                    border-bottom: 1px solid var(--rule-strong);
+                    transition: border-color var(--dur) var(--ease);
+
+                    &:hover {
+                        border-bottom-color: var(--ink);
+                    }
+                }
+
+                strong {
+                    font-weight: 500;
+                }
+
+                ul,
+                ol {
+                    margin: 0 0 1.5rem 1.25rem;
+                    padding: 0;
+
+                    li {
+                        font-size: var(--fs-lede);
+                        line-height: 1.75;
+                        margin-bottom: 0.5rem;
+                        color: var(--ink);
+                    }
+                }
+
+                blockquote {
+                    margin: 2rem 0;
+                    padding-left: 1.5rem;
+                    border-left: 2px solid var(--heritage-500);
+
+                    p {
+                        font-family: var(--font-display);
+                        font-size: var(--fs-h4);
+                        line-height: var(--lh-title);
+                        text-transform: none;
+                    }
+                }
+
+                /* The one image. Markdown wraps it in a paragraph, so the
+                   paragraph is what opts out of the measure. */
+                p:has(> img:only-child) {
+                    max-width: none;
+                    margin: 2.5rem 0;
+                }
+
+                img {
+                    width: 100%;
+                    height: auto;
+                    display: block;
+                }
+            }
+        }
+
+        /* ── Rail ────────────────────────────────────── */
+
+        /* Static, not sticky. A 380-word essay gives it nothing to track, so
+           it simply occupies the column the measure leaves empty. */
+
+        .cs-rail {
+            width: 100%;
+            padding-top: 0.875rem;
+            border-top: 2px solid var(--heritage-500);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.25rem;
+        }
+
+        .cs-rail-list {
+            width: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .cs-rail-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .cs-rail-label {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            color: var(--ink-soft);
+        }
+
+        .cs-rail-value {
+            margin: 0;
+            font-size: var(--fs-body-sm);
+            line-height: 1.5;
+            color: var(--ink);
+        }
+
+        .cs-rail-note {
+            color: var(--ink-soft);
+        }
+
+        .cs-rail-link {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--heritage-500);
+            /* No rule at rest — the underline is the hover state only */
+            border-bottom: 1px solid transparent;
+            align-self: flex-start;
+            transition: border-color var(--dur) var(--ease);
+
+            &:hover {
+                border-bottom-color: var(--heritage-500);
+            }
+        }
+
+        /* ── Close ───────────────────────────────────── */
+
+        .cs-end {
+            padding: 0 var(--gutter) clamp(3rem, 6vw, 4.5rem);
+
+            .cs-container {
+                max-width: var(--container);
+                padding-top: clamp(2rem, 4vw, 3rem);
+                border-top: 1px solid var(--rule);
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+        }
+
+        .cs-end-note {
+            font-size: var(--fs-body);
+            line-height: var(--lh-body);
+            margin: 0;
+            color: var(--ink-soft);
+        }
+
+        .cs-end-links {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        /* ── Keep reading, in the rail ───────────────── */
+
+        /* Same shape as the rail rows above, set apart by a hairline and a
+           wider gap so it reads as a separate group rather than a fourth
+           metadata field. */
+
+        .cs-more {
+            width: 100%;
+            margin-top: 1rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--rule);
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .cs-more-topper {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            text-align: left;
+            color: var(--ink-soft);
+        }
+
+        /* dd carries a default inline-start margin — reset it explicitly */
+        .cs-more > .cs-rail-value {
+            margin: 0;
+            padding: 0;
+        }
+
+        .cs-more-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+
+            li::marker {
+                content: none;
+            }
+        }
+
+        .cs-more-item {
+            font-size: inherit;
+            text-align: left;
+            list-style: none;
+        }
+
+        .cs-more-link {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3125rem;
+            color: var(--ink);
+            text-decoration: none;
+            border-bottom: none;
+
+            &:hover .cs-more-title {
+                border-bottom-color: var(--ink);
+            }
+        }
+
+        .cs-more-title {
+            font-size: var(--fs-body-sm);
+            line-height: 1.45;
+            color: var(--ink);
+            /* No rule at rest — hover only */
+            border-bottom: 1px solid transparent;
+            align-self: flex-start;
+            transition: border-color var(--dur) var(--ease);
+        }
+
+        .cs-more-meta {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            line-height: 1.2;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            color: var(--ink-soft);
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---      Essay — Desktop       -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 64rem) {
+    #essay {
+        /* Between h2 and h1 — large enough to lead the band, small enough
+           that a nine-word title does not run five lines. */
+        .cs-title {
+            font-size: clamp(2rem, 3.6vw, 3rem);
+        }
+
+        /* Grid, not flex: the second track takes all remaining width, so the
+           rail's right edge lands on the page gutter rather than stopping
+           short at a fixed measure. */
+        .cs-body .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 52rem) minmax(13rem, 1fr);
+            align-items: start;
+            gap: clamp(3rem, 6vw, 5rem);
+        }
+
+        .cs-body .cs-prose {
+            min-width: 0;
+        }
+
+        .cs-rail {
+            margin-top: 0;
+        }
+
+
+        /* The close sits under the prose column, on the same left edge */
+        .cs-end .cs-container {
+            max-width: 52rem;
+            margin-inline: 0;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---       Reveal Indices       -->
+<--- -------------------------- -*/
+
+/* File scope on purpose — every rule above sits inside a media query,
+   and these are unconditional. The mechanism lives in root.less.
+
+   The list indices are not here. Post count is unknown at build time,
+   so a fixed run of nth-child rules would either stop short on a long
+   archive or sit unused on a short one — the index comes off
+   loop.index0 in the template instead.
+
+   A long archive is the reason for the shorter step: at 140ms, the
+   twentieth post would wait 2.8s after the first. The template caps the
+   index at 8 so anything past the eighth arrives together — that cap
+   cannot live here, because the inline style would outrank it. */
+
+#journal-intro {
+    .cs-topper {
+        --reveal-i: 0;
+    }
+
+    .cs-title {
+        --reveal-i: 1;
+    }
+
+    .cs-text {
+        --reveal-i: 2;
+    }
+}
+
+#journal-list {
+    --reveal-step: 80ms;
+}

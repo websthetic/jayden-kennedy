@@ -1,0 +1,118 @@
+<!-- ============================================ -->
+<!--             Journal — Essay                  -->
+<!-- ============================================ -->
+
+<!-- One measure column. The deck's brief is roughly 380 words, one inline
+     image, no subheadings — so there is no furniture here: no breadcrumb
+     banner, no sidebar, no author card. The image lives in the markdown
+     after the third paragraph and breaks wider than the text column, which
+     is the only structural event in the piece. -->
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/journal.css">
+
+    <!-- Structured data is opt-in. Uncomment and validate before launch -
+         https://developers.google.com/search/docs/appearance/structured-data -->
+    <!-- {% include "components/post-schema.html" %} -->
+{% endblock %}
+
+{% block body %}
+
+    <article id="essay">
+        <header class="cs-header">
+            <div class="cs-container">
+                <a class="cs-back" href="/journal/">Journal</a>
+
+                <h1 class="cs-title">{{ title }}</h1>
+
+                <p class="cs-dek">{{ description }}</p>
+            </div>
+        </header>
+
+        <div class="cs-body">
+            <div class="cs-container">
+                <!-- Prose left, metadata rail right. The rail is static, not
+                     sticky: at roughly 380 words there is nothing to track. It
+                     exists to give the empty right column a job. -->
+                <div class="cs-prose">
+                    {{ content | safe }}
+                </div>
+
+                <aside class="cs-rail">
+                    <dl class="cs-rail-list">
+                        <div class="cs-rail-row">
+                            <dt class="cs-rail-label">Published</dt>
+                            <dd class="cs-rail-value">
+                                <time datetime="{{ date | isoDate }}">{{ date | postDate }}</time>
+                            </dd>
+                        </div>
+
+                        {% if readTime %}
+                            <div class="cs-rail-row">
+                                <dt class="cs-rail-label">Length</dt>
+                                <dd class="cs-rail-value">{{ readTime }} min read</dd>
+                            </div>
+                        {% endif %}
+
+                        <div class="cs-rail-row">
+                            <dt class="cs-rail-label">Written by</dt>
+                            <dd class="cs-rail-value">
+                                {{ author }}<br>
+                                <span class="cs-rail-note">Broker, Durham Region</span>
+                            </dd>
+                        </div>
+                        {% set others = collections.post | reverse %}
+                        {% set hasOthers = false %}
+                        {% for other in others %}{% if other.url != page.url %}{% set hasOthers = true %}{% endif %}{% endfor %}
+
+                        {% if hasOthers %}
+                            <div class="cs-rail-row cs-more">
+                                <dt class="cs-rail-label cs-more-topper">Keep reading</dt>
+                                <dd class="cs-rail-value">
+                                    <ul class="cs-more-list">
+                                        {% for other in others %}
+                                            {% if other.url != page.url %}
+                                                <li class="cs-more-item">
+                                                    <a class="cs-more-link" href="{{ other.url }}">
+                                                        <span class="cs-more-title">{{ other.data.title }}</span>
+                                                        <span class="cs-more-meta">
+                                                            <time datetime="{{ other.data.date | isoDate }}">{{ other.data.date | postDate }}</time>
+                                                            {% if other.data.readTime %}
+                                                                &middot; {{ other.data.readTime }} min read
+                                                            {% endif %}
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                </dd>
+                            </div>
+                        {% endif %}
+                    </dl>
+
+                    <a class="cs-rail-link" href="/journal/">All notes</a>
+
+                </aside>
+            </div>
+        </div>
+
+        <footer class="cs-end">
+            <div class="cs-container">
+                <p class="cs-end-note">
+                    If a number here does not match what you have been told about
+                    your own property, ask me why.
+                </p>
+
+                <div class="cs-end-links">
+                    <a class="cs-button-outline" href="/contact/">Ask me anything</a>
+                    <a class="cs-button-ghost" href="/journal/">All notes</a>
+                </div>
+            </div>
+        </footer>
+
+    </article>
+
+{% endblock %}

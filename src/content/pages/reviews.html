@@ -1,0 +1,98 @@
+---
+title: "Reviews | Jayden Kennedy, Broker"
+description: "Client reviews for Jayden Kennedy, Broker with Keller Williams Energy Real Estate, published unedited from her Google Business Profile."
+permalink: "/reviews/"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/reviews.css">
+{% endblock %}
+
+{% block body %}
+
+<!-- ============================================ -->
+<!--                    Intro                     -->
+<!-- ============================================ -->
+
+<section id="reviews-intro" data-reveal>
+    <div class="cs-container">
+        <span class="cs-topper cs-reveal">Reviews</span>
+        <h1 class="cs-title cs-reveal">What clients say afterwards</h1>
+        <p class="cs-lede cs-reveal">
+            Every review here is published from her Google Business Profile,
+            unedited. Names are held back on the website; the originals are
+            public and verifiable at the source.
+        </p>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--                    Grid                      -->
+<!-- ============================================ -->
+
+<!-- Two across, one green panel spanning both, two across. The feature
+     panel carries .cs-on-dark so root.less inverts its type.
+     //! CONFIRM — replace every quote and attribution line with the real
+     //! text, pulled verbatim from Google. -->
+
+<section id="reviews-grid" data-reveal>
+    <div class="cs-container">
+        <ul class="cs-card-group">
+
+            <li class="cs-item cs-reveal">
+                <p class="cs-quote">[Review text, pulled verbatim from Google]</p>
+                <span class="cs-topper cs-attribution">Seller &middot; Whitby &middot; [year]</span>
+            </li>
+
+            <li class="cs-item cs-reveal">
+                <p class="cs-quote">[Review text, pulled verbatim from Google]</p>
+                <span class="cs-topper cs-attribution">First-time buyer &middot; Oshawa &middot; [year]</span>
+            </li>
+
+            <li class="cs-item cs-item-feature cs-on-dark cs-reveal">
+                <p class="cs-quote">
+                    [The one longer review that explains the process rather than
+                    the outcome]
+                </p>
+                <span class="cs-topper cs-attribution">Investor &middot; Bowmanville &middot; [year]</span>
+            </li>
+
+            <li class="cs-item cs-reveal">
+                <p class="cs-quote">[Review text, pulled verbatim from Google]</p>
+                <span class="cs-topper cs-attribution">Buyer &middot; Courtice &middot; [year]</span>
+            </li>
+
+            <li class="cs-item cs-reveal">
+                <p class="cs-quote">[Review text, pulled verbatim from Google]</p>
+                <span class="cs-topper cs-attribution">Seller &middot; Ajax &middot; [year]</span>
+            </li>
+
+        </ul>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--                 Closing CTA                  -->
+<!-- ============================================ -->
+
+<!-- The page's one ask. Flat cocoa field, no photograph — the green
+     belongs to #process and does not repeat below it (deck slide 18).
+     Different ground, so the rule holds. -->
+
+<section id="enquire" class="cs-on-dark" data-reveal>
+    <div class="cs-container">
+        <h2 class="cs-title cs-reveal">Read them at the source</h2>
+
+        <div class="cs-content cs-reveal">
+            <p class="cs-lede">
+Reviews are hosted on her Google Business Profile rather than
+                retyped into the page, so nothing here can be edited after the
+                fact. The link opens the full, unfiltered list.            </p>
+            <a href="/" class="cs-button-script" target="_blank">Open Google reviews</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

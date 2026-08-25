@@ -1,0 +1,121 @@
+---
+title: "Contact | Jayden Kennedy"
+description: "Ask a question about a property. Jayden Kennedy answers every enquiry herself, usually within a day."
+permalink: "/contact/"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/contact.css">
+    <!-- base.html has no scripts block, so page scripts load here with defer. -->
+    <script defer src="/assets/js/contact.js"></script>
+{% endblock %}
+
+{% block body %}
+
+    <!-- The reveal items sit on the children of .cs-content rather than on
+         .cs-content itself, which is sticky at 64rem. -->
+    <section id="contact-main" data-reveal>
+        <div class="cs-container">
+            <div class="cs-content">
+                <span class="cs-topper cs-reveal">Contact</span>
+                <h1 class="cs-title cs-reveal">Ask me anything about a property</h1>
+                <p class="cs-text cs-reveal">
+                    Tell me what you are weighing up. I answer every enquiry myself,
+                    usually within a day.
+                </p>
+
+                <ul class="cs-details cs-reveal">
+                    <li class="cs-detail">
+                        <span class="cs-detail-label">Office</span>
+                        <address class="cs-detail-value">
+                            {{ client.address.lineOne }}<br>
+                            {{ client.address.city }}, {{ client.address.state }} {{ client.address.zip }}
+                        </address>
+                    </li>
+
+                    <li class="cs-detail">
+                        <span class="cs-detail-label">Direct</span>
+                        <span class="cs-detail-value">
+                            <a class="cs-detail-link" href="tel:{{ client.phoneForTel }}">{{ client.phoneFormatted }}</a><br>
+                            <a class="cs-detail-link" href="mailto:{{ client.email }}">{{ client.email }}</a>
+                        </span>
+                    </li>
+
+                </ul>
+            </div>
+
+            <div class="cs-form-wrap cs-reveal">
+                <!-- Netlify registers a form from the built HTML at deploy time.
+                     The hidden form-name and the honeypot are both required. -->
+                <form
+                    class="cs-form"
+                    name="enquiry"
+                    method="POST"
+                    action="/contact/?sent=enquiry"
+                    data-netlify="true"
+                    netlify-honeypot="company"
+                    data-form
+                    data-success="Thank you. Your message is with me and I will reply myself, usually within a day."
+                >
+                    <input type="hidden" name="form-name" value="enquiry">
+
+                    <p class="cs-honeypot" aria-hidden="true">
+                        <label>Leave this field empty <input name="company" tabindex="-1" autocomplete="off"></label>
+                    </p>
+
+                    <div class="cs-field">
+                        <label class="cs-label" for="enquiry-name">Name</label>
+                        <input class="cs-input" type="text" id="enquiry-name" name="name" placeholder="Full name" autocomplete="name" required>
+                    </div>
+
+                    <div class="cs-field">
+                        <label class="cs-label" for="enquiry-email">Email</label>
+                        <input class="cs-input" type="email" id="enquiry-email" name="email" placeholder="you@example.com" autocomplete="email" required>
+                    </div>
+
+                    <div class="cs-field">
+                        <label class="cs-label" for="enquiry-phone">Phone, optional</label>
+                        <input class="cs-input" type="tel" id="enquiry-phone" name="phone" placeholder="(000) 000-0000" autocomplete="tel">
+                    </div>
+
+                    <div class="cs-field">
+                        <label class="cs-label" for="enquiry-intent">What are you working on?</label>
+                        <select class="cs-select" id="enquiry-intent" name="intent">
+                            <option value="">Select one</option>
+                            <option value="buying">Buying</option>
+                            <option value="selling">Selling</option>
+                            <option value="valuation">I want to know what my property is worth</option>
+                            <option value="investment">An investment purchase</option>
+                            <option value="question">A question about a number</option>
+                        </select>
+                    </div>
+
+                    <div class="cs-field">
+                        <label class="cs-label" for="enquiry-message">Tell me a little more</label>
+                        <textarea class="cs-input cs-textarea" id="enquiry-message" name="message" rows="4" placeholder="The property, the street, or the number you are weighing up" required></textarea>
+                    </div>
+
+                    <div class="cs-field">
+                        <label class="cs-label" for="enquiry-source">How did you find me?</label>
+                        <select class="cs-select" id="enquiry-source" name="source">
+                            <option value="">Select one</option>
+                            <option value="referral">Someone referred me</option>
+                            <option value="search">Search</option>
+                            <option value="instagram">Instagram</option>
+                            <option value="listing">A listing or sign</option>
+                            <option value="speaking">A talk or podcast</option>
+                            <option value="other">Something else</option>
+                        </select>
+                    </div>
+
+                    <button class="cs-button" type="submit">Send enquiry</button>
+
+                    <p class="cs-form-note" data-form-status role="status" aria-live="polite" hidden></p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

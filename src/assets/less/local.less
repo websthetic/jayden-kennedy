@@ -1,0 +1,1116 @@
+/*-- -------------------------- -->
+<---   The Practice · Credentials  -->
+<--- -------------------------- -*/
+
+/* Three panels, one track, one pinned frame.
+
+   Mobile has no pin and no track — the panels stack and scroll.
+   A horizontal track on a phone either fights the browser's own
+   vertical gesture or hides content behind a swipe the user has no
+   reason to expect. */
+
+@media only screen and (min-width: 0rem) {
+    #practice {
+        background-color: var(--paper);
+
+        .cs-track {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+        }
+
+        .cs-panel {
+            padding-block: var(--section-padding);
+        }
+
+        .cs-panel-image {
+            padding-block: 0;
+        }
+
+        .cs-container {
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.5rem;
+        }
+
+        .cs-rail {
+            .cs-topper {
+                margin-bottom: 0;
+            }
+        }
+
+        /* Both panels use this wrapper — copy and credentials alike.
+           It is what keeps the two ghost links on the same footing:
+           each sits at the end of its own centred group, one gap
+           below the content above it, rather than one being dropped
+           to the floor of the frame. */
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.625rem;
+        }
+
+        /* Speech, not a heading — body face at display size.
+           --fs-h3 is the nearest step to the standalone's 26px. */
+        .cs-statement {
+            font-family: var(--font-body);
+            font-size: var(--fs-h3);
+            font-weight: 300;
+            line-height: 1.45;
+            max-width: 30ch;
+            margin: 0;
+            color: var(--ink);
+            text-wrap: pretty;
+        }
+
+        .cs-text {
+            max-width: 52ch;
+            color: var(--ink-soft);
+        }
+
+        /* No gap. The rows carry a hairline each and the last one
+           closes the set, so consecutive rules have to meet —
+           a gap turns a register into three floating captions.
+           Rhythm comes from the items' own padding instead. */
+        .cs-cred-list {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 0;
+            margin: 0;
+            padding: 0;
+            padding-inline-start: 0;
+            list-style: none;
+        }
+
+        .cs-cred-item {
+            display: grid;
+            grid-template-columns: 2rem minmax(0, 1fr);
+            column-gap: 1rem;
+            row-gap: 0.25rem;
+            align-items: baseline;
+            padding-block: 1.375rem;
+
+           
+        }
+
+        /* Spans both rows so the number sits against the fact's
+           baseline and the source hangs beside empty column. */
+        .cs-cred-index {
+            grid-row: 1 / 3;
+            font-size: var(--fs-caption, 0.75rem);
+            letter-spacing: 0.12em;
+            line-height: 1.6;
+            color: var(--ink-soft);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .cs-cred-fact {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            font-size: var(--fs-h3);
+            font-weight: 400;
+            line-height: 1.3;
+            color: var(--ink);
+        }
+
+        .cs-cred-source {
+            font-size: var(--fs-body);
+            line-height: 1.4;
+            color: var(--ink-soft);
+            text-wrap: pretty;
+        }
+
+        .cs-picture {
+            display: block;
+            width: 100%;
+            aspect-ratio: 4 / 5;
+
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: 50% 22%;
+            }
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #practice {
+        /* Two and a half viewports. The frame locks at the top and
+           holds for the last 150svh — that hold is the track's
+           travel. Shorten this and the track moves faster per pixel
+           of scroll; it does not change the distance covered. */
+        height: 250svh;
+        padding-block: 0;
+
+        /* Panel widths, and the total they add up to. The track
+           translates by the overflow — total minus one viewport —
+           so these four numbers are the only ones to edit.
+
+           copy + image = 100vw exactly, so the portrait is whole at
+           rest and the opening frame reads as a finished composition
+           rather than a photo waiting to slide in. Widen the copy
+           panel past 56 and the image loses its right edge. */
+        --panel-copy: 56vw;
+        --panel-image: 44vw;
+        --panel-creds: 60vw;
+        --track-width: 160vw;
+
+        .cs-frame {
+            position: sticky;
+            top: 0;
+            /* svh so a collapsing mobile toolbar can't overshoot and
+               clip the frame's bottom edge. */
+            height: 100svh;
+            overflow: hidden;
+        }
+
+        .cs-track {
+            display: flex;
+            align-items: stretch;
+            width: var(--track-width);
+            height: 100%;
+            /* No transition — the timeline drives this, and a
+               transition on the same property fights it on every
+               frame. */
+            will-change: transform;
+        }
+
+        .cs-panel {
+            flex: 0 0 auto;
+            height: 100%;
+            padding-block: 0;
+            display: grid;
+            align-content: center;
+        }
+
+        /* Every panel stretches its row rather than centring it.
+
+           The copy panels do it so the container can be a full-height
+           frame — topper pinned to the top edge, body centred in what
+           is left. A content-sized container would give the `1fr`
+           body row nothing definite to resolve against, and the
+           topper would sit straight back down against the statement.
+
+           The image has the same requirement for a different reason:
+           it runs the frame's full height, so `height: 100%` on the
+           picture needs a definite row or it collapses to the image's
+           intrinsic height. */
+        .cs-panel-copy {
+            width: var(--panel-copy);
+            align-content: stretch;
+        }
+
+        .cs-panel-image {
+            width: var(--panel-image);
+            align-content: stretch;
+        }
+
+        .cs-panel-creds {
+            width: var(--panel-creds);
+            align-content: stretch;
+        }
+
+        /* Left-aligned, not centred. `margin-inline: auto` inside a
+           panel wider than the 46rem cap pushes the copy toward the
+           middle and opens a dead gutter against the portrait. The
+           vw left padding keeps the text's left edge on the same
+           optical line as the nav logo at every width.
+
+           Two rows: the rail at its own height, the body taking the
+           rest. The top padding is now doing real work — it is the
+           rail's distance from the frame's top edge, not slack around
+           a centred stack.
+
+           The frame clips at 100svh, so the taller panel —
+           credentials, three ruled rows plus a closing link — has to
+           fit inside it with this padding included. Worth a look at
+           a short laptop viewport before launch. */
+        .cs-container {
+            max-width: 46rem;
+            margin-inline: 0;
+            padding: 3rem 4rem 3rem 6vw;
+            grid-template-rows: auto 1fr;
+            align-content: normal;
+            gap: 1.5rem;
+        }
+
+        /* The body sits in the optical middle of the row the rail
+           left behind — one selector, because both panels now put
+           everything below the topper inside this wrapper. */
+        .cs-content {
+            align-self: center;
+        }
+
+        .cs-statement {
+            max-width: 26ch;
+        }
+
+        .cs-text {
+            max-width: 46ch;
+        }
+
+        /* Down a step from --fs-h3. Cinzel caps at heading size land
+           three times in a row here; the hairlines carry the
+           structure the size was straining to carry. */
+        .cs-cred-fact {
+            font-size: var(--fs-body-lg, 1.25rem);
+            letter-spacing: 0.02em;
+        }
+
+        .cs-picture {
+            height: 100%;
+            width: 100%;
+            aspect-ratio: auto;
+
+            img {
+                object-position: 50% 30%;
+            }
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---       Practice Track       -->
+<--- -------------------------- -*/
+
+/* The section's own progress is the clock, not view() on the track.
+
+   view() measures an element's trip across the viewport, and a pinned
+   element isn't making one — its range freezes the moment it sticks.
+   The track reads off --swap, a view timeline declared on #practice.
+
+   --swap is declared in critical.less, alongside --curtain, on the
+   same `.cs-curtain > #practice` rule. It has to live there: that
+   selector carries an id plus a class, so a bare `#practice` here
+   would lose the cascade and the name silently never resolves.
+
+   The range is `contain`, which only exists because the section is
+   taller than the viewport. It maps exactly onto the pinned hold:
+
+       contain   0%  section top reaches the top — the frame locks
+       contain 100%  section bottom reaches the bottom — it releases
+
+   Nothing moves before the pin or after the release, so no panel is
+   sliding while the section is still travelling up the screen.
+
+   Keyframes live at file scope. LESS drops keyframes nested inside a
+   media query without warning. */
+
+@keyframes cs-track-slide {
+    to {
+        transform: translate3d(calc(100vw - var(--track-width)), 0, 0);
+    }
+}
+
+@media only screen and (min-width: 64rem) {
+    @supports (animation-timeline: view()) {
+        #practice {
+            .cs-track {
+                /* Shorthand first: `animation` resets animation-timeline
+                   and animation-range to initial, so it has to precede
+                   them. */
+                animation: cs-track-slide linear both;
+                animation-timeline: --swap;
+                animation-range: contain 0% contain 100%;
+            }
+        }
+    }
+
+    /* No scroll-driven animation support: the track rests at the
+       first panel. The frame still pins, the slide just doesn't
+       happen — so the overflow stays reachable by nothing, and the
+       later panels are decoration. Release the pin instead. */
+    @supports not (animation-timeline: view()) {
+        #practice {
+            height: auto;
+
+            .cs-frame {
+                position: static;
+                height: auto;
+                overflow: visible;
+            }
+
+            .cs-track {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+                width: 100%;
+            }
+
+            .cs-panel {
+                width: 100%;
+                height: auto;
+                padding-block: var(--section-padding);
+            }
+
+            .cs-panel-image {
+                padding-block: 0;
+                align-content: normal;
+            }
+
+            /* Unpinned, the panels are content-sized, so the `1fr`
+               body row collapses to its content and `align-self` has
+               no slack to work with — the stack reads normally
+               without having to unwind the row template. */
+            .cs-container {
+                margin-inline: auto;
+                padding: 0 2rem;
+            }
+
+            .cs-picture {
+                aspect-ratio: 16 / 9;
+            }
+        }
+    }
+
+    /* root.less clamps animation-duration to 0.01ms under reduced
+       motion, which corrupts the range mapping rather than disabling
+       it. Drop the pin entirely and let the panels stack. */
+    @media (prefers-reduced-motion: reduce) {
+        #practice {
+            height: auto;
+
+            .cs-frame {
+                position: static;
+                height: auto;
+                overflow: visible;
+            }
+
+            .cs-track {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr);
+                width: 100%;
+                animation: none;
+                animation-timeline: none;
+            }
+
+            .cs-panel {
+                width: 100%;
+                height: auto;
+                padding-block: var(--section-padding);
+            }
+
+            .cs-panel-image {
+                padding-block: 0;
+                align-content: normal;
+            }
+
+            .cs-container {
+                margin-inline: auto;
+                padding: 0 2rem;
+            }
+
+            .cs-picture {
+                aspect-ratio: 16 / 9;
+            }
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---           Curtain          -->
+<--- -------------------------- -*/
+
+/* The hero pins and the practice frame rides up over it.
+   Desktop only — pinning a 92svh hero on a phone leaves the next
+   section crawling through a sliver, which reads as broken scroll.
+   Requires that nothing between #hero and <body> sets overflow:
+   hidden. root.less uses overflow-x: clip on html and body for
+   exactly this reason. */
+
+@media only screen and (min-width: 64rem) {
+    .cs-curtain {
+        position: relative;
+
+        > #hero {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        > #practice {
+            position: relative;
+            z-index: 2;
+
+            /* Load-bearing. Without an opaque ground the pinned
+               photograph reads straight through the curtain. */
+            background-color: var(--paper);
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---       Current Listings     -->
+<--- -------------------------- -*/
+
+/* Listing card per deck slide 15. One forced 3:2 crop for every card
+   regardless of the source photo. Hover lifts the card with
+   --shadow-card and scales the photograph 3% — the one place a
+   shadow is sanctioned.
+
+   The section ground is Cashmere Beige via --paper-warm, the card is
+   Pearl White. The tonal step now carries the card's edge, so the
+   hairline is doing secondary work rather than holding it alone — it
+   stays for the crisp corner the deck draws, and drops on hover when
+   the shadow takes over. */
+
+@media only screen and (min-width: 0rem) {
+    #listings {
+        padding: var(--section-padding);
+        background-color: var(--paper-warm);
+
+        /* The section header is the only copy sitting directly on
+           beige. --ink-soft is #8a7462, roughly 3.4:1 on Cashmere
+           Beige — under AA. Everything on the beige resolves to full
+           Dark Cocoa; the card interiors are on --pearl and keep
+           --ink-soft. */
+        .cs-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 2.75rem;
+            color: var(--ink);
+
+            .cs-topper,
+            .cs-caption,
+            .cs-text {
+                color: var(--ink);
+            }
+        }
+
+        .cs-card-group {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2.5rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .cs-item {
+            font-size: inherit;
+            line-height: inherit;
+        }
+
+        .cs-link {
+            background-color: var(--paper);
+            border: 1px solid var(--rule);
+            text-decoration: none;
+            display: block;
+            transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+
+            &:hover,
+            &:focus-visible {
+                box-shadow: var(--shadow-card);
+                transform: translateY(-0.25rem);
+                border-color: transparent;
+
+                .cs-picture img {
+                    transform: scale(1.03);
+                }
+            }
+        }
+
+        /* Full bleed at the top of the card — the border sits outside
+           the photograph, never inset from it. */
+        .cs-picture {
+            width: 100%;
+            aspect-ratio: 3 / 2;
+            display: block;
+            overflow: hidden;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform var(--dur-slow) var(--ease);
+            }
+        }
+
+        .cs-info {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .cs-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 0.25rem;
+        }
+
+        /* A bordered rect, never a pill — no capsules in the system */
+        .cs-badge {
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            line-height: 1;
+            color: var(--ink);
+            border: 1px solid var(--rule-strong);
+            border-radius: 0;
+            padding: 0.5rem 0.75rem;
+        }
+
+        /* Sold inverts to a cocoa fill. Deck slide 14 — status is
+           carried by the badge's weight, not by a colour change
+           anywhere else on the card. */
+        .cs-badge-sold {
+            background-color: var(--cocoa-500);
+            border-color: var(--cocoa-500);
+            color: var(--ink-invert);
+        }
+
+        .cs-mls {
+            font-size: var(--fs-caption);
+            letter-spacing: 0.04em;
+            color: var(--ink-soft);
+        }
+
+        .cs-address {
+            font-family: var(--font-display);
+            font-size: var(--fs-h4);
+            font-weight: 500;
+            line-height: var(--lh-title);
+            letter-spacing: var(--track-title);
+            color: var(--ink);
+        }
+
+        .cs-city {
+            font-size: var(--fs-body-sm);
+            color: var(--ink-soft);
+        }
+
+        /* Price left, secondary line right, both on one baseline. The
+           sold variant swaps the specs for the side represented — a
+           list-to-sale figure never appears here. */
+        .cs-figures {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.375rem 1rem;
+            border-top: 1px solid var(--rule);
+            padding-top: 0.875rem;
+            margin-top: 0.375rem;
+        }
+
+        .cs-price {
+            font-family: var(--font-display);
+            font-size: var(--fs-h4);
+            font-weight: 500;
+            line-height: var(--lh-title);
+            color: var(--ink);
+        }
+
+        .cs-specs {
+            flex: 1 1 9rem;
+            font-size: var(--fs-body-sm);
+            line-height: 1.4;
+            color: var(--ink-soft);
+            text-align: right;
+            text-wrap: pretty;
+        }
+    }
+}
+
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+    #listings {
+        .cs-card-group {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #listings {
+        .cs-card-group {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 2rem;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---       How A Sale Runs      -->
+<--- -------------------------- -*/
+
+/* .cs-on-dark in root.less already inverts headings, body, toppers
+   and controls. Nothing here re-declares a colour that the class
+   already handles — including the ask, which is a .cs-button-ghost
+   and is inverted there with every other ghost link on the site. */
+
+@media only screen and (min-width: 0rem) {
+    #process {
+        padding: var(--section-padding);
+        background-color: var(--paper-field);
+
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2.75rem;
+        }
+
+        .cs-intro {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.75rem;
+        }
+
+        /* Height-driven so the mark's own ratio sets the width — it is
+           taller than it is wide and a fixed width would squash it. */
+        .cs-mark {
+            display: block;
+            height: 3.5rem;
+            width: auto;
+        }
+
+        h2 {
+            max-width: none;
+            margin: 0;
+        }
+
+        /* Placement only. The chassis — face, size, tracking, case,
+           underline — comes from .cs-button-ghost in root.less, and
+           .cs-on-dark inverts it there for this field. Nothing about
+           colour belongs in this file.
+
+           Small, because the ghost control carries 0.875rem of block
+           padding of its own; the old 0.75rem was set against a bare
+           anchor with no box. */
+        .cs-ask {
+            margin-block-start: 0.25rem;
+        }
+
+        .cs-steps {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+            padding-inline-start: 0;
+            list-style: none;
+        }
+
+        /* The rule belongs to the step, at every width. Stacked, the
+           three read as one line down the column; across, the grid
+           gap breaks between them and they read as three. */
+        .cs-step {
+            border-top: 1.5px solid var(--rule-invert);
+            padding-top: 1.375rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.875rem;
+
+            h3 {
+                margin: 0;
+            }
+        }
+
+        /* No counter. Three columns read as stages because the words
+           say Preparation, Market, Close, in that order, inside an
+           <ol> — the numerals were restating what the sequence
+           already carries. Belt and braces: if the counter rule is
+           still live elsewhere in the cascade, this kills the marker
+           it draws. Better to delete that rule at source. */
+        .cs-steps {
+            counter-reset: none;
+        }
+
+        .cs-step {
+            counter-increment: none;
+
+            &::before {
+                content: none;
+            }
+        }
+
+        /* The token rather than an opacity value — opacity on text
+           multiplies against the ground and drifts per surface. */
+        .cs-text {
+            color: var(--ink-invert-soft);
+            max-width: none;
+        }
+    }
+}
+
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+    #process {
+        /* Three across from here up. This is the layout; 64rem only
+           rearranges what sits above it.
+
+           The gap is doing double duty — column spacing and the
+           visible break between the three hairlines. Below about
+           1.5rem the breaks stop reading as deliberate and start
+           looking like a rendering seam. */
+        .cs-steps {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.75rem;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #process {
+        /* One column, not two. The intro is a band across the top
+           rather than a sticky rail down the left — the steps take
+           the full measure underneath it, and the section stops
+           being half a screen of empty field. */
+        .cs-container {
+            grid-template-columns: minmax(0, 1fr);
+            gap: 8rem;
+        }
+
+        /* Mark over heading on the left, the ask pinned to the right
+           edge on the heading's own row. `align-items: end` sets both
+           on the band's floor so the link sits with the last line of
+           the title rather than floating above it.
+
+           Not sticky any more: sticky was doing work for the old
+           two-column split, where the rail had a tall neighbour to
+           travel against. Here there is nothing to travel past. */
+        .cs-intro {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            column-gap: 3rem;
+            row-gap: 1.5rem;
+            align-items: end;
+            position: static;
+            top: auto;
+        }
+
+        .cs-mark {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        h2 {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        .cs-ask {
+            grid-column: 2;
+            grid-row: 2;
+            justify-self: end;
+            align-self: end;
+            margin-block-start: 0;
+            /* The band can get wide; the link should not wrap into
+               two lines against a one-line measure. */
+            white-space: nowrap;
+        }
+
+        /* No padding-top. That only existed to clear the group rule
+           the list used to carry; the rules sit on the steps now, and
+           the container's 3.5rem gap already sets the distance from
+           the intro. */
+        .cs-steps {
+            gap: 3rem;
+        }
+
+        /* Descriptions are two short lines at this width. A cap keeps
+           the third column from running long against the container's
+           right edge on a wide monitor. */
+        .cs-text {
+            max-width: 34ch;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---         Market Notes       -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 0rem) {
+    #notes {
+        padding: var(--section-padding);
+        background-color: var(--paper);
+
+        .cs-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .cs-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        /* Never crops below 9:16 — deck slide 17 */
+        .cs-frame {
+            flex: 1 1 11.875rem;
+            max-width: 15rem;
+            aspect-ratio: 9 / 16;
+            text-decoration: none;
+            position: relative;
+            display: block;
+            overflow: hidden;
+
+            &:hover .cs-picture img {
+                transform: scale(1.03);
+            }
+        }
+
+        .cs-picture {
+            width: 100%;
+            height: 100%;
+            display: block;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                transition: transform var(--dur-slow) var(--ease);
+            }
+        }
+
+        /* The only permitted overlay on photography. No capsule
+           behind the title, no text shadow. */
+        .cs-scrim {
+            width: 100%;
+            height: 100%;
+            background: var(--scrim-bottom);
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .cs-frame-title {
+            font-size: var(--fs-body-sm);
+            line-height: 1.35;
+            color: var(--ink-invert);
+            position: absolute;
+            right: 1rem;
+            bottom: 1rem;
+            left: 1rem;
+        }
+
+        .cs-aside {
+            flex: 1 1 16.25rem;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 1.375rem;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #notes {
+        .cs-row {
+            flex-wrap: nowrap;
+            gap: 1.5rem;
+        }
+
+        .cs-aside {
+            padding-left: 1.5rem;
+        }
+    }
+}
+/*-- -------------------------- -->
+<---       Reveal Indices       -->
+<--- -------------------------- -*/
+
+/* Index assignment only. The mechanism lives in root.less so that every
+   page gets it — this file is homepage-scoped and would strand the
+   indices on approach, press, listings and the shared CTA.
+
+   File scope on purpose — these are unconditional, and every section
+   rule above sits inside a media query.
+
+   No transform collisions in any of these sets: the listing card's
+   hover lift is on .cs-link and the note frame's zoom is on the inner
+   img, both a level below the reveal item. */
+
+#listings {
+    .cs-header {
+        --reveal-i: 0;
+    }
+
+    .cs-item {
+        --reveal-i: 1;
+    }
+    .cs-item:nth-child(2) {
+        --reveal-i: 2;
+    }
+    .cs-item:nth-child(3) {
+        --reveal-i: 3;
+    }
+}
+
+#process {
+    .cs-intro {
+        --reveal-i: 0;
+    }
+
+    .cs-step {
+        --reveal-i: 1;
+    }
+    .cs-step:nth-child(2) {
+        --reveal-i: 2;
+    }
+    .cs-step:nth-child(3) {
+        --reveal-i: 3;
+    }
+}
+
+#notes {
+    .cs-header {
+        --reveal-i: 0;
+    }
+
+    .cs-frame {
+        --reveal-i: 1;
+    }
+    .cs-frame:nth-child(2) {
+        --reveal-i: 2;
+    }
+    .cs-frame:nth-child(3) {
+        --reveal-i: 3;
+    }
+
+    /* Sits beside the frames on desktop, so it arrives last by 560ms.
+       Drop this to 1 if the lag reads as a stall rather than a beat. */
+    .cs-aside {
+        --reveal-i: 4;
+    }
+}
+
+/*-- -------------------------- -->
+<---            Vista           -->
+<--- -------------------------- -*/
+
+/* A full-bleed image band between the green field and the notes.
+   No container and no copy — the section is the frame and the
+   picture fills it. `overflow: hidden` is load-bearing: it clips
+   the parallax overscan at both ends. */
+
+@media only screen and (min-width: 0rem) {
+    #vista {
+        /* vh, not svh. A collapsing mobile toolbar would resize the
+           frame mid-scroll and pull the slack out from under a
+           travel that is fixed in vh. */
+        height: clamp(18rem, 58vh, 26rem);
+        position: relative;
+        overflow: hidden;
+
+        /* Under the image while it loads, so the band never flashes
+           white against the field above it. */
+        background-color: var(--paper-warm);
+
+        .cs-picture {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: relative;
+
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: 50% 50%;
+            }
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #vista {
+        height: clamp(30rem, 76vh, 44rem);
+    }
+}
+
+/*-- -------------------------- -->
+<---       Vista Parallax       -->
+<--- -------------------------- -*/
+
+/* Keyframes at file scope — LESS drops them silently when nested.
+
+   Lags rather than leads, the mirror of the hero. The frame travels
+   up at scroll speed, the photograph at scroll speed minus the
+   travel, so it settles into the band as the section clears. The
+   slack therefore lives below: the image starts lifted by the
+   travel and ends flush at the top. Both ends stay covered as long
+   as --vista-overscan stays meaningfully above --vista-travel. */
+
+@keyframes vista-parallax {
+    from {
+        transform: translateY(calc(var(--vista-travel) * -1));
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* The band declares the timeline; the image reads it. A named view
+   timeline resolves against ancestors, so no timeline-scope is
+   needed — and keeping the timeline off the image matters, because
+   the image is the thing being transformed.
+
+   `cover`, not `entry`: entry resolves over a few hundred pixels
+   for a band this size and the movement would be spent before it is
+   properly on screen.
+
+   The @supports guard is load-bearing. Without it, browsers with no
+   scroll-driven animation run these keyframes on a time basis and
+   the image slides once, on load, unscrolled. */
+
+@supports (animation-timeline: view()) {
+    #vista {
+        --vista-overscan: 26vh;
+        --vista-travel: 20vh;
+
+        view-timeline-name: --vista;
+        view-timeline-axis: block;
+
+        .cs-picture img {
+            height: calc(100% + var(--vista-overscan));
+            will-change: transform;
+
+            /* Shorthand first: `animation` resets animation-timeline
+               and animation-range to initial. */
+            animation: vista-parallax linear both;
+            animation-timeline: --vista;
+            animation-range: cover 0% cover 100%;
+        }
+    }
+
+    /* root.less clamps animation-duration to 0.01ms under reduced
+       motion, which corrupts the range mapping rather than disabling
+       it. Detach, and drop the overscan with it — leaving the extra
+       height in place would ship a permanently recropped band for no
+       reason. */
+    @media (prefers-reduced-motion: reduce) {
+        #vista .cs-picture img {
+            height: 100%;
+            animation: none;
+            animation-timeline: none;
+            will-change: auto;
+        }
+    }
+}

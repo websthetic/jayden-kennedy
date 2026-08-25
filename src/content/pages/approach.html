@@ -1,0 +1,135 @@
+---
+title: "Approach | Jayden Kennedy"
+description: "How a written analysis, a plain explanation and an argued recommendation change what a property decision looks like."
+permalink: "/approach/"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+
+
+<link rel="stylesheet" href="/assets/css/critical.css"/>
+
+{% if client.isProduction %}
+    <link rel="preload" href="/assets/css/approach.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="/assets/css/approach.css">
+    </noscript>
+{% else %}
+    <link rel="stylesheet" href="/assets/css/approach.css"/>
+{% endif %}
+
+{% endblock %}
+
+{% block body %}
+
+    <!-- ============================================ -->
+    <!--                    Intro                     -->
+    <!-- ============================================ -->
+
+    <!-- Title and body side by side. No image — the band below
+         carries the photography, and a portrait here would put two
+         images in the first screen and a half. -->
+
+    <section id="intro" data-reveal>
+        <div class="cs-container">
+            <div class="cs-lead cs-reveal">
+                <span class="cs-topper">Approach</span>
+                <h1>The mechanics, then your decision</h1>
+            </div>
+
+            <div class="cs-body cs-reveal">
+                <p class="cs-lede">
+                    Every client gets the same three things: a written analysis, a plain explanation of what it means, and a recommendation I am willing to argue against.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!--                     Band                     -->
+    <!-- ============================================ -->
+
+    <!--! Deliberately shorter than the homepage vista. Three large
+          images run consecutively from here down, and they need a
+          hierarchy — this one is the smallest of the three. -->
+
+       <section id="band" aria-hidden="true">
+        <picture class="cs-picture">
+            <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder-1.jpg"
+                 alt=""
+                 width="2600" height="1500"
+                 loading="lazy" decoding="async">
+        </picture>
+    </section>
+
+    <!-- ============================================ -->
+    <!--                 The Analysis                 -->
+    <!-- ============================================ -->
+
+    <section id="analysis" data-reveal>
+        <div class="cs-container">
+            <div class="cs-rail cs-reveal">
+                <span class="cs-topper">The analysis</span>
+            </div>
+
+            <div class="cs-content cs-reveal">
+                <p class="cs-text">
+                    The analysis takes an afternoon and I do it by hand, because the automated estimate cannot see the renovation, the lot line or the ninety days of offers that never registered. What you get is a range, the evidence behind each end of it, and the conditions that would move it.
+                </p>
+                <p class="cs-text">
+                    If a property is wrong for you, I will say so. That has cost me commissions and it is the reason people come back.
+                </p>
+                <a href="/journal/what-a-cma-actually-is/" class="cs-button-ghost">Read: what a comparative market analysis actually is</a>
+            </div>
+        </div>
+    </section>
+
+        <!-- ============================================ -->
+    <!--                    Buying                    -->
+    <!-- ============================================ -->
+
+    <section id="buying" class="cs-bleed" data-reveal>
+        <div class="cs-container">
+            <div class="cs-content cs-reveal">
+                <h2>Buying</h2>
+                <p class="cs-text">
+                    Before we write anything, you will know the carrying cost, the tax bill and what the property is worth if you have to leave in three years. For investment purchases the analysis adds rent evidence, vacancy assumptions written down rather than implied, and debt service coverage at today's rate and at two points higher.
+                </p>
+                <a href="/contact/" class="cs-button-script">see what you would get</a>
+            </div>
+
+            <picture class="cs-picture cs-reveal">
+                <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg"
+                     alt="ALT TEXT — describe what is in the photograph"
+                     width="2600" height="1500"
+                     loading="lazy" decoding="async">
+            </picture>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!--                   Selling                    -->
+    <!-- ============================================ -->
+
+    <section id="selling" class="cs-bleed" data-reveal>
+        <div class="cs-container">
+            <div class="cs-content cs-reveal">
+                <h2>Selling</h2>
+                <p class="cs-text">
+                    A listing price is an argument. Mine comes with the comparables attached, so you can see what the number is standing on before you agree to it. The work starts with the last ninety days on your street: what sold, what did not, and what the difference was.
+                </p>
+                <a href="/contact/" class="cs-button-script">request a valuation</a>
+            </div>
+
+            <picture class="cs-picture cs-reveal">
+                <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder-1.jpg"
+                     alt="ALT TEXT — describe what is in the photograph"
+                     width="2600" height="1500"
+                     loading="lazy" decoding="async">
+            </picture>
+        </div>
+    </section>
+
+{% endblock %}

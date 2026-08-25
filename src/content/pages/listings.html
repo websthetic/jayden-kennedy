@@ -1,0 +1,287 @@
+---
+title: "Listings | Jayden Kennedy"
+description: "Meta description for the page"
+permalink: "/listings/"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/listings.css">
+{% endblock %}
+
+{% block body %}
+
+    <section id="listings-intro">
+      <div class="cs-container">
+        <span class="cs-topper">Durham Region and the GTA</span>
+        <h1 class="cs-title">Everything currently on the market</h1>
+        <p class="cs-text">
+          The full board, not only my own listings. If a property here is wrong for
+          you, I will tell you why before you book a showing.
+        </p>
+      </div>
+    </section>
+
+    <section id="listings-filters">
+      <div class="cs-container">
+        <form class="cs-form" id="listings-form" method="get" action="/listings/" role="search" aria-label="Filter listings">
+          <div class="cs-field">
+            <label class="cs-label" for="municipality">Municipality</label>
+            <select class="cs-select" id="municipality" name="municipality">
+              <option value="">All of Durham</option>
+              <option value="ajax">Ajax</option>
+              <option value="bowmanville">Bowmanville</option>
+              <option value="clarington">Clarington</option>
+              <option value="courtice">Courtice</option>
+              <option value="oshawa">Oshawa</option>
+              <option value="pickering">Pickering</option>
+              <option value="uxbridge">Uxbridge</option>
+              <option value="whitby">Whitby</option>
+            </select>
+          </div>
+
+          <div class="cs-field">
+            <label class="cs-label" for="price">Price</label>
+            <select class="cs-select" id="price" name="price">
+              <option value="">Any</option>
+              <option value="0-600000">Under $600k</option>
+              <option value="600000-800000">$600k to $800k</option>
+              <option value="800000-1000000">$800k to $1M</option>
+              <option value="1000000-1500000">$1M to $1.5M</option>
+              <option value="1500000-">$1.5M and up</option>
+            </select>
+          </div>
+
+          <div class="cs-field cs-field-sm">
+            <label class="cs-label" for="beds">Beds</label>
+            <select class="cs-select" id="beds" name="beds">
+              <option value="">Any</option>
+              <option value="1">1+</option>
+              <option value="2">2+</option>
+              <option value="3">3+</option>
+              <option value="4">4+</option>
+              <option value="5">5+</option>
+            </select>
+          </div>
+
+          <div class="cs-field cs-field-md">
+            <label class="cs-label" for="type">Type</label>
+            <select class="cs-select" id="type" name="type">
+              <option value="">Any</option>
+              <option value="detached">Detached</option>
+              <option value="semi-detached">Semi-detached</option>
+              <option value="townhouse">Townhouse</option>
+              <option value="condo">Condo</option>
+              <option value="multiplex">Multiplex</option>
+            </select>
+          </div>
+
+          <div class="cs-field cs-field-md">
+            <label class="cs-label" for="status">Status</label>
+            <select class="cs-select" id="status" name="status">
+              <option value="active" selected>Active</option>
+              <option value="any">Active and sold</option>
+            </select>
+          </div>
+
+          <button class="cs-button" type="submit">Apply</button>
+        </form>
+      </div>
+    </section>
+
+    <section id="listings-results">
+      <div class="cs-summary">
+        <div class="cs-container">
+          <div class="cs-count-group">
+            <p class="cs-count" data-count aria-live="polite">6 homes</p>
+            <p class="cs-applied" data-applied hidden>
+              <span data-applied-label></span>
+              <a class="cs-clear" href="/listings/">Clear all</a>
+            </p>
+          </div>
+
+          <div class="cs-view-group">
+            <a class="cs-view-link" href="/listings/map/">Map</a>
+            <label class="cs-sort-label" for="sort">Sort</label>
+            <select class="cs-select cs-sort" id="sort" name="sort">
+              <option value="newest">Newest</option>
+              <option value="price-desc">Price, high to low</option>
+              <option value="price-asc">Price, low to high</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs-container">
+        <ul class="cs-card-group" data-reveal data-results>
+          <li class="cs-item cs-reveal" style="--reveal-i: 0">
+            <a class="cs-link" href="/listings/listing-one/">
+              <picture class="cs-picture">
+                <img
+                  class="cs-img"
+                  src="/assets/images/listings/listing-01.jpg"
+                  alt="[UnparsedAddress]"
+                  width="640"
+                  height="500"
+                  loading="eager"
+                  decoding="async"
+                >
+                <span class="cs-status">[StandardStatus]</span>
+              </picture>
+              <div class="cs-info">
+                <span class="cs-price">[ListPrice]</span>
+                <span class="cs-address">[UnparsedAddress]</span>
+                <span class="cs-meta">
+                  [Beds] bed &middot; [Baths] bath &middot; [LivingArea] sq ft
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="cs-item cs-reveal" style="--reveal-i: 1">
+            <a class="cs-link" href="/listings/listing-two/">
+              <picture class="cs-picture">
+                <img
+                  class="cs-img"
+                  src="/assets/images/listings/listing-02.jpg"
+                  alt="[UnparsedAddress]"
+                  width="640"
+                  height="500"
+                  loading="eager"
+                  decoding="async"
+                >
+                <span class="cs-status">[StandardStatus]</span>
+              </picture>
+              <div class="cs-info">
+                <span class="cs-price">[ListPrice]</span>
+                <span class="cs-address">[UnparsedAddress]</span>
+                <span class="cs-meta">
+                  [Beds] bed &middot; [Baths] bath &middot; [LivingArea] sq ft
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="cs-item cs-reveal" style="--reveal-i: 2">
+            <a class="cs-link" href="/listings/listing-three/">
+              <picture class="cs-picture">
+                <img
+                  class="cs-img"
+                  src="/assets/images/listings/listing-03.jpg"
+                  alt="[UnparsedAddress]"
+                  width="640"
+                  height="500"
+                  loading="eager"
+                  decoding="async"
+                >
+                <span class="cs-status">[StandardStatus]</span>
+              </picture>
+              <div class="cs-info">
+                <span class="cs-price">[ListPrice]</span>
+                <span class="cs-address">[UnparsedAddress]</span>
+                <span class="cs-meta">
+                  [Beds] bed &middot; [Baths] bath &middot; [LivingArea] sq ft
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="cs-item cs-reveal" style="--reveal-i: 3">
+            <a class="cs-link" href="/listings/listing-four/">
+              <picture class="cs-picture">
+                <img
+                  class="cs-img"
+                  src="/assets/images/listings/listing-04.jpg"
+                  alt="[UnparsedAddress]"
+                  width="640"
+                  height="500"
+                  loading="lazy"
+                  decoding="async"
+                >
+                <span class="cs-status">[StandardStatus]</span>
+              </picture>
+              <div class="cs-info">
+                <span class="cs-price">[ListPrice]</span>
+                <span class="cs-address">[UnparsedAddress]</span>
+                <span class="cs-meta">
+                  [Beds] bed &middot; [Baths] bath &middot; [LivingArea] sq ft
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="cs-item cs-reveal" style="--reveal-i: 4">
+            <a class="cs-link" href="/listings/listing-five/">
+              <picture class="cs-picture">
+                <img
+                  class="cs-img"
+                  src="/assets/images/listings/listing-05.jpg"
+                  alt="[UnparsedAddress]"
+                  width="640"
+                  height="500"
+                  loading="lazy"
+                  decoding="async"
+                >
+                <span class="cs-status">[StandardStatus]</span>
+              </picture>
+              <div class="cs-info">
+                <span class="cs-price">[ListPrice]</span>
+                <span class="cs-address">[UnparsedAddress]</span>
+                <span class="cs-meta">
+                  [Beds] bed &middot; [Baths] bath &middot; [LivingArea] sq ft
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="cs-item cs-reveal" style="--reveal-i: 5">
+            <a class="cs-link" href="/listings/listing-six/">
+              <picture class="cs-picture">
+                <img
+                  class="cs-img"
+                  src="/assets/images/listings/listing-06.jpg"
+                  alt="[UnparsedAddress]"
+                  width="640"
+                  height="500"
+                  loading="lazy"
+                  decoding="async"
+                >
+                <span class="cs-status">[StandardStatus]</span>
+              </picture>
+              <div class="cs-info">
+                <span class="cs-price">[ListPrice]</span>
+                <span class="cs-address">[UnparsedAddress]</span>
+                <span class="cs-meta">
+                  [Beds] bed &middot; [Baths] bath &middot; [LivingArea] sq ft
+                </span>
+              </div>
+            </a>
+          </li>
+        </ul>
+
+        <div class="cs-empty" data-empty hidden>
+          <p class="cs-empty-title">Nothing on the board matches that yet.</p>
+          <p class="cs-text">
+            Widen the price band or clear the filters. If you tell me what you are
+            looking for, I will send anything that comes up before it is listed.
+          </p>
+          <a class="cs-button" href="/contact/">Tell me what you are looking for</a>
+        </div>
+
+        <div class="cs-more" data-more>
+          <a class="cs-button-outline" href="/listings/?page=2">Load more</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="listings-disclosure">
+      <div class="cs-container">
+        <p class="cs-fine">
+          Listing data is provided by the Toronto Regional Real Estate Board and is
+          deemed reliable but not guaranteed accurate. Not intended to solicit buyers
+          or sellers currently under contract.
+        </p>
+      </div>
+    </section>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="/assets/js/listings.js" defer></script>
+{% endblock %}

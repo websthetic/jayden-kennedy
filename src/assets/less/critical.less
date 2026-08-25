@@ -1,0 +1,418 @@
+/*-- -------------------------- -->
+<---            Hero            -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 0rem) {
+    #hero {
+        /* Warm near-black rather than pure black. Over a beige room, a
+           neutral scrim reads as grey haze; this one reads as shadow. */
+        --hero-ink: #14100c;
+
+        /* Mobile ramp: vertical only. The copy spans the full width here,
+           so a horizontal pass would leave the ends of lines unscrimmed.
+           The mid-stop is up from 0.3 — that stop was where the headline
+           was dissolving into the wall behind it. */
+        --hero-scrim: linear-gradient(
+            180deg,
+            rgba(20, 16, 12, 0.6) 0%,
+            rgba(20, 16, 12, 0.38) 30%,
+            rgba(20, 16, 12, 0.7) 66%,
+            rgba(20, 16, 12, 0.88) 100%
+        );
+
+        /* The copy sits at the bottom edge, which is exactly where mobile
+           Safari's chrome crops vh. svh with a vh fallback. */
+        height: 92vh;
+        height: 92svh;
+        min-height: 42.5rem;
+
+        /* Both insets are --gutter now. The left was its own clamp,
+           capped at 4rem, which put the headline 64px from the edge
+           while the practice panel below it sat at 6vw — 115px at
+           1920, and the two sections visibly failed to line up.
+           The bottom stays bespoke: it is optical, not structural. */
+        padding: 0 var(--gutter) clamp(3rem, 9vw, 4.75rem) var(--gutter);
+        position: relative;
+        display: flex;
+        align-items: flex-end;
+
+        /* Load-bearing for the parallax: it clips the overscan. */
+        overflow: hidden;
+
+        .cs-background {
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                /* Holds the subject off the copy column */
+                object-position: 68% 20%;
+            }
+        }
+
+        .cs-scrim {
+            width: 100%;
+            height: 100%;
+            background: var(--hero-scrim);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .cs-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: clamp(1rem, 2.5vw, 1.625rem);
+            position: relative;
+            z-index: 3;
+        }
+
+        /* The flex gap owns the rhythm — the shared class margin would double it */
+        .cs-topper {
+            /* Was the weakest element on the page: low-opacity cream on a
+               mid-tone wall. Corrected with colour, NOT opacity — the entry
+               fade below drives opacity on every child of .cs-container, and
+               an #hero-scoped opacity here outranks it and would strand the
+               eyebrow visible before the stagger runs. */
+            color: var(--cream, #f5efe4);
+            margin-bottom: 0;
+        }
+
+        h1 {
+            max-width: 15ch;
+            margin: 0;
+            /* Softens the edge where a serif stem crosses a bright highlight.
+               Wide and faint — it should not read as a drop shadow. */
+            text-shadow: 0 1px 24px rgba(20, 16, 12, 0.35);
+        }
+
+        .cs-lede {
+            max-width: 52ch;
+            opacity: 0.92;
+            /* The shared tracking makes the sans compete with the serif above
+               it instead of supporting it. Tighten and it recedes. */
+            letter-spacing: normal;
+            text-shadow: 0 1px 18px rgba(20, 16, 12, 0.3);
+        }
+
+        /* Entry reveal. The hero-recede animation owns the transform on
+           .cs-container itself; these are its children, so a transform
+           here is free and the two never fight.
+
+           The offset itself is NOT declared here — see the .js rule
+           below. */
+        .cs-container > * {
+            transition:
+                opacity 1100ms cubic-bezier(0.33, 0, 0.2, 1),
+                transform 1100ms cubic-bezier(0.33, 0, 0.2, 1);
+        }
+
+        .cs-container > *:nth-child(1) {
+            transition-delay: 200ms;
+        }
+        .cs-container > *:nth-child(2) {
+            transition-delay: 340ms;
+        }
+        .cs-container > *:nth-child(3) {
+            transition-delay: 480ms;
+        }
+        .cs-container > *:nth-child(4) {
+            transition-delay: 620ms;
+        }
+    }
+
+    /* Hidden state is gated on JS — without it the copy is simply
+       there, and unshifted. The offset lives here rather than on the
+       base rule for exactly that reason: no-JS must never inherit it
+       and strand the headline a rem low. */
+    .js #hero .cs-container > * {
+        opacity: 0;
+        transform: translateY(0.75rem);
+    }
+
+    .js #hero.cs-visible {
+        .cs-container > * {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* .cs-lede sits at 0.92 by design. The rule above outranks the
+           base declaration, so restore it here rather than flattening to 1. */
+        .cs-container > .cs-lede {
+            opacity: 0.92;
+        }
+    }
+}
+
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+    #hero {
+        .cs-container {
+            gap: 1.625rem;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #hero {
+        /* Two passes now that the copy is a left-hand column.
+
+           The horizontal pass carries the contrast and clears entirely by
+           72%, so the lit shelving keeps its depth. The vertical pass is
+           correspondingly lighter than the mobile ramp — stacked, they
+           composite to ~0.91 behind the headline and the CTA, while the
+           bottom right of the frame stays at 0.42 and legible.
+
+           Layer order matters: horizontal first so it paints on top. */
+        --hero-scrim: linear-gradient(
+                90deg,
+                rgba(20, 16, 12, 0.82) 0%,
+                rgba(20, 16, 12, 0.62) 35%,
+                rgba(20, 16, 12, 0.3) 60%,
+                rgba(20, 16, 12, 0) 82%
+            ),
+            linear-gradient(
+                180deg,
+                rgba(20, 16, 12, 0.55) 0%,
+                rgba(20, 16, 12, 0.15) 35%,
+                rgba(20, 16, 12, 0.26) 70%,
+                rgba(20, 16, 12, 0.42) 100%
+            );
+
+        height: 100vh;
+        height: 100svh;
+        padding-bottom: 4.75rem;
+
+        /* Opts out of the shared container the way #practice does.
+
+           .cs-container in root.less caps at 90rem and centres with
+           margin-inline: auto. Past about 1550px that auto margin
+           grows larger than the gutter and takes over the left edge,
+           so the copy drifts inward while the practice panel below
+           stays locked to 6vw. Dropping the cap hands the edge back
+           to the padding.
+
+           Nothing runs long as a result — h1 is capped at 25ch and
+           the lede at 52ch, so the measure is held by the content
+           rather than by the container. */
+        .cs-container {
+            max-width: none;
+            margin-inline: 0;
+        }
+
+        h1 {
+            max-width: 25ch;
+        }
+    }
+}
+
+/* Reduced motion — the copy is present immediately, no stagger, no shift */
+@media (prefers-reduced-motion: reduce) {
+    .js #hero .cs-container > * {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .js #hero .cs-container > .cs-lede {
+        opacity: 0.92;
+    }
+}
+
+/*-- -------------------------- -->
+<---        Hero Recede         -->
+<--- -------------------------- -*/
+
+/* Declared at file scope. Nested inside a media query or a LESS
+   block, LESS drops it silently and the animation does nothing. */
+
+@keyframes hero-recede {
+    to {
+        opacity: 0;
+        transform: translateY(-2rem);
+    }
+}
+
+/* Driven by the practice panel's entry, not by a pixel count, so the
+   fade stays locked to the curtain at every viewport height.
+
+   The @supports guard is load-bearing: without it, browsers lacking
+   scroll-driven animation run these keyframes on a time basis and the
+   hero copy fades out a second after load, unscrolled. */
+
+@supports (animation-timeline: view()) {
+    @media only screen and (min-width: 64rem) {
+        .cs-curtain {
+            /* Lets #hero read a timeline declared on its sibling */
+            timeline-scope: --curtain;
+        }
+
+        /* Two names on one element. --curtain drives the hero recede;
+           --swap drives the state cross-fade in local.less. This rule
+           carries an id plus a class, so a bare #practice elsewhere
+           loses the cascade and the name silently never resolves. */
+        .cs-curtain > #practice {
+            view-timeline-name: --curtain, --swap;
+            view-timeline-axis: block, block;
+        }
+
+        #hero .cs-container {
+            animation: hero-recede linear both;
+            animation-timeline: --curtain;
+
+            /* Out by the time the panel covers a little over half
+               the screen. */
+            animation-range: entry 0% entry 55%;
+        }
+
+        /* root.less clamps animation-duration to 0.01ms under reduced
+           motion, which corrupts the range mapping rather than
+           disabling it. Detach the timeline instead — the copy holds. */
+        @media (prefers-reduced-motion: reduce) {
+            #hero .cs-container {
+                animation-timeline: none;
+                animation: none;
+            }
+        }
+
+        /* The darkening wash. Above the photograph and scrim, beneath
+           the copy — so the text gains contrast as it recedes rather
+           than dimming with the image. Animated by hero-darken.
+           Matched to the scrim's warm ink so the two don't cross-tint. */
+        #hero:after {
+            content: "";
+            width: 100%;
+            height: 100%;
+            background-color: var(--hero-ink);
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---        Hero Darken         -->
+<--- -------------------------- -*/
+
+/* File scope, same reason as hero-recede. Stops at 0.72 rather than 1
+   so the photograph stays faintly readable behind the panel's rounded
+   edge — the curtain should land on an image, not on a void. */
+
+@keyframes hero-darken {
+    to {
+        opacity: 0.72;
+    }
+}
+
+@supports (animation-timeline: view()) {
+    @media only screen and (min-width: 64rem) {
+        #hero:after {
+            animation: hero-darken linear both;
+            animation-timeline: --curtain;
+
+            /* Runs the full entry, finishing as the panel lands —
+               unlike the copy, which is out by 55%. */
+            animation-range: entry 0% entry 100%;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #hero:after {
+                animation-timeline: none;
+                animation: none;
+            }
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---       Hero Parallax        -->
+<--- -------------------------- -*/
+
+/* File scope, same reason as the two above.
+
+   Translates UP as the page scrolls down. The frame moves at scroll
+   speed, the photograph moves at scroll speed plus the travel, so it
+   leads rather than lags. The slack is therefore consumed from the
+   bottom, and that is where it has to live — this is the mirror of the
+   lagging version, and the offset has to flip with the sign or the
+   bottom edge lifts into frame. */
+
+@keyframes hero-parallax {
+    to {
+        transform: translateY(calc(var(--hero-parallax-travel) * -1));
+    }
+}
+
+/* Same timeline as the recede and the darken, so all three are on one
+   clock: retune the panel and the parallax follows. It also sidesteps
+   giving #hero its own view() timeline, which would report ranges based
+   on the hero's position in the curtain rather than on screen.
+
+   Desktop only, matching the rest of the hero's motion — --curtain is
+   not declared below 64rem, so there is nothing to key off there. */
+
+@supports (animation-timeline: view()) {
+    @media only screen and (min-width: 64rem) {
+        #hero {
+            /* Both in vh rather than svh, deliberately. svh changes when
+               mobile chrome collapses, which would resize the slack out
+               from under a fixed travel mid-scroll.
+
+               The invariant is unchanged by the direction flip: travel
+               must stay meaningfully below overscan. Equal values put the
+               image's bottom edge exactly on the hero's bottom edge at the
+               end of the range, and a rounding error there shows as a
+               hairline of background. 3vh of headroom. */
+            --hero-overscan: 16vh;
+            --hero-parallax-travel: 13vh;
+        }
+
+        #hero .cs-background img {
+            /* Overscanned downward now: flush at the top, slack below,
+               both ends clipped by the hero's overflow. No negative top
+               offset — the extra height extends past the bottom on its
+               own. Absolute rather than static so it does not push the
+               picture box around. */
+            height: calc(100% + var(--hero-overscan));
+            top: 0;
+            left: 0;
+            position: absolute;
+
+            animation: hero-parallax linear both;
+            animation-timeline: --curtain;
+
+            /* The full entry, like the darken. The back half of the travel
+               plays under the darkening wash, which is fine — it reads as
+               the image lifting away as the curtain lands. Pull the end in
+               to ~70% if you want the movement spent while the frame is
+               still bright. */
+            animation-range: entry 0% entry 100%;
+        }
+
+        /* Detach and drop the overscan together. Leaving the extra height
+           in place under reduced motion would ship a permanently recropped
+           hero for no reason. */
+        @media (prefers-reduced-motion: reduce) {
+            #hero .cs-background img {
+                height: 100%;
+                animation-timeline: none;
+                animation: none;
+            }
+        }
+    }
+}

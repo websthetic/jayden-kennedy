@@ -1,0 +1,377 @@
+/*-- -------------------------- -->
+<---           Gallery          -->
+<--- -------------------------- -*/
+
+/* Full-bleed mosaic directly under the header: one lead frame and two
+   stacked frames beside it. Stacked on mobile, three across at 48rem.
+   The section opts out of the centred container so the images reach
+   both viewport edges. */
+
+@media only screen and (min-width: 0rem) {
+    #listing-gallery {
+        padding: 0;
+        background-color: var(--paper);
+
+        .cs-container {
+            max-width: none;
+            margin-inline: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .cs-picture {
+            width: 100%;
+            aspect-ratio: 3 / 2;
+            position: relative;
+            display: block;
+            overflow: hidden;
+            background-color: var(--cashmere-300);
+        }
+
+        .cs-picture-lead {
+            aspect-ratio: 4 / 3;
+        }
+
+        .cs-img {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            inset: 0;
+            display: block;
+            object-fit: cover;
+        }
+
+        .cs-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---     Gallery · Tablet       -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 48rem) {
+    #listing-gallery {
+        .cs-container {
+            /* minmax(0, …) so the images can shrink below their intrinsic
+               width rather than pushing the grid wider than the viewport. */
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+            align-items: stretch;
+            gap: 0.25rem;
+        }
+
+        /* The lead frame's height is set by the grid row, and the two
+           stacked frames divide the same height between them, so all
+           three finish on one bottom edge. */
+        .cs-picture-lead {
+            height: 100%;
+            aspect-ratio: auto;
+            min-height: clamp(24rem, 42vw, 38rem);
+        }
+
+        .cs-stack {
+            height: 100%;
+        }
+
+        .cs-stack .cs-picture {
+            flex: 1;
+            aspect-ratio: auto;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---            Main            -->
+<--- -------------------------- -*/
+
+/* One column on mobile, copy plus an enquiry card at 64rem. */
+
+@media only screen and (min-width: 0rem) {
+    #listing-main {
+        padding: var(--section-padding);
+        background-color: var(--paper);
+
+        .cs-container {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(2.5rem, 6vw, 4rem);
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        /* ── Address block ── */
+
+        .cs-status {
+            margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
+            padding: 0.5rem 1rem;
+            background-color: var(--heritage-500);
+            color: var(--ink-invert);
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: var(--track-eyebrow);
+            display: inline-block;
+        }
+
+        .cs-title {
+            margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
+            font-size: var(--fs-h2);
+        }
+
+        .cs-meta {
+            margin: 0 0 clamp(2.5rem, 6vw, 4rem);
+            max-width: var(--measure);
+            font-size: var(--fs-lede);
+            color: var(--ink);
+        }
+
+        /* ── Note ── */
+
+        .cs-heading {
+            margin-bottom: clamp(1rem, 2.5vw, 1.5rem);
+            font-family: var(--font-display);
+            font-size: var(--fs-h3);
+            line-height: var(--lh-title);
+            letter-spacing: var(--track-title);
+            color: var(--ink);
+        }
+
+        .cs-note {
+            margin: 0 0 clamp(3rem, 7vw, 4.5rem);
+            max-width: var(--measure);
+        }
+
+        /* ── Carrying costs ── */
+
+        .cs-costs {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.5rem clamp(1.5rem, 4vw, 2.5rem);
+            list-style: none;
+        }
+
+        .cs-cost {
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--ink);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .cs-cost .cs-topper {
+            margin-bottom: 0.625rem;
+        }
+
+        .cs-figure {
+            font-size: var(--fs-lede);
+            line-height: 1.3;
+            color: var(--ink);
+        }
+
+        .cs-footnote {
+            margin: clamp(1.5rem, 3vw, 2rem) 0 0;
+            max-width: 52ch;
+            font-size: var(--fs-caption);
+            color: var(--ink-soft);
+        }
+
+        /* ── Enquiry card ── */
+
+        .cs-card {
+            width: 100%;
+            padding: clamp(1.5rem, 4vw, 2rem);
+            border: 1px solid var(--rule);
+            background-color: var(--paper);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .cs-card-head {
+            margin-bottom: clamp(1.25rem, 3vw, 1.75rem);
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+        }
+
+        /* A square crop, not a logo. height: auto would let a portrait
+           file set its own aspect ratio and knock the name off centre;
+           object-fit crops to the square instead.
+           //! CONFIRM — square or a circle. The site has no circles
+           //! anywhere else, so square is the consistent choice. */
+        .cs-mark {
+            width: 4rem;
+            height: 4rem;
+            flex-shrink: 0;
+            display: block;
+            object-fit: cover;
+            object-position: center top;
+            background-color: var(--cashmere-300);
+        }
+
+        .cs-card-name {
+            font-family: var(--font-display);
+            font-size: var(--fs-h4);
+            line-height: 1.2;
+            letter-spacing: var(--track-title);
+            color: var(--ink);
+            display: block;
+        }
+
+        .cs-card-role {
+            margin-top: 0.25rem;
+            font-size: var(--fs-body-sm);
+            color: var(--ink-soft);
+            display: block;
+        }
+
+        .cs-card-text {
+            margin: 0 0 clamp(1.25rem, 3vw, 1.75rem);
+            font-size: var(--fs-body-sm);
+        }
+
+        /* Both buttons hold the card's full width so their edges line up
+           with the border rather than sitting inboard of it. */
+        .cs-card .cs-button,
+        .cs-card .cs-button-outline {
+            width: 100%;
+        }
+
+        /* The page's one green fill. Swap to .cs-button on its own for the
+           cocoa chassis used elsewhere on the site.
+           //! CONFIRM — whether green or cocoa is right for the primary
+           //! action here, since no other page fills a button green. */
+        .cs-button-field {
+            margin-bottom: 0.75rem;
+            background-color: var(--heritage-500);
+            color: var(--ink-invert);
+
+            &:hover {
+                background-color: var(--heritage-700);
+            }
+        }
+
+        .cs-attribution {
+            margin: clamp(2.5rem, 6vw, 4rem) 0 0;
+            padding-top: 1.125rem;
+            border-top: 1px solid var(--rule);
+            font-size: var(--fs-caption);
+            color: var(--ink-soft);
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---       Main · Tablet        -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 48rem) {
+    #listing-main {
+        .cs-costs {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---      Main · Desktop        -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 64rem) {
+    #listing-main {
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+            column-gap: clamp(3rem, 7vw, 6rem);
+            align-items: start;
+        }
+
+        /* start, not stretch — the card sizes to its content so the
+           sticky offset has somewhere to travel. */
+        .cs-aside {
+            position: sticky;
+            /* Clears the fixed header.
+               //! CONFIRM — replace with the nav-height token from
+               //! root.less if one is introduced; measured guess. */
+            top: 7rem;
+        }
+
+        .cs-attribution {
+            grid-column: 1 / -1;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---       Reduced motion       -->
+<--- -------------------------- -*/
+
+@media (prefers-reduced-motion: reduce) {
+    #listing-main .cs-aside {
+        position: static;
+    }
+}
+
+/*-- -------------------------- -->
+<---       Reveal Indices       -->
+<--- -------------------------- -*/
+
+/* File scope on purpose — every rule above sits inside a media query,
+   and these are unconditional. The mechanism lives in root.less.
+
+   #listing-gallery is above the fold, so the observer fires it on the
+   first callback. Worth knowing: the lead frame is this page's LCP
+   element and it is preloaded in the head. Fading it costs LCP. If that
+   trade stops being worth it, drop data-reveal from the section and
+   delete this block — nothing else depends on it.
+
+   The lead leads and the stack follows it down. Indexing the two
+   stacked frames separately is the reason --reveal-i is a custom
+   property rather than nth-child: the lead and the stack sit under
+   different parents, and nth-child restarts at each one. */
+
+#listing-gallery {
+    .cs-picture-lead {
+        --reveal-i: 0;
+    }
+
+    .cs-stack .cs-picture:first-child {
+        --reveal-i: 1;
+    }
+
+    .cs-stack .cs-picture:last-child {
+        --reveal-i: 2;
+    }
+}
+
+/* The card is the item, not the aside around it — the aside is sticky
+   and the reveal carries a translateY. The attribution trails both
+   columns because it spans them at 64rem. */
+
+#listing-main {
+    .cs-content {
+        --reveal-i: 0;
+    }
+
+    .cs-card {
+        --reveal-i: 1;
+    }
+
+    .cs-attribution {
+        --reveal-i: 2;
+    }
+}

@@ -1,0 +1,459 @@
+/*-- -------------------------- -->
+<---            Intro           -->
+<--- -------------------------- -*/
+
+/* Title and body side by side from 64rem. Below that they stack,
+   because a 36px display face and a lede in two columns on a phone
+   leaves neither with a measure. */
+
+@media only screen and (min-width: 0rem) {
+    #intro {
+        padding: var(--section-padding);
+        /* Interior pages open directly under the header, with no
+           hero beneath it. Worth promoting to a --page-top token in
+           root.less so contact and this page can't drift apart. */
+        padding-top: clamp(8rem, 13vw, 12rem);
+        background-color: var(--paper);
+
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.75rem;
+        }
+
+        .cs-lead {
+            .cs-topper {
+                margin-bottom: 1.25rem;
+            }
+        }
+
+        h1 {
+            margin: 0;
+            /* root balances h1 by default. At three lines of Cinzel
+               caps the balancer evens the line lengths and loses the
+               deliberate break after "mechanics," — pretty leaves
+               the break to the measure. */
+            text-wrap: pretty;
+            max-width: 16ch;
+            font-size: var(--fs-h2);
+        }
+
+        .cs-lede {
+            max-width: 46ch;
+            margin: 0;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #intro {
+        /* Opts out of the centred cap, the way #hero and #process
+           do on the homepage. Past ~1550px the container's auto
+           margin outgrows the gutter and takes over the left edge,
+           and this page's first line would sit inboard of every
+           section beneath it. */
+        .cs-container {
+            max-width: none;
+            margin-inline: 0;
+            grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+            column-gap: clamp(3rem, 7vw, 7rem);
+            align-items: start;
+        }
+
+        /* Optical. Dropping the body to the title's second line
+           stops the two columns reading as a table row — they are
+           a statement and its gloss, not two headings. */
+        .cs-body {
+            padding-block-start: clamp(1.5rem, 3.5vw, 3.25rem);
+        }
+
+        .cs-lede {
+            max-width: 40ch;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---            Band            -->
+<--- -------------------------- -*/
+
+/* Full-bleed image, no container and no copy. Shorter than the
+   homepage vista on purpose: two 60vw bleed blocks follow it, and
+   three images at one size read as a gallery rather than a page.
+
+   overflow: hidden is load-bearing — it clips the parallax
+   overscan at both ends. */
+
+@media only screen and (min-width: 0rem) {
+    #band {
+        height: clamp(14rem, 44vh, 20rem);
+        position: relative;
+        overflow: hidden;
+        /* Under the image while it loads, so the band never flashes
+           white between two paper sections. */
+        background-color: var(--paper-warm);
+
+        .cs-picture {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: relative;
+
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: 50% 50%;
+            }
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #band {
+        height: clamp(22rem, 52vh, 30rem);
+    }
+}
+
+/*-- -------------------------- -->
+<---        Band Parallax       -->
+<--- -------------------------- -*/
+
+/* Keyframes at file scope. LESS drops them silently when nested
+   inside a media query or a rule.
+
+   Lags rather than leads: the frame travels up at scroll speed, the
+   photograph at scroll speed minus the travel, so it settles into
+   the band as the section clears. The slack therefore lives below —
+   the image starts lifted by the travel and ends flush at the top.
+
+   Keep --band-overscan meaningfully above --band-travel. Equal
+   values put the image's bottom edge exactly on the band's at the
+   end of the range, and a rounding error there shows as a hairline
+   of --paper-warm. */
+
+@keyframes band-parallax {
+    from {
+        transform: translateY(calc(var(--band-travel) * -1));
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* The @supports guard is load-bearing. Without it, browsers lacking
+   scroll-driven animation run these keyframes on a time basis and
+   the image slides once, on load, unscrolled. */
+
+@supports (animation-timeline: view()) {
+    #band {
+        --band-overscan: 22vh;
+        --band-travel: 16vh;
+
+        /* Declared on the band, read by the image. A named view
+           timeline resolves against ancestors, so no timeline-scope
+           is needed — and it has to stay off the image, which is
+           the element being transformed. */
+        view-timeline-name: --band;
+        view-timeline-axis: block;
+
+        .cs-picture img {
+            height: calc(100% + var(--band-overscan));
+            will-change: transform;
+
+            /* Shorthand first: `animation` resets animation-timeline
+               and animation-range to initial. */
+            animation: band-parallax linear both;
+            animation-timeline: --band;
+            /* cover, not entry — entry resolves within a few hundred
+               pixels for a band this short and the travel would be
+               spent before it is properly on screen. */
+            animation-range: cover 5% cover 95%;
+        }
+    }
+
+    /* root.less clamps animation-duration to 0.01ms under reduced
+       motion, which corrupts the range mapping rather than disabling
+       it. Detach, and drop the overscan with it — leaving the extra
+       height would ship a permanently recropped band for no reason. */
+    @media (prefers-reduced-motion: reduce) {
+        #band .cs-picture img {
+            height: 100%;
+            animation: none;
+            animation-timeline: none;
+            will-change: auto;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---          Analysis          -->
+<--- -------------------------- -*/
+
+/* The one beige field on the page. Narrow rail carrying the topper,
+   wide column carrying the argument. */
+
+@media only screen and (min-width: 0rem) {
+    #analysis {
+        padding: var(--section-padding);
+        background-color: var(--paper-warm);
+
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.5rem;
+        }
+
+        .cs-rail {
+            .cs-topper {
+                margin-bottom: 0;
+                /* --ink-soft is #8a7462, about 3.4:1 on Cashmere
+                   Beige — under AA. Everything sitting directly on
+                   the beige resolves to full Dark Cocoa. */
+                color: var(--ink);
+            }
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.25rem;
+        }
+
+        .cs-text {
+            /* Beats root's --measure (40rem), which is narrower than
+               this column wants. */
+            max-width: 62ch;
+        }
+
+        .cs-button-ghost {
+            margin-block-start: 0.75rem;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #analysis {
+        .cs-container {
+            max-width: none;
+            margin-inline: 0;
+            grid-template-columns: minmax(0, 0.5fr) minmax(0, 1.5fr);
+            column-gap: clamp(3rem, 7vw, 7rem);
+            align-items: start;
+        }
+
+        /* Cinzel and Elms Sans have different cap heights; a shared
+           grid row leaves the eyebrow reading high against the first
+           line of copy. */
+        .cs-rail {
+            padding-block-start: 0.35rem;
+        }
+
+        .cs-text {
+            max-width: 58ch;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---         Bleed Blocks       -->
+<--- -------------------------- -*/
+
+/* Buying and Selling. The copy stays inside the gutter; the image
+   runs past it to the viewport edge, alternating sides. That
+   asymmetry is the whole effect — a photograph that stops at the
+   same margin as the text reads as a column, not as an image.
+
+   Requires that nothing between these sections and <body> sets
+   overflow: hidden. root.less uses overflow-x: clip on html and
+   body for exactly this reason. */
+
+@media only screen and (min-width: 0rem) {
+    .cs-bleed {
+        padding: var(--section-padding);
+        background-color: var(--paper);
+
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2.5rem;
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+
+        h2 {
+            margin: 0;
+            max-width: none;
+        }
+
+        .cs-text {
+            max-width: 54ch;
+        }
+
+        .cs-picture {
+            display: block;
+
+            /* Load-bearing. root.less sets max-width: 100% on img,
+               picture and video, which clamps the calc below back to
+               the track width — the negative margin then displaces
+               the element instead of widening it, so the image
+               shifts off one edge and pulls away from the other.
+               One side looks like a bleed and the other looks
+               broken; both are the same bug. */
+            max-width: none;
+
+            /* Mobile bleeds both sides — there is no second column
+               to alternate against, and a gutter on a phone leaves
+               the image looking inset rather than placed. */
+            width: calc(100% + (var(--gutter) * 2));
+            margin-inline: calc(var(--gutter) * -1);
+
+            img {
+                display: block;
+                width: 100%;
+                height: auto;
+                aspect-ratio: 3 / 2;
+                object-fit: cover;
+            }
+        }
+    }
+
+    /* The script control's 44px min-height is a fingertip target for
+       a boxed button. This is a text link with a rule under it, and
+       the box strands that rule well below the descenders. */
+    .cs-bleed .cs-button-script {
+        min-height: 0;
+        padding: 0 0 0.4rem;
+        margin-block-start: 0.25rem;
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    .cs-bleed {
+        .cs-container {
+            max-width: none;
+            margin-inline: 0;
+            /* Not 50/50. The copy takes well under half and keeps a
+               deliberate dead margin on its outer side — that empty
+               space is what makes the column read as placed rather
+               than as filling its half. */
+            grid-template-columns: minmax(0, 0.62fr) minmax(0, 1fr);
+            column-gap: clamp(2.5rem, 5vw, 4.5rem);
+            /* Top, not centre. Centred copy against a tall image
+               floats, and the eye loses the line the paragraphs
+               start on. */
+            align-items: start;
+        }
+
+        .cs-content {
+            padding-block-start: 0.5rem;
+        }
+
+        .cs-text {
+            max-width: none;
+        }
+
+        .cs-picture {
+            /* Escapes the gutter on one side only now. calc off the
+               container rather than 100vw — 100vw includes the
+               scrollbar and the container does not, and that
+               difference shows as horizontal overflow. */
+            width: calc(100% + var(--gutter));
+
+            img {
+                /* Wider than tall. 4/3 at this column width ran to
+                   roughly 640px and the copy column read short
+                   beside it. Drop to 16/9 if it is still tall. */
+                aspect-ratio: 16 / 9;
+                height: auto;
+            }
+        }
+    }
+
+    /* Image right. Source order already puts the copy first. */
+    #buying {
+        .cs-picture {
+            margin-inline: 0 calc(var(--gutter) * -1);
+        }
+    }
+
+    /* Image left. Moved by the grid rather than by source order, so
+       the heading still precedes its image in the document. */
+    #selling {
+        .cs-container {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 0.62fr);
+        }
+
+        .cs-content {
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        .cs-picture {
+            grid-column: 1;
+            grid-row: 1;
+            margin-inline: calc(var(--gutter) * -1) 0;
+        }
+    }
+
+    /* Two bleeding images too close together read as a collage.
+       Pull the shared edge in rather than padding both sections. */
+    #buying {
+        padding-block-end: clamp(3rem, 6vw, 5rem);
+    }
+
+    #selling {
+        padding-block-start: clamp(3rem, 6vw, 5rem);
+    }
+}
+
+/*-- -------------------------- -->
+<---       Reveal Indices       -->
+<--- -------------------------- -*/
+
+/* File scope on purpose — these are unconditional, and every rule
+   above sits inside a media query. The mechanism itself now lives
+   in root.less. */
+
+#intro {
+    .cs-lead {
+        --reveal-i: 0;
+    }
+
+    .cs-body {
+        --reveal-i: 1;
+    }
+}
+
+#analysis {
+    .cs-rail {
+        --reveal-i: 0;
+    }
+
+    .cs-content {
+        --reveal-i: 1;
+    }
+}
+
+/* The image arrives second on both blocks regardless of which side
+   it sits on, so the copy always leads the pair. */
+.cs-bleed {
+    .cs-content {
+        --reveal-i: 0;
+    }
+
+    .cs-picture {
+        --reveal-i: 1;
+    }
+}

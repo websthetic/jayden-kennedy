@@ -1,0 +1,68 @@
+<!-- A fully fleshed-out <head>, dynamically changing based on client.js and the page front matter -->
+
+<!DOCTYPE html>
+<html lang="en-CA">
+    <head>
+        <!-- Releases the reveal hidden state in root.less. Inline and
+             synchronous, first thing in <head>, so the class is present
+             before first paint — a deferred script would let one frame
+             of unfaded content through. -->
+        <script>document.documentElement.classList.add("js");</script>
+
+        <!-- Standard meta tags -->
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="{{ description }}">
+        <link rel="canonical" href="{{ client.domain }}{{ page.url }}">
+        <meta name="generator" content="{{ eleventy.generator }}">
+        <meta name="theme-color" content="#3B2A20">
+
+        <!--Social Media Display-->
+        <meta property="og:title" content="{{ title }}"/>
+        <meta property="og:description" content="{{ description }}"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:url" content="{{ client.domain }}{{ page.url }}"/>
+        <meta property="og:site_name" content="{{ client.name }}"/>
+        <meta property="og:locale" content="en_CA"/>
+        <meta property="og:image" content="{{ client.domain }}{{ image or "/assets/images/social-share.jpg" }}"/>
+        <meta property="og:image:secure_url" content="{{ client.domain }}{{ image or "/assets/images/social-share.jpg" }}"/>
+        <meta name="twitter:card" content="summary_large_image"/>
+
+        <!--Favicons-->
+        <!-- https://realfavicongenerator.net/ -->
+        <link rel="icon" type="image/png" href="/assets/favicons/favicon-96x96.png" sizes="96x96"/>
+        <link rel="icon" type="image/svg+xml" href="/assets/favicons/favicon.svg"/>
+        <link rel="shortcut icon" href="/assets/favicons/favicon.ico"/>
+        <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicons/apple-touch-icon.png"/>
+        <meta name="apple-mobile-web-app-title" content="Jayden Kennedy"/>
+        <link rel="manifest" href="/assets/favicons/site.webmanifest"/>
+
+        <!-- Preloads -->
+        <!-- Only the faces that render above the fold. Adding more competes with the hero image for bandwidth. -->
+        <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Cinzel-Medium.woff2" crossorigin>
+        <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/ElmsSans-Light.woff2" crossorigin>
+        <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/Rosemartin.woff2" crossorigin>
+
+        <!-- Sitewide Stylesheets and Scripts -->
+        <link rel="stylesheet" href="/assets/css/root.css">
+        <link rel="stylesheet" href="/assets/css/global.css">
+        <script defer src="/assets/js/nav.js"></script>
+        <script defer src="/assets/js/reveal.js"></script>
+
+        {% block head %}{% endblock %}
+
+        <title>{{ title }}</title>
+    </head>
+    <body>
+        <!--Screen reader skip main nav-->
+        <a class="skip" aria-label="skip to main content" href="#main">Click To Skip To Main Content</a>
+
+        {% include "sections/header.html" %}
+        <main id="main">
+            {% block body %}{% endblock %}
+        </main>
+        {% include "sections/footer.html" %}
+
+    </body>
+</html>

@@ -1,0 +1,243 @@
+---
+title: "About Jayden Kennedy | Broker, Durham Region"
+description: "Broker with Keller Williams Energy Real Estate, based in Oshawa and serving Durham Region and the Greater Toronto Area. A practice built on financial literacy."
+permalink: "/about/"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+    <link rel="preload" as="image" href="{% getUrl "/assets/images/landing.jpg" | resize({ width: 900, height: 1100 }) | avif %}"/>
+    <link rel="stylesheet" href="/assets/css/about.css">
+{% endblock %}
+
+{% block body %}
+
+<!-- ============================================ -->
+<!--                    Intro                     -->
+<!-- ============================================ -->
+
+<!-- A nameplate band above a two-column body. The name takes the full
+     page width on its own line and "Broker" sits on its baseline at the
+     right; a hairline closes the band. Beneath it the portrait holds the
+     left third and the copy column holds the rest, with the prose capped
+     at --measure and the contact list pinned to the portrait's lower
+     edge. The one picture on the page. -->
+
+<section id="about-intro" data-reveal>
+    <div class="cs-container">
+
+        <header class="cs-masthead cs-reveal">
+            <span class="cs-topper">About</span>
+
+            <div class="cs-nameplate">
+                <h1 class="cs-title">Jayden Kennedy</h1>
+                <p class="cs-topper cs-role">Broker, licence 888867</p>
+            </div>
+        </header>
+
+        <div class="cs-body">
+
+            <picture class="cs-picture cs-reveal">
+                {# //! CONFIRM — replace with the real portrait. #}
+                <img
+                    class="cs-img"
+                    src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/about-jayden-portrait.jpg"
+                    alt="Jayden Kennedy"
+                    width="900"
+                    height="1100"
+                    loading="eager"
+                    decoding="async"
+                >
+            </picture>
+
+            <div class="cs-content cs-reveal">
+
+                <div class="cs-prose">
+                    <p class="cs-lede">
+                        Jayden Kennedy is a Broker with {{ client.brokerage }}, based in
+                        {{ client.address.city }} and serving Durham Region and the Greater
+                        Toronto Area. She came to the market after a career as a
+                        professional volleyball player and has spent roughly five years
+                        representing buyers, sellers and investors.
+                        {# //! CONFIRM — "roughly five years" against her licence date. #}
+                    </p>
+
+                    <p class="cs-text cs-text-soft">
+                        Her practice is built on financial literacy: she teaches the
+                        mechanics of how property creates wealth, then lets the client
+                        decide. She replies to every enquiry herself, usually within a day.
+                    </p>
+                </div>
+
+                <ul class="cs-details">
+                    <li class="cs-detail">
+                        <span class="cs-topper">Office</span>
+                        <address class="cs-detail-value">
+                            {{ client.address.lineOne }}<br>
+                            {{ client.address.city }}, {{ client.address.state }} {{ client.address.zip }}
+                        </address>
+                    </li>
+
+                    <li class="cs-detail">
+                        <span class="cs-topper">Direct</span>
+                        <span class="cs-detail-value">
+                            <a class="cs-detail-link" href="tel:{{ client.phoneForTel }}">{{ client.phoneFormatted }}</a><br>
+                            <a class="cs-detail-link" href="mailto:{{ client.email }}">{{ client.email }}</a>
+                        </span>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+    <!-- ============================================ -->
+    <!--              Before real estate              -->
+    <!-- ============================================ -->
+
+    <!-- A table, not cards: seven rows of the same three fields. A held row
+         keeps full contrast and carries a dashed green rule plus a tag. -->
+
+    <section id="about-honours" data-reveal>
+        <div class="cs-container">
+            <div class="cs-content cs-reveal">
+                <h2 class="cs-title">Before real estate</h2>
+                <p class="cs-text">
+                    Four seasons at the University of San Diego, and a professional
+                    career overseas. The honours below came from the same habit that
+                    runs her practice today: preparation, done early, done properly.
+                </p>
+            </div>
+
+            <div class="cs-table-wrap cs-reveal">
+                <dl class="cs-table">
+                    <div class="cs-row">
+                        <dt class="cs-honour">AVCA All-America Honorable Mention</dt>
+                        <dd class="cs-year">2017</dd>
+                        <dd class="cs-body-name">American Volleyball Coaches Association</dd>
+                    </div>
+
+                    <div class="cs-row">
+                        <dt class="cs-honour">AVCA Pacific South All-Region Team</dt>
+                        <dd class="cs-year">2017</dd>
+                        <dd class="cs-body-name">American Volleyball Coaches Association</dd>
+                    </div>
+
+                    <div class="cs-row">
+                        <dt class="cs-honour">All-WCC First Team</dt>
+                        <dd class="cs-year">2017</dd>
+                        <dd class="cs-body-name">West Coast Conference</dd>
+                    </div>
+
+                    <div class="cs-row">
+                        <dt class="cs-honour">WCC All-Academic Team</dt>
+                        <dd class="cs-year">2017</dd>
+                        <dd class="cs-body-name">West Coast Conference</dd>
+                    </div>
+
+                    <div class="cs-row">
+                        <dt class="cs-honour">All-WCC Freshman Team</dt>
+                        <dd class="cs-year">2014</dd>
+                        <dd class="cs-body-name">West Coast Conference</dd>
+                    </div>
+
+                    <div class="cs-row">
+                        <dt class="cs-honour">NCAA Tournament appearance</dt>
+                        <dd class="cs-year">2017</dd>
+                        <dd class="cs-body-name">University of San Diego</dd>
+                    </div>
+
+                    <!-- A held item keeps full contrast and is marked, not hidden.
+                         //! CONFIRM — needs a year and a governing body before release. -->
+                    <!-- <div class="cs-row cs-row-held">
+                        <dt class="cs-honour">Professional club and country</dt>
+                        <dd class="cs-year">[year]</dd>
+                        <dd class="cs-body-name">
+                            <span class="cs-tag">Awaiting confirmation</span>
+                        </dd>
+                    </div> -->
+                </dl>
+
+                <p class="cs-caption">
+                    399 kills at 3.84 per set and .309 attacking percentage in her
+                    senior season, with a career high of 20 kills against Pepperdine.
+                    Opposite and middle blocker, 6&prime;2&Prime;, from Oshawa, Ontario.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!--                   Results                    -->
+    <!-- ============================================ -->
+
+    <!-- Only confirmed figures render. If none are confirmed the section does
+         not appear at all — a withheld figure removes its own block rather
+         than publishing an estimate. -->
+
+    <!-- Nothing is confirmed yet, so the section does not render. Fill in the
+         three values below, then flip this flag to true. A withheld figure
+         removes its own block rather than publishing an estimate.
+         //! CONFIRM — all three figures against her own records. -->
+
+    <!-- {% set resultsReady = true %}
+
+    {% if resultsReady %} -->
+        <!-- <section id="about-results">
+            <div class="cs-container">
+                <h2 class="cs-title">Results</h2>
+
+                <ul class="cs-figures">
+                    <li class="cs-figure">
+                        <span class="cs-value">[figure]</span>
+                        <span class="cs-label">Homes sold</span>
+                        <span class="cs-note">Durham Region and the GTA</span>
+                    </li>
+
+                    <li class="cs-figure">
+                        <span class="cs-value">[figure]</span>
+                        <span class="cs-label">Average days on market</span>
+                        <span class="cs-note">Her listings, last twelve months</span>
+                    </li>
+
+                    <li class="cs-figure">
+                        <span class="cs-value">[figure]</span>
+                        <span class="cs-label">List to sale ratio</span>
+                        <span class="cs-note">Her listings, last twelve months</span>
+                    </li>
+                </ul>
+
+                <p class="cs-caption">
+                    Each figure is her own, taken from her records rather than a
+                    brokerage average.
+                </p>
+            </div>
+        </section> -->
+    <!-- {% endif %} -->
+
+    <!-- ============================================ -->
+<!--                 Closing CTA                  -->
+<!-- ============================================ -->
+
+<!-- The page's one ask. Flat cocoa field, no photograph — the green
+     belongs to #process and does not repeat below it (deck slide 18).
+     Different ground, so the rule holds. -->
+
+<section id="cta" class="cs-on-dark" data-reveal>
+    <div class="cs-container">
+        <h2 class="cs-title cs-reveal">Speaking</h2>
+
+        <div class="cs-content cs-reveal">
+            <p class="cs-lede">
+Financial literacy, in plain terms. Talks for schools, brokerages and community groups on how property creates wealth and what the numbers actually mean.            </p>
+            <p class="cs-text">
+Sessions run thirty to sixty minutes and are built around real figures from the local market rather than national averages. A podcast is in planning.            </p>
+            <a href="/contact/" class="cs-button-script">Enquire about a talk</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

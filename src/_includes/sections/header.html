@@ -1,0 +1,96 @@
+<!-- ============================================ -->
+<!--                 Navigation                   -->
+<!-- ============================================ -->
+
+<!-- The only fixed element on the site. The transparent variant sits over the
+     home hero only; nav.js swaps it to the solid variant after 120px of scroll.
+
+     Three top-level items. Approach and About are both destinations and
+     disclosure groups: the link navigates, the chevron opens. On coarse
+     pointers the link's first tap opens instead of navigating, otherwise a
+     touch user could never reach the children. -->
+
+{% set approachOpen = "/approach/" in page.url or "/reviews/" in page.url or "/home-valuation/" in page.url %}
+{% set aboutOpen = "/about/" in page.url or "/press/" in page.url or "/journal/" in page.url %}
+
+<header id="header" class="{% if page.url == "/" %}cs-transparent{% endif %}" {% if page.url == "/" %}data-transparent{% endif %} data-hide-on-scroll>    <div class="cs-container">
+        <!-- Wordmark. The mark is an image, the name is live Cinzel.
+             Two exports because the mark sits on both a white bar and a
+             photograph — a filter or opacity trick on the cocoa version
+             reads muddy against the hero. -->
+        <a href="/" class="cs-logo" aria-label="Jayden Kennedy, home">
+            <img class="cs-mark cs-mark-dark"
+                 src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-icon-logo.png"
+                 alt="" width="48" height="60" decoding="async" aria-hidden="true">
+
+            <img class="cs-mark cs-mark-light"
+                 src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/neighborhood-img/jayden-kennedy-icon.png"
+                 alt="" width="48" height="60" decoding="async" aria-hidden="true">
+
+            <span class="cs-logo-word">Jayden Kennedy</span>
+        </a>
+
+        <nav class="cs-nav" aria-label="Main">
+            <!-- Panel toggle, under 900px only -->
+            <button class="cs-toggle" id="cs-toggle" aria-expanded="false" aria-controls="cs-panel" aria-label="Open menu">
+                <span class="cs-box" aria-hidden="true">
+                    <span class="cs-line cs-line1"></span>
+                    <span class="cs-line cs-line2"></span>
+                    <span class="cs-line cs-line3"></span>
+                </span>
+            </button>
+
+            <div class="cs-panel" id="cs-panel">
+                <ul class="cs-ul">
+                    <li class="cs-li">
+                        <a href="/listings/" class="cs-li-link {% if "/listings/" in page.url %}cs-active{% endif %}" {% if "/listings/" in page.url %}aria-current="page"{% endif %}>Listings</a>
+                    </li>
+
+                    <!-- ── Approach ── -->
+                    <li class="cs-li cs-group" data-group>
+                        <div class="cs-group-head">
+                            <a href="/approach/" class="cs-li-link {% if approachOpen %}cs-active{% endif %}" {% if page.url == "/approach/" %}aria-current="page"{% endif %}>Approach</a>
+
+                            <button class="cs-group-toggle" aria-expanded="false" aria-controls="cs-sub-approach" aria-label="Show Approach menu">
+                                <span class="cs-caret" aria-hidden="true"></span>
+                            </button>
+                        </div>
+
+                        <div class="cs-sub" id="cs-sub-approach">
+                            <ul class="cs-sub-ul">
+                                <li><a href="/approach/" class="cs-sub-link {% if page.url == "/approach/" %}cs-active{% endif %}">How I work</a></li>
+                                <li><a href="/reviews/" class="cs-sub-link {% if "/reviews/" in page.url %}cs-active{% endif %}">Reviews</a></li>
+                                <li><a href="/contact/" class="cs-sub-link {% if "/home-valuation/" in page.url %}cs-active{% endif %}">Home valuation</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <!-- ── About ── -->
+                    <li class="cs-li cs-group" data-group>
+                        <div class="cs-group-head">
+                            <a href="/about/" class="cs-li-link {% if aboutOpen %}cs-active{% endif %}" {% if page.url == "/about/" %}aria-current="page"{% endif %}>About</a>
+
+                            <button class="cs-group-toggle" aria-expanded="false" aria-controls="cs-sub-about" aria-label="Show About menu">
+                                <span class="cs-caret" aria-hidden="true"></span>
+                            </button>
+                        </div>
+
+                        <div class="cs-sub" id="cs-sub-about">
+                            <ul class="cs-sub-ul">
+                                <li><a href="/about/" class="cs-sub-link {% if page.url == "/about/" %}cs-active{% endif %}">Jayden Kennedy</a></li>
+                                <li><a href="/press/" class="cs-sub-link {% if "/press/" in page.url %}cs-active{% endif %}">Media and press</a></li>
+                                <li><a href="/journal/" class="cs-sub-link {% if "/journal/" in page.url %}cs-active{% endif %}">Journal</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+
+                <!-- Same action, inside the panel. Hidden at 900px and up. -->
+                <a href="/contact/" class="cs-button-outline cs-panel-action">Book a consultation</a>
+            </div>
+        </nav>
+
+        <!-- One action. Hidden below 900px, where the panel copy takes over. -->
+        <a href="/contact/" class="cs-button-outline cs-nav-action">Book a consultation</a>
+    </div>
+</header>

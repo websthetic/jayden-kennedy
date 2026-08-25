@@ -1,0 +1,591 @@
+/*-- -------------------------- -->
+<---            Intro           -->
+<--- -------------------------- -*/
+
+/* Interior chassis, shared with /approach/. Title and topper left,
+   body and CTA right, stacking below 64rem — a display face and a
+   lede in two columns on a phone leaves neither with a measure. */
+
+@media only screen and (min-width: 0rem) {
+    #intro {
+        padding: var(--section-padding);
+        /* Interior pages open directly under the header, with no
+           hero beneath it. Duplicated from approach.less and
+           contact.less — promote to a --page-top token in root.less
+           before a fourth page repeats it. */
+        padding-top: clamp(8rem, 13vw, 12rem);
+        background-color: var(--paper);
+
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.75rem;
+        }
+
+        .cs-lead {
+            .cs-topper {
+                margin-bottom: 1.25rem;
+            }
+        }
+
+        h1 {
+            margin: 0;
+            /* root balances h1 by default. The balancer evens the
+               line lengths and loses the break after "work" —
+               pretty leaves the break to the measure. */
+            text-wrap: pretty;
+            max-width: 16ch;
+            font-size: var(--fs-h2);
+        }
+
+        .cs-body {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+
+        .cs-lede {
+            max-width: 46ch;
+            margin: 0;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #intro {
+        /* Opts out of the centred cap, the way #hero and #process do
+           on the homepage. Past ~1550px the container's auto margin
+           outgrows the gutter and takes over the left edge, and this
+           page's first line would sit inboard of the sections below. */
+        .cs-container {
+            max-width: none;
+            margin-inline: 0;
+            grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+            column-gap: clamp(3rem, 7vw, 7rem);
+            align-items: start;
+        }
+
+        /* Optical. Dropping the body to the title's second line
+           stops the two columns reading as a table row — they are a
+           statement and its gloss, not two headings. */
+        .cs-body {
+            padding-block-start: clamp(1.5rem, 3.5vw, 3.25rem);
+        }
+
+        .cs-lede {
+            max-width: 40ch;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---            Band            -->
+<--- -------------------------- -*/
+
+/* Shorter than the approach page's band. The appearance still sits
+   a screen below it, and two photographs in quick succession need a
+   size difference or they read as a gallery.
+
+   overflow: hidden is load-bearing — it clips the parallax
+   overscan at both ends. */
+
+@media only screen and (min-width: 0rem) {
+    #band {
+        height: clamp(14rem, 44vh, 20rem);
+        position: relative;
+        overflow: hidden;
+        /* Under the image while it loads, so the band never flashes
+           white between two paper sections. */
+        background-color: var(--paper-warm);
+
+        .cs-picture {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: relative;
+
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: 50% 50%;
+            }
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #band {
+        height: clamp(22rem, 52vh, 30rem);
+    }
+}
+
+/*-- -------------------------- -->
+<---        Band Parallax       -->
+<--- -------------------------- -*/
+
+/* Keyframes at file scope. LESS drops them silently when nested
+   inside a media query or a rule.
+
+   Lags rather than leads: the frame travels up at scroll speed, the
+   photograph at scroll speed minus the travel, so it settles into
+   the band as the section clears. The slack lives below — the image
+   starts lifted by the travel and ends flush at the top.
+
+   Keep --band-overscan meaningfully above --band-travel. Equal
+   values put the image's bottom edge exactly on the band's at the
+   end of the range, and a rounding error there shows as a hairline
+   of --paper-warm. */
+
+@keyframes press-band-parallax {
+    from {
+        transform: translateY(calc(var(--band-travel) * -1));
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* The @supports guard is load-bearing. Without it, browsers lacking
+   scroll-driven animation run these keyframes on a time basis and
+   the image slides once, on load, unscrolled. */
+
+@supports (animation-timeline: view()) {
+    #band {
+        /* Down from the approach page's 22/16 — a shorter band gets
+           through `cover` faster, so the same travel would read as a
+           lurch rather than as depth. */
+        --band-overscan: 16vh;
+        --band-travel: 11vh;
+
+        /* Declared on the band, read by the image. A named view
+           timeline resolves against ancestors, so no timeline-scope
+           is needed — and it has to stay off the image, which is the
+           element being transformed. */
+        view-timeline-name: --press-band;
+        view-timeline-axis: block;
+
+        .cs-picture img {
+            height: calc(100% + var(--band-overscan));
+            will-change: transform;
+
+            /* Shorthand first: `animation` resets animation-timeline
+               and animation-range to initial. */
+            animation: press-band-parallax linear both;
+            animation-timeline: --press-band;
+            /* cover, not entry — entry resolves within a few hundred
+               pixels for a band this short. */
+            animation-range: cover 5% cover 95%;
+        }
+    }
+
+    /* root.less clamps animation-duration to 0.01ms under reduced
+       motion, which corrupts the range mapping rather than disabling
+       it. Detach, and drop the overscan with it — leaving the extra
+       height would ship a permanently recropped band for no reason. */
+    @media (prefers-reduced-motion: reduce) {
+        #band .cs-picture img {
+            height: 100%;
+            animation: none;
+            animation-timeline: none;
+            will-change: auto;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---         Appearances        -->
+<--- -------------------------- -*/
+
+/* Beige field carrying one contained card. The card has no border:
+   the beige-to-paper step already draws its edge, and a border on
+   top of a ground change is the same line twice. */
+
+@media only screen and (min-width: 0rem) {
+    #appearances {
+        padding: var(--section-padding);
+        background-color: var(--paper-warm);
+
+        h2 {
+            margin: 0 0 2rem;
+        }
+
+        .cs-feature {
+            background-color: var(--paper);
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            /* Clips the still to the card's corners. */
+            overflow: hidden;
+        }
+
+        /* Image first on mobile — a card that opens with a wall of
+           text reads as a document, not as a feature. Desktop puts
+           it back on the right. */
+        .cs-picture {
+            grid-row: 1;
+            display: block;
+            width: 100%;
+
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                aspect-ratio: 3 / 2;
+                object-fit: cover;
+                object-position: 50% 30%;
+            }
+        }
+
+        .cs-feature-copy {
+            grid-row: 2;
+            padding: 1.75rem 1.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        /* Bordered rect, never a pill — and never the green fill.
+           Green appears exactly once on this page, in #producers. */
+        .cs-badge {
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            line-height: 1;
+            color: var(--ink);
+            border: 1px solid var(--rule-strong);
+            border-radius: 0;
+            padding: 0.5rem 0.75rem;
+        }
+
+        h3 {
+            margin: 0;
+            max-width: 20ch;
+        }
+
+        .cs-text {
+            max-width: 52ch;
+            color: var(--ink-soft);
+        }
+
+        .cs-button-ghost {
+            margin-block-start: 0.25rem;
+        }
+
+        /* The standard, stated once and quietly. It is a caption,
+           not an apology — --ink-soft is under AA on beige, so this
+           resolves to full cocoa like everything else on the field. */
+        .cs-caption {
+            max-width: 46ch;
+            margin: 1.5rem 0 0;
+            color: var(--ink);
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #appearances {
+        h2 {
+            margin-bottom: 2.5rem;
+        }
+
+        .cs-feature {
+            /* Copy takes the larger share. A 50/50 split leaves the
+               paragraph cramped and oversizes a still that is doing
+               a supporting job. */
+            grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+            align-items: stretch;
+        }
+
+        .cs-feature-copy {
+            grid-column: 1;
+            grid-row: 1;
+            padding: 3rem 3rem 3.25rem;
+            justify-content: center;
+        }
+
+        /* Flush to the card's right edge, full height. `stretch` on
+           the parent gives the picture a definite row, which is what
+           `height: 100%` on the img needs — without it the image
+           collapses to its intrinsic height and the card's right
+           column ends short. */
+        .cs-picture {
+            grid-column: 2;
+            grid-row: 1;
+            height: 100%;
+
+            img {
+                aspect-ratio: auto;
+                height: 100%;
+            }
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---       Speaking Topics      -->
+<--- -------------------------- -*/
+
+/* Ruled rows running the full measure. Title and gloss on one
+   baseline from 64rem; stacked below it, where two columns would
+   leave the gloss with about six words a line. */
+
+@media only screen and (min-width: 0rem) {
+    #topics {
+        padding: var(--section-padding);
+        background-color: var(--paper);
+
+        h2 {
+            margin: 0 0 2rem;
+        }
+
+        /* No gap. Each row carries a hairline and the last one
+           closes the set, so consecutive rules have to meet — a gap
+           turns a register into three floating captions. Rhythm
+           comes from the rows' own padding. */
+        .cs-topic-list {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 0;
+            margin: 0;
+            padding: 0;
+            padding-inline-start: 0;
+            list-style: none;
+        }
+
+        .cs-topic {
+            border-top: 1px solid var(--rule);
+            padding-block: 1.25rem;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 0.5rem;
+            font-size: inherit;
+            line-height: inherit;
+
+            /* Closes the register. Without it the last row's gloss
+               hangs off the bottom of an open-ended list. */
+            &:last-child {
+                border-bottom: 1px solid var(--rule);
+            }
+
+            h3 {
+                margin: 0;
+                /* Down a step from --fs-h3. Cinzel caps at heading
+                   size land three times in a row here, and the
+                   hairlines already carry the structure the size was
+                   straining to carry. */
+                font-size: var(--fs-h3);
+                letter-spacing: 0.02em;
+            }
+        }
+
+        .cs-text {
+            max-width: 54ch;
+            margin: 0;
+            color: var(--ink-soft);
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #topics {
+        h2 {
+            margin-bottom: 2.5rem;
+        }
+
+        .cs-container {
+            max-width: none;
+            margin-inline: 0;
+        }
+
+        /* Baseline, not start. The Cinzel title and the sans gloss
+           have different cap heights; aligning the boxes leaves the
+           gloss reading high against the title it belongs to. */
+        .cs-topic {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+            column-gap: clamp(2rem, 5vw, 4rem);
+            align-items: baseline;
+            padding-block: 1.5rem;
+        }
+
+        .cs-text {
+            max-width: 52ch;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---         For Producers      -->
+<--- -------------------------- -*/
+
+/* The page's one saturated field and its terminal block.
+
+   .cs-on-dark in root.less already inverts headings, body, toppers
+   and the script control. Nothing here re-declares a colour that
+   the class handles. */
+
+@media only screen and (min-width: 0rem) {
+    #producers {
+        padding: var(--section-padding);
+        background-color: var(--paper-field);
+
+        h2 {
+            margin: 0 0 2rem;
+        }
+
+        .cs-spec {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.75rem;
+            margin: 0 0 2.25rem;
+        }
+
+        .cs-spec-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .cs-spec-label {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            color: var(--ink-invert-soft);
+        }
+
+        .cs-spec-value {
+            font-size: var(--fs-body);
+            line-height: 1.55;
+            margin: 0;
+            color: var(--ink-invert);
+            text-wrap: pretty;
+        }
+
+        .cs-spec-link {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px solid var(--rule-invert);
+            transition: border-color var(--dur) var(--ease);
+
+            &:hover {
+                border-bottom-color: var(--ink-invert);
+            }
+        }
+    }
+
+    /* The script control's 44px min-height is a fingertip target for
+       a boxed button. This is a text link with a rule under it, and
+       the box strands that rule below the descenders. */
+    #producers .cs-button-script {
+        min-height: 0;
+        padding: 0 0 0.4rem;
+    }
+}
+
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+    #producers {
+        .cs-spec {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 2rem 2.5rem;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #producers {
+        h2 {
+            margin-bottom: 2.5rem;
+        }
+
+        .cs-container {
+            max-width: none;
+            margin-inline: 0;
+        }
+
+        /* Three across. Six cells fills two clean rows — five looks
+           incomplete and seven wraps badly. If a cell goes, cut two. */
+        .cs-spec {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 2.25rem clamp(2rem, 4vw, 3.5rem);
+            margin-bottom: 2.75rem;
+        }
+
+        .cs-spec-value {
+            max-width: 26ch;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---       Reveal Indices       -->
+<--- -------------------------- -*/
+
+/* File scope on purpose — these are unconditional, and every rule
+   above sits inside a media query. The mechanism itself lives in
+   root.less. */
+
+#intro {
+    .cs-lead {
+        --reveal-i: 0;
+    }
+
+    .cs-body {
+        --reveal-i: 1;
+    }
+}
+
+#appearances {
+    h2 {
+        --reveal-i: 0;
+    }
+
+    .cs-feature {
+        --reveal-i: 1;
+    }
+
+    .cs-caption {
+        --reveal-i: 2;
+    }
+}
+
+#topics {
+    h2 {
+        --reveal-i: 0;
+    }
+
+    .cs-topic {
+        --reveal-i: 1;
+    }
+    .cs-topic:nth-child(2) {
+        --reveal-i: 2;
+    }
+    .cs-topic:nth-child(3) {
+        --reveal-i: 3;
+    }
+}
+
+#producers {
+    h2 {
+        --reveal-i: 0;
+    }
+
+    .cs-spec {
+        --reveal-i: 1;
+    }
+
+    .cs-button-script {
+        --reveal-i: 2;
+    }
+}

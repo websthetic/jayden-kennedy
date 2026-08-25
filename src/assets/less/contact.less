@@ -1,0 +1,269 @@
+/*-- -------------------------- -->
+<---           Contact          -->
+<--- -------------------------- -*/
+
+/* Copy left, form right, stacked on mobile with the form second.
+   Everything is scoped to #contact-main. The form chassis lives here rather
+   than in global.less because this is the only form on the site — when the
+   press enquiry form lands, promote .cs-form and its children to global.less
+   and leave the layout behind. */
+
+@media only screen and (min-width: 0rem) {
+    #contact-main {
+        padding: var(--section-padding);
+        padding-top: clamp(8rem, 13vw, 12rem);
+        background-color: var(--paper);
+
+        .cs-container {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(2.5rem, 6vw, 4rem);
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.25rem;
+        }
+
+        .cs-topper {
+            margin-bottom: 0;
+        }
+
+        .cs-title {
+            font-size: var(--fs-h2);
+            max-width: 16ch;
+            margin: 0;
+        }
+
+        .cs-text {
+            max-width: 46ch;
+            font-size: var(--fs-lede);
+            color: var(--ink-soft)
+        }
+
+        /* ── Contact details ─────────────────────────── */
+
+        .cs-details {
+            width: 100%;
+            margin: 0.75rem 0 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            list-style: none;
+        }
+
+        .cs-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-size: inherit;
+        }
+
+        .cs-detail-label {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            color: var(--ink-soft);
+        }
+
+        .cs-detail-value {
+            font-size: var(--fs-body);
+            font-style: normal;
+            line-height: var(--lh-body);
+            color: var(--ink);
+        }
+
+        .cs-detail-link {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px solid var(--rule);
+            transition: border-color var(--dur) var(--ease);
+
+            &:hover {
+                border-bottom-color: var(--ink);
+            }
+        }
+
+        /* ── Form ────────────────────────────────────── */
+
+        .cs-form {
+            width: 100%;
+            max-width: 34rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.75rem;
+        }
+
+        .cs-field {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.625rem;
+        }
+
+        .cs-label {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            color: var(--ink-soft);
+        }
+
+        .cs-input,
+        .cs-select {
+            width: 100%;
+            min-height: var(--control-height);
+            padding: 0 0 0.625rem 0;
+            font-family: var(--font-body);
+            font-size: var(--fs-body);
+            font-weight: 300;
+            line-height: 1.4;
+            color: var(--ink);
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid var(--rule);
+            border-radius: 0;
+            transition: border-color var(--dur) var(--ease);
+
+            &::placeholder {
+                color: var(--cocoa-300);
+                opacity: 1;
+            }
+
+            &:hover {
+                border-bottom-color: var(--rule-strong);
+            }
+
+            &:focus {
+                outline: none;
+                border-bottom-color: var(--ink);
+            }
+
+            /* Autofill repaints the field, which breaks the paper ground */
+            &:-webkit-autofill {
+                -webkit-text-fill-color: var(--ink);
+                transition: background-color 100000s ease 0s;
+            }
+        }
+
+        .cs-textarea {
+            min-height: 6rem;
+            padding-top: 0.5rem;
+            resize: vertical;
+        }
+
+        .cs-select {
+            appearance: none;
+            padding-right: 1.75rem;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%233b2a20' stroke-width='1.4'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.125rem center;
+            background-size: 0.75rem auto;
+        }
+
+        /* Honeypot. Off-screen rather than display:none — some bots skip
+           hidden fields, and a screen reader should never reach it either. */
+        .cs-honeypot {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip-path: inset(50%);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .cs-form-note {
+            font-size: var(--fs-body-sm);
+            line-height: 1.5;
+            max-width: 40ch;
+            margin: 0;
+            color: var(--heritage-500);
+
+            &[data-state="error"] {
+                color: var(--ink);
+            }
+
+            /* The hidden attribute must beat any display value above */
+            &[hidden] {
+                display: none !important;
+            }
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---           Desktop          -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 64rem) {
+    #contact-main {
+        .cs-container {
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: clamp(3rem, 8vw, 6.25rem);
+        }
+
+        .cs-content {
+            flex: 1 1 26rem;
+            max-width: 32rem;
+            position: sticky;
+            top: 8rem;
+        }
+
+        .cs-form-wrap {
+            flex: 1 1 30rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---       Reveal Indices       -->
+<--- -------------------------- -*/
+
+/* File scope on purpose — every rule above sits inside a media query,
+   and these are unconditional. The mechanism lives in root.less.
+
+   #contact-main is above the fold, so the observer fires it on the
+   first callback rather than on scroll, the same way #about-intro does.
+
+   The items are the children of .cs-content, not .cs-content itself.
+   That element is sticky at 64rem and .cs-reveal carries a translateY,
+   so latching the reveal onto it would move the sticky box while the
+   transition runs. One level down there is nothing to fight.
+
+   Topper and title share index 0. They are one masthead, not two
+   beats, and splitting them puts a visible gap inside a single line of
+   address. The form arrives on 1 alongside the body copy so the two
+   columns read as one motion — trailing it behind the details on 3
+   leaves a tall empty column sitting through the whole stagger. */
+
+#contact-main {
+    .cs-topper,
+    .cs-title {
+        --reveal-i: 0;
+    }
+
+    .cs-text,
+    .cs-form-wrap {
+        --reveal-i: 1;
+    }
+
+    .cs-details {
+        --reveal-i: 2;
+    }
+}

@@ -1,0 +1,179 @@
+---
+title: "Media and Press | Jayden Kennedy"
+description: "Interviews, panels and podcast appearances on financial literacy and how property carries its price. Booking details for producers."
+permalink: "/press/"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+
+
+<link rel="stylesheet" href="/assets/css/critical.css"/>
+
+{% if client.isProduction %}
+    <link rel="preload" href="/assets/css/press.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="/assets/css/press.css">
+    </noscript>
+{% else %}
+    <link rel="stylesheet" href="/assets/css/press.css"/>
+{% endif %}
+
+{% endblock %}
+
+{% block body %}
+
+    <!-- ============================================ -->
+    <!--                    Intro                     -->
+    <!-- ============================================ -->
+
+    <!-- Same chassis as /approach/ — title and topper left, body and
+         CTA right, no image. Interior pages share this opening; the
+         band below is the second half of the pattern. -->
+
+    <section id="intro" data-reveal>
+        <div class="cs-container">
+            <div class="cs-lead cs-reveal">
+                <span class="cs-topper">Media and press</span>
+                <h1>Where the work has been heard</h1>
+            </div>
+
+            <div class="cs-body cs-reveal">
+                <p class="cs-lede">
+                    Interviews, panels and podcast appearances on financial literacy and how property carries its price. To book an appearance, send the date and the audience.
+                </p>
+                <a href="/contact/" class="cs-button-script">request an appearance</a>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <!-- ============================================ -->
+    <!--                 Appearances                  -->
+    <!-- ============================================ -->
+
+    <!-- The featured item is a contained card: copy left, still
+         flush to the card's right edge at full height. No border —
+         the beige-to-paper step already carries it.
+
+         A second appearance does NOT become a second card. Two of
+         these fight each other. Subsequent items drop to ruled
+         register rows beneath this one; .cs-record is styled for
+         that in press.less and is unused until then. -->
+
+    <section id="appearances" data-reveal>
+        <div class="cs-container">
+            <h2 class="cs-reveal">Appearances</h2>
+
+            <article class="cs-feature cs-reveal">
+                <div class="cs-feature-copy">
+                    <span class="cs-badge">KW Insider</span>
+                    <h3>The game plan with Jayden Kennedy</h3>
+                    <p class="cs-text">
+                        A conversation about leaving professional sport, closing the financial literacy gap, and what she tells first time buyers before they start looking.
+                    </p>
+                    <a href="https://example.com/kw-insider-feature" class="cs-button-ghost" rel="noopener">Read the feature</a>
+                </div>
+
+                <picture class="cs-picture">
+                    <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder-1.jpg"
+                         alt="Jayden Kennedy photographed for the KW Insider feature"
+                         width="1400" height="1750"
+                         loading="lazy" decoding="async">
+                </picture>
+            </article>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!--               Speaking Topics                -->
+    <!-- ============================================ -->
+
+    <!-- Full-width ruled rows: topic left, gloss right, hairlines
+         running the whole measure. Scales to a fourth topic with no
+         redesign. -->
+
+    <section id="topics" data-reveal>
+        <div class="cs-container">
+            <h2 class="cs-reveal">Speaking topics</h2>
+
+            <ul class="cs-topic-list">
+                <li class="cs-topic cs-reveal">
+                    <h3>How property creates wealth</h3>
+                    <p class="cs-text">
+                        Amortisation, leverage, income, appreciation, and which of the four you actually control.
+                    </p>
+                </li>
+
+                <li class="cs-topic cs-reveal">
+                    <h3>Reading a market without a headline</h3>
+                    <p class="cs-text">
+                        What ninety days of local sales tell you that a national average cannot.
+                    </p>
+                </li>
+
+                <li class="cs-topic cs-reveal">
+                    <h3>The first purchase</h3>
+                    <p class="cs-text">
+                        Carrying costs, deposit structure, and the questions to ask before an offer.
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!--                For Producers                 -->
+    <!-- ============================================ -->
+
+    <!-- The page's one saturated field, and its terminal block. Six
+         cells: five looks incomplete in a three-column grid and
+         seven wraps badly. If one goes, cut two. -->
+
+    <section id="producers" class="cs-on-dark" data-reveal>
+        <div class="cs-container">
+            <h2 class="cs-reveal">For producers</h2>
+
+            <dl class="cs-spec cs-reveal">
+                <div class="cs-spec-item">
+                    <dt class="cs-spec-label">Format</dt>
+                    <dd class="cs-spec-value">Thirty to sixty minutes, remote or in studio</dd>
+                </div>
+
+                <div class="cs-spec-item">
+                    <dt class="cs-spec-label">Preparation</dt>
+                    <dd class="cs-spec-value">Own material, local figures sent ahead of the recording</dd>
+                </div>
+
+                <div class="cs-spec-item">
+                    <dt class="cs-spec-label">Press kit</dt>
+                    <dd class="cs-spec-value">Headshots, short and long bio, brokerage disclosure</dd>
+                </div>
+
+                <div class="cs-spec-item">
+                    <dt class="cs-spec-label">Based in</dt>
+                    <dd class="cs-spec-value">Durham Region, Ontario</dd>
+                </div>
+
+                <div class="cs-spec-item">
+                    <dt class="cs-spec-label">Direct</dt>
+                    <dd class="cs-spec-value">
+                        <a href="tel:+12899437934" class="cs-spec-link">(289) 943-7934</a>
+                    </dd>
+                </div>
+
+                <div class="cs-spec-item">
+                    <dt class="cs-spec-label">Email</dt>
+                    <dd class="cs-spec-value">
+                        <a href="mailto:jayden@soldbykennedy.ca" class="cs-spec-link">jayden@soldbykennedy.ca</a>
+                    </dd>
+                </div>
+            </dl>
+
+            <a href="/contact/" class="cs-button-script cs-reveal">request an appearance</a>
+        </div>
+    </section>
+
+{% endblock %}

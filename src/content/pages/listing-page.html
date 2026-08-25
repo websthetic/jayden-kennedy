@@ -1,0 +1,166 @@
+---
+title: "[UnparsedAddress], [City] | Jayden Kennedy"
+description: "[Beds] bed, [Baths] bath [PropertyType] in [City]. Listed by Jayden Kennedy, Broker, Keller Williams Energy Real Estate."
+permalink: "/listings/listing-one/"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+    <link rel="preload" as="image" href="{% getUrl "/assets/images/listings/listing-01.jpg" | resize({ width: 1400, height: 1050 }) | avif %}"/>
+    <link rel="stylesheet" href="/assets/css/listing-page.css">
+{% endblock %}
+
+{% block body %}
+
+<!-- ============================================ -->
+<!--                   Gallery                    -->
+<!-- ============================================ -->
+
+<!-- Three frames, full bleed, directly under the header. The lead frame
+     takes two thirds and the two stacked frames divide the same height,
+     so all three finish on one bottom edge.
+     //! CONFIRM — replace all three with this listing's real photography. -->
+
+<section id="listing-gallery" data-reveal>
+    <div class="cs-container">
+
+        <picture class="cs-picture cs-picture-lead cs-reveal">
+            <img
+                class="cs-img"
+                src="/assets/images/listings/listing-01.jpg"
+                alt="[UnparsedAddress], exterior"
+                width="1400"
+                height="1050"
+                loading="eager"
+                decoding="async"
+            >
+        </picture>
+
+        <div class="cs-stack">
+            <picture class="cs-picture cs-reveal">
+                <img
+                    class="cs-img"
+                    src="/assets/images/listings/listing-02.jpg"
+                    alt="[UnparsedAddress], kitchen"
+                    width="700"
+                    height="525"
+                    loading="eager"
+                    decoding="async"
+                >
+            </picture>
+
+            <picture class="cs-picture cs-reveal">
+                <img
+                    class="cs-img"
+                    src="/assets/images/listings/listing-03.jpg"
+                    alt="[UnparsedAddress], dining room"
+                    width="700"
+                    height="525"
+                    loading="lazy"
+                    decoding="async"
+                >
+            </picture>
+        </div>
+
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--                     Main                     -->
+<!-- ============================================ -->
+
+<!-- Copy on the left, enquiry card sticky on the right at 64rem. The
+     card unpins under reduced motion. -->
+
+<section id="listing-main" data-reveal>
+    <div class="cs-container">
+
+        <div class="cs-content cs-reveal">
+
+            <span class="cs-status">[StandardStatus]</span>
+
+            <h1 class="cs-title">[UnparsedAddress], [City]</h1>
+
+            <p class="cs-meta">
+                [ListPrice] &middot; [Beds] bed &middot; [Baths] bath &middot;
+                [LivingArea] sq ft &middot; [PropertyType]
+            </p>
+
+            <h2 class="cs-heading">My note on this one</h2>
+
+            <p class="cs-note">
+                The number is supported by three sales inside four hundred metres,
+                all with finished basements and all closed in the last sixty days.
+                What it is not supported by is the kitchen. That work was done in
+                2011 and it will read as dated to anyone comparing against new
+                build. Budget for it, or negotiate for it.
+            </p>
+
+            <h2 class="cs-heading">What it costs to hold</h2>
+
+            <ul class="cs-costs">
+                <li class="cs-cost">
+                    <span class="cs-topper">Property tax</span>
+                    <span class="cs-figure">[TaxAnnualAmount]</span>
+                </li>
+
+                <li class="cs-cost">
+                    <span class="cs-topper">Maintenance</span>
+                    <span class="cs-figure">[AssociationFee]</span>
+                </li>
+
+                <li class="cs-cost">
+                    <span class="cs-topper">Monthly carrying</span>
+                    <span class="cs-figure">[figure]</span>
+                </li>
+            </ul>
+
+            <p class="cs-footnote">
+                Calculated at [rate]% down over [term] years. Calculated, not quoted.
+                {# //! CONFIRM — the carrying figure and the rate and term behind it
+                   before this page goes live. #}
+            </p>
+
+        </div>
+
+        <aside class="cs-aside">
+            <!-- The reveal sits on the card, not the aside. The aside is
+                 sticky and .cs-reveal carries a translateY. -->
+            <div class="cs-card cs-reveal">
+
+                <div class="cs-card-head">
+                    {# //! CONFIRM — replace with the real portrait file. #}
+                    <img
+                        class="cs-mark"
+                        src="{% getUrl "/assets/images/jayden-portrait.jpg" | resize({ width: 128, height: 128 }) | jpeg %}"
+                        alt=""
+                        width="64"
+                        height="64"
+                        loading="lazy"
+                        decoding="async"
+                    >
+                    <span>
+                        <span class="cs-card-name">Jayden Kennedy</span>
+                        <span class="cs-card-role">Broker</span>
+                    </span>
+                </div>
+
+                <p class="cs-card-text">
+                    She replies to every enquiry herself, usually within a day.
+                </p>
+
+                <a class="cs-button cs-button-field" href="/contact/">Book a showing</a>
+                <a class="cs-button-outline" href="/contact/">Ask about this home</a>
+
+            </div>
+        </aside>
+
+        <p class="cs-attribution cs-reveal">
+            Listed by Jayden Kennedy, Broker &middot; {{ client.brokerage }}.
+        </p>
+
+    </div>
+</section>
+
+{% endblock %}

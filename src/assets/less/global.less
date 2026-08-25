@@ -1,0 +1,902 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// GLOBAL
+// Jayden Kennedy Real Estate · soldbykennedy.ca
+// ─────────────────────────────────────────────────────────────────────────────
+
+/*-- -------------------------- -->
+/*-- -------------------------- -->
+<---         Navigation         -->
+<--- -------------------------- -*/
+
+/* Three top-level items, two of which open a group of three.
+   Shared across both variants and both breakpoints.
+
+   Nothing in the header moves on hover: no transform, no height change,
+   no shadow. Only colour and opacity change. The flyout is the one
+   exception — it has to arrive from somewhere.
+
+   The bar itself does move, but only on scroll: see .cs-hidden below. */
+
+@media only screen and (min-width: 0rem) {
+    :root {
+        --nav-height: 4.5rem; /* 72px mobile */
+    }
+
+    body.cs-nav-open {
+        overflow: hidden;
+    }
+
+    #header {
+        width: 100%;
+        height: var(--nav-height);
+        padding-inline: var(--gutter);
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        background-color: var(--paper);
+        border-bottom: 1px solid var(--rule);
+        transition: transform var(--dur) var(--ease), background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+
+        /* Translated out of the way on scroll down, back on scroll up.
+           Only ever set by nav.js, and only on pages carrying
+           data-hide-on-scroll.
+
+           No will-change here on purpose: it would make the header a
+           containing block for fixed descendants at all times, and
+           .cs-panel below is fixed. */
+        &.cs-hidden {
+            transform: translateY(-100%);
+        }
+
+        /* The panel hangs off the bar, so hiding the bar would take an open
+           menu with it. Never hide while open — nav.js also clears the class
+           on open, and this is the belt to that pair of braces. */
+        &.cs-open.cs-hidden {
+            transform: none;
+        }
+
+        .cs-container {
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--gutter);
+        }
+
+        /* ── Wordmark ── */
+        .cs-logo {
+            text-decoration: none;
+            white-space: nowrap;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            /* 12px - 18px */
+            gap: clamp(0.75rem, 1.4vw, 1.125rem);
+            flex: none;
+            transition: color var(--dur) var(--ease);
+        }
+
+        /* Sized off the bar, not off a fixed px value, so the mark keeps
+           its proportion when --nav-height changes at 900px. */
+        .cs-mark {
+            width: auto;
+            height: calc(var(--nav-height) * 0.5);
+            display: block;
+            flex: none;
+        }
+
+        .cs-mark-light {
+            display: none;
+        }
+
+        .cs-logo-word {
+            font-family: var(--font-display);
+            font-size: clamp(1rem, 2.6vw, 1.4375rem);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+        }
+
+        /* ── Links ── */
+        .cs-li-link {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            text-decoration: none;
+            white-space: nowrap;
+            color: var(--ink);
+            display: inline-block;
+            position: relative;
+            transition: color var(--dur) var(--ease), opacity var(--dur) var(--ease);
+
+            /* 1px underline. Present at rest on the current page,
+               fades in on hover. Never animates width — nothing moves. */
+            &:before {
+                content: "";
+                width: 100%;
+                height: 1px;
+                background-color: currentColor;
+                opacity: 0;
+                position: absolute;
+                bottom: -0.5em;
+                left: 0;
+                transition: opacity var(--dur) var(--ease);
+            }
+
+            &:hover {
+                opacity: 0.72;
+
+                &:before {
+                    opacity: 1;
+                }
+            }
+
+            &.cs-active {
+                &:before {
+                    opacity: 1;
+                }
+            }
+        }
+
+        /* ── Group head ──
+           The link and its chevron. Two separate targets on purpose:
+           the link navigates, the button discloses. */
+        .cs-group-head {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cs-group-toggle {
+            width: 1.25rem;
+            height: 1.25rem;
+            padding: 0;
+            background-color: transparent;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: none;
+        }
+
+        /* Drawn rather than shipped as an SVG — it inherits the link colour
+           through both header variants without a second asset. */
+        .cs-caret {
+            width: 0.4375rem;
+            height: 0.4375rem;
+            border-right: 1px solid currentColor;
+            border-bottom: 1px solid currentColor;
+            display: block;
+            transform: translateY(-0.125rem) rotate(45deg);
+            transition: transform var(--dur) var(--ease);
+        }
+
+        /* ── Sub links ── */
+        .cs-sub-ul {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cs-sub-ul li {
+            list-style: none;
+        }
+
+        .cs-sub-link {
+            font-family: var(--font-body);
+            font-size: var(--fs-body-sm);
+            font-weight: 300;
+            line-height: 1.4;
+            text-decoration: none;
+            white-space: nowrap;
+            color: var(--ink);
+            display: block;
+            transition: background-color var(--dur-fast) var(--ease), opacity var(--dur) var(--ease);
+
+            &.cs-active {
+                opacity: 0.72;
+            }
+        }
+
+        /* ── Action ── */
+        .cs-nav-action {
+            flex: none;
+        }
+    }
+}
+
+/* ── Transparent variant — home hero only ──
+   Swaps to the solid variant after 120px of scroll. No shadow either way,
+   and the height is identical so the wordmark never shifts.
+
+   .cs-sub-link is deliberately absent: the flyout keeps its white ground
+   and cocoa type in both variants. Cashmere type on a photograph is
+   unreadable at any opacity, and a beige panel over the hero is worse.
+
+   .cs-hidden is absent for the same reason it isn't listed here — the
+   transform is variant-agnostic and lives on #header itself. */
+
+@media only screen and (min-width: 0rem) {
+    #header.cs-transparent:not(.cs-solid):not(.cs-open) {
+        background-color: transparent;
+        border-bottom-color: transparent;
+
+        .cs-logo,
+        .cs-li-link,
+        .cs-group-toggle {
+            color: var(--ink-invert);
+        }
+
+        .cs-button-outline {
+            border-color: var(--ink-invert);
+            color: var(--ink-invert);
+
+            &:hover {
+                background-color: var(--cashmere-500);
+                color: var(--cocoa-500);
+            }
+        }
+
+        .cs-line {
+            background-color: var(--ink-invert);
+        }
+
+        /* The mark can't inherit a colour the way type does, so the
+           cashmere export takes over for the length of the hero. */
+        .cs-mark-dark {
+            display: none;
+        }
+
+        .cs-mark-light {
+            display: block;
+        }
+    }
+}
+
+/* ── Reduced motion ──
+   Keeps the hide and reveal, drops the slide. The bar still gets out of
+   the way; it just doesn't travel to do it. Colour still crossfades —
+   that's the part nobody asked to be spared. */
+
+@media (prefers-reduced-motion: reduce) {
+    #header {
+        transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+    }
+}
+
+/*-- -------------------------- -->
+<---      Nav Panel — 900px     -->
+<--- -------------------------- -*/
+
+/* Under 900px the nav collapses to a full-height beige panel.
+   900px is a spec value from the design deck, not one of the project's
+   0/48/64/90rem breakpoints. Paired with the min-width: 56.25rem block below.
+
+   The two groups become expanding rows here, not flyouts. */
+
+@media only screen and (max-width: 56.24rem) {
+    #header {
+        /* While the panel is open the bar always reads as solid, otherwise
+           cashmere type would sit invisibly on the beige panel. */
+        &.cs-open {
+            background-color: var(--paper);
+            border-bottom-color: var(--rule);
+
+            .cs-panel {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .cs-line1 {
+                top: 50%;
+                transform: translate(-50%, -50%) rotate(45deg);
+            }
+
+            .cs-line2 {
+                opacity: 0;
+            }
+
+            .cs-line3 {
+                bottom: 50%;
+                transform: translate(-50%, 50%) rotate(-45deg);
+            }
+        }
+
+        .cs-toggle {
+            width: var(--control-height);
+            height: var(--control-height);
+            margin-right: calc(var(--gutter) * -0.5);
+            padding: 0;
+            background-color: transparent;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cs-box {
+            width: 1.5rem;
+            height: 0.75rem;
+            display: block;
+            position: relative;
+        }
+
+        .cs-line {
+            width: 100%;
+            height: 1px;
+            background-color: var(--ink);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: transform var(--dur) var(--ease), opacity var(--dur-fast) var(--ease), top var(--dur) var(--ease), bottom var(--dur) var(--ease), background-color var(--dur) var(--ease);
+        }
+
+        .cs-line1 {
+            top: 0;
+        }
+
+        .cs-line2 {
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .cs-line3 {
+            bottom: 0;
+        }
+
+        /* Full-height beige panel */
+        .cs-panel {
+            width: 100%;
+            height: calc(100vh - var(--nav-height));
+            height: calc(100dvh - var(--nav-height));
+            padding: 2rem var(--gutter) 3rem;
+            background-color: var(--paper);
+            opacity: 0;
+            visibility: hidden;
+            position: fixed;
+            top: var(--nav-height);
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2rem;
+            overflow-y: auto;
+            transition: opacity var(--dur) var(--ease), visibility var(--dur) var(--ease);
+        }
+
+        .cs-ul {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cs-li {
+            width: 100%;
+            list-style: none;
+            border-bottom: 1px solid var(--rule);
+
+            &:last-of-type {
+                border-bottom: none;
+            }
+        }
+
+        /* Rows at 44px each */
+        .cs-li-link {
+            width: 100%;
+            min-height: var(--control-height);
+            display: flex;
+            align-items: center;
+
+            /* The row itself is the target; the underline pseudo would
+               float unanchored across the full width */
+            &:before {
+                display: none;
+            }
+
+            &.cs-active {
+                opacity: 0.72;
+            }
+        }
+
+        /* The chevron takes the right end of the row and is a full-height
+           target, so a thumb landing anywhere near it opens the group. */
+        .cs-group-head {
+            width: 100%;
+            justify-content: space-between;
+            gap: 0;
+        }
+
+        .cs-group-toggle {
+            width: var(--control-height);
+            height: var(--control-height);
+            margin-right: calc(var(--gutter) * -0.5);
+        }
+
+        /* Collapsed by default. Display rather than height — an animated
+           expand needs a measured height, and a wrong measurement clips
+           the third link. */
+        .cs-sub {
+            display: none;
+            padding-bottom: 0.75rem;
+        }
+
+        .cs-group.cs-group-open {
+            .cs-sub {
+                display: block;
+            }
+
+            .cs-caret {
+                transform: translateY(0.0625rem) rotate(-135deg);
+            }
+        }
+
+        .cs-sub-link {
+            min-height: 2.5rem;
+            padding-left: 1rem;
+            display: flex;
+            align-items: center;
+            color: var(--ink-soft);
+        }
+
+        .cs-panel-action {
+            width: 100%;
+        }
+
+        /* Desktop action is hidden here — the panel carries its own.
+           Deliberately not .cs-hide-on-mobile, which flips at 64rem. */
+        .cs-nav-action {
+            display: none;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---     Nav Desktop — 900px    -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 56.25rem) {
+    :root {
+        --nav-height: 5.5rem; /* 88px desktop */
+    }
+
+    #header {
+        .cs-toggle,
+        .cs-panel-action {
+            display: none;
+        }
+
+        /* An auto margin beats space-between for free space, so this alone
+           pushes the links off centre and up against the action. Scoped to
+           desktop: below 900px space-between is what pins the burger right. */
+        .cs-nav {
+            margin-left: auto;
+        }
+
+        /* 32px - 48px. The container's default var(--gutter) reads tight
+           once the links sit next to a bordered button. */
+        .cs-container {
+            gap: clamp(2rem, 4vw, 3rem);
+        }
+
+        .cs-panel {
+            display: flex;
+            align-items: center;
+        }
+
+        .cs-ul {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* 24px - 40px */
+            gap: clamp(1.5rem, 2.8vw, 2.5rem);
+        }
+
+        .cs-li {
+            list-style: none;
+            flex: none;
+        }
+
+        /* ── Flyout ──
+           The bridge is the padding-top on .cs-sub: without it the pointer
+           crosses a gap between the link and the panel and the menu closes
+           mid-travel. */
+        .cs-group {
+            position: relative;
+        }
+
+        .cs-sub {
+            min-width: 13rem;
+            padding-top: 1.375rem;
+            opacity: 0;
+            visibility: hidden;
+            position: absolute;
+            top: 100%;
+            left: -1.25rem;
+            transform: translateY(-0.375rem);
+            transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease), visibility var(--dur) var(--ease);
+        }
+
+        /* About is now the last item before the action. Left-anchored, its
+           panel overhangs the button at narrow desktop widths — so the last
+           group opens leftward from the same offset. */
+        .cs-group:last-of-type .cs-sub {
+            left: auto;
+            right: -1.25rem;
+        }
+
+        /* White ground in both header variants. See the note above. */
+        .cs-sub-ul {
+            padding-block: 0.5rem;
+            background-color: var(--paper);
+            border: 1px solid var(--rule);
+            box-shadow: var(--shadow-card);
+        }
+
+        .cs-sub-link {
+            padding: 0.6875rem 1.25rem;
+
+            &:hover {
+                background-color: var(--cashmere-300);
+                color: var(--paper-field);
+                opacity: 1;
+            }
+
+            &.cs-active {
+                color: var(--paper-field);
+                opacity: 1;
+            }
+        }
+
+        /* Hover for pointers, focus-within for keyboards, the class for
+           touch and for the toggle button. */
+        .cs-group:hover,
+        .cs-group:focus-within,
+        .cs-group.cs-group-open {
+            .cs-sub {
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+            }
+
+            .cs-caret {
+                transform: translateY(0.0625rem) rotate(-135deg);
+            }
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---           Footer           -->
+<--- -------------------------- -*/
+
+/* Cocoa ground, four columns. .cs-on-dark in root.less handles the type and
+   control inversions, so nothing here restates a colour that class already
+   sets. No rules between links — spacing does the separating. */
+
+@media only screen and (min-width: 0rem) {
+    #footer {
+        padding: clamp(3.5rem, 7vw, 6rem) var(--gutter) clamp(2.5rem, 5vw, 4rem);
+        background-color: var(--paper-deep);
+       
+
+        .cs-top {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(2.5rem, 5vw, 4rem);
+        }
+
+        /* ── Brand ── */
+        .cs-mark {
+            display: inline-block;
+            margin-bottom: 1.75rem;
+
+            img {
+                /* 64px - 96px */
+                width: auto;
+                height: clamp(4rem, 8vw, 6rem);
+            }
+        }
+
+        .cs-descriptor {
+            font-size: var(--fs-body);
+            line-height: 1.5;
+            max-width: 26rem;
+            color: var(--ink-invert);
+            margin-bottom: 2rem;
+        }
+
+        /* Deck shows this without a rule beneath it */
+        .cs-ask {
+            font-size: var(--fs-lede);
+            border-bottom: none;
+        }
+
+        /* ── Columns ── */
+        .cs-col {
+            .cs-topper {
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        .cs-ul {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.875rem;
+        }
+
+        .cs-li {
+            list-style: none;
+        }
+
+        .cs-link {
+            font-family: var(--font-body);
+            font-size: var(--fs-body);
+            font-weight: 300;
+            line-height: 1.4;
+            text-decoration: none;
+            color: var(--ink-invert);
+            display: inline-block;
+            transition: opacity var(--dur) var(--ease);
+
+            &:hover {
+                opacity: 0.72;
+            }
+        }
+
+        /* address defaults to italic, which would pull in Elms Sans Light Italic */
+        .cs-address {
+            font-family: var(--font-body);
+            font-size: var(--fs-body);
+            font-style: normal;
+            font-weight: 300;
+            line-height: 1.5;
+            color: var(--ink-invert);
+        }
+
+        /* ── Legal ── */
+        .cs-legal {
+            margin-top: clamp(3rem, 7vw, 5.5rem);
+            padding-top: clamp(1.75rem, 3vw, 2.5rem);
+            border-top: 1px solid var(--rule-invert);
+        }
+
+        .cs-smallprint,
+        .cs-fineprint {
+            font-size: var(--fs-caption);
+            line-height: 1.7;
+            color: var(--ink-invert-soft);
+            max-width: 60rem;
+            margin-bottom: 1.25rem;
+        }
+
+        /* The CREA attribution sits quieter than the brokerage line */
+        .cs-fineprint {
+            opacity: 0.72;
+
+            sup {
+                font-size: 0.7em;
+                line-height: 0;
+            }
+        }
+
+        .cs-bottom {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .cs-legal-link {
+            font-size: var(--fs-caption);
+            text-decoration: none;
+            color: var(--ink-invert-soft);
+            border-bottom: 1px solid var(--rule-invert);
+            padding-bottom: 0.125rem;
+            transition: opacity var(--dur) var(--ease);
+
+            &:hover {
+                opacity: 0.72;
+            }
+        }
+
+        .cs-copyright {
+            font-size: var(--fs-caption);
+            color: var(--ink-invert-soft);
+        }
+    }
+}
+
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+    #footer {
+        .cs-top {
+            flex-direction: row;
+            flex-wrap: wrap;
+            column-gap: clamp(2rem, 5vw, 4rem);
+            row-gap: 3rem;
+        }
+
+        .cs-brand {
+            width: 100%;
+        }
+
+        .cs-col {
+            flex: 1 1 0;
+            min-width: 11rem;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #footer {
+        .cs-top {
+            flex-wrap: nowrap;
+            align-items: flex-start;
+            column-gap: clamp(2rem, 5vw, 5rem);
+        }
+
+        .cs-brand {
+            width: auto;
+            flex: 1.4 1 0;
+            max-width: 32rem;
+        }
+
+        .cs-col {
+            flex: 1 1 0;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---            CTA             -->
+<--- -------------------------- -*/
+
+/* Display word left, copy right, script CTA closing the column.
+
+   .cs-on-dark in root.less inverts headings, body, toppers and
+   controls. Nothing here declares a text colour it already owns —
+   including the script link, which resolves everything from
+   currentColor and inverts for free. */
+
+@media only screen and (min-width: 0rem) {
+    #enquire {
+        padding: var(--section-padding);
+        background-color: var(--cocoa-500);
+
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2.5rem;
+        }
+
+        /* Caps applied here rather than in the markup — the source
+           stays sentence case so a screen reader doesn't spell it. */
+        .cs-title {
+            font-family: var(--font-display);
+            text-transform: uppercase;
+            font-size: var(--fs-h2);
+            font-weight: 400;
+            line-height: 1;
+            /* Cinzel's caps are already widely set; the sitewide
+               title tracking opens them past the reference. */
+            letter-spacing: 0.01em;
+            margin: 0;
+            max-width: none;
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.75rem;
+        }
+
+        /* The two paragraphs are a hierarchy, not a block: the first
+           carries the offer, the second the detail. Size and colour
+           both step down. */
+        .cs-lede {
+            font-size: var(--fs-body-lg, 1.25rem);
+            line-height: 1.55;
+            letter-spacing: normal;
+            max-width: 54ch;
+            margin: 0;
+            text-wrap: pretty;
+        }
+
+        .cs-text {
+            max-width: 54ch;
+            margin: 0;
+            color: var(--ink-invert-soft);
+            text-wrap: pretty;
+        }
+
+        /* The script control carries its own hairline half a rem
+           below the baseline, so the flex gap above it reads a touch
+           wide. Pull it back rather than shrinking the gap, which
+           would also close the space between the paragraphs. */
+        .cs-button-script {
+            margin-block-start: -0.375rem;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #enquire {
+        /* The split lives in two tokens rather than inline in the
+           template, because the word column and the gap have to move
+           together — widening one without the other either crowds
+           the copy or strands the word mid-field.
+
+           The word column is sized to the longest display word the
+           section might carry, not to "Enquire" specifically. Swap
+           in a longer one and nothing reflows. */
+        --enquire-word: 26rem;
+        --enquire-gap: clamp(6rem, 15vw, 18rem);
+
+        .cs-container {
+            /* Fixed word column, copy takes the rest. An fr-based
+               split would let the word's column stretch on a wide
+               monitor and open a dead gutter between the two. */
+            grid-template-columns: minmax(0, var(--enquire-word)) minmax(0, 1fr);
+            column-gap: var(--enquire-gap);
+            align-items: start;
+        }
+
+        .cs-title {
+            /* Optical, not structural. Cinzel's cap height sits below
+               the sans's ascender, so a shared grid row leaves the
+               word reading high against the first line of copy. */
+            margin-block-start: -0.35rem;
+        }
+
+        /* The measure has to be capped here or the gap is spent for
+           nothing: with the copy column free to run to the container
+           edge, widening the gutter just makes the lines longer
+           rather than moving the column right. 54ch is already on
+           both paragraphs from the base rule — this holds the block
+           as a whole so the two stay flush. */
+        .cs-content {
+            max-width: 68ch;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---       Reveal Indices       -->
+<--- -------------------------- -*/
+
+/* The shared enquiry block, included on reviews and rendered inline on
+   about as #cta. Both carry data-reveal and .cs-reveal already; without
+   an index every item resolves at --reveal-i: 0 and the two halves land
+   on the same frame, which reads as a fade rather than a sequence.
+
+   File scope on purpose — the rules above all sit inside media queries,
+   and these are unconditional. The mechanism lives in root.less. */
+
+#enquire,
+#cta {
+    .cs-title {
+        --reveal-i: 0;
+    }
+
+    .cs-content {
+        --reveal-i: 1;
+    }
+}

@@ -1,0 +1,75 @@
+---
+title: "Journal | Jayden Kennedy"
+description: "Short pieces on the mechanics: what a comparable really proves, how deposits are read, and where the carrying cost hides."
+permalink: "/journal/"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/journal.css">
+{% endblock %}
+
+{% block body %}
+
+    <!-- ============================================ -->
+    <!--                   Journal                    -->
+    <!-- ============================================ -->
+
+    <!-- A dated list, not a card grid. Date, title, dek, read time — the four
+         things that decide whether a piece is worth five minutes. No images:
+         the deck's index is type only, and thumbnails would make three entries
+         look like a thin blog rather than a considered set. -->
+
+    <section id="journal-intro" data-reveal>
+        <div class="cs-container">
+            <span class="cs-topper cs-reveal">Journal</span>
+            <h1 class="cs-title cs-reveal">What I am reading in the market</h1>
+            <p class="cs-text cs-reveal">
+                Short pieces on the mechanics: what a comparable really proves,
+                how deposits are read, where the carrying cost hides.
+            </p>
+        </div>
+    </section>
+
+    <section id="journal-list" data-reveal>
+        <div class="cs-container">
+            {% if collections.post | length %}
+                <ol class="cs-list">
+                    {% for post in collections.post | reverse %}
+                        <li class="cs-item cs-reveal"
+                            {# Capped at 8. The inline style outranks any
+                               stylesheet rule, so the ceiling has to live here —
+                               an nth-child cap in journal.less would never win. #}
+                            style="--reveal-i: {{ loop.index0 if loop.index0 < 8 else 8 }}">
+                            <a class="cs-link" href="{{ post.url }}">
+                                <time class="cs-date" datetime="{{ post.data.date | isoDate }}">
+                                    {{ post.data.date | postDate }}
+                                </time>
+
+                                <div class="cs-body">
+                                    <h2 class="cs-item-title">{{ post.data.title }}</h2>
+                                    <p class="cs-dek">{{ post.data.description }}</p>
+                                </div>
+
+                                {% if post.data.readTime %}
+                                    <span class="cs-read">{{ post.data.readTime }} min</span>
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ol>
+            {% else %}
+                <div class="cs-empty">
+                    <p class="cs-empty-title">Nothing published yet.</p>
+                    <p class="cs-text">
+                        The first pieces are being written. In the meantime, ask me
+                        the question directly.
+                    </p>
+                    <a class="cs-button" href="/contact/">Ask me anything</a>
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+{% endblock %}

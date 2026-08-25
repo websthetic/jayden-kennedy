@@ -1,0 +1,160 @@
+/*-- -------------------------- -->
+<---            Intro           -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 0rem) {
+    #reviews-intro {
+        padding: var(--section-padding);
+        /* Interior pages open directly under the header, with no hero
+           beneath it. Same figure as about, approach, press and contact.
+           //! CONFIRM — promote to a --page-top token in root.less; this
+           //! is now the sixth file repeating the clamp. */
+        padding-top: clamp(8rem, 13vw, 12rem);
+        padding-bottom: 0;
+        background-color: var(--paper);
+
+        .cs-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .cs-title {
+            margin-block: clamp(1rem, 2.5vw, 1.5rem) clamp(1.5rem, 3.5vw, 2.25rem);
+            max-width: 18ch;
+            font-size: var(--fs-h2);
+        }
+
+        .cs-lede {
+            margin: 0;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---            Grid            -->
+<--- -------------------------- -*/
+
+/* Cashmere panels, one green. No avatars and no star graphics — the
+   quote and its attribution line carry the whole card. */
+
+@media only screen and (min-width: 0rem) {
+    #reviews-grid {
+        padding: var(--section-padding);
+        padding-top: clamp(2.5rem, 6vw, 4rem);
+        background-color: var(--paper);
+
+        .cs-card-group {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: clamp(1rem, 2vw, 1.5rem);
+            list-style: none;
+        }
+
+        .cs-item {
+            padding: clamp(1.75rem, 4vw, 2.5rem);
+            background-color: var(--paper-warm);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        /* The one green panel. .cs-on-dark inverts the type inside it —
+           see root.less. */
+        .cs-item-feature {
+            background-color: var(--heritage-500);
+        }
+
+        /* No colour declared here. body already sets --ink, and any
+           colour set under the #reviews-grid ID would outrank
+           .cs-on-dark p in root.less and leave the green panel's quote
+           cocoa on green. */
+        .cs-quote {
+            margin: 0 0 clamp(1.5rem, 3.5vw, 2.25rem);
+            font-family: var(--font-display);
+            font-size: var(--fs-h4);
+            line-height: var(--lh-title);
+            letter-spacing: var(--track-title);
+        }
+
+        /* Scoped away from the feature panel rather than overridden after
+           it — green on green is invisible, and .cs-on-dark already
+           carries the inverted topper colour. */
+        .cs-item:not(.cs-on-dark) .cs-attribution {
+            color: var(--heritage-500);
+        }
+
+        .cs-attribution {
+            margin-top: auto;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---       Grid · Tablet        -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 48rem) {
+    #reviews-grid {
+        .cs-card-group {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        /* Spans the pair rather than sitting in one column — it holds the
+           longest quote and needs the width. */
+        .cs-item-feature {
+            grid-column: 1 / -1;
+        }
+    }
+}
+
+
+
+
+
+/*-- -------------------------- -->
+<---       Reveal Indices       -->
+<--- -------------------------- -*/
+
+/* File scope on purpose — every rule above sits inside a media query,
+   and these are unconditional. The mechanism lives in root.less. */
+
+#reviews-intro {
+    .cs-topper {
+        --reveal-i: 0;
+    }
+
+    .cs-title {
+        --reveal-i: 1;
+    }
+
+    .cs-lede {
+        --reveal-i: 2;
+    }
+}
+
+/* Five cards at the standard 140ms step would run 700ms from first to
+   last, which is long enough to notice as a queue. The grid gets a
+   shorter step so the set lands as one movement. */
+#reviews-grid {
+    --reveal-step: 90ms;
+
+    .cs-item {
+        --reveal-i: 0;
+    }
+    .cs-item:nth-child(2) {
+        --reveal-i: 1;
+    }
+    .cs-item:nth-child(3) {
+        --reveal-i: 2;
+    }
+    .cs-item:nth-child(4) {
+        --reveal-i: 3;
+    }
+    .cs-item:nth-child(5) {
+        --reveal-i: 4;
+    }
+}

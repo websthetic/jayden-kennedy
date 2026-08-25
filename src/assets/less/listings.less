@@ -1,0 +1,409 @@
+/*-- -------------------------- -->
+<---     Listings — Intro        -->
+<--- -------------------------- -*/
+
+#listings-intro {
+    padding: clamp(8rem, 13vw, 12rem) var(--gutter) 0;
+    background-color: var(--paper);
+
+    .cs-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.25rem;
+    }
+
+    .cs-topper {
+        color: var(--heritage-500);
+        margin-bottom: 0;
+    }
+
+    .cs-title {
+        font-size: var(--fs-h2);
+        line-height: var(--lh-tight);
+        max-width: 22ch;
+        margin: 0;
+    }
+
+    .cs-text {
+        font-size: var(--fs-lede);
+        max-width: 56ch;
+        color: var(--ink-soft);
+    }
+}
+
+/*-- -------------------------- -->
+<---     Listings — Filters      -->
+<--- -------------------------- -*/
+
+#listings-filters {
+    padding: clamp(2rem, 4vw, 2.75rem) var(--gutter) 1.625rem;
+    background-color: var(--paper);
+
+    .cs-form {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
+    }
+
+    .cs-field {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+    }
+
+    .cs-label {
+        font-family: var(--font-body);
+        font-size: var(--fs-eyebrow);
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: var(--track-eyebrow);
+        text-transform: uppercase;
+        color: var(--ink-soft);
+    }
+
+    .cs-select {
+        appearance: none;
+        width: 100%;
+        padding: 0 1.75rem 0.625rem 0;
+        font-family: var(--font-body);
+        font-size: var(--fs-body);
+        font-weight: 300;
+        line-height: 1.4;
+        color: var(--ink);
+        background-color: transparent;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%233b2a20' stroke-width='1.4'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.125rem center;
+        background-size: 0.75rem auto;
+        border: none;
+        border-bottom: 1px solid var(--rule);
+        border-radius: 0;
+        transition: border-color var(--dur) var(--ease);
+
+        &:hover {
+            border-bottom-color: var(--rule-strong);
+        }
+    }
+
+    .cs-form > .cs-button {
+        align-self: flex-start;
+    }
+}
+
+/*-- -------------------------- -->
+<---     Listings — Results      -->
+<--- -------------------------- -*/
+
+#listings-results {
+    padding-bottom: clamp(4rem, 8vw, 6rem);
+    background-color: var(--paper);
+
+    /* The hidden attribute must beat the layout display values below. */
+    [hidden] {
+        display: none !important;
+    }
+
+    .cs-summary {
+        padding-inline: var(--gutter);
+
+        .cs-container {
+            padding-block: 1.625rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+    }
+
+    .cs-count-group {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 1.25rem;
+    }
+
+    .cs-count {
+        font-family: var(--font-display);
+        font-size: var(--fs-h3);
+        font-weight: 500;
+        line-height: var(--lh-title);
+        letter-spacing: var(--track-title);
+        text-transform: uppercase;
+        margin: 0;
+    }
+
+    .cs-applied {
+        font-size: var(--fs-body-sm);
+        line-height: 1.4;
+        margin: 0;
+        color: var(--ink-soft);
+    }
+
+    .cs-clear {
+        margin-left: 0.5rem;
+        color: var(--ink-soft);
+        text-decoration: none;
+        border-bottom: 1px solid var(--rule);
+        transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+
+        &:hover {
+            color: var(--ink);
+            border-bottom-color: var(--rule-strong);
+        }
+    }
+
+    .cs-view-group {
+        display: flex;
+        align-items: baseline;
+        gap: 1.625rem;
+    }
+
+    .cs-view-link,
+    .cs-sort-label {
+        font-family: var(--font-body);
+        font-size: var(--fs-eyebrow);
+        font-weight: 500;
+        letter-spacing: var(--track-eyebrow);
+        text-transform: uppercase;
+        color: var(--ink-soft);
+    }
+
+    .cs-view-link {
+        text-decoration: none;
+        transition: color var(--dur) var(--ease);
+
+        &:hover {
+            color: var(--ink);
+        }
+    }
+
+    .cs-sort {
+        appearance: none;
+        padding: 0 1.25rem 0.125rem 0;
+        font-family: var(--font-body);
+        font-size: var(--fs-body-sm);
+        font-weight: 300;
+        color: var(--ink);
+        background-color: transparent;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%233b2a20' stroke-width='1.4'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right center;
+        background-size: 0.625rem auto;
+        border: none;
+        border-radius: 0;
+    }
+
+    > .cs-container {
+        padding: 2.5rem var(--gutter) 0;
+    }
+
+    .cs-card-group {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
+        gap: 1.5rem;
+        list-style: none;
+    }
+
+    .cs-item {
+        list-style: none;
+        background-color: var(--paper);
+        border: 1px solid var(--rule);
+        transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+
+        &:hover {
+            border-color: var(--rule-strong);
+            box-shadow: var(--shadow-card);
+            transform: translateY(-0.25rem);
+
+            .cs-img {
+                transform: scale(1.04);
+            }
+        }
+    }
+
+    .cs-link {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .cs-picture {
+        position: relative;
+        width: 100%;
+        height: 15.625rem;
+        display: block;
+        overflow: hidden;
+        background-color: var(--cashmere-300);
+    }
+
+    .cs-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform var(--dur-slow) var(--ease);
+    }
+
+    .cs-status {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        padding: 0.4375rem 0.8125rem;
+        font-family: var(--font-body);
+        font-size: var(--fs-eyebrow);
+        font-weight: 500;
+        line-height: 1.2;
+        letter-spacing: var(--track-eyebrow);
+        text-transform: uppercase;
+        color: var(--ink-invert);
+        background-color: var(--heritage-500);
+    }
+
+    .cs-info {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5625rem;
+    }
+
+    .cs-price {
+        font-family: var(--font-display);
+        font-size: var(--fs-h4);
+        font-weight: 500;
+        line-height: var(--lh-title);
+        letter-spacing: var(--track-title);
+        color: var(--ink);
+    }
+
+    .cs-address {
+        font-size: var(--fs-body);
+        line-height: 1.4;
+        color: var(--ink);
+    }
+
+    .cs-meta {
+        font-size: var(--fs-body-sm);
+        line-height: 1.4;
+        color: var(--ink-soft);
+    }
+
+    .cs-more {
+        margin-top: 3rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    .cs-empty {
+        max-width: 52ch;
+        padding: 3.5rem 0 1.5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.125rem;
+    }
+
+    .cs-empty-title {
+        font-family: var(--font-display);
+        font-size: var(--fs-h3);
+        font-weight: 500;
+        line-height: var(--lh-title);
+        text-transform: uppercase;
+        margin: 0;
+    }
+
+    .cs-empty .cs-text {
+        color: var(--ink-soft);
+    }
+}
+
+/*-- -------------------------- -->
+<---     Listings — Disclosure   -->
+<--- -------------------------- -*/
+
+#listings-disclosure {
+    padding: 0 var(--gutter) 3.5rem;
+    background-color: var(--paper);
+
+    .cs-container {
+        padding-top: 1.75rem;
+        border-top: 1px solid var(--rule);
+    }
+
+    .cs-fine {
+        font-size: var(--fs-caption);
+        line-height: 1.6;
+        max-width: 84ch;
+        margin: 0;
+        color: var(--ink-soft);
+    }
+}
+
+/*-- -------------------------- -->
+<---     Reveal                  -->
+<--- -------------------------- -*/
+
+/* The mechanism lives in root.less and is shared with every other page.
+   This file used to carry a second implementation on .cs-armed /
+   .cs-active with a 60ms step — a different class contract and a
+   different rhythm from the rest of the site. It is gone; the card
+   indices are inline on the markup in listings.html.
+
+   Card results are injected after load once the feed lands, so the
+   observer has to be re-run against new nodes rather than assumed to
+   have caught them. See revealScan() in reveal.js. */
+
+@media (prefers-reduced-motion: reduce) {
+
+    #listings-results .cs-item:hover {
+        transform: none;
+
+        .cs-img {
+            transform: none;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---     Tablet — 48rem          -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 48rem) {
+    #listings-filters {
+        .cs-form {
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            gap: 1.75rem;
+        }
+
+        .cs-field-sm {
+            flex: 0 0 8rem;
+        }
+
+        .cs-field-md {
+            flex: 0 0 10.5rem;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---     Desktop — 64rem         -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 64rem) {
+    #listings-results {
+        .cs-card-group {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+    }
+}

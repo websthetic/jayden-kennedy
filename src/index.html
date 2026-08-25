@@ -1,0 +1,391 @@
+---
+title: "Jayden Kennedy | Real Estate"
+description: "Meta description for the page"
+permalink: "/"
+tags: "sitemap" # content/content.json will make sure that all pages in content/ are marked with a "sitemap" tag, for automatic sitemap generation. As index.html is not in content/, we need to add it here to ensure the root page is included in the sitemap generation
+---
+
+{% extends "layouts/base.html" %}
+
+
+
+{% block head %}
+
+
+    <!-- Critical styles are loaded first -->
+    <link rel="stylesheet" href="/assets/css/critical.css"/>
+
+    <!-- If we're in production, defer the rest of the home page styles. In development, always load it. Otherwise the site will break when hot-reload is used. -->
+    {% if client.isProduction %}
+        <link rel="preload" href="/assets/css/local.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+        <noscript>
+            <link rel="stylesheet" href="/assets/css/local.css">
+        </noscript>
+
+    {% else %}
+        <link rel="stylesheet" href="/assets/css/local.css"/>
+    {% endif %}
+
+    <script defer src="/assets/js/homepage.js"></script>
+
+    <!-- To ensure proper validation, prevent errors, and encourage developers to check, schema's are an opt-in feature. They're very bespoke and requires some customising  -->
+    <!-- Uncomment the code below to enable Structured Data, and test it when you deploy to Netlify - https://developers.google.com/search/docs/appearance/structured-data -->
+    <!-- {% include "components/home-schema.html" %} -->
+{% endblock %}
+
+{% block body %}
+
+    <div class="cs-curtain">
+
+        <!-- ============================================ -->
+        <!--                     Hero                     -->
+        <!-- ============================================ -->
+
+        <section id="hero" class="cs-on-dark" data-hero>
+            <picture class="cs-background">
+                <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-portrait-hero.png"
+                     alt=""
+                     width="2600" height="1500"
+                     loading="eager" fetchpriority="high" decoding="async">
+            </picture>
+
+            <div class="cs-scrim" aria-hidden="true"></div>
+
+            <div class="cs-container">
+                <span class="cs-topper">Jayden Kennedy &middot; Broker &middot; Durham Region</span>
+                <h1>Know what the number supports</h1>
+                <p class="cs-lede">
+                    I explain the mechanics of how a property carries its price: the comparables, the carrying costs, the exit. Then you decide.
+                </p>
+                <a href="/contact/" class="cs-button-script">book a consultation</a>
+            </div>
+        </section>
+
+<!-- ============================================ -->
+<!--          The Practice · Credentials          -->
+<!-- ============================================ -->
+
+<!--! CONFIRM before launch — licence 888867 against RECO's public
+      register, and "Five years in the market" against Jayden's
+      actual licence date. Both are open items in the deck. -->
+
+<!-- Three panels on one horizontal track inside a pinned frame.
+     The section is 250svh: the frame locks at the top and holds
+     for the remaining 150svh, and that hold is the track's travel. -->
+
+<section id="practice">
+    <div class="cs-frame">
+        <div class="cs-track">
+
+            <div class="cs-panel cs-panel-copy">
+                <div class="cs-container">
+                    <div class="cs-rail">
+                        <span class="cs-topper">The practice</span>
+                    </div>
+
+                    <div class="cs-content">
+                        <p class="cs-statement">
+                            Most people are never taught how property creates wealth. I was not either, until I started reading the numbers for a living.
+                        </p>
+                        <p class="cs-text">
+                            Every comparative market analysis I send is written by hand. By the time an offer is written, the comparables are already read, the carrying cost is on the page, and you know what happens to the number if rates move. If a property is wrong for you, I will say so.
+                        </p>
+                        <a href="/approach/" class="cs-button-ghost">Read how I work</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cs-panel cs-panel-image">
+                <picture class="cs-picture">
+                    <img
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/hero-img-interior.jpg"
+                        alt="Jayden Kennedy, seated portrait"
+                        width="880"
+                        height="1100"
+                        loading="lazy"
+                        decoding="async">
+                </picture>
+            </div>
+
+            <div class="cs-panel cs-panel-creds">
+                <div class="cs-container">
+                    <div class="cs-rail">
+                        <span class="cs-topper">On record</span>
+                    </div>
+
+                    <!-- Same wrapper as the copy panel, so the list
+                         and its link move as one centred group and
+                         the two ghost links sit on the same footing. -->
+                    <div class="cs-content">
+                        <ul class="cs-cred-list">
+                            <li class="cs-cred-item">
+                                <span class="cs-cred-index" aria-hidden="true">01</span>
+                                <span class="cs-cred-fact">Broker, licence 888867</span>
+                                <span class="cs-cred-source">Keller Williams Energy Real Estate, Brokerage</span>
+                            </li>
+
+                            <li class="cs-cred-item">
+                                <span class="cs-cred-index" aria-hidden="true">02</span>
+                                <span class="cs-cred-fact">AVCA All-America, 2017</span>
+                                <span class="cs-cred-source">University of San Diego</span>
+                            </li>
+
+                            <li class="cs-cred-item">
+                                <span class="cs-cred-index" aria-hidden="true">03</span>
+                                <span class="cs-cred-fact">Five years in the market</span>
+                                <span class="cs-cred-source">Member, Toronto Regional Real Estate Board</span>
+                            </li>
+                        </ul>
+
+                        <a href="/contact/" class="cs-button-ghost">Ask me anything</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+    </div>
+
+    <!-- ============================================ -->
+    <!--               Current Listings               -->
+    <!-- ============================================ -->
+
+    <!--! Placeholder markup. Bracketed values are TRREB RESO fields —
+          UnparsedAddress, City, ListPrice, BedroomsTotal,
+          BathroomsTotalInteger, LivingAreaRange, ListingKey,
+          StandardStatus. Replace this block with a Nunjucks loop over
+          the feed once access is granted.
+
+          Deck slide 18: three listings, never more. If fewer than three
+          are active the row becomes a single wide card plus a link to
+          recent sales. That conditional goes here.
+
+          The sold variant (.cs-badge-sold, ClosePrice, "Represented
+          the [BUYER/SELLER]" in place of the specs) is specified on
+          deck slide 15 and styled in local.less. It stays in the
+          stylesheet for the /results/ page — no sold card renders on
+          the home row. -->
+
+    <section id="listings" data-reveal>
+        <div class="cs-container">
+            <div class="cs-header cs-reveal">
+                <h2>Current listings</h2>
+                <a href="/listings/" class="cs-button-ghost">All listings</a>
+            </div>
+
+            <ul class="cs-card-group">
+                <li class="cs-item cs-reveal">
+                    <a href="/listings/" class="cs-link">
+                        <picture class="cs-picture">
+                            <img src="/assets/images/portfolio/port1.jpg"
+                                 alt=""
+                                 width="1200" height="800"
+                                 loading="lazy" decoding="async">
+                        </picture>
+
+                        <div class="cs-info">
+                            <div class="cs-meta">
+                                <span class="cs-badge">For sale</span>
+                                <span class="cs-mls">MLS&reg; [ListingKey]</span>
+                            </div>
+
+                            <span class="cs-address">[UnparsedAddress]</span>
+                            <span class="cs-city">[City], Durham Region</span>
+
+                            <div class="cs-figures">
+                                <span class="cs-price">[ListPrice]</span>
+                                <span class="cs-specs">[BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath &middot; [LivingAreaRange] sq ft</span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="cs-item cs-reveal">
+                    <a href="/listings/" class="cs-link">
+                        <picture class="cs-picture">
+                            <img src="/assets/images/portfolio/port2.jpg"
+                                 alt=""
+                                 width="1200" height="800"
+                                 loading="lazy" decoding="async">
+                        </picture>
+
+                        <div class="cs-info">
+                            <div class="cs-meta">
+                                <span class="cs-badge">For sale</span>
+                                <span class="cs-mls">MLS&reg; [ListingKey]</span>
+                            </div>
+
+                            <span class="cs-address">[UnparsedAddress]</span>
+                            <span class="cs-city">[City], Durham Region</span>
+
+                            <div class="cs-figures">
+                                <span class="cs-price">[ListPrice]</span>
+                                <span class="cs-specs">[BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath &middot; [LivingAreaRange] sq ft</span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+
+                <li class="cs-item cs-reveal">
+                    <a href="/listings/" class="cs-link">
+                        <picture class="cs-picture">
+                            <img src="/assets/images/portfolio/port3.jpg"
+                                 alt=""
+                                 width="1200" height="800"
+                                 loading="lazy" decoding="async">
+                        </picture>
+
+                        <div class="cs-info">
+                            <div class="cs-meta">
+                                <span class="cs-badge">For sale</span>
+                                <span class="cs-mls">MLS&reg; [ListingKey]</span>
+                            </div>
+
+                            <span class="cs-address">[UnparsedAddress]</span>
+                            <span class="cs-city">[City], Durham Region</span>
+
+                            <div class="cs-figures">
+                                <span class="cs-price">[ListPrice]</span>
+                                <span class="cs-specs">[BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath &middot; [LivingAreaRange] sq ft</span>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!--               How A Sale Runs                -->
+    <!-- ============================================ -->
+
+    <!-- The page's one saturated field. Deck slide 18: one green band
+         per page, and it never repeats below. -->
+
+    <section id="process" class="cs-on-dark" data-reveal>
+        <div class="cs-container">
+            <div class="cs-intro cs-reveal">
+                <img class="cs-mark"
+                     src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/neighborhood-img/jayden-kennedy-icon.png"
+                     alt=""
+                     width="56"
+                     height="56"
+                     loading="lazy"
+                     decoding="async"
+                     aria-hidden="true">
+                <h2>How a sale runs</h2>
+                <a href="/contact/" class="cs-button-ghost cs-ask">Ask me anything</a>
+            </div>
+
+            <ol class="cs-steps">
+                <li class="cs-step cs-reveal">
+                    <h3>Preparation</h3>
+                    <p class="cs-text">
+                        A written analysis of the last ninety days on your street, before anything is listed.
+                    </p>
+                </li>
+
+                <li class="cs-step cs-reveal">
+                    <h3>Market</h3>
+                    <p class="cs-text">
+                        Photography, staging notes and the pricing band, with the reasoning attached to each.
+                    </p>
+                </li>
+
+                <li class="cs-step cs-reveal">
+                    <h3>Close</h3>
+                    <p class="cs-text">
+                        Offers read out loud, term by term, so the decision is yours and not the room's.
+                    </p>
+                </li>
+            </ol>
+        </div>
+    </section>
+
+        <!-- ============================================ -->
+    <!--                    Vista                     -->
+    <!-- ============================================ -->
+
+    <!--! Placeholder source. No srcset — same open item as the hero
+          image; both bypass config/plugins/images.js. A band this
+          wide is the worst case for it, so it is worth doing before
+          launch rather than after. -->
+
+    <section id="vista" aria-hidden="true">
+        <picture class="cs-picture">
+            <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg"
+                 alt=""
+                 width="2600" height="1400"
+                 loading="lazy" decoding="async">
+        </picture>
+    </section>
+
+    <!-- ============================================ -->
+    <!--                 Market Notes                 -->
+    <!-- ============================================ -->
+
+    <!--! Poster frames for now. Deck slide 17 specifies this as the
+          video row — self-hosted MP4 1080x1920, poster required,
+          muted autoplay while 50% in view, one clip at a time, 44px
+          pause control, burned-in captions. Blocked on the open
+          hosting-budget CONFIRM. The poster markup below becomes the
+          poster layer, so the upgrade is additive, not a rewrite. -->
+
+    <section id="notes" data-reveal>
+        <div class="cs-container">
+            <div class="cs-header cs-reveal">
+                <h2>Market notes</h2>
+                <a href="/" class="cs-button-ghost">All notes</a>
+            </div>
+
+            <div class="cs-row">
+                <a href="/" class="cs-frame cs-reveal">
+                    <picture class="cs-picture">
+                        <img src="/assets/images/portfolio/port4.jpg"
+                             alt=""
+                             width="1080" height="1920"
+                             loading="lazy" decoding="async">
+                    </picture>
+                    <span class="cs-scrim" aria-hidden="true"></span>
+                    <span class="cs-frame-title">What deposit structure signals to a seller</span>
+                </a>
+
+                <a href="/" class="cs-frame cs-reveal">
+                    <picture class="cs-picture">
+                        <img src="/assets/images/portfolio/port5.jpg"
+                             alt=""
+                             width="1080" height="1920"
+                             loading="lazy" decoding="async">
+                    </picture>
+                    <span class="cs-scrim" aria-hidden="true"></span>
+                    <span class="cs-frame-title">Reading ninety days of comparables on one street</span>
+                </a>
+
+                <a href="/" class="cs-frame cs-reveal">
+                    <picture class="cs-picture">
+                        <img src="/assets/images/portfolio/port6.jpg"
+                             alt=""
+                             width="1080" height="1920"
+                             loading="lazy" decoding="async">
+                    </picture>
+                    <span class="cs-scrim" aria-hidden="true"></span>
+                    <span class="cs-frame-title">The five numbers I check before writing an offer</span>
+                </a>
+
+                <div class="cs-aside cs-reveal">
+                    <p class="cs-text">
+                        Short pieces on the mechanics: what a comparable really proves, how deposits are read, where the carrying cost hides.
+                    </p>
+                    <a href="/" class="cs-button-ghost">Ask me anything</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% include 'sections/cta.html' %}
+
+
+{% endblock %}

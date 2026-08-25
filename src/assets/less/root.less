@@ -1,0 +1,656 @@
+// ─────────────────────────────────────────────────────────────────────────────
+// ROOT
+// Jayden Kennedy Real Estate · soldbykennedy.ca
+// ─────────────────────────────────────────────────────────────────────────────
+
+/*-- -------------------------- -->
+<---        Design Tokens       -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 0rem) {
+    :root {
+        /* ─────────────────────────────────────────────
+           PALETTE — brand book, verbatim
+           Numeric suffixes are derived tints, not brand
+           colours. Only the -500 steps are canonical.
+           ───────────────────────────────────────────── */
+
+        /* Cashmere Beige — the paper the site is printed on */
+        --cashmere-100: #faf5ef; /* page ground, palest wash */
+        --cashmere-300: #f6ece1; /* panel fill */
+        --cashmere-500: #f1e2d1; /* BRAND · Cashmere Beige */
+        --cashmere-700: #e2cdb6; /* pressed / disabled surface */
+
+        /* Dark Cocoa — the ink */
+        --cocoa-300: #8a7462; /* meta, captions, placeholders */
+        --cocoa-500: #3b2a20; /* BRAND · Dark Cocoa */
+        --cocoa-700: #2f2119; /* hover on filled buttons */
+        --cocoa-900: #1f1610; /* press state, deepest ground */
+
+        /* Heritage Green — one saturated field per page, never more */
+        --heritage-500: #20301a; /* BRAND · Heritage Green */
+        --heritage-700: #17230f; /* hover */
+
+        /* Absolutes */
+        --black: #000000; /* BRAND · Absolute Black */
+        --pearl: #ffffff; /* BRAND · Pearl White */
+
+        /* ─────────────────────────────────────────────
+           ROLE — what a colour is for, not what it is.
+           Author sections against these, not the palette.
+           ───────────────────────────────────────────── */
+
+        --paper: var(--pearl); /* default page ground */
+        --paper-warm: var(--cashmere-500); /* card / panel fill */
+        --paper-deep: var(--cocoa-500); /* cocoa band */
+        --paper-field: var(--heritage-500); /* the one green band */
+
+        --ink: var(--cocoa-500); /* headings and body on paper */
+        --ink-soft: var(--cocoa-300); /* captions, meta, eyebrow */
+        --ink-invert: var(--cashmere-500); /* type on cocoa or green */
+        --ink-invert-soft: rgba(241, 226, 209, 0.72);
+
+        --rule: rgba(59, 42, 32, 0.18); /* hairline on paper */
+        --rule-strong: rgba(59, 42, 32, 0.4); /* active / focus hairline */
+        --rule-invert: rgba(241, 226, 209, 0.24); /* hairline on cocoa */
+
+        /* Scrims — the only permitted overlay on photography.
+           No translucent capsules, no blur panels, no text shadows. */
+        --scrim-full: rgba(31, 22, 16, 0.42);
+        --scrim-bottom: linear-gradient(to top, rgba(31, 22, 16, 0.72) 0%, rgba(31, 22, 16, 0.32) 38%, rgba(31, 22, 16, 0) 72%);
+
+        --shadow-card: 0 1.25rem 2.5rem rgba(59, 42, 32, 0.1);
+        --shadow-lift: 0 1.75rem 3.5rem rgba(59, 42, 32, 0.16);
+
+        /* ─────────────────────────────────────────────
+           TYPEFACES
+           One family name per typeface, weights carried
+           by descriptor. Never synthesise bold.
+           ───────────────────────────────────────────── */
+
+        --font-display: "Cinzel", "Times New Roman", serif; /* titles, short headlines */
+        --font-body: "Elms Sans", "Helvetica Neue", Arial, sans-serif; /* body copy */
+        --font-script: "Rosemartin", "Times New Roman", serif; /* calls to action, lowercase only */
+
+        /* ─────────────────────────────────────────────
+           TYPE SCALE
+           ───────────────────────────────────────────── */
+
+        --fs-eyebrow: clamp(0.6875rem, 0.9vw, 0.75rem); /* 11px - 12px */
+        --fs-caption: clamp(0.75rem, 0.95vw, 0.8125rem); /* 12px - 13px */
+        --fs-body-sm: 0.875rem; /* 14px */
+        --fs-body: 1rem; /* 16px */
+        --fs-lede: clamp(1.0625rem, 1.4vw, 1.25rem); /* 17px - 20px */
+
+        --fs-h4: clamp(1.0625rem, 1.5vw, 1.25rem); /* 17px - 20px */
+        --fs-h3: clamp(1.25rem, 2vw, 1.5rem); /* 20px - 24px */
+        --fs-h2: clamp(1.75rem, 3.4vw, 2.75rem); /* 28px - 44px */
+        --fs-h1: clamp(2.25rem, 5vw, 4rem); /* 36px - 64px */
+        --fs-display: clamp(3rem, 7.5vw, 6.75rem); /* 48px - 108px */
+
+        --lh-tight: 1.08;
+        --lh-title: 1.16;
+        --lh-body: 1.62;
+
+        --track-eyebrow: 0.18em;
+        --track-title: 0.01em;
+        --track-button: 0.14em;
+
+        /* ─────────────────────────────────────────────
+           LAYOUT
+           ───────────────────────────────────────────── */
+
+        --container: 90rem; /* 1440px */
+        --measure: 40rem; /* comfortable reading width */
+
+        /* The page's left and right inset, and the only place it is
+           set. Every section reads this — directly, or through
+           --section-padding — so the whole page shares one edge.
+           Below 64rem it clamps: 6vw of a phone is 22px, which is
+           not an edge, it is a crack. The desktop step is in its own
+           block below. */
+        --gutter: clamp(1rem, 4vw, 2.5rem);
+        --section-padding: clamp(4rem, 8vw, 7.5rem) var(--gutter);
+
+        --radius-sm: 0.125rem;
+        --radius-panel: clamp(0.75rem, 2vw, 1.5rem);
+
+        --control-height: 2.75rem; /* 44px minimum, every size */
+
+        /* ─────────────────────────────────────────────
+           MOTION
+           ───────────────────────────────────────────── */
+
+        --dur-fast: 0.2s;
+        --dur: 0.32s;
+        --dur-slow: 0.6s;
+        --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+}
+
+/* Desktop tokens - 64rem */
+@media only screen and (min-width: 64rem) {
+    :root {
+        /* 6vw is the practice panel's figure — the inset that puts
+           type on the same optical line as the nav logo at every
+           width. Unclamped on purpose: it should keep tracking the
+           viewport rather than freezing at some arbitrary pixel and
+           letting the page drift off its own edge on a wide monitor.
+
+           --section-padding reads this, so #process, #listings and
+           #notes inherit the change without an edit of their own. */
+        --gutter: 6vw;
+    }
+}
+
+/*-- -------------------------- -->
+<---        Base Elements       -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 0rem) {
+    *,
+    *:before,
+    *:after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        /* clip, not hidden — hidden breaks position: sticky */
+        overflow-x: clip;
+        background-color: var(--paper);
+        color: var(--ink);
+        font-family: var(--font-body);
+        font-size: 100%;
+        font-weight: 300;
+        line-height: var(--lh-body);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        font-family: var(--font-display);
+        font-weight: 500;
+        line-height: var(--lh-title);
+        letter-spacing: var(--track-title);
+        color: var(--ink);
+        text-wrap: balance;
+		text-transform: uppercase;
+    }
+
+    h1 {
+        font-size: var(--fs-h1);
+        line-height: var(--lh-tight);
+    }
+    h2 {
+        font-size: var(--fs-h2);
+    }
+    h3 {
+        font-size: var(--fs-h3);
+    }
+    h4 {
+        font-size: var(--fs-h4);
+    }
+
+    p,
+    li {
+        font-size: var(--fs-body);
+        line-height: var(--lh-body);
+        color: var(--ink);
+        text-wrap: pretty;
+    }
+
+    a {
+        font-size: inherit;
+        color: inherit;
+        text-decoration-thickness: 1px;
+        text-underline-offset: 0.25em;
+    }
+
+    a,
+    button {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    img,
+    picture,
+    video {
+        max-width: 100%;
+        display: block;
+    }
+
+    ::selection {
+        background-color: var(--cocoa-500);
+        color: var(--cashmere-500);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--cocoa-500);
+        outline-offset: 2px;
+    }
+}
+
+/*-- -------------------------- -->
+<---     Shared Type Classes    -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 0rem) {
+    /* Section eyebrow — "01 · THE PRACTICE" */
+    .cs-topper {
+        font-family: var(--font-body);
+        font-size: var(--fs-eyebrow);
+        font-weight: 500;
+        line-height: 1.2em;
+        letter-spacing: var(--track-eyebrow);
+        text-transform: uppercase;
+        text-align: inherit;
+        color: var(--ink-soft);
+        margin-bottom: 0.75rem;
+        display: block;
+    }
+
+    .cs-title {
+        font-family: var(--font-display);
+        font-size: var(--fs-h2);
+        font-weight: 500;
+        line-height: var(--lh-title);
+        letter-spacing: var(--track-title);
+        text-align: inherit;
+        max-width: 43.75rem;
+        margin: 0 0 1rem 0;
+        color: var(--ink);
+        position: relative;
+    }
+
+    .cs-text {
+        font-size: var(--fs-body);
+        line-height: var(--lh-body);
+        text-align: inherit;
+        width: 100%;
+        max-width: var(--measure);
+        margin: 0;
+        color: var(--ink);
+    }
+
+    /* Opening paragraph, one step up from body */
+    .cs-lede {
+        font-size: var(--fs-lede);
+        line-height: 1.5;
+        max-width: var(--measure);
+        color: var(--ink);
+    }
+
+    /* Image captions, source lines, field hints */
+    .cs-caption {
+        font-size: var(--fs-caption);
+        line-height: 1.45;
+        color: var(--ink-soft);
+    }
+
+    /* Screen reader skip link */
+    .skip {
+        z-index: -1111111;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 0;
+    }
+}
+
+/*-- -------------------------- -->
+<---          Controls          -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 0rem) {
+    /* Shared control chassis. Labels are verb first and plain. */
+    .cs-button,
+    .cs-button-outline {
+        font-family: var(--font-body);
+        font-size: var(--fs-body-sm);
+        font-weight: 500;
+        line-height: 1;
+        letter-spacing: var(--track-button);
+        text-transform: uppercase;
+        text-decoration: none;
+        text-align: center;
+        min-height: var(--control-height);
+        padding: 0.875rem 1.75rem;
+        border: 1px solid transparent;
+        border-radius: 0;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease), transform var(--dur-fast) var(--ease);
+
+        &:active {
+            transform: scale(0.99);
+        }
+    }
+
+    /* Filled — darkens on hover */
+    .cs-button {
+        background-color: var(--cocoa-500);
+        color: var(--cashmere-500);
+
+        &:hover {
+            background-color: var(--cocoa-900);
+        }
+    }
+
+    /* Outline — inverts to a cocoa fill */
+    .cs-button-outline {
+        background-color: transparent;
+        border-color: var(--cocoa-500);
+        color: var(--cocoa-500);
+
+        &:hover {
+            background-color: var(--cocoa-500);
+            color: var(--cashmere-500);
+        }
+    }
+
+    /* Ghost — an underlined label, no box */
+    .cs-button-ghost {
+        font-family: var(--font-body);
+        font-size: var(--fs-body-sm);
+        font-weight: 500;
+        line-height: 1;
+        letter-spacing: var(--track-button);
+        text-transform: uppercase;
+        text-decoration: none;
+        min-height: var(--control-height);
+        padding: 0.875rem 0;
+        color: var(--ink);
+        border-bottom: 1px solid var(--rule-strong);
+        display: inline-flex;
+        align-items: center;
+        transition: opacity var(--dur) var(--ease);
+
+        &:hover {
+            opacity: 0.72;
+        }
+    }
+
+    /* Script — Rosemartin, lowercase only, one per page,
+       and never inside a filled button. */
+    .cs-button-script {
+        font-family: var(--font-script);
+        font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+        font-weight: 400;
+        line-height: 1;
+        letter-spacing: 0;
+        text-transform: lowercase;
+        text-decoration: none;
+        min-height: var(--control-height);
+        padding: 0.5rem 0;
+        color: var(--ink);
+        border-bottom: 1px solid currentColor;
+        display: inline-flex;
+        align-items: center;
+        transition: opacity var(--dur) var(--ease);
+
+        &:hover {
+            opacity: 0.72;
+        }
+    }
+
+    /* Small variant gains padding rather than shrinking its box */
+    .cs-button-sm {
+        font-size: 0.6875rem;
+        padding: 0.875rem 1.25rem;
+    }
+
+    .cs-button-lg {
+        font-size: var(--fs-body-sm);
+        padding: 1.125rem 2.5rem;
+    }
+
+    /* On cocoa or green grounds */
+    .cs-on-dark {
+        .cs-button {
+            background-color: var(--cashmere-500);
+            color: var(--cocoa-500);
+
+            &:hover {
+                background-color: var(--pearl);
+            }
+        }
+
+        .cs-button-outline {
+            border-color: var(--ink-invert);
+            color: var(--ink-invert);
+
+            &:hover {
+                background-color: var(--cashmere-500);
+                color: var(--cocoa-500);
+            }
+        }
+
+        .cs-button-ghost,
+        .cs-button-script {
+            color: var(--ink-invert);
+            border-bottom-color: var(--rule-invert);
+        }
+
+        .cs-topper,
+        .cs-caption {
+            color: var(--ink-invert-soft);
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        li,
+        .cs-title,
+        .cs-text,
+        .cs-lede {
+            color: var(--ink-invert);
+        }
+    }
+
+    /* Disabled */
+    [disabled],
+    .cs-disabled {
+        background-color: var(--cashmere-700);
+        border-color: transparent;
+        color: var(--ink-soft);
+        pointer-events: none;
+    }
+}
+
+/*-- -------------------------- -->
+<---          Utilities         -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 0rem) {
+    .cs-container {
+        width: 100%;
+        max-width: var(--container);
+        margin-inline: auto;
+    }
+
+    .cs-color {
+        color: var(--heritage-500);
+    }
+
+    .cs-bold {
+        font-weight: 500;
+    }
+
+    .cs-hide-on-mobile {
+        display: none !important;
+    }
+
+    /* Visually hidden but readable by assistive tech */
+    .cs-sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+        border: 0;
+    }
+}
+
+/* Desktop utilities - 64rem */
+@media only screen and (min-width: 64rem) {
+    .cs-hide-on-mobile {
+        display: block !important;
+    }
+
+    .cs-hide-on-desktop {
+        display: none !important;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *:before,
+    *:after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/*-- -------------------------- -->
+<---        Scroll Reveal       -->
+<--- -------------------------- -*/
+
+/* The hero's mechanism, generalised and published sitewide. An
+   IntersectionObserver flips .cs-visible on a [data-reveal] group and
+   CSS owns the stagger — same curve, same duration, same 140ms step as
+   the hero, so the two read as one gesture rather than two effects.
+
+   This lives in root.less, not in a page stylesheet, because every page
+   loads root and the per-page files only carry --reveal-i indices. Put
+   the mechanism in a page file and every other page inherits the index
+   assignments with nothing to drive them.
+
+   Deliberately not a view() timeline. A view timeline is a scrubber: it
+   maps progress to scroll position, so a reveal advances and retreats
+   with the wheel instead of playing out. That is a different motion from
+   the hero's and no amount of range tuning closes the gap.
+
+   The index is a custom property rather than nth-child on the item,
+   because a reveal set spans more than one parent — a header outside the
+   list, the cards inside it. nth-child restarts at each parent;
+   --reveal-i doesn't.
+
+   Hidden state is gated on .js throughout. If the script never runs,
+   every item is present and unshifted. */
+
+.js [data-reveal] .cs-reveal {
+    opacity: 0;
+    transform: translateY(var(--reveal-shift, 0.75rem));
+    transition:
+        opacity var(--reveal-dur, 1100ms) var(--reveal-ease, cubic-bezier(0.33, 0, 0.2, 1)),
+        transform var(--reveal-dur, 1100ms) var(--reveal-ease, cubic-bezier(0.33, 0, 0.2, 1));
+    transition-delay: calc(var(--reveal-step, 140ms) * var(--reveal-i, 0));
+}
+
+.js [data-reveal].cs-visible .cs-reveal {
+    opacity: 1;
+    transform: none;
+}
+
+/* The blanket rule above clamps transition-duration to 0.01ms, which
+   still runs the fade — just imperceptibly fast. That is the wrong lever
+   for a reveal: it leaves the shift in place for one frame. Kill both
+   outright here. */
+@media (prefers-reduced-motion: reduce) {
+    .js [data-reveal] .cs-reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+}
+
+/*-- -------------------------- -->
+<---           Fonts            -->
+<--- -------------------------- -*/
+
+/* One family name per typeface. Weights and styles are carried by
+   descriptor so the browser never synthesises bold or oblique. */
+
+@media only screen and (min-width: 0rem) {
+    /* Cinzel — display */
+    @font-face {
+        font-family: "Cinzel";
+        font-style: normal;
+        font-weight: 500;
+        font-display: swap;
+        src: url("/assets/fonts/Cinzel-Medium.woff2") format("woff2"), url("/assets/fonts/Cinzel-Medium.woff") format("woff");
+    }
+
+    @font-face {
+        font-family: "Cinzel";
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url("/assets/fonts/Cinzel-Bold.woff2") format("woff2"), url("/assets/fonts/Cinzel-Bold.woff") format("woff");
+    }
+
+    /* Elms Sans — body */
+    @font-face {
+        font-family: "Elms Sans";
+        font-style: normal;
+        font-weight: 300;
+        font-display: swap;
+        src: url("/assets/fonts/ElmsSans-Light.woff2") format("woff2"), url("/assets/fonts/ElmsSans-Light.woff") format("woff");
+    }
+
+    @font-face {
+        font-family: "Elms Sans";
+        font-style: italic;
+        font-weight: 300;
+        font-display: swap;
+        src: url("/assets/fonts/ElmsSans-LightItalic.woff2") format("woff2"), url("/assets/fonts/ElmsSans-LightItalic.woff") format("woff");
+    }
+
+    @font-face {
+        font-family: "Elms Sans";
+        font-style: normal;
+        font-weight: 500;
+        font-display: swap;
+        src: url("/assets/fonts/ElmsSans-Medium.woff2") format("woff2"), url("/assets/fonts/ElmsSans-Medium.woff") format("woff");
+    }
+
+    @font-face {
+        font-family: "Elms Sans";
+        font-style: italic;
+        font-weight: 500;
+        font-display: swap;
+        src: url("/assets/fonts/ElmsSans-MediumItalic.woff2") format("woff2"), url("/assets/fonts/ElmsSans-MediumItalic.woff") format("woff");
+    }
+
+    /* Rosemartin — calls to action, lowercase only */
+    @font-face {
+        font-family: "Rosemartin";
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url("/assets/fonts/Rosemartin.woff2") format("woff2"), url("/assets/fonts/Rosemartin.woff") format("woff");
+    }
+}

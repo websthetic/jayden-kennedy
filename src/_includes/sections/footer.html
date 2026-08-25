@@ -1,0 +1,80 @@
+<!-- ============================================ -->
+<!--                   Footer                     -->
+<!-- ============================================ -->
+
+<footer id="footer" class="cs-on-dark">
+    <div class="cs-container">
+        <div class="cs-top">
+            <!-- ── Brand ── -->
+            <div class="cs-brand">
+                <a href="/" class="cs-mark" aria-label="Jayden Kennedy, home">
+                    <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/neighborhood-img/jayden-kennedy-icon.png" alt="" width="96" height="120" decoding="async" aria-hidden="true">
+                </a>
+
+                <p class="cs-descriptor">
+                    {{ client.name }}, Broker. Durham Region and the Greater Toronto Area.
+                </p>
+
+                <!-- The page's one Rosemartin call to action -->
+                <a href="/contact/" class="cs-button-script cs-ask">ask me anything</a>
+            </div>
+
+            <!-- ── Pages ── -->
+            <nav class="cs-col" aria-label="Footer">
+                <span class="cs-topper">Pages</span>
+                <ul class="cs-ul">
+                    <li class="cs-li"><a href="/listings/" class="cs-link">Listings</a></li>
+                    <li class="cs-li"><a href="/approach/" class="cs-link">Approach</a></li>
+                    <li class="cs-li"><a href="/about/" class="cs-link">About</a></li>
+                    <li class="cs-li"><a href="/reviews/" class="cs-link">Reviews</a></li>
+                    <li class="cs-li"><a href="/press/" class="cs-link">Press</a></li>
+                    <li class="cs-li"><a href="/journal/" class="cs-link">Journal</a></li>
+                </ul>
+            </nav>
+
+            <!-- ── Office ── -->
+            <div class="cs-col">
+                <span class="cs-topper">Office</span>
+                <address class="cs-address">
+                    {{ client.address.lineOne }}<br>
+                    {{ client.address.city }}, {{ client.address.state }} {{ client.address.zip }}
+                </address>
+            </div>
+
+            <!-- ── Direct ── -->
+            <div class="cs-col">
+                <span class="cs-topper">Direct</span>
+                <ul class="cs-ul">
+                    <li class="cs-li">
+                        <a href="tel:{{ client.phoneForTel }}" class="cs-link">{{ client.phoneFormatted }}</a>
+                    </li>
+                    <li class="cs-li">
+                        <a href="mailto:{{ client.email }}" class="cs-link">{{ client.email }}</a>
+                    </li>
+                    <li class="cs-li">
+                        <a href="{{ client.socials.instagram }}" class="cs-link" target="_blank" rel="noopener">Instagram</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ── Legal ── -->
+        <div class="cs-legal">
+            <p class="cs-smallprint">
+                {{ client.brokerage }}. Not intended to solicit buyers or sellers currently under contract. Listing data is provided by the Toronto Regional Real Estate Board and is deemed reliable but not guaranteed accurate.
+            </p>
+
+            <!-- CREA trademark attribution. Required of member sites using the
+                 REALTOR® marks — confirm with the brokerage before removing. -->
+            <p class="cs-fineprint">
+                REALTOR<sup>&reg;</sup>, REALTORS<sup>&reg;</sup>, and the REALTOR<sup>&reg;</sup> logo are certification marks owned by REALTOR<sup>&reg;</sup> Canada Inc., a corporation jointly owned by the National Association of REALTORS<sup>&reg;</sup> and the Canadian Real Estate Association. MLS<sup>&reg;</sup>, Multiple Listing Service<sup>&reg;</sup>, and the associated logos are owned by the Canadian Real Estate Association and identify the quality of services provided by real estate professionals who are members of CREA.
+            </p>
+
+            <div class="cs-bottom">
+                <a href="/privacy-policy/" class="cs-legal-link">Privacy policy</a>
+                <a href="/accessibility/" class="cs-legal-link">Accessibility</a>
+                <span class="cs-copyright">&copy; {% year %} {{ client.name }}</span>
+            </div>
+        </div>
+    </div>
+</footer>
