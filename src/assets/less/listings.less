@@ -198,8 +198,22 @@
         border-radius: 0;
     }
 
+    /* This container carries its own gutter, unlike every other block on
+       the page — #listings-intro, #listings-filters, .cs-summary and
+       #listings-disclosure all put the gutter on the section and let a
+       bare .cs-container sit inside it.
+
+       With border-box that padding eats into the shared 90rem cap, so
+       the cards resolve a full gutter narrower than the filter row above
+       them and the two left edges visibly disagree. Growing the cap by
+       the padding restores a true 90rem content box.
+
+       Holds at both ends without a breakpoint: above 90rem + 2×gutter
+       both content boxes are 90rem and centred; below it both are
+       100vw − 2×gutter and both start at the gutter. */
     > .cs-container {
         padding: 2.5rem var(--gutter) 0;
+        max-width: calc(var(--container) + var(--gutter) * 2);
     }
 
     .cs-card-group {
