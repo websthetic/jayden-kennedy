@@ -25,26 +25,57 @@ permalink: "/press/"
 {% block body %}
 
     <!-- ============================================ -->
-    <!--                    Intro                     -->
+    <!--                  Masthead                    -->
     <!-- ============================================ -->
 
-    <!-- Same chassis as /approach/ — title and topper left, body and
-         CTA right, no image. Interior pages share this opening; the
-         band below is the second half of the pattern. -->
+    <!-- Press-only chassis. One grid, four children: title and the
+         second paragraph left, lede and image right. The second
+         paragraph hangs to the image's bottom edge rather than
+         sitting under the title — the drop is the point. -->
 
-    <section id="intro" data-reveal>
+    <section id="masthead" data-reveal>
         <div class="cs-container">
             <div class="cs-lead cs-reveal">
-                <span class="cs-topper">Media and press</span>
-                <h1>Where the work has been heard</h1>
+                <!-- Breaks are explicit so each line can rise out of
+                     its own mask. Below 64rem a line may wrap inside
+                     its mask; the group still rises as one. -->
+                <h1 class="cs-title">
+                    <span class="cs-line"><span>Where the work</span></span>
+                    <span class="cs-line"><span>has been heard</span></span>
+                </h1>
             </div>
 
-            <div class="cs-body cs-reveal">
+            <div class="cs-body cs-reveal" style="--reveal-i: 1">
                 <p class="cs-lede">
                     Interviews, panels and podcast appearances on financial literacy and how property carries its price. To book an appearance, send the date and the audience.
                 </p>
                 <a href="/contact/" class="cs-button-script">request an appearance</a>
             </div>
+
+            <!-- CONFIRM: needs real copy. A second paragraph on what
+                 Jayden brings to a segment — preparation, local
+                 figures, what she won't speculate on. -->
+            <p class="cs-aside cs-reveal" style="--reveal-i: 2">
+                Segments run thirty to sixty minutes, remote or in studio. Jayden brings her own material and local figures sent ahead of the recording.
+            </p>
+
+            <!-- CONFIRM: wide studio or panel crop, 16:9. Not the
+                 portrait — that belongs on /about/. -->
+            <figure class="cs-figure cs-reveal" style="--reveal-i: 3">
+                <picture class="cs-picture">
+                    <source media="(max-width: 63.9375rem)" srcset="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/about-jayden-portrait.jpg">
+                    <source media="(min-width: 64rem)" srcset="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/about-jayden-portrait.jpg">
+                    <img
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/about-jayden-portrait.jpg"
+                        alt="Jayden Kennedy recording a segment in studio"
+                        width="1600"
+                        height="900"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="async"
+                    >
+                </picture>
+            </figure>
         </div>
     </section>
 
@@ -87,17 +118,36 @@ permalink: "/press/"
         </div>
     </section>
 
-    <!-- ============================================ -->
+  <!-- ============================================ -->
     <!--               Speaking Topics                -->
     <!-- ============================================ -->
 
-    <!-- Full-width ruled rows: topic left, gloss right, hairlines
-         running the whole measure. Scales to a fourth topic with no
-         redesign. -->
+    <!-- Heading top-left, image anchored to the bottom of the same
+         column, entries stacked large on the right. Hovering an
+         entry swaps the image beneath the heading — all three are
+         stacked in the figure and cross-faded by :has(). -->
 
     <section id="topics" data-reveal>
         <div class="cs-container">
-            <h2 class="cs-reveal">Speaking topics</h2>
+            <div class="cs-lead">
+                <h2 class="cs-reveal">Speaking topics</h2>
+
+                <!-- CONFIRM: three landscape crops, one per topic.
+                     Rooms, desks, streets — not headshots; /about/
+                     carries that. All three load on this section, so
+                     keep them light. -->
+                <figure class="cs-figure cs-reveal" style="--reveal-i: 1">
+                    <picture class="cs-slide">
+                        <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder-1.jpg" alt="" width="1200" height="900" loading="lazy" decoding="async">
+                    </picture>
+                    <picture class="cs-slide">
+                        <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg" alt="" width="1200" height="900" loading="lazy" decoding="async">
+                    </picture>
+                    <picture class="cs-slide">
+                        <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/selling-home-image.jpg" alt="" width="1200" height="900" loading="lazy" decoding="async">
+                    </picture>
+                </figure>
+            </div>
 
             <ul class="cs-topic-list">
                 <li class="cs-topic cs-reveal">
@@ -107,14 +157,14 @@ permalink: "/press/"
                     </p>
                 </li>
 
-                <li class="cs-topic cs-reveal">
+                <li class="cs-topic cs-reveal" style="--reveal-i: 1">
                     <h3>Reading a market without a headline</h3>
                     <p class="cs-text">
                         What ninety days of local sales tell you that a national average cannot.
                     </p>
                 </li>
 
-                <li class="cs-topic cs-reveal">
+                <li class="cs-topic cs-reveal" style="--reveal-i: 2">
                     <h3>The first purchase</h3>
                     <p class="cs-text">
                         Carrying costs, deposit structure, and the questions to ask before an offer.
@@ -125,18 +175,42 @@ permalink: "/press/"
     </section>
 
     <!-- ============================================ -->
+    <!--                     Band                     -->
+    <!-- ============================================ -->
+
+    <!--! Deliberately shorter than the homepage vista. Three large
+          images run consecutively from here down, and they need a
+          hierarchy — this one is the smallest of the three. -->
+
+       <section id="band" aria-hidden="true">
+        <picture class="cs-picture">
+            <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/interio-img-placeholder.jpg"
+                 alt=""
+                 width="2600" height="1500"
+                 loading="lazy" decoding="async">
+        </picture>
+    </section>
+
+    <!-- ============================================ -->
     <!--                For Producers                 -->
     <!-- ============================================ -->
 
-    <!-- The page's one saturated field, and its terminal block. Six
-         cells: five looks incomplete in a three-column grid and
+    <!-- The page's one saturated field, and its terminal block.
+         Heading and request left, the six cells right — the heading
+         does structural work rather than sitting on top, and the
+         request sits under the thing it's asking for.
+
+         Six cells: five looks incomplete in a two-column grid and
          seven wraps badly. If one goes, cut two. -->
 
     <section id="producers" class="cs-on-dark" data-reveal>
         <div class="cs-container">
-            <h2 class="cs-reveal">For producers</h2>
+            <div class="cs-lead cs-reveal">
+                <h2>For producers</h2>
+                <a href="/contact/" class="cs-button-script">request an appearance</a>
+            </div>
 
-            <dl class="cs-spec cs-reveal">
+            <dl class="cs-spec cs-reveal" style="--reveal-i: 1">
                 <div class="cs-spec-item">
                     <dt class="cs-spec-label">Format</dt>
                     <dd class="cs-spec-value">Thirty to sixty minutes, remote or in studio</dd>
@@ -171,8 +245,6 @@ permalink: "/press/"
                     </dd>
                 </div>
             </dl>
-
-            <a href="/contact/" class="cs-button-script cs-reveal">request an appearance</a>
         </div>
     </section>
 

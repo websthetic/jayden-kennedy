@@ -1,25 +1,27 @@
 /*-- -------------------------- -->
-<---            Intro           -->
+<---           Masthead         -->
 <--- -------------------------- -*/
 
-/* Interior chassis, shared with /approach/. Title and topper left,
-   body and CTA right, stacking below 64rem — a display face and a
-   lede in two columns on a phone leaves neither with a measure. */
+/* Press-only. Title and aside left, lede and figure right. The
+   aside bottom-aligns to the figure so the left column hangs
+   rather than stacking under the title. */
 
 @media only screen and (min-width: 0rem) {
-    #intro {
+    #masthead {
         padding: var(--section-padding);
         /* Interior pages open directly under the header, with no
-           hero beneath it. Duplicated from approach.less and
-           contact.less — promote to a --page-top token in root.less
-           before a fourth page repeats it. */
+           hero beneath it. Fourth page to repeat this — promote to
+           a --page-top token in root.less and replace all four. */
         padding-top: clamp(8rem, 13vw, 12rem);
         background-color: var(--paper);
+        /* Contains the figure's right bleed at 64rem. Without it
+           the page gains a horizontal scrollbar. */
+        overflow: hidden;
 
         .cs-container {
             display: grid;
             grid-template-columns: minmax(0, 1fr);
-            gap: 1.75rem;
+            gap: 2rem;
         }
 
         .cs-lead {
@@ -28,14 +30,29 @@
             }
         }
 
-        h1 {
+        .cs-title {
             margin: 0;
-            /* root balances h1 by default. The balancer evens the
-               line lengths and loses the break after "work" —
-               pretty leaves the break to the measure. */
-            text-wrap: pretty;
-            max-width: 16ch;
-            font-size: var(--fs-h2);
+            font-size: var(--fs-h1);
+        }
+
+        /* Each line is a mask; the inner span is what travels. The
+           mask has to be block with overflow hidden or the descender
+           on "work" clips against the line below. */
+        .cs-line {
+            display: block;
+            overflow: hidden;
+
+            > span {
+                display: block;
+                /* Load animation, not scroll-driven. view() would
+                   resolve to its end state here — the masthead is
+                   above the fold and never enters. */
+                animation: cs-line-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+            }
+
+            &:nth-child(2) > span {
+                animation-delay: 0.09s;
+            }
         }
 
         .cs-body {
@@ -49,33 +66,142 @@
             max-width: 46ch;
             margin: 0;
         }
+
+        .cs-aside {
+            max-width: 42ch;
+            margin: 0;
+            color: var(--ink-soft);
+        }
+
+        .cs-figure {
+            margin: 0;
+        }
+
+        .cs-picture {
+            display: block;
+            position: relative;
+            /* 4:3 on a phone. The 16:9 desktop crop is 210px tall at
+               this width and reads as a letterbox strip. */
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+
+            img {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+
+    @keyframes cs-line-rise {
+        from {
+            transform: translateY(100%);
+        }
+        to {
+            transform: translateY(0);
+        }
     }
 }
 
 /* Desktop - 64rem */
 @media only screen and (min-width: 64rem) {
-    #intro {
-        /* Opts out of the centred cap, the way #hero and #process do
-           on the homepage. Past ~1550px the container's auto margin
-           outgrows the gutter and takes over the left edge, and this
-           page's first line would sit inboard of the sections below. */
+    #masthead {
+        
+        /* Twelve columns, not two. The figure starts inboard of the
+           text column above it and runs to the viewport edge — a
+           span the 1.15fr/1fr split can't describe. */
         .cs-container {
             max-width: none;
             margin-inline: 0;
-            grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-            column-gap: clamp(3rem, 7vw, 7rem);
-            align-items: start;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            column-gap: clamp(1rem, 1.6vw, 1.75rem);
+            /* The drop between the title row and the figure row is
+               the section's whole gesture. Anything under ~6rem and
+               the two rows read as a stack. */
+                        row-gap: clamp(3rem, 7vw, 6.5rem);
         }
 
-        /* Optical. Dropping the body to the title's second line
-           stops the two columns reading as a table row — they are a
-           statement and its gloss, not two headings. */
+        .cs-lead {
+            grid-column: 1 / span 6;
+            grid-row: 1;
+        }
+
         .cs-body {
-            padding-block-start: clamp(1.5rem, 3.5vw, 3.25rem);
+            grid-column: 8 / span 5;
+            grid-row: 1;
+            
+        }
+
+        /* The hang. Bottom edge meets the figure's bottom edge —
+           the paragraph is a footnote to the image, not a follow-on
+           to the title six inches above it. */
+        .cs-aside {
+            color: (var(--ink));
+            grid-column: 1 / span 4;
+            grid-row: 2;
+            align-self: center;
+            max-width: none;
+        }
+
+                       .cs-figure {
+            grid-column: 6 / span 7;
+            grid-row: 2;
+            /* Runs past the gutter to the viewport edge. Percentage
+               resolves against the container, vw against the
+               viewport — the difference is exactly the right
+               padding, whatever --section-padding resolves to. */
+            margin-inline-end: calc(50% - 50vw);
         }
 
         .cs-lede {
             max-width: 40ch;
+        }
+
+        .cs-picture {
+            aspect-ratio: 16 / 9;
+            max-height: 30rem;
+            /* Slow un-crop as the figure travels. The image starts
+               overscaled and settles to true — the frame never
+               moves, so it reads as depth rather than motion. */
+            img {
+                animation: cs-figure-settle linear both;
+                animation-timeline: view();
+                animation-range: entry 0% cover 55%;
+            }
+        }
+    }
+
+    @keyframes cs-figure-settle {
+        from {
+            transform: scale(1.12);
+        }
+        to {
+            transform: scale(1);
+        }
+    }
+}
+
+/* Wide - 90rem */
+@media only screen and (min-width: 90rem) {
+    #masthead {
+        /* The aside is a footnote, not a column of body copy. Past
+           this width four twelfths runs to ~55ch unchecked. */
+        .cs-aside {
+            max-width: 44ch;
+            font-size: var(--fs-lede);
+            
+        }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #masthead {
+        .cs-line > span,
+        .cs-picture img {
+            animation: none;
+            transform: none;
         }
     }
 }
@@ -332,27 +458,64 @@
 <---       Speaking Topics      -->
 <--- -------------------------- -*/
 
-/* Ruled rows running the full measure. Title and gloss on one
-   baseline from 64rem; stacked below it, where two columns would
-   leave the gloss with about six words a line. */
+/* Heading and image left, entries stacked large on the right. The
+   image bottom-aligns to the last entry, so the left column's
+   emptiness is deliberate rather than leftover. Below 64rem it's a
+   plain stack — the anchoring and the hover swap both need a
+   desktop pointer to mean anything. */
 
 @media only screen and (min-width: 0rem) {
     #topics {
         padding: var(--section-padding);
         background-color: var(--paper);
 
-        h2 {
-            margin: 0 0 2rem;
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2.5rem;
         }
 
-        /* No gap. Each row carries a hairline and the last one
-           closes the set, so consecutive rules have to meet — a gap
-           turns a register into three floating captions. Rhythm
-           comes from the rows' own padding. */
+        .cs-lead {
+            h2 {
+                margin: 0;
+                max-width: 14ch;
+            }
+        }
+
+        .cs-figure {
+            margin: 2rem 0 0;
+            position: relative;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+        }
+
+        /* All three stacked. The first is the resting state; the
+           others sit at zero until a topic is hovered. */
+        .cs-slide {
+            position: absolute;
+            inset: 0;
+            display: block;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+
+            &:first-child {
+                opacity: 1;
+            }
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        /* No rules and no borders. The entries are separated by
+           their own spacing at a size where the gap reads as
+           structure — a hairline here would fight the scale. */
         .cs-topic-list {
             display: grid;
             grid-template-columns: minmax(0, 1fr);
-            gap: 0;
+
             margin: 0;
             padding: 0;
             padding-inline-start: 0;
@@ -360,28 +523,11 @@
         }
 
         .cs-topic {
-            border-top: 1px solid var(--rule);
-            padding-block: 1.25rem;
-            display: grid;
-            grid-template-columns: minmax(0, 1fr);
-            gap: 0.5rem;
-            font-size: inherit;
-            line-height: inherit;
-
-            /* Closes the register. Without it the last row's gloss
-               hangs off the bottom of an open-ended list. */
-            &:last-child {
-                border-bottom: 1px solid var(--rule);
-            }
-
             h3 {
-                margin: 0;
-                /* Down a step from --fs-h3. Cinzel caps at heading
-                   size land three times in a row here, and the
-                   hairlines already carry the structure the size was
-                   straining to carry. */
+                margin: 0 0 0.75rem;
                 font-size: var(--fs-h3);
                 letter-spacing: 0.02em;
+                text-wrap: pretty;
             }
         }
 
@@ -396,27 +542,94 @@
 /* Desktop - 64rem */
 @media only screen and (min-width: 64rem) {
     #topics {
-        h2 {
-            margin-bottom: 2.5rem;
-        }
-
         .cs-container {
             max-width: none;
             margin-inline: 0;
+            /* The entries carry the section; the image is the
+               accompaniment. Weighted well past even. */
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.9fr);
+            column-gap: clamp(8rem, 16vw, 16rem);
         }
 
-        /* Baseline, not start. The Cinzel title and the sans gloss
-           have different cap heights; aligning the boxes leaves the
-           gloss reading high against the title it belongs to. */
+        /* Heading at the top, figure at the bottom, nothing between.
+           min-height forces the drop: the right column is the
+           shorter of the two, so stretching alone leaves this column
+           at content height and the gap collapses. */
+        .cs-lead {
+           
+            h2 {
+                margin-bottom: clamp(3rem, 8vw, 9rem);
+            }
+            display: flex;
+            flex-direction: column;
+            /* Not align-items: start on the container — this column
+               has to stretch for the anchoring to work. */
+            height: 100%;
+            min-height: clamp(24rem, 36vw, 32rem);
+        }
+
+        /* auto, not space-between on the parent. space-between only
+           distributes leftover space; margin-top: auto claims all of
+           it, so the figure pins to the bottom whatever the column
+           height turns out to be.
+
+           max-height decouples the figure from the column width. A
+           3:2 crop grows taller as the viewport widens, and past
+           ~1280px it outgrew the min-height ceiling and closed the
+           gap. Capped, the drop holds at any width. */
+        .cs-figure {
+            margin: auto 0 0;
+            aspect-ratio: 3 / 2;
+            max-height: 26rem;
+        }
+
+        .cs-topic-list {
+            gap: clamp(2rem, 3.5vw, 3.25rem);
+        }
+
         .cs-topic {
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
-            column-gap: clamp(2rem, 5vw, 4rem);
-            align-items: baseline;
-            padding-block: 1.5rem;
+            h3 {
+                /* Up from --fs-h3 — the size is what makes this a
+                   register rather than a list. Capped lower than
+                   before: the wider image column leaves ~600px
+                   here at 1440, which won't carry 3rem. */
+                font-size: clamp(1.5rem, 2.4vw, 2.25rem);
+                line-height: 1.12;
+                /* 40ch fits most titles on one line at this size.
+                   Drop to ~24ch if you want them breaking to two. */
+                max-width: 28ch;
+                margin-bottom: 1.25rem;
+            }
+
+            /* The un-hovered entries recede rather than the hovered
+               one advancing — keeps the resting state at full
+               strength when the pointer is elsewhere. */
+            transition: opacity 0.35s ease;
+        }
+
+        .cs-topic-list:hover .cs-topic:not(:hover) {
+            opacity: 0.45;
         }
 
         .cs-text {
-            max-width: 52ch;
+            max-width: 44ch;
+            font-size: var(--fs-body);
+        }
+
+        /* The swap. Scoped to the container so a hover in the right
+           column can reach the figure in the left — sibling
+           combinators can't cross subtrees, :has() can. */
+        .cs-container:has(.cs-topic:nth-child(1):hover) .cs-slide:nth-child(1),
+        .cs-container:has(.cs-topic:nth-child(2):hover) .cs-slide:nth-child(2),
+        .cs-container:has(.cs-topic:nth-child(3):hover) .cs-slide:nth-child(3) {
+            opacity: 1;
+        }
+
+        /* Without this the first slide stays lit under the incoming
+           one and the cross-fade never resolves. */
+        .cs-container:has(.cs-topic:nth-child(2):hover) .cs-slide:nth-child(1),
+        .cs-container:has(.cs-topic:nth-child(3):hover) .cs-slide:nth-child(1) {
+            opacity: 0;
         }
     }
 }
@@ -425,7 +638,10 @@
 <---         For Producers      -->
 <--- -------------------------- -*/
 
-/* The page's one saturated field and its terminal block.
+/* The page's one saturated field and its terminal block. Heading
+   and request left, the six cells right from 64rem; stacked below
+   it, where two columns leave neither the heading nor the values a
+   measure.
 
    .cs-on-dark in root.less already inverts headings, body, toppers
    and the script control. Nothing here re-declares a colour that
@@ -436,15 +652,28 @@
         padding: var(--section-padding);
         background-color: var(--paper-field);
 
-        h2 {
-            margin: 0 0 2rem;
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2.25rem;
+        }
+
+        .cs-lead {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2rem;
+
+            h2 {
+                margin: 0;
+            }
         }
 
         .cs-spec {
             display: grid;
             grid-template-columns: minmax(0, 1fr);
             gap: 1.75rem;
-            margin: 0 0 2.25rem;
+            margin: 0;
         }
 
         .cs-spec-item {
@@ -505,25 +734,36 @@
 /* Desktop - 64rem */
 @media only screen and (min-width: 64rem) {
     #producers {
-        h2 {
-            margin-bottom: 2.5rem;
-        }
-
         .cs-container {
             max-width: none;
             margin-inline: 0;
+            /* The cells carry the band; the heading anchors it. */
+            grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.9fr);
+            column-gap: clamp(3rem, 7vw, 7rem);
+            align-items: start;
         }
 
-        /* Three across. Six cells fills two clean rows — five looks
-           incomplete and seven wraps badly. If a cell goes, cut two. */
+        .cs-lead {
+            gap: clamp(2rem, 4vw, 3.5rem);
+
+            h2 {
+                /* Breaks to two lines at this measure, which is what
+                   gives the left column enough presence to hold its
+                   half of the band. */
+                max-width: 10ch;
+            }
+        }
+
+        /* Two across, not three. The heading has taken a column, so
+           three would run the values to ~18ch and break every cell
+           to four lines. */
         .cs-spec {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 2.25rem clamp(2rem, 4vw, 3.5rem);
-            margin-bottom: 2.75rem;
         }
 
         .cs-spec-value {
-            max-width: 26ch;
+            max-width: 30ch;
         }
     }
 }
@@ -587,5 +827,120 @@
 
     .cs-button-script {
         --reveal-i: 2;
+    }
+}
+
+/*-- -------------------------- -->
+<---            Band            -->
+<--- -------------------------- -*/
+
+/* Full-bleed image, no container and no copy. Shorter than the
+   homepage vista on purpose: two 60vw bleed blocks follow it, and
+   three images at one size read as a gallery rather than a page.
+
+   overflow: hidden is load-bearing — it clips the parallax
+   overscan at both ends. */
+
+@media only screen and (min-width: 0rem) {
+    #band {
+        height: clamp(14rem, 44vh, 20rem);
+        position: relative;
+        overflow: hidden;
+        /* Under the image while it loads, so the band never flashes
+           white between two paper sections. */
+        background-color: var(--paper-warm);
+
+        .cs-picture {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: relative;
+
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: 50% 50%;
+            }
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #band {
+        height: clamp(22rem, 52vh, 30rem);
+    }
+}
+
+/*-- -------------------------- -->
+<---        Band Parallax       -->
+<--- -------------------------- -*/
+
+/* Keyframes at file scope. LESS drops them silently when nested
+   inside a media query or a rule.
+
+   Lags rather than leads: the frame travels up at scroll speed, the
+   photograph at scroll speed minus the travel, so it settles into
+   the band as the section clears. The slack therefore lives below —
+   the image starts lifted by the travel and ends flush at the top.
+
+   Keep --band-overscan meaningfully above --band-travel. Equal
+   values put the image's bottom edge exactly on the band's at the
+   end of the range, and a rounding error there shows as a hairline
+   of --paper-warm. */
+
+@keyframes band-parallax {
+    from {
+        transform: translateY(calc(var(--band-travel) * -1));
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* The @supports guard is load-bearing. Without it, browsers lacking
+   scroll-driven animation run these keyframes on a time basis and
+   the image slides once, on load, unscrolled. */
+
+@supports (animation-timeline: view()) {
+    #band {
+        --band-overscan: 22vh;
+        --band-travel: 16vh;
+
+        /* Declared on the band, read by the image. A named view
+           timeline resolves against ancestors, so no timeline-scope
+           is needed — and it has to stay off the image, which is
+           the element being transformed. */
+        view-timeline-name: --band;
+        view-timeline-axis: block;
+
+        .cs-picture img {
+            height: calc(100% + var(--band-overscan));
+            will-change: transform;
+
+            /* Shorthand first: `animation` resets animation-timeline
+               and animation-range to initial. */
+            animation: band-parallax linear both;
+            animation-timeline: --band;
+            /* cover, not entry — entry resolves within a few hundred
+               pixels for a band this short and the travel would be
+               spent before it is properly on screen. */
+            animation-range: cover 5% cover 95%;
+        }
+    }
+
+    /* root.less clamps animation-duration to 0.01ms under reduced
+       motion, which corrupts the range mapping rather than disabling
+       it. Detach, and drop the overscan with it — leaving the extra
+       height would ship a permanently recropped band for no reason. */
+    @media (prefers-reduced-motion: reduce) {
+        #band .cs-picture img {
+            height: 100%;
+            animation: none;
+            animation-timeline: none;
+            will-change: auto;
+        }
     }
 }
