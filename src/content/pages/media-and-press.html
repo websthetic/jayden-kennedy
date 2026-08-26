@@ -28,17 +28,18 @@ permalink: "/press/"
     <!--                  Masthead                    -->
     <!-- ============================================ -->
 
-    <!-- Press-only chassis. One grid, four children: title and the
-         second paragraph left, lede and image right. The second
-         paragraph hangs to the image's bottom edge rather than
-         sitting under the title — the drop is the point. -->
+    <!-- Press-only. Title and aside left, lede and figure right at
+         64rem, where every child is placed explicitly by grid line.
+         DOM order therefore only governs the mobile stack:
+         title, lede and request, image, then the aside beneath it. -->
 
     <section id="masthead" data-reveal>
         <div class="cs-container">
             <div class="cs-lead cs-reveal">
                 <!-- Breaks are explicit so each line can rise out of
-                     its own mask. Below 64rem a line may wrap inside
-                     its mask; the group still rises as one. -->
+                     its own mask. The mask clips rather than wraps,
+                     so the type is capped below 48rem to keep the
+                     longer line inside the gutter. -->
                 <h1 class="cs-title">
                     <span class="cs-line"><span>Where the work</span></span>
                     <span class="cs-line"><span>has been heard</span></span>
@@ -52,16 +53,9 @@ permalink: "/press/"
                 <a href="/contact/" class="cs-button-script">request an appearance</a>
             </div>
 
-            <!-- CONFIRM: needs real copy. A second paragraph on what
-                 Jayden brings to a segment — preparation, local
-                 figures, what she won't speculate on. -->
-            <p class="cs-aside cs-reveal" style="--reveal-i: 2">
-                Segments run thirty to sixty minutes, remote or in studio. Jayden brings her own material and local figures sent ahead of the recording.
-            </p>
-
-            <!-- CONFIRM: wide studio or panel crop, 16:9. Not the
+            <!-- CONFIRM: wide studio or panel crop. Not the
                  portrait — that belongs on /about/. -->
-            <figure class="cs-figure cs-reveal" style="--reveal-i: 3">
+            <figure class="cs-figure cs-reveal" style="--reveal-i: 2">
                 <picture class="cs-picture">
                     <source media="(max-width: 63.9375rem)" srcset="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/about-jayden-portrait.jpg">
                     <source media="(min-width: 64rem)" srcset="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/about-jayden-portrait.jpg">
@@ -76,6 +70,10 @@ permalink: "/press/"
                     >
                 </picture>
             </figure>
+
+            <p class="cs-aside cs-reveal" style="--reveal-i: 3">
+                Segments run thirty to sixty minutes, remote or in studio. Jayden brings her own material and local figures sent ahead of the recording.
+            </p>
         </div>
     </section>
 
