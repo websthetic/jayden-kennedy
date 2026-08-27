@@ -1,12 +1,21 @@
-/*-- -------------------------- -->
-<---            Hero            -->
-<--- -------------------------- -*/
-
 @media only screen and (min-width: 0rem) {
     #hero {
         /* Warm near-black rather than pure black. Over a beige room, a
            neutral scrim reads as grey haze; this one reads as shadow. */
         --hero-ink: #14100c;
+
+        /* Sits between --fs-h4 and --fs-h3. Cinzel needs that gap to
+           outrank the lede without reaching for the headline. Local so
+           it can be tuned without touching the global scale. */
+        --fs-credential: clamp(1.125rem, 1.7vw, 1.375rem);
+
+        /* Beats --fs-h1, which bottoms out at 2.25rem on a phone —
+           --fs-h1's 5vw preferred term only overtakes its floor at
+           about 720px, so every handset gets the minimum. The hero is
+           full-height here and the headline is the only thing in it
+           worth scaling, so it runs on its own vw term and the desktop
+           block hands it back to --fs-h1 at 64rem. */
+        --fs-hero-title: clamp(2.75rem, 9.5vw, 4.5rem);
 
         /* Mobile ramp: vertical only. The copy spans the full width here,
            so a horizontal pass would leave the ends of lines unscrimmed.
@@ -20,11 +29,16 @@
             rgba(20, 16, 12, 0.88) 100%
         );
 
-        /* The copy sits at the bottom edge, which is exactly where mobile
-           Safari's chrome crops vh. svh with a vh fallback. */
-        height: 92vh;
-        height: 92svh;
-        min-height: 42.5rem;
+        /* Full viewport. The copy sits at the bottom edge, which is
+           exactly where mobile Safari's chrome crops vh — svh with a vh
+           fallback so the CTA is never under the toolbar.
+
+           min-height is down from 42.5rem: at full height that floor
+           would exceed the viewport on a landscape phone and on a short
+           window, and the section would scroll instead of filling. */
+        height: 100vh;
+        height: 100svh;
+        min-height: 34rem;
 
         /* Both insets are --gutter now. The left was its own clamp,
            capped at 4rem, which put the headline 64px from the edge
@@ -68,28 +82,49 @@
             pointer-events: none;
         }
 
+        /* Grid rather than flex column, so the desktop block can put the
+           headline in its own column without a wrapper element. A wrapper
+           would break both the nth-child stagger below and the
+           hero-recede animation, which target this element's direct
+           children and this element itself. Single column here reads
+           identically to the old flex stack. */
         .cs-container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            justify-items: start;
             gap: clamp(1rem, 2.5vw, 1.625rem);
             position: relative;
             z-index: 3;
         }
 
-        /* The flex gap owns the rhythm — the shared class margin would double it */
-        .cs-topper {
-            /* Was the weakest element on the page: low-opacity cream on a
-               mid-tone wall. Corrected with colour, NOT opacity — the entry
-               fade below drives opacity on every child of .cs-container, and
-               an #hero-scoped opacity here outranks it and would strand the
-               eyebrow visible before the stagger runs. */
+        /* The grid gap owns the rhythm — the shared class margin would double it */
+        .cs-credential {
+            font-family: var(--font-display);
+            font-size: var(--fs-credential);
+            font-weight: 500;
+            line-height: 1.25;
+            letter-spacing: var(--track-title);
+            text-transform: uppercase;
+            /* Corrected with colour, NOT opacity — the entry fade below
+               drives opacity on every child of .cs-container, and an
+               #hero-scoped opacity here would outrank it and strand the
+               credential visible before the stagger runs. */
             color: var(--cream, #f5efe4);
-            margin-bottom: 0;
+            /* No cap on a phone: the gutter is already narrower than
+               30ch of this size, so the number was doing nothing and a
+               larger one would do nothing either. The desktop block sets
+               its own measure. */
+            max-width: none;
+            margin: 0;
+            text-shadow: 0 1px 18px rgba(20, 16, 12, 0.3);
         }
 
         h1 {
-            max-width: 15ch;
+            font-size: var(--fs-hero-title);
+            /* No cap: the gutter is the measure on a phone, and 15ch of
+               Cinzel uppercase is narrower than the column at this size,
+               which left a ragged short line. */
+            max-width: none;
             margin: 0;
             /* Softens the edge where a serif stem crosses a bright highlight.
                Wide and faint — it should not read as a drop shadow. */
@@ -154,25 +189,17 @@
     }
 }
 
-/* Tablet - 48rem */
-@media only screen and (min-width: 48rem) {
-    #hero {
-        .cs-container {
-            gap: 1.625rem;
-        }
-    }
-}
-
 /* Desktop - 64rem */
 @media only screen and (min-width: 64rem) {
     #hero {
-        /* Two passes now that the copy is a left-hand column.
+        /* Two passes now that the copy is a left-hand column again.
 
            The horizontal pass carries the contrast and clears entirely by
-           72%, so the lit shelving keeps its depth. The vertical pass is
-           correspondingly lighter than the mobile ramp — stacked, they
-           composite to ~0.91 behind the headline and the CTA, while the
-           bottom right of the frame stays at 0.42 and legible.
+           82%, so the lit shelving and the portrait keep their depth. The
+           vertical pass is correspondingly lighter than the mobile ramp —
+           stacked, they composite to ~0.91 behind the headline and the
+           CTA, while the bottom right of the frame stays at 0.42 and
+           legible.
 
            Layer order matters: horizontal first so it paints on top. */
         --hero-scrim: linear-gradient(
@@ -203,16 +230,26 @@
            stays locked to 6vw. Dropping the cap hands the edge back
            to the padding.
 
-           Nothing runs long as a result — h1 is capped at 25ch and
-           the lede at 52ch, so the measure is held by the content
-           rather than by the container. */
+           Nothing runs long as a result — the measures below hold the
+           column rather than the container doing it. */
         .cs-container {
             max-width: none;
             margin-inline: 0;
         }
 
+        /* ch measures Cinzel's digit width, and its uppercase is
+           considerably wider — so a cap in ch buys less room than the
+           character count suggests. Both values are set by eye against
+           the rendered line, not by counting. */
+        .cs-credential {
+            max-width: 44ch;
+        }
+
         h1 {
-            max-width: 25ch;
+            /* Back onto the global scale — --fs-hero-title exists for
+               the phone, where --fs-h1 is stuck on its floor. */
+            font-size: var(--fs-h1);
+            max-width: 26ch;
         }
     }
 }
@@ -259,7 +296,7 @@
         }
 
         /* Two names on one element. --curtain drives the hero recede;
-           --swap drives the state cross-fade in local.less. This rule
+           --swap drives the track slide in local.less. This rule
            carries an id plus a class, so a bare #practice elsewhere
            loses the cascade and the name silently never resolves. */
         .cs-curtain > #practice {
