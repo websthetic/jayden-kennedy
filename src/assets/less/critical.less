@@ -99,12 +99,11 @@
 
         /* The grid gap owns the rhythm — the shared class margin would double it */
         .cs-credential {
-            font-family: var(--font-display);
-            font-size: var(--fs-credential);
-            font-weight: 500;
+            font-family: var(--font-body);
+            font-size: var(--fs-h3);
             line-height: 1.25;
             letter-spacing: var(--track-title);
-            text-transform: uppercase;
+            text-transform: capitalize;
             /* Corrected with colour, NOT opacity — the entry fade below
                drives opacity on every child of .cs-container, and an
                #hero-scoped opacity here would outrank it and strand the
