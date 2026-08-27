@@ -35,7 +35,7 @@
                the break to the measure. */
             text-wrap: pretty;
             max-width: 16ch;
-            font-size: var(--fs-h2);
+            font-size: var(--fs-h1);
         }
 
         .cs-lede {
@@ -228,6 +228,17 @@
             /* Beats root's --measure (40rem), which is narrower than
                this column wants. */
             max-width: 62ch;
+
+            /* Lede paragraph carries the argument, the follow-up
+               drops back to running size. */
+            &:first-of-type {
+                font-size: var(--fs-lede);
+                line-height: 1.5;
+            }
+
+            &:nth-of-type(2) {
+                font-size: var(--fs-lede);
+            }
         }
 
         .cs-button-ghost {
@@ -256,6 +267,12 @@
 
         .cs-text {
             max-width: 58ch;
+
+            /* ch scales with font-size, so the lede would otherwise
+               run wider than the paragraph below it. */
+            &:first-of-type {
+                max-width: 47ch;
+            }
         }
     }
 }
