@@ -25,57 +25,62 @@ permalink: "/press/"
 {% block body %}
 
     <!-- ============================================ -->
-    <!--                  Masthead                    -->
-    <!-- ============================================ -->
+<!--                  Masthead                    -->
+<!-- ============================================ -->
 
-    <!-- Press-only. Title and aside left, lede and figure right at
-         64rem, where every child is placed explicitly by grid line.
-         DOM order therefore only governs the mobile stack:
-         title, lede and request, image, then the aside beneath it. -->
+<!-- Press-only. Title and note-block left, lede and figure right at
+     64rem, where every child is placed explicitly by grid line.
+     DOM order therefore only governs the mobile stack:
+     title, lede, image, then the aside and its CTA beneath it. -->
 
-    <section id="masthead" data-reveal>
-        <div class="cs-container">
-            <div class="cs-lead cs-reveal">
-                <!-- Breaks are explicit so each line can rise out of
-                     its own mask. The mask clips rather than wraps,
-                     so the type is capped below 48rem to keep the
-                     longer line inside the gutter. -->
-                <h1 class="cs-title">
-                    <span class="cs-line"><span>Where the work</span></span>
-                    <span class="cs-line"><span>has been heard</span></span>
-                </h1>
-            </div>
+<section id="masthead" data-reveal>
+    <div class="cs-container">
+        <div class="cs-lead cs-reveal">
+            <!-- Breaks are explicit so each line can rise out of
+                 its own mask. The mask clips rather than wraps,
+                 so the type is capped below 48rem to keep the
+                 longer line inside the gutter. -->
+            <h1 class="cs-title">
+                <span class="cs-line"><span>Where the work</span></span>
+                <span class="cs-line"><span>has been heard</span></span>
+            </h1>
+        </div>
 
-            <div class="cs-body cs-reveal" style="--reveal-i: 1">
-                <p class="cs-lede">
-                    Interviews, panels and podcast appearances on financial literacy and how property carries its price. To book an appearance, send the date and the audience.
-                </p>
-                <a href="/contact/" class="cs-button-script">request an appearance</a>
-            </div>
-
-            <!-- CONFIRM: wide studio or panel crop. Not the
-                 portrait — that belongs on /about/. -->
-            <figure class="cs-figure cs-reveal" style="--reveal-i: 2">
-                <picture class="cs-picture">
-                    <source media="(max-width: 63.9375rem)" srcset="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/about-jayden-portrait.jpg">
-                    <source media="(min-width: 64rem)" srcset="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/about-jayden-portrait.jpg">
-                    <img
-                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/about-jayden-portrait.jpg"
-                        alt="Jayden Kennedy recording a segment in studio"
-                        width="1600"
-                        height="900"
-                        loading="eager"
-                        fetchpriority="high"
-                        decoding="async"
-                    >
-                </picture>
-            </figure>
-
-            <p class="cs-aside cs-reveal" style="--reveal-i: 3">
-                Segments run thirty to sixty minutes, remote or in studio. Jayden brings her own material and local figures sent ahead of the recording.
+        <div class="cs-body cs-reveal" style="--reveal-i: 1">
+            <p class="cs-lede">
+                Interviews, panels and podcast appearances on financial literacy and how property carries its price. To book an appearance, send the date and the audience.
             </p>
         </div>
-    </section>
+
+        <!-- CONFIRM: wide studio or panel crop. Not the
+             portrait — that belongs on /about/. -->
+        <figure class="cs-figure cs-reveal" style="--reveal-i: 2">
+            <picture class="cs-picture">
+                <source media="(max-width: 63.9375rem)" srcset="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-media-press-hero.jpg">
+                <source media="(min-width: 64rem)" srcset="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-media-press-hero.jpg">
+                <img
+                    src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-media-press-hero.jpg"
+                    alt="Jayden Kennedy recording a segment in studio"
+                    width="1600"
+                    height="900"
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
+                >
+            </picture>
+        </figure>
+
+        <!-- The aside and the one script CTA on the page, together.
+             The wrapper is what the grid places at 64rem — a bare
+             sibling after the aside would fall into an implicit row. -->
+        <div class="cs-note cs-reveal" style="--reveal-i: 3">
+            <p class="cs-aside">
+                Segments run thirty to sixty minutes, remote or in studio. Jayden brings her own material and local figures sent ahead of the recording.
+            </p>
+            <a href="/contact/" class="cs-button-script">request an appearance</a>
+        </div>
+    </div>
+</section>
 
     
 
@@ -116,62 +121,6 @@ permalink: "/press/"
         </div>
     </section>
 
-  <!-- ============================================ -->
-    <!--               Speaking Topics                -->
-    <!-- ============================================ -->
-
-    <!-- Heading top-left, image anchored to the bottom of the same
-         column, entries stacked large on the right. Hovering an
-         entry swaps the image beneath the heading — all three are
-         stacked in the figure and cross-faded by :has(). -->
-
-    <section id="topics" data-reveal>
-        <div class="cs-container">
-            <div class="cs-lead">
-                <h2 class="cs-reveal">Speaking topics</h2>
-
-                <!-- CONFIRM: three landscape crops, one per topic.
-                     Rooms, desks, streets — not headshots; /about/
-                     carries that. All three load on this section, so
-                     keep them light. -->
-                <figure class="cs-figure cs-reveal" style="--reveal-i: 1">
-                    <picture class="cs-slide">
-                        <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder-1.jpg" alt="" width="1200" height="900" loading="lazy" decoding="async">
-                    </picture>
-                    <picture class="cs-slide">
-                        <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg" alt="" width="1200" height="900" loading="lazy" decoding="async">
-                    </picture>
-                    <picture class="cs-slide">
-                        <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/selling-home-image.jpg" alt="" width="1200" height="900" loading="lazy" decoding="async">
-                    </picture>
-                </figure>
-            </div>
-
-            <ul class="cs-topic-list">
-                <li class="cs-topic cs-reveal">
-                    <h3>How property creates wealth</h3>
-                    <p class="cs-text">
-                        Amortisation, leverage, income, appreciation, and which of the four you actually control.
-                    </p>
-                </li>
-
-                <li class="cs-topic cs-reveal" style="--reveal-i: 1">
-                    <h3>Reading a market without a headline</h3>
-                    <p class="cs-text">
-                        What ninety days of local sales tell you that a national average cannot.
-                    </p>
-                </li>
-
-                <li class="cs-topic cs-reveal" style="--reveal-i: 2">
-                    <h3>The first purchase</h3>
-                    <p class="cs-text">
-                        Carrying costs, deposit structure, and the questions to ask before an offer.
-                    </p>
-                </li>
-            </ul>
-        </div>
-    </section>
-
     <!-- ============================================ -->
     <!--                     Band                     -->
     <!-- ============================================ -->
@@ -188,6 +137,90 @@ permalink: "/press/"
                  loading="lazy" decoding="async">
         </picture>
     </section>
+
+<!-- ============================================ -->
+<!--               Speaking Topics                -->
+<!-- ============================================ -->
+
+<!-- Centred title over a horizontal track: entry, image, entry,
+     image, entry. At 64rem the section is taller than the viewport
+     and its inner frame pins; the track travels sideways across the
+     pinned hold. Below that, and anywhere scroll-driven animation
+     isn't supported, the same markup is a plain vertical stack.
+
+     DOM order is the reading order in both layouts, so nothing is
+     placed by grid line here. -->
+
+<section id="topics" data-reveal>
+    <div class="cs-pin">
+        <div class="cs-frame">
+
+            <h2 class="cs-title cs-reveal">Speaking topics</h2>
+
+            <div class="cs-track">
+
+                <div class="cs-topic">
+                    <span class="cs-index">01</span>
+                    <div class="cs-topic-body">
+                        <h3>How property creates wealth</h3>
+                        <p class="cs-text">
+                            Amortisation, leverage, income, appreciation, and which of the four you actually control.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- CONFIRM: two crops, portrait rather than landscape —
+                     the panel is roughly 375 x 600 at 1440. Rooms,
+                     desks, streets; not headshots. -->
+                <figure class="cs-figure">
+                    <img
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder-1.jpg"
+                        alt=""
+                        width="900"
+                        height="1200"
+                        loading="lazy"
+                        decoding="async"
+                    >
+                </figure>
+
+                <div class="cs-topic">
+                    <span class="cs-index">02</span>
+                    <div class="cs-topic-body">
+                        <h3>Reading a market without a headline</h3>
+                        <p class="cs-text">
+                            What ninety days of local sales tell you that a national average cannot.
+                        </p>
+                    </div>
+                </div>
+
+                <figure class="cs-figure">
+                    <img
+                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/selling-home-image.jpg"
+                        alt=""
+                        width="900"
+                        height="1200"
+                        loading="lazy"
+                        decoding="async"
+                    >
+                </figure>
+
+                <div class="cs-topic">
+                    <span class="cs-index">03</span>
+                    <div class="cs-topic-body">
+                        <h3>The first purchase</h3>
+                        <p class="cs-text">
+                            Carrying costs, deposit structure, and the questions to ask before an offer.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+    
 
     <!-- ============================================ -->
     <!--                For Producers                 -->

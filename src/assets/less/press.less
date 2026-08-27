@@ -2,8 +2,8 @@
 <---           Masthead         -->
 <--- -------------------------- -*/
 
-/* Press-only. Title and aside left, lede and figure right. The
-   aside bottom-aligns to the figure so the left column hangs
+/* Press-only. Title and note-block left, lede and figure right. The
+   note bottom-aligns to the figure so the left column hangs
    rather than stacking under the title. On a phone it's a plain
    stack and the figure bleeds to both edges. */
 
@@ -70,6 +70,16 @@
         .cs-lede {
             max-width: 46ch;
             margin: 0;
+        }
+
+        /* The aside and the CTA travel together now — flex rather
+           than relying on the button's own margins, so the gap is
+           one number instead of two. */
+        .cs-note {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.5rem;
         }
 
         .cs-aside {
@@ -145,16 +155,20 @@
             grid-row: 1;
         }
 
-        /* The hang. Bottom edge meets the figure's bottom edge —
-           the paragraph is a footnote to the image, not a follow-on
-           to the title six inches above it. Placed by grid line, so
-           the DOM order that puts it after the figure for mobile
-           doesn't reach this breakpoint. */
-        .cs-aside {
-            color: var(--ink);
+        /* The hang. The block is centred against the figure —
+           a footnote to the image, not a follow-on to the title
+           six inches above it. Placed by grid line, so the DOM
+           order that puts it after the figure for mobile doesn't
+           reach this breakpoint. */
+        .cs-note {
             grid-column: 1 / span 4;
             grid-row: 2;
             align-self: center;
+            gap: clamp(1.75rem, 3vw, 2.5rem);
+        }
+
+        .cs-aside {
+            color: var(--ink);
             max-width: none;
         }
 
@@ -468,91 +482,58 @@
 <---       Speaking Topics      -->
 <--- -------------------------- -*/
 
-/* Heading and image left, entries stacked large on the right. The
-   image bottom-aligns to the last entry, so the left column's
-   emptiness is deliberate rather than leftover. Below 64rem it's a
-   plain stack — image first, bled to both edges, heading beneath
-   it — and both the anchoring and the hover swap drop out. */
+/* Centred title over a track of five panels: entry, image, entry,
+   image, entry.
+
+   Below 64rem — and anywhere scroll-driven animation isn't
+   supported — this is a plain vertical stack. The horizontal
+   treatment is additive, gated behind both a breakpoint and an
+   @supports test, because a 157cqw track inside an overflow-hidden
+   frame hides a third of the section if the animation never runs.
+   Fail open: the stack is the default, the pin is the
+   enhancement. */
 
 @media only screen and (min-width: 0rem) {
     #topics {
         padding: var(--section-padding);
-        /* The bled figure is the first thing in the stack on a
-           phone, so it meets the section above directly. Restored
-           at 64rem, where the heading leads again. */
-        padding-top: 0;
         background-color: var(--paper);
-        /* Contains the figure's mobile bleed. clip, not hidden — no
-           scroll container, so nothing here can trap a sticky. */
-        overflow-x: clip;
 
-        .cs-container {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr);
-            gap: 2.5rem;
+        /* Both are pass-throughs in the stacked layout — they only
+           acquire behaviour inside the @supports block. */
+        .cs-pin,
+        .cs-frame {
+            width: 100%;
         }
 
-        /* Flex so the figure can be pulled above the heading. The
-           order flips back at 64rem, where the heading has to sit
-           at the top of the column for the drop to work. */
-        .cs-lead {
+        .cs-frame {
+            max-width: var(--max-width);
+            margin-inline: auto;
+        }
+
+        h2.cs-title {
+            width: 100%;
+            max-width: 100%;
+            margin: 0 0 clamp(2.5rem, 6vw, 4rem);
+            font-size: var(--fs-h2);
+            text-align: center;
+        }
+
+        .cs-track {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
-
-            h2 {
-                margin: 0;
-                max-width: 14ch;
-            }
-        }
-
-        /* Image first on a phone. A section that opens with a
-           heading over an empty column reads as a missing image. */
-        .cs-figure {
-            order: -1;
-            /* Full bleed. 50% resolves against the container, 50vw
-               against the viewport — the difference is exactly the
-               inline padding, whatever the token holds. */
-            margin: 0 calc(50% - 50vw);
-            position: relative;
-            aspect-ratio: 4 / 3;
-            overflow: hidden;
-        }
-
-        /* All three stacked. The first is the resting state; the
-           others sit at zero until a topic is hovered. */
-        .cs-slide {
-            position: absolute;
-            inset: 0;
-            display: block;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-
-            &:first-child {
-                opacity: 1;
-            }
-
-            img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-        }
-
-        /* No rules and no borders. The entries are separated by
-           their own spacing at a size where the gap reads as
-           structure — a hairline here would fight the scale. */
-        .cs-topic-list {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr);
             gap: 2.5rem;
-            margin: 0;
-            padding: 0;
-            padding-inline-start: 0;
-            list-style: none;
         }
 
+        /* baseline, not start. The body column's first baseline is
+           the heading's first line, so the numeral sits on that line
+           without a hand-tuned padding number to keep in sync with
+           the heading's size and leading. */
         .cs-topic {
+            display: grid;
+            grid-template-columns: clamp(1.75rem, 5vw, 2.5rem) minmax(0, 1fr);
+            column-gap: clamp(0.875rem, 2.5vw, 1.5rem);
+            align-items: baseline;
+
             h3 {
                 margin: 0 0 0.75rem;
                 font-size: var(--fs-h3);
@@ -561,119 +542,258 @@
             }
         }
 
+        /* The rule sits on the body, not the panel — a border on
+           .cs-topic would start under the numeral's gutter and begin
+           left of where any text does. */
+        .cs-topic-body {
+            padding-bottom: 1.5rem;
+        }
+
+        /* Display face, eyebrow size. In the body face these read as
+           interface numbering rather than as part of the register. */
+        .cs-index {
+            font-family: var(--font-display);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: var(--track-eyebrow);
+            color: var(--ink-soft);
+            font-variant-numeric: lining-nums tabular-nums;
+        }
+
         .cs-text {
             max-width: 54ch;
             margin: 0;
             color: var(--ink-soft);
         }
-    }
-}
 
-/* Desktop - 64rem */
-@media only screen and (min-width: 64rem) {
-    #topics {
-        /* Re-declaring the shorthand restores the top padding to
-           exactly the token's value — no second number to keep in
-           sync with root.less. */
-        padding: var(--section-padding);
-
-        .cs-container {
-            max-width: none;
-            margin-inline: 0;
-            /* The entries carry the section; the image is the
-               accompaniment. Weighted well past even. */
-            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.9fr);
-            column-gap: clamp(8rem, 16vw, 16rem);
-        }
-
-        /* Heading at the top, figure at the bottom, nothing between.
-           min-height forces the drop: the right column is the
-           shorter of the two, so stretching alone leaves this column
-           at content height and the gap collapses. */
-        .cs-lead {
-            /* Back to zero — the flex gap is replaced by the
-               heading's own margin plus the figure's auto top. */
-            gap: 0;
-            /* Not align-items: start on the container — this column
-               has to stretch for the anchoring to work. */
-            height: 100%;
-            min-height: clamp(24rem, 36vw, 32rem);
-
-            h2 {
-                margin-bottom: clamp(3rem, 8vw, 9rem);
-            }
-        }
-
-        /* auto, not space-between on the parent. space-between only
-           distributes leftover space; margin-top: auto claims all of
-           it, so the figure pins to the bottom whatever the column
-           height turns out to be.
-
-           max-height decouples the figure from the column width. A
-           3:2 crop grows taller as the viewport widens, and past
-           ~1280px it outgrew the min-height ceiling and closed the
-           gap. Capped, the drop holds at any width. */
         .cs-figure {
-            order: 0;
-            margin: auto 0 0;
-            aspect-ratio: 3 / 2;
-            max-height: 26rem;
-        }
+            margin: 0;
+            position: relative;
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+            background-color: var(--cashmere-300);
 
-        .cs-topic-list {
-            gap: clamp(2rem, 3.5vw, 3.25rem);
-        }
-
-        .cs-topic {
-            h3 {
-                /* Up from --fs-h3 — the size is what makes this a
-                   register rather than a list. Capped lower than
-                   before: the wider image column leaves ~600px
-                   here at 1440, which won't carry 3rem. */
-                font-size: clamp(1.5rem, 2.4vw, 2.25rem);
-                line-height: 1.12;
-                max-width: 28ch;
-                margin-bottom: 1.25rem;
+            img {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                /* Per-figure crop anchor — where the source sits
+                   inside the panel, not where the panel sits in the
+                   frame. Set --focal on a .cs-figure to override;
+                   second value is the knob, 0% tops out. */
+                object-position: var(--focal, 50% 50%);
             }
-
-            /* The un-hovered entries recede rather than the hovered
-               one advancing — keeps the resting state at full
-               strength when the pointer is elsewhere. */
-            transition: opacity 0.35s ease;
-        }
-
-        .cs-topic-list:hover .cs-topic:not(:hover) {
-            opacity: 0.45;
-        }
-
-        .cs-text {
-            max-width: 44ch;
-            font-size: var(--fs-body);
-        }
-
-        /* The swap. Scoped to the container so a hover in the right
-           column can reach the figure in the left — sibling
-           combinators can't cross subtrees, :has() can. */
-        .cs-container:has(.cs-topic:nth-child(1):hover) .cs-slide:nth-child(1),
-        .cs-container:has(.cs-topic:nth-child(2):hover) .cs-slide:nth-child(2),
-        .cs-container:has(.cs-topic:nth-child(3):hover) .cs-slide:nth-child(3) {
-            opacity: 1;
-        }
-
-        /* Without this the first slide stays lit under the incoming
-           one and the cross-fade never resolves. */
-        .cs-container:has(.cs-topic:nth-child(2):hover) .cs-slide:nth-child(1),
-        .cs-container:has(.cs-topic:nth-child(3):hover) .cs-slide:nth-child(1) {
-            opacity: 0;
         }
     }
 }
 
+/*-- -------------------------- -->
+<---     Topics — pinned        -->
+<--- -------------------------- -*/
+
+/* The horizontal treatment. Every number below is derived rather
+   than measured, which is what keeps this free of JavaScript:
+
+     1 lead pad x  5cqw =   5cqw
+     3 entries  x 28cqw =  84cqw
+     2 images   x 26cqw =  52cqw
+     4 gaps     x  4cqw =  16cqw
+                          -------
+                          157cqw
+
+   The frame is 100cqw, so the track travels exactly -57cqw.
+
+   The four widths are set by one constraint: the first image has to
+   open on the frame's centre line. Its centre at rest is
+   lead + entry + gap + half an image — 5 + 28 + 4 + 13 = 50. Change
+   any of the first three and the other two have to absorb it, or
+   the opening frame goes off-centre again. An entry of 34cqw put
+   that centre at 59 and read visibly right of true.
+
+   Starting the animation at a negative translate is not the
+   alternative: it buys the same nine points by pushing the 01
+   numeral off the left edge.
+
+   cqw, not vw. vw includes the scrollbar and the frame's own width
+   does not, so a track measured in vw against a 100% frame overshot
+   by roughly three scrollbar widths and clipped the last panel's
+   tail. cqw measures the container itself, so the two agree by
+   construction. There is no trailing pad: the last panel closes on
+   the frame's right edge. */
+
+@supports (animation-timeline: view()) {
+    @media only screen and (min-width: 64rem) {
+        #topics {
+            /* Block padding moves to the frame — the section is now a
+               scroll budget, not a box with content in it. */
+            padding-block: 0;
+            /* The hold. This much scroll spends 57cqw of travel;
+               longer makes the section feel stuck, shorter whips. */
+            height: 260vh;
+            position: relative;
+            /* Named here rather than in critical.less. If a timeline
+               name is already declared on a higher-specificity
+               selector there, this one is silently ignored and the
+               track will not move — declare both names on that rule
+               instead of adding specificity here. */
+            view-timeline-name: --topics-pin;
+
+            /* The measuring stick for every cqw below. */
+            .cs-pin {
+                height: 100vh;
+                position: sticky;
+                top: 0;
+                display: flex;
+                align-items: center;
+                overflow: hidden;
+                container-type: inline-size;
+            }
+
+            .cs-frame {
+                max-width: none;
+                margin-inline: 0;
+                /* The frame, not the section, is what the eye reads as
+                   the section's box. */
+                padding-block: clamp(4rem, 8vw, 7rem);
+            }
+
+            h2.cs-title {
+                margin-bottom: clamp(3rem, 6vw, 5rem);
+            }
+
+            /* contain, not entry. The section is taller than the
+               viewport, so entry finishes the moment the top edge
+               reaches the top of the screen — the whole range would
+               fire during the approach, before anything pins.
+               contain maps to the pinned hold exactly: 0% is the
+               frame locking, 100% is it releasing. */
+            .cs-track {
+                width: 157cqw;
+                /* Lead only. border-box is declared because the width
+                   above is the outer measure — with content-box the
+                   pad would add 5cqw the translate doesn't know
+                   about, and the tail would clip. */
+                box-sizing: border-box;
+                padding-inline: 5cqw 0;
+                flex-direction: row;
+                align-items: center;
+                gap: 4cqw;
+                animation: cs-track-travel linear both;
+                animation-timeline: --topics-pin;
+                animation-range: contain 0% contain 100%;
+            }
+
+            .cs-topic {
+                flex: 0 0 28cqw;
+                grid-template-columns: clamp(2.5rem, 3.5vw, 3.25rem) minmax(0, 1fr);
+                column-gap: clamp(1.25rem, 2vw, 1.75rem);
+
+                h3 {
+                    /* The size is what makes this a register rather
+                       than a list. 28cqw is ~360px at 1440 once the
+                       numeral gutter is taken out, so this is capped
+                       tighter than a full column would allow. */
+                    font-size: clamp(1.25rem, 1.9vw, 1.75rem);
+                    line-height: 1.14;
+                    margin-bottom: 0.875rem;
+                    max-width: 20ch;
+                }
+            }
+
+            .cs-topic-body {
+                padding-bottom: clamp(1.5rem, 2.5vw, 2.25rem);
+            }
+
+            /* 30ch, down from 34 — the measure has to fit the
+               narrowed entry or the text sets the panel's width
+               instead of the other way round. */
+            .cs-text {
+                max-width: 30ch;
+                font-size: var(--fs-body);
+            }
+
+            /* Tall, not wide. The panel is ~375 x 600 at 1440 — the
+               landscape crops that worked in the old two-column
+               layout will centre-crop hard here. */
+            .cs-figure {
+                flex: 0 0 26cqw;
+                aspect-ratio: 3 / 4;
+                max-height: 62vh;
+            }
+        }
+
+        @keyframes cs-track-travel {
+            from {
+                transform: translate3d(0, 0, 0);
+            }
+            to {
+                transform: translate3d(-57cqw, 0, 0);
+            }
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---    Topics — mobile bleed   -->
+<--- -------------------------- -*/
+
+/* Below the pin breakpoint the images break the gutter and run edge
+   to edge, at a short landscape height rather than the 4:3 the
+   stacked layout would otherwise give them.
+
+   The negative inline margin resolves against .cs-track's content
+   box, so it cancels both the section padding and the frame's
+   centring in one value — nothing here needs to know what
+   --section-padding or --max-width are. Width comes from flex
+   stretch against those margins, not from a declared 100vw. Relies
+   on overflow-x: clip in root for the scrollbar's width.
+
+   Ceiling at 63.9375rem rather than an override inside the base
+   block: the bleed stops at the pin breakpoint whether or not
+   @supports passes. A full-bleed 17rem strip at 1440 reads as a
+   mistake. */
+
+@media only screen and (max-width: 63.9375rem) {
+    #topics {
+        .cs-figure {
+            margin-inline: calc(50% - 50vw);
+            /* Height is declared, so the ratio has to be released —
+               otherwise aspect-ratio wins on the block axis. */
+            aspect-ratio: auto;
+            height: clamp(11rem, 38vw, 17rem);
+        }
+    }
+}
+
+/* Reduced motion takes the stack, not a frozen pin. A pinned frame
+   with a track that never moves would hide four panels. */
 @media (prefers-reduced-motion: reduce) {
     #topics {
-        .cs-slide,
-        .cs-topic {
-            transition: none;
+        height: auto;
+
+        .cs-pin {
+            height: auto;
+            position: static;
+            display: block;
+            overflow: visible;
+            container-type: normal;
+        }
+
+        .cs-track {
+            width: 100%;
+            padding-inline: 0;
+            flex-direction: column;
+            gap: 2.5rem;
+            animation: none;
+            transform: none;
+        }
+
+        .cs-topic,
+        .cs-figure {
+            flex: 0 0 auto;
         }
     }
 }
