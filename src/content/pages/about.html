@@ -17,32 +17,36 @@ permalink: "/about/"
 <!--                    Intro                     -->
 <!-- ============================================ -->
 
-<!-- A nameplate band above a two-column body. The name takes the full
-     page width on its own line and "Broker" sits on its baseline at the
-     right; a hairline closes the band. Beneath it the portrait holds the
-     left third and the copy column holds the rest, with the prose capped
-     at --measure and the contact list pinned to the portrait's lower
-     edge. The one picture on the page. -->
+<!-- A centred display title over a three-column body: lede left,
+     portrait centre, contact rail right. The portrait sets the row
+     height; the lede centres against it and the rail bottom-aligns to
+     its lower edge. The soft paragraph opens the rail, above the
+     hairline rows. No nameplate band, no rule under the title — air
+     does that work now. The one picture on the page. -->
 
 <section id="about-intro" data-reveal>
     <div class="cs-container">
 
-        <header class="cs-masthead cs-reveal">
-            <span class="cs-topper">About</span>
-
-            <div class="cs-nameplate">
-                <h1 class="cs-title">Jayden Kennedy</h1>
-                <p class="cs-topper cs-role">Broker, licence 888867</p>
-            </div>
-        </header>
+        <h1 class="cs-title cs-reveal">About Jayden</h1>
 
         <div class="cs-body">
+
+            <div class="cs-prose cs-reveal">
+                <p class="cs-lede">
+                    Jayden Kennedy is a Broker with {{ client.brokerage }}, based in
+                    {{ client.address.city }} and serving Durham Region and the Greater
+                    Toronto Area. She came to the market after a career as a
+                    professional volleyball player and has spent roughly five years
+                    representing buyers, sellers and investors.
+                    {# //! CONFIRM — "roughly five years" against her licence date. #}
+                </p>
+            </div>
 
             <picture class="cs-picture cs-reveal">
                 {# //! CONFIRM — replace with the real portrait. #}
                 <img
                     class="cs-img"
-                    src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/about-jayden-portrait.jpg"
+                    src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-portrait-img.jpg"
                     alt="Jayden Kennedy"
                     width="900"
                     height="1100"
@@ -51,24 +55,13 @@ permalink: "/about/"
                 >
             </picture>
 
-            <div class="cs-content cs-reveal">
+            <div class="cs-rail cs-reveal">
 
-                <div class="cs-prose">
-                    <p class="cs-lede">
-                        Jayden Kennedy is a Broker with {{ client.brokerage }}, based in
-                        {{ client.address.city }} and serving Durham Region and the Greater
-                        Toronto Area. She came to the market after a career as a
-                        professional volleyball player and has spent roughly five years
-                        representing buyers, sellers and investors.
-                        {# //! CONFIRM — "roughly five years" against her licence date. #}
-                    </p>
-
-                    <p class="cs-text cs-text-soft">
-                        Her practice is built on financial literacy: she teaches the
-                        mechanics of how property creates wealth, then lets the client
-                        decide. She replies to every enquiry herself, usually within a day.
-                    </p>
-                </div>
+                <p class="cs-text cs-text-soft">
+                    Her practice is built on financial literacy: she teaches the
+                    mechanics of how property creates wealth, then lets the client
+                    decide. She replies to every enquiry herself, usually within a day.
+                </p>
 
                 <ul class="cs-details">
                     <li class="cs-detail">
@@ -89,86 +82,88 @@ permalink: "/about/"
                 </ul>
 
             </div>
+
         </div>
 
     </div>
 </section>
 
-    <!-- ============================================ -->
-    <!--              Before real estate              -->
-    <!-- ============================================ -->
+<!-- ============================================ -->
+<!--              Before real estate              -->
+<!-- ============================================ -->
 
-    <!-- A table, not cards: seven rows of the same three fields. A held row
-         keeps full contrast and carries a dashed green rule plus a tag. -->
+<!-- Centred header, then a full-width table: seven rows of the same three
+     fields. A held row keeps full contrast and carries a dashed green rule. -->
 
-    <section id="about-honours" data-reveal>
-        <div class="cs-container">
-            <div class="cs-content cs-reveal">
-                <h2 class="cs-title">Before real estate</h2>
-                <p class="cs-text">
-                    Four seasons at the University of San Diego, and a professional
-                    career overseas. The honours below came from the same habit that
-                    runs her practice today: preparation, done early, done properly.
-                </p>
-            </div>
-
-            <div class="cs-table-wrap cs-reveal">
-                <dl class="cs-table">
-                    <div class="cs-row">
-                        <dt class="cs-honour">AVCA All-America Honorable Mention</dt>
-                        <dd class="cs-year">2017</dd>
-                        <dd class="cs-body-name">American Volleyball Coaches Association</dd>
-                    </div>
-
-                    <div class="cs-row">
-                        <dt class="cs-honour">AVCA Pacific South All-Region Team</dt>
-                        <dd class="cs-year">2017</dd>
-                        <dd class="cs-body-name">American Volleyball Coaches Association</dd>
-                    </div>
-
-                    <div class="cs-row">
-                        <dt class="cs-honour">All-WCC First Team</dt>
-                        <dd class="cs-year">2017</dd>
-                        <dd class="cs-body-name">West Coast Conference</dd>
-                    </div>
-
-                    <div class="cs-row">
-                        <dt class="cs-honour">WCC All-Academic Team</dt>
-                        <dd class="cs-year">2017</dd>
-                        <dd class="cs-body-name">West Coast Conference</dd>
-                    </div>
-
-                    <div class="cs-row">
-                        <dt class="cs-honour">All-WCC Freshman Team</dt>
-                        <dd class="cs-year">2014</dd>
-                        <dd class="cs-body-name">West Coast Conference</dd>
-                    </div>
-
-                    <div class="cs-row">
-                        <dt class="cs-honour">NCAA Tournament appearance</dt>
-                        <dd class="cs-year">2017</dd>
-                        <dd class="cs-body-name">University of San Diego</dd>
-                    </div>
-
-                    <!-- A held item keeps full contrast and is marked, not hidden.
-                         //! CONFIRM — needs a year and a governing body before release. -->
-                    <!-- <div class="cs-row cs-row-held">
-                        <dt class="cs-honour">Professional club and country</dt>
-                        <dd class="cs-year">[year]</dd>
-                        <dd class="cs-body-name">
-                            <span class="cs-tag">Awaiting confirmation</span>
-                        </dd>
-                    </div> -->
-                </dl>
-
-                <p class="cs-caption">
-                    399 kills at 3.84 per set and .309 attacking percentage in her
-                    senior season, with a career high of 20 kills against Pepperdine.
-                    Opposite and middle blocker, 6&prime;2&Prime;, from Oshawa, Ontario.
-                </p>
-            </div>
+<section id="about-honours" data-reveal>
+    <div class="cs-container">
+        <div class="cs-content cs-reveal">
+            <h2 class="cs-title">Before<br>real estate</h2>
+            <p class="cs-text">
+                Four seasons at the University of San Diego, and a professional
+                career overseas. The honours below came from the same habit that
+                runs her practice today: preparation, done early, done properly.
+            </p>
         </div>
-    </section>
+
+        <div class="cs-table-wrap cs-reveal">
+            <dl class="cs-table">
+
+                <div class="cs-row">
+                    <dt class="cs-honour">All-WCC Freshman Team</dt>
+                    <dd class="cs-body-name">West Coast Conference</dd>
+                    <dd class="cs-year">2014</dd>
+                </div>
+
+                <div class="cs-row">
+                    <dt class="cs-honour">AVCA All-America Honorable Mention</dt>
+                    <dd class="cs-body-name">American Volleyball Coaches Association</dd>
+                    <dd class="cs-year">2017</dd>
+                </div>
+
+                <div class="cs-row">
+                    <dt class="cs-honour">AVCA Pacific South<br>All-Region Team</dt>
+                    <dd class="cs-body-name">American Volleyball Coaches Association</dd>
+                    <dd class="cs-year">2017</dd>
+                </div>
+
+                <div class="cs-row">
+                    <dt class="cs-honour">All-WCC First Team</dt>
+                    <dd class="cs-body-name">West Coast Conference</dd>
+                    <dd class="cs-year">2017</dd>
+                </div>
+
+                <div class="cs-row">
+                    <dt class="cs-honour">WCC All-Academic Team</dt>
+                    <dd class="cs-body-name">West Coast Conference</dd>
+                    <dd class="cs-year">2017</dd>
+                </div>
+
+                <div class="cs-row">
+                    <dt class="cs-honour">NCAA Tournament appearance</dt>
+                    <dd class="cs-body-name">University of San Diego</dd>
+                    <dd class="cs-year">2017</dd>
+                </div>
+
+                <!-- A held item keeps full contrast and is marked, not hidden.
+                     //! CONFIRM — needs a year and a governing body before release. -->
+                <!-- <div class="cs-row cs-row-held">
+                    <dt class="cs-honour">Professional club and country</dt>
+                    <dd class="cs-body-name">
+                        <span class="cs-tag">Awaiting confirmation</span>
+                    </dd>
+                    <dd class="cs-year">[year]</dd>
+                </div> -->
+            </dl>
+
+            <p class="cs-caption">
+                399 kills at 3.84 per set and .309 attacking percentage in her
+                senior season, with a career high of 20 kills against Pepperdine.
+                Opposite and middle blocker, 6&prime;2&Prime;, from Oshawa, Ontario.
+            </p>
+        </div>
+    </div>
+</section>
 
     <!-- ============================================ -->
     <!--                   Results                    -->

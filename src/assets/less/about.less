@@ -2,66 +2,57 @@
 <---            Intro           -->
 <--- -------------------------- -*/
 
-/* A nameplate band above a two-column body.
+/* A centred display title over a three-column body.
 
-   The name runs on its own line at display size and "Broker" moves out
-   to a standing role line beside it — Cinzel only reads as a display
-   face when it is given the width, and the old three-line wrap was
-   fighting the typeface. One hairline under the band spans the full
-   page and separates the plate from everything beneath it.
+   The nameplate band is gone. Cinzel gets the full page width on one
+   centred line and nothing rules it off — the air between the title and
+   the body is the separation.
 
-   The copy column holds two anchored blocks: the prose at the top,
-   capped at --measure, and the contact list pinned to the bottom of the
-   portrait by margin-top: auto. The air between them is deliberate —
-   the block closes on a shared baseline rather than trailing off. */
+   Beneath it: lede left, portrait centre, contact rail right. The
+   portrait is the only item that stretches, so it sets the row height;
+   the lede centres against it and the rail sits on its lower edge.
+   Three different align-selfs in one row, which is why this is a grid
+   and not a flex line.
+
+   The rail is a wrapper rather than the list itself, because the soft
+   paragraph now opens it — align-self: end has to move the pair, not
+   just the hairline rows.
+
+   The outer two tracks are equal by necessity, not taste — a centre
+   column only sits on the page centre when what flanks it is symmetric.
+   The lede gives up the width that costs. */
 
 @media only screen and (min-width: 0rem) {
     #about-intro {
         padding: var(--section-padding);
-    padding-top: clamp(8rem, 13vw, 12rem);
-    background-color: var(--paper);
+        padding-top: clamp(8rem, 13vw, 12rem);
+        background-color: var(--paper);
 
         .cs-container {
             display: flex;
             flex-direction: column;
         }
 
-        /* ── Nameplate ── */
+        /* ── Title ── */
 
-        .cs-masthead {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: clamp(0.875rem, 2vw, 1.25rem);
-        }
-
-        .cs-nameplate {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0.625rem;
-        }
-
-        /* No ::after rule here any more. The band's own hairline is the
-           rule — a second short one under the title read as clutter. */
+        /* max-width is released, not just overridden with a number — the
+           heading cap inherited from critical.less was holding the box
+           narrow and text-align was centring inside that box rather than
+           on the page. */
         .cs-title {
+            width: 100%;
+            max-width: 100%;
             margin: 0;
-        }
-
-        /* Shares .cs-topper's type, but this is information rather than a
-           label, so it holds full ink. */
-        .cs-role {
-            margin: 0;
-            color: var(--ink);
+            text-align: center;
+            font-size: var(--fs-h1);
         }
 
         /* ── Body ── */
 
+        /* Stack order below 64rem is portrait → lede → rail, which
+           order: -1 on the picture handles until the grid takes over. */
         .cs-body {
-            margin-top: clamp(1.75rem, 4vw, 2.5rem);
-            padding-top: clamp(2rem, 5vw, 3.5rem);
-            border-top: 1px solid var(--rule);
+            margin-top: clamp(2.5rem, 6vw, 4rem);
             display: flex;
             flex-direction: column;
             gap: clamp(2rem, 5vw, 3rem);
@@ -76,6 +67,7 @@
             aspect-ratio: 3 / 4;
             position: relative;
             display: block;
+            order: -1;
             overflow: hidden;
             background-color: var(--cashmere-300);
         }
@@ -89,24 +81,26 @@
             object-fit: cover;
         }
 
-        .cs-content {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        /* The one thing the old layout got wrong at width: prose ran the
-           full track, past 100 characters a line. */
+        /* Holds the lede alone now. The cap stays as insurance above
+           90rem, where the track outgrows a comfortable measure. */
         .cs-prose {
             max-width: var(--measure);
         }
 
         .cs-lede {
-            margin-bottom: 1.25rem;
+            margin-bottom: 0;
+        }
+
+        /* ── Rail ── */
+
+        .cs-rail {
+            display: flex;
+            flex-direction: column;
         }
 
         .cs-text-soft {
-            margin-bottom: 0;
+            max-width: var(--measure);
+            margin-bottom: clamp(2rem, 4vw, 2.75rem);
             color: var(--ink-soft);
             font-size: var(--fs-body);
         }
@@ -115,7 +109,7 @@
            column lines, and wrapped flex items size to content. */
         .cs-details {
             width: 100%;
-            margin: clamp(2rem, 5vw, 3rem) 0 0;
+            margin: 0;
             padding: 0;
             display: grid;
             grid-template-columns: minmax(0, 1fr);
@@ -154,7 +148,7 @@
 }
 
 /*-- -------------------------- -->
-<---          Tablet            -->
+<---       Intro — tablet       -->
 <--- -------------------------- -*/
 
 @media only screen and (min-width: 48rem) {
@@ -172,47 +166,50 @@
 }
 
 /*-- -------------------------- -->
-<---          Desktop           -->
+<---       Intro — desktop      -->
 <--- -------------------------- -*/
 
 @media only screen and (min-width: 64rem) {
     #about-intro {
-        padding-top: clamp(8rem, 13vw, 12rem);
-        /* Baseline, not center — the role has to sit on the name's
-           baseline, and centring would float it off. */
-        .cs-nameplate {
-            flex-direction: row;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: clamp(1.5rem, 4vw, 3rem);
-        }
-
-        .cs-role {
-            white-space: nowrap;
-        }
-
-        /* stretch, so the copy column takes the portrait's height and
-           margin-top: auto below has something to push against. */
         .cs-body {
             display: grid;
-            grid-template-columns: minmax(0, 0.36fr) minmax(0, 0.64fr);
-            column-gap: clamp(2.5rem, 6vw, 5rem);
+            /* Equal outer tracks — this is what puts the portrait on the
+               page centre. The middle track is the widest because the
+               image is the widest thing in the row. */
+            grid-template-columns:
+                minmax(0, 1fr)
+                minmax(0, 1.1fr)
+                minmax(0, 1fr);
+            column-gap: clamp(2rem, 4vw, 3.5rem);
             align-items: stretch;
         }
 
+        /* Centred against the portrait, not top-aligned — the lede is
+           shorter than the image and floats in its track. */
+        .cs-prose {
+            grid-column: 1;
+            align-self: center;
+        }
+
+        /* The only stretched item, so it alone sets the row height. order
+           is reset because the grid places by column, not source. */
         .cs-picture {
+            grid-column: 2;
             aspect-ratio: 3 / 4;
+            align-self: stretch;
+            order: 0;
         }
 
-        .cs-content {
-            justify-content: flex-start;
+        /* The whole rail sits on the portrait's lower edge — soft text
+           and hairline rows move together. */
+        .cs-rail {
+            grid-column: 3;
+            align-self: end;
         }
 
+        /* Back to one column — the track is too narrow to carry two. */
         .cs-details {
-            /* Bottom-aligns the contact row to the portrait's lower edge.
-               The gap above it is the layout's one piece of held air. */
-            margin-top: auto;
-            padding-top: clamp(2.5rem, 5vw, 4rem);
+            grid-template-columns: minmax(0, 1fr);
         }
     }
 }
@@ -221,7 +218,15 @@
 <---      Before real estate    -->
 <--- -------------------------- -*/
 
-/* The page's one warm ground. Green appears only as the rules on the table. */
+/* The page's one warm ground. Green appears only as the rules on the table.
+
+   Header above a full-width table — centred and stacked on mobile, then
+   splitting into title-left / text-right at 64rem. Every rule for this
+   section lives in the three blocks below — the section previously
+   carried a second set of breakpoint rules further down the file that
+   reverted the container to a row and the rows to flex, which is what
+   produced the sticky left rail. Keep the section's rules together so
+   that cannot happen again. */
 
 @media only screen and (min-width: 0rem) {
     #about-honours {
@@ -231,29 +236,36 @@
         .cs-container {
             display: flex;
             flex-direction: column;
-            gap: clamp(2rem, 4vw, 3rem);
+            align-items: center;
+            gap: clamp(2.5rem, 5vw, 4rem);
+        }
+
+        .cs-content,
+        .cs-table-wrap {
+            width: 100%;
         }
 
         .cs-content {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: center;
+            text-align: center;
         }
 
         .cs-title {
             font-size: var(--fs-h2);
-            max-width: 14ch;
+            max-width: 18ch;
         }
 
         .cs-text {
-            max-width: 46ch;
+            max-width: 52ch;
         }
 
         .cs-table {
             width: 100%;
-            border-top: 1px solid var(--rule-strong);
         }
 
+        /* Mobile stacks the three fields; the grid arrives at 48rem. */
         .cs-row {
             padding: 1.125rem 0;
             border-bottom: 1px solid var(--rule);
@@ -279,7 +291,7 @@
 
         .cs-year,
         .cs-body-name {
-            font-size: var(--fs-body-sm);
+            font-size: var(--fs-body);
             line-height: 1.5;
             color: var(--ink-soft);
         }
@@ -300,11 +312,97 @@
         /* --ink-soft fails AA on beige, so the caption takes full ink here */
         .cs-caption {
             max-width: 62ch;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
+            margin-inline: auto;
+            text-align: center;
             color: var(--ink);
         }
     }
 }
+
+/*-- -------------------------- -->
+<---     Before — tablet up     -->
+<--- -------------------------- -*/
+
+/* Three columns separated by gap alone. Only the row rules are drawn, so
+   the table reads as a list of entries rather than a grid of cells — the
+   columns are held by alignment, which at this width is enough.
+
+   Track widths are deliberate: the honour takes most of the row so the
+   body name starts near it rather than out in the middle of the field,
+   and the year takes just enough to hold the right edge. */
+
+@media only screen and (min-width: 48rem) {
+    #about-honours {
+        /* Height lives on the row now that no cell carries a border for
+           text to clear. */
+        .cs-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 0.3fr);
+            align-items: baseline;
+            column-gap: clamp(1.5rem, 4vw, 3rem);
+            padding-block: 1.75rem;
+        }
+
+        .cs-honour,
+        .cs-body-name,
+        .cs-year {
+            padding: 0;
+        }
+
+        /* The 1fr track is wide enough to hold the longest body name on one
+           line, so text-wrap: balance has nothing to act on — capping the
+           measure is what forces the break. */
+        .cs-body-name {
+            max-width: 24ch;
+            text-align: left;
+        }
+
+        .cs-year {
+            text-align: right;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---      Before — desktop      -->
+<--- -------------------------- -*/
+
+/* The header splits: title holds the left, supporting text the right.
+   Baseline alignment rather than start — the two blocks are set at
+   different sizes, and aligning their boxes would leave the first lines
+   sitting on different lines. Baseline puts them on the same one. */
+
+@media only screen and (min-width: 64rem) {
+    #about-honours {
+        .cs-content {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            align-items: baseline;
+            column-gap: clamp(2.5rem, 6vw, 5rem);
+            text-align: left;
+        }
+
+        /* The mobile caps are released — the tracks are the measure now,
+           and an 18ch title inside a half-page column would wrap far
+           harder than it needs to. */
+        .cs-title {
+            max-width: none;
+            margin-bottom: 0;
+        }
+
+        .cs-text {
+            max-width: none;
+            margin-bottom: 0;
+        }
+
+        .cs-row {
+            padding-block: 2rem;
+        }
+    }
+}
+
+
 
 /*-- -------------------------- -->
 <---           Results          -->
@@ -372,6 +470,19 @@
 }
 
 /*-- -------------------------- -->
+<---      Results — tablet      -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 48rem) {
+    #about-results {
+        .cs-figures {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: clamp(1.5rem, 3vw, 2.5rem);
+        }
+    }
+}
+
+/*-- -------------------------- -->
 <---          Speaking          -->
 <--- -------------------------- -*/
 
@@ -416,63 +527,10 @@
 }
 
 /*-- -------------------------- -->
-<---           Tablet           -->
-<--- -------------------------- -*/
-
-@media only screen and (min-width: 48rem) {
-    #about-honours {
-        .cs-row {
-            flex-direction: row;
-            align-items: baseline;
-            gap: clamp(1rem, 3vw, 2.5rem);
-        }
-
-        .cs-honour {
-            flex: 1 1 auto;
-            min-width: 0;
-        }
-
-        .cs-year {
-            flex: 0 0 4rem;
-        }
-
-        .cs-body-name {
-            flex: 0 0 14rem;
-        }
-    }
-
-    #about-results {
-        .cs-figures {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: clamp(1.5rem, 3vw, 2.5rem);
-        }
-    }
-}
-
-/*-- -------------------------- -->
-<---           Desktop          -->
+<---     Speaking — desktop     -->
 <--- -------------------------- -*/
 
 @media only screen and (min-width: 64rem) {
-    #about-honours {
-        .cs-container {
-            flex-direction: row;
-            align-items: flex-start;
-            gap: clamp(3rem, 7vw, 5.5rem);
-        }
-
-        .cs-content {
-            flex: 0 0 20rem;
-            position: sticky;
-            top: 8rem;
-        }
-
-        .cs-table-wrap {
-            flex: 1 1 auto;
-            min-width: 0;
-        }
-    }
-
     #about-speaking {
         .cs-container {
             flex-direction: row;
@@ -564,7 +622,10 @@
     }
 }
 
-/* Desktop - 64rem */
+/*-- -------------------------- -->
+<---        CTA — desktop       -->
+<--- -------------------------- -*/
+
 @media only screen and (min-width: 64rem) {
     #cta {
         /* The split lives in two tokens rather than inline in the
