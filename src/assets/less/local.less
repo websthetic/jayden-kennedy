@@ -1,137 +1,752 @@
-/*-- -------------------------- -->
-<---   The Practice · Credentials  -->
-<--- -------------------------- -*/
-
-/* Three panels, one track, one pinned frame.
-
-   Mobile has no pin and no track — the panels stack and scroll.
-   A horizontal track on a phone either fights the browser's own
-   vertical gesture or hides content behind a swipe the user has no
-   reason to expect. */
-
 @media only screen and (min-width: 0rem) {
-    #practice {
+    #finder {
+        /* The section is the page ground now; the cashmere is on the panel
+           inside it. The band is gone, so this no longer spends the page's
+           one warm field — #listings keeps it.
+
+           This is the mobile arrangement and the no-JS arrangement at every
+           width: the finder is its own section under the hero. At 64rem
+           finder-relocate.js moves this node into the hero's copy column
+           and the nested block at the bottom of this file takes over. */
+        width: 100%;
+        padding: clamp(1.5rem, 4vw, 2rem) var(--gutter);
         background-color: var(--paper);
+        position: relative;
+        z-index: 4;
 
-        .cs-track {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr);
-        }
-
-        /* NOT var(--section-padding). That token is a two-value
-           shorthand — vertical then horizontal — built for `padding`.
-           padding-block also takes two values, but there they mean
-           start then end, so feeding it in whole put the gutter on the
-           bottom edge: 4rem of air above a panel against 1rem below it
-           on a phone. Named explicitly, and weighted to the bottom so
-           each panel closes with more air than it opens with. */
-        .cs-panel {
-            padding-block: clamp(4rem, 8vw, 7.5rem) clamp(5rem, 10vw, 9rem);
-        }
-
-        .cs-panel-image {
-            padding-block: 0;
-        }
-
+        /* Left-aligned to the gutter, not centred: the panel shares its
+           left edge with the hero copy above it. */
         .cs-container {
-            padding: 0 1rem;
-            display: grid;
-            grid-template-columns: minmax(0, 1fr);
-            gap: 1.5rem;
+            max-width: none;
+            margin-inline: 0;
         }
 
-        .cs-rail {
-            .cs-topper {
-                margin-bottom: 0;
+        /* The panel. Cashmere on white, no border — the tonal step is the
+           edge, the way the listing cards work in reverse. */
+        .cs-form {
+            width: 100%;
+            padding: clamp(1.25rem, 3vw, 1.75rem);
+            background-color: var(--paper);
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            align-items: end;
+            gap: 1rem;
+        }
+
+        .cs-field {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4375rem;
+        }
+
+        /* --ink rather than --ink-soft: cocoa-300 on cashmere lands near
+           3:1, which is under AA at this size. Unchanged when nested — the
+           panel keeps its cashmere fill on the photograph, so the labels
+           are still ink on warm paper, never on the image. */
+        .cs-label {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            color: var(--ink);
+        }
+
+        /* Underlined, not boxed. The deck boxes a field only where it needs
+           separating from its ground; here the panel is the separation, and
+           two white boxes inside a cashmere box read as a form pasted onto
+           a form. */
+        .cs-select {
+            width: 100%;
+            min-height: var(--control-height);
+            padding: 0 1.75rem 0 0;
+            font-family: var(--font-body);
+            font-size: var(--fs-body);
+            font-weight: 300;
+            color: var(--ink);
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid var(--rule-strong);
+            border-radius: 0;
+            appearance: none;
+            cursor: pointer;
+            transition: border-color var(--dur) var(--ease);
+
+            /* Drawn as a background image rather than a pseudo-element — a
+               select cannot carry one, and a wrapper span would need its
+               own pointer-events juggling. */
+            background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+                linear-gradient(135deg, currentColor 50%, transparent 50%);
+            background-position: calc(100% - 0.6875rem) 52%, calc(100% - 0.375rem) 52%;
+            background-size: 0.3125rem 0.3125rem, 0.3125rem 0.3125rem;
+            background-repeat: no-repeat;
+
+            /* Focus: the rule darkens to cocoa, per the controls spec.
+               No red anywhere in the system. */
+            &:hover,
+            &:focus-visible {
+                border-bottom-color: var(--cocoa-500);
             }
         }
 
-        /* Both panels use this wrapper — copy and credentials alike.
-           It is what keeps the two ghost links on the same footing:
-           each sits at the end of its own centred group, one gap
-           below the content above it, rather than one being dropped
-           to the floor of the frame. */
-        .cs-content {
+        /* Sized by its label, not by the column. A grid item stretches on
+           the inline axis by default, and .cs-button-script draws a rule
+           under itself — stretched, that rule runs the full width of the
+           panel and the CTA reads as a third empty field under the other
+           two. justify-self is doing the real work here; the width
+           declaration only stops a stray 100% inheriting in.
+
+           The rest of this block is button chrome. .cs-button-script was
+           written against an <a>, so it never had to reset anything: it
+           declares border-bottom and leaves border, background and
+           appearance alone. On a <button> those are not absent, they are
+           the UA defaults — ButtonFace fill and an outset border on all
+           four sides — which is the box in the render.
+
+           border: 0 then border-bottom, in that order. LESS compiles this
+           nested rule to `#finder .cs-submit`, which outranks the bare
+           .cs-button-script class, so a lone `border: 0` here would take
+           the hairline with it. */
+        .cs-submit {
+            width: auto;
+            justify-self: start;
+            background-color: transparent;
+            border: 0;
+            border-bottom: 1px solid currentColor;
+            border-radius: 0;
+            appearance: none;
+            -webkit-appearance: none;
+            text-align: left;
+            cursor: pointer;
+            font-family: var(--font-script);
+        }
+    }
+}
+
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+    #finder {
+        /* auto on the third track keeps the CTA at its label width so the
+           two fields split the remainder evenly. The script face sets a
+           wider label than the old uppercase one did — the track absorbs
+           it, the fields give up the difference. */
+        .cs-form {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+            align-items: end;
+            gap: clamp(1.25rem, 2.5vw, 2rem);
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    /* Standalone-strip rules. From 64rem up this is the no-JS layout only —
+       with JS the node has moved and the nested block below outranks all of
+       it on specificity. Kept rather than scoped to :not(.cs-in-hero),
+       because a JS-off desktop falling back to the strip on the fold is the
+       arrangement this file was already tuned for. */
+    #finder {
+        /* min-height, not height: --strip-h is what #hero subtracts from
+           the viewport, so it has to be this section's resting height — but
+           as a hard height it would clip the panel the moment the content
+           grows. A floor means the section can only ever get taller. */
+        min-height: var(--strip-h);
+        display: flex;
+        align-items: center;
+
+        /* Matched to the h1's rendered width, not to its 24ch — ch is
+           Cinzel's zero and this panel is set in Elms Sans, so the same
+           number would come out a different measure. Set by eye against
+           the render; retune it if --fs-h1 or the headline's cap moves. */
+        .cs-container {
+            width: min(100%, 72rem);
+        }
+    }
+
+    /* ── Nested into the hero ──
+       Two IDs plus a class, so every declaration above is outranked
+       without !important. The section stops being a section: no ground, no
+       gutter padding, no vertical centring — it is a 40rem block in the
+       hero's copy column and nothing more.
+
+       40rem is set by eye against the render at 1280, where the panel's
+       right edge and the headline's 24ch cap land close enough to read as
+       one column. Retune it with the headline, not independently. */
+    #hero.cs-finder-nested #finder {
+        width: min(100%, 48rem);
+        min-height: 0;
+        margin-top: clamp(0.5rem, 1.5vw, 1.25rem);
+        padding: 0;
+        background-color: transparent;
+        display: block;
+
+        /* The hero's own .cs-container is the stacking context here, and it
+           already sits at z-index 3. A competing index on a child of it
+           buys nothing. */
+        z-index: auto;
+
+        /* Inner container, now nested one level inside the hero's. root.less
+           caps .cs-container at 90rem and the strip rules above narrow it to
+           72rem; neither means anything at this depth. */
+        .cs-container {
+            width: 100%;
+            max-width: none;
+            margin-inline: 0;
+        }
+
+        /* Unchanged from the strip: three columns, button at label width.
+           The clamps resolve smaller here only because the panel is capped
+           at 40rem rather than 72rem. */
+        .cs-form {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+            gap: clamp(1.25rem, 2.5vw, 2rem);
+        }
+
+        /* ── Out of the inversion ──
+           The panel is now a light island inside #hero.cs-on-dark, and
+           .cs-on-dark repaints its descendants in --ink-invert. .cs-label
+           and .cs-select survive that only because they each declare
+           color: var(--ink) outright; .cs-button-script does not, so it
+           inverted to cream on cashmere and disappeared.
+
+           Set on .cs-form rather than on the CTA alone, so anything added
+           to this panel later inherits ink instead of finding the same
+           trap. Keep this in step with the buttons block in root.less if
+           the on-dark inversion list changes. */
+        .cs-form {
+            color: var(--ink);
+
+            .cs-button-script {
+                color: var(--ink);
+                /* .cs-on-dark hands the script CTA --rule-invert as well
+                   as the colour. currentColor puts it back on ink. */
+                border-bottom-color: currentColor;
+            }
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---          On Record         -->
+<--- -------------------------- -*/
+
+/* Drop-in replacement for the three #record blocks in local.less.
+   Everything structural is unchanged — the centred grid, the subgrid
+   baseline sharing, the reveal indices. Only the ground and the four
+   colour declarations that sit on it have moved.
+
+   The ground is Heritage Green. That resolves the CONFIRM that used to
+   sit on this block — it is no longer the page's second warm field,
+   because it is not a warm field. It is now the page's saturated one.
+
+   !! One consequence, and it needs a decision before this ships:
+      #process further down this file is also var(--paper-field). Two
+      saturated green grounds on one page is the thing the deck's
+      one-band rule exists to prevent, and this one arrives first. Either
+      repaint #process to var(--paper-deep), or accept the repeat
+      deliberately and add a third so it reads as rhythm. Left alone, the
+      page has two. */
+
+@media only screen and (min-width: 0rem) {
+    #record {
+        width: 100%;
+
+        /* Shorthand first, then the block axis — --section-padding sets
+           both axes, so padding-block has to come after it or the
+           shorthand resets it back to 4rem-7.5rem. The sides keep reading
+           --gutter, which is redefined to 6vw at 64rem, so the horizontal
+           edge still tracks every other section on the page. */
+        padding: var(--section-padding);
+        padding-block: clamp(2.5rem, 5vw, 4.5rem);
+
+        background-color: var(--paper-field);
+
+        /* Centred, against the grain of the rest of the page. The
+           reference is centred and the content earns it: three figures of
+           unequal length with nothing to align to on the left. Everything
+           above and below stays on the gutter.
+
+           The gap is tighter than it was because the mobile divider below
+           carries its own padding — the two together reproduce the old
+           spacing, split either side of the rule instead of sitting all
+           above it. */
+        .cs-stats {
+            list-style: none;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: clamp(2rem, 6vw, 2.75rem);
+            text-align: center;
+        }
+
+        .cs-stat {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Mobile dividers. In a single column the three figures otherwise
+           run as one long centred list with nothing to say where one stat
+           ends and the next begins — the tablet block gets that from the
+           column rules, and this is the vertical equivalent.
+
+           :not(:last-child) rather than a border-top on the second and
+           third, so the section's own bottom padding is never doubled by
+           a trailing rule.
+
+           --rule-invert, not --rule: the latter is the cocoa hairline and
+           it is invisible against #20301a. */
+        .cs-stat:not(:last-child) {
+            padding-bottom: clamp(2rem, 6vw, 2.75rem);
+            border-bottom: 1px solid var(--rule-invert);
+        }
+
+        /* Was --cocoa-500 on cashmere. Cocoa on heritage is 1.5:1 — not a
+           contrast choice, an invisible one. Cashmere on heritage lands
+           near 11:1, which is where a figure this size should be anyway.
+
+           The old comment here sanctioned heritage-as-ink via .cs-color.
+           That no longer applies: heritage is the ground now, so the ink
+           inverts and .cs-color has nothing to do on this section.
+
+           Not --fs-display: that tops out at 6.75rem, and "TOP 1%" is six
+           characters where the reference had two. At 108px the widest
+           figure would outrun its column before the gutter did. */
+        .cs-figure {
+            font-family: var(--font-display);
+            font-size: clamp(2.75rem, 4.5vw, 4rem);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: var(--track-title);
+            /* Explicit: the global uppercase lives on h1-h6, and this is
+               a span. */
+            text-transform: uppercase;
+            color: var(--ink-invert);
+        }
+
+        /* The unit under the figure — "of brokers", "on Google". Soft, so
+           the figure keeps the weight and the claim keeps the sentence.
+
+           --ink-invert-soft, not --ink-soft: cocoa-300 was already the
+           weakest thing on cashmere and it disappears entirely on green.
+           The soft invert is cashmere at 72%, which holds the same
+           relationship to the figure that the old pairing did. */
+        .cs-unit {
+            font-family: var(--font-body);
+            font-size: var(--fs-caption);
+            font-weight: 300;
+            line-height: 1.4;
+            margin-top: clamp(0.875rem, 2vw, 1.25rem);
+            color: var(--ink-invert-soft);
+        }
+
+        /* The claim. Capped in ch rather than left to the column: the
+           three are different lengths and an uncapped centred line breaks
+           where the column happens to end, which puts the ragged edges in
+           different places on each.
+
+           Full-strength invert, not the soft one. The claim is the line
+           that has to survive a phone in daylight — it carries the
+           substance the figure only announces. */
+        .cs-claim {
+            max-width: 26ch;
+            margin-top: 0.5rem;
+            color: var(--ink-invert);
+            text-wrap: balance;
+        }
+
+        /* The source line the deck requires under the bar before launch.
+           Sits outside .cs-stats, on the gutter rather than centred, so it
+           reads as a footnote to the section and not as a fourth stat.
+
+           This has no markup yet — see the note in the handover. */
+        .cs-source {
+            max-width: none;
+            margin-top: clamp(2rem, 5vw, 3rem);
+            padding-top: clamp(0.875rem, 2vw, 1.25rem);
+            border-top: 1px solid var(--rule-invert);
+            font-family: var(--font-body);
+            font-size: var(--fs-caption);
+            font-weight: 300;
+            line-height: 1.5;
+            color: var(--ink-invert-soft);
+        }
+
+        /* Indices for the sitewide reveal. The mechanism is in root.less;
+           page files only assign the order. */
+        .cs-stat:nth-child(1) {
+            --reveal-i: 0;
+        }
+        .cs-stat:nth-child(2) {
+            --reveal-i: 1;
+        }
+        .cs-stat:nth-child(3) {
+            --reveal-i: 2;
+        }
+    }
+}
+
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+    #record {
+        /* Three rows declared on the parent so the items can subgrid onto
+           them. Without this the rows are implicit and there is nothing
+           for subgrid to inherit. */
+        .cs-stats {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-rows: auto auto auto;
+            column-gap: clamp(1.5rem, 4vw, 3.5rem);
+            row-gap: 0;
+        }
+
+        /* Subgrid, so the three figures share a baseline, the three units
+           share a line, and the three claims start together — even when a
+           claim wraps to two lines and its neighbours do not. As three
+           independent flex columns they would each set their own rhythm
+           and the row would read as three cards rather than one band. */
+        .cs-stat {
+            display: grid;
+            grid-template-rows: subgrid;
+            grid-row: span 3;
+            justify-items: center;
+            align-content: start;
+        }
+
+        /* The mobile divider has to be cleared explicitly. Left in, the
+           first two stats keep a bottom rule while gaining a left one,
+           and each column reads as an L rather than as a divided row. */
+        .cs-stat:not(:last-child) {
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        /* Hairlines between the columns, per artboard 12. They only earn
+           their place once the three sit in a row — in the mobile column
+           they would cut across the band rather than divide it.
+
+           On the item rather than the grid: a pseudo-element on .cs-stats
+           cannot know where the column gaps fall once the gap clamps. */
+        .cs-stat + .cs-stat {
+            border-left: 1px solid var(--rule-invert);
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #record {
+        /* The row is three centred columns, so the 90rem container cap in
+           root.less is doing the right thing here — unlike #hero and
+           #practice, this section wants to stay centred on a wide monitor
+           rather than run to the gutter. Left as inherited, deliberately. */
+        .cs-stats {
+            column-gap: clamp(2rem, 5vw, 5rem);
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---           Reviews          -->
+<--- -------------------------- -*/
+
+/* Drop-in replacement for the three #reviews blocks in local.less.
+   (Not assets/less/reviews.less — that file styles #reviews-intro on
+   the standalone /reviews/ page and is untouched by this.)
+
+   One change from what was there: .cs-more is now .cs-button-script
+   rather than .cs-button-ghost, so its top margin is retuned below.
+
+   !! Two things this reverses, both deliberate decisions you may want
+      to re-check before it ships:
+
+      Revision 1 set this link as READ ALL GOOGLE REVIEWS — uppercase,
+      weight 600, 0.12em tracking, no underline — and names it as a
+      flagged one-off exception to the lowercase call-to-action rule.
+      Rosemartin forces lowercase, so that exception is spent.
+
+      The controls spec allows one Rosemartin per page and the homepage
+      already uses it on #finder's search submit. This makes two. If
+      both stay, the face is a second body style rather than an accent. */
+
+@media only screen and (min-width: 0rem) {
+    #reviews {
+        width: 100%;
+        /* Paper. #record has the green now, #listings the warm field,
+           #process the green and the CTA the cocoa — this is the page's
+           quietest ground, and the cards need one to read against. */
+        padding: var(--section-padding);
+        background-color: var(--paper);
+
+        .cs-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: clamp(1.25rem, 3vw, 1.75rem);
+        }
+
+        .cs-intro {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+
+            /* ── Width lever 1: the title ──
+               ch is the width of the font's zero, and this is set in
+               Cinzel while the lede below is set in Elms Sans — so the
+               same number in both places does not produce the same
+               measure. Cinzel uppercase runs wide; 18ch here is roughly
+               24ch of body copy.
+
+               Raise it to let the title run on one line for longer, drop
+               it to force an earlier break. */
+            h2 {
+                max-width: 24ch;
+            }
+        }
+
+        /* ── Width lever 2: the body ──
+           44ch is inside the 66ch upper bound for comfortable reading and
+           narrow enough that the line breaks land under the title rather
+           than running past it. Anything past about 55ch and the lede
+           stops looking related to the h2 above it. */
+        .cs-lede {
+            max-width: 44ch;
+            color: var(--ink-soft);
+        }
+
+        /* The CTA sits below the row rather than beside the title, so it
+           needs its own top margin.
+
+           Raised from the old clamp because the class changed underneath
+           it. .cs-button-ghost carried 0.875rem of padding above its
+           label; .cs-button-script carries 0.5rem. The optical gap is
+           this value plus that padding, so holding the old number would
+           have tightened the space under the cards by 6px and pulled the
+           link toward the row. */
+        .cs-more {
+            margin-top: clamp(1.75rem, 4vw, 2.75rem);
+        }
+
+        /* ── The rail ──
+           Below 64rem this is a snap scroller. grid-auto-flow: column with
+           a percentage auto-column is what makes the next card peek past
+           the right edge — that peek is the only affordance telling anyone
+           there is more than one, since there are no dots and no arrows.
+
+           Contained rather than bled to the viewport edge: the section's
+           gutter is the scroller's own padding, so the first card starts
+           on the page's left edge like everything else. */
+        .cs-cards {
+            list-style: none;
+            margin: clamp(2rem, 5vw, 3rem) 0 0;
+            padding: 0;
+            display: grid;
+            grid-auto-flow: column;
+            grid-auto-columns: 78%;
+            gap: clamp(1rem, 2vw, 1.5rem);
+            overflow-x: auto;
+            overscroll-behavior-x: contain;
+            scroll-snap-type: x mandatory;
+            /* Momentum scrolling on iOS without the elastic overshoot
+               fighting the snap. */
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Hairline on paper, no fill. The border is the whole edge now, so
+           it uses --rule rather than --rule-strong: at card scale a
+           40%-opacity line reads as a box being drawn, and a card is not
+           a control.
+
+           Flex column so .cs-who can bottom-align: at three across the
+           quotes are different lengths, and attributions that float at
+           the end of each quote make the row look accidental. Without a
+           fill this matters more — a ragged set of last lines inside an
+           outlined box has nothing to sit against. */
+        .cs-card {
+            padding: clamp(1.5rem, 2.6vw, 2.25rem);
+            border: 1px solid var(--rule);
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Heritage as ink, the way #record used to and .cs-color
+           licenses. Sized in em so the row tracks the caption below it.
+
+           //! CONFIRM — #record is a heritage ground now. Heritage ink on
+           //! paper two sections later still reads, but the colour is no
+           //! longer doing one job on this page. Check the two together
+           //! before launch. */
+        .cs-stars {
+            display: inline-flex;
+            gap: 0.15em;
+            font-size: var(--fs-caption);
+            color: var(--heritage-500);
+
+            svg {
+                width: 1em;
+                height: 1em;
+                fill: currentColor;
+                display: block;
+            }
+        }
+
+        /* Elms Sans, not Cinzel. At card size the display face turns a
+           client's sentence into a pull quote, and three pull quotes in a
+           row is three statements competing. Body type lets them read as
+           people talking. */
+        .cs-quote {
+            margin: 0;
+            font-size: var(--fs-body);
+            line-height: var(--lh-body);
+            color: var(--ink);
+        }
+
+        .cs-who {
+            margin-top: auto;
+            font-family: var(--font-body);
+            font-size: var(--fs-caption);
+            text-transform: uppercase;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            color: var(--ink-soft);
+        }
+
+        /* Reveal indices. Mechanism is in root.less; this file only
+           assigns the order. */
+        .cs-bar {
+            --reveal-i: 0;
+        }
+        .cs-card:nth-child(1) {
+            --reveal-i: 1;
+        }
+        .cs-card:nth-child(2) {
+            --reveal-i: 2;
+        }
+        .cs-card:nth-child(3) {
+            --reveal-i: 3;
+        }
+        .cs-more {
+            --reveal-i: 4;
+        }
+    }
+}
+
+/* Tablet - 48rem */
+@media only screen and (min-width: 48rem) {
+    #reviews {
+        /* Two up, still snapping. Three across at this width leaves about
+           14rem a card, which is narrower than the quotes want. */
+        .cs-cards {
+            grid-auto-columns: 46%;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #reviews {
+        /* Off the scroller and onto a plain three-column grid. Both the
+           overflow and the snap type have to be unset — leaving
+           scroll-snap-type on a non-scrolling container is harmless
+           today, but it silently changes behaviour the moment anything
+           inside it overflows. */
+        .cs-cards {
+            grid-auto-flow: row;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-auto-columns: auto;
+            gap: clamp(1.25rem, 2.5vw, 2rem);
+            overflow-x: visible;
+            scroll-snap-type: none;
+        }
+
+        .cs-card {
+            scroll-snap-align: none;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---            About           -->
+<--- -------------------------- -*/
+
+/* Copy and one photograph. Stacked on a phone, side by side from 64rem,
+   with the photograph running to the page edge at every width.
+
+   The bleed is why this section carries no padding-inline and why
+   .cs-container drops its max-width: the copy holds the gutter instead,
+   so the picture's column simply ends where the viewport does. The
+   alternative — a negative margin on the picture — has to escape both
+   the gutter and the container's centring, which needs 100vw and
+   overshoots by the scrollbar's width on every desktop browser. */
+
+@media only screen and (min-width: 0rem) {
+    #about {
+        padding-block: clamp(4rem, 8vw, 7.5rem);
+        padding-inline: 0;
+        background-color: var(--cashmere-300);
+
+        .cs-container {
+            max-width: none;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: clamp(2.5rem, 6vw, 3.5rem);
+        }
+
+        /* The gutter lives here now, not on the section. */
+        .cs-copy {
+            padding-inline: var(--gutter);
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             gap: 1.625rem;
+
+            h2 {
+                margin: 0;
+                max-width: 20ch;
+                
+            }
+
+            /* Cinzel at --fs-h3, the same face as the title one step
+               down. It closes the copy rather than opening a new
+               block, so it takes a little more air above it than the
+               flex gap gives. */
+            h3 {
+                margin: 0;
+                margin-block-start: 0.5rem;
+                max-width: 38ch;
+                font-size: var(--fs-h4);
+            }
         }
 
-        /* Speech, not a heading — body face at display size.
-           --fs-h3 is the nearest step to the standalone's 26px. */
-        .cs-statement {
-            font-family: var(--font-body);
-            font-size: var(--fs-h3);
-            font-weight: 300;
-            line-height: 1.45;
-            max-width: 30ch;
+        .cs-lede {
+            max-width: 34ch;
             margin: 0;
-            color: var(--ink);
-            text-wrap: pretty;
         }
 
         .cs-text {
             max-width: 52ch;
-            color: var(--ink-soft);
-        }
-
-        /* No gap. The rows carry a hairline each and the last one
-           closes the set, so consecutive rules have to meet —
-           a gap turns a register into three floating captions.
-           Rhythm comes from the items' own padding instead. */
-        .cs-cred-list {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr);
-            gap: 0;
             margin: 0;
-            padding: 0;
-            padding-inline-start: 0;
-            list-style: none;
+            color: var(--ink-soft);
         }
 
-        .cs-cred-item {
-            display: grid;
-            grid-template-columns: 2rem minmax(0, 1fr);
-            column-gap: 1rem;
-            row-gap: 0.25rem;
+        /* Two script links on one row. The gap is wide because each
+           draws its own hairline — any closer and the two rules read
+           as one broken line. wrap so they stack rather than overflow
+           on a narrow phone. */
+        .cs-actions {
+            display: flex;
+            flex-wrap: wrap;
             align-items: baseline;
-            padding-block: 1.375rem;
-
-           
+            gap: 0.5rem 2.5rem;
         }
 
-        /* Spans both rows so the number sits against the fact's
-           baseline and the source hangs beside empty column. */
-        .cs-cred-index {
-            grid-row: 1 / 3;
-            font-size: var(--fs-caption, 0.75rem);
-            letter-spacing: 0.12em;
-            line-height: 1.6;
-            color: var(--ink-soft);
-            font-variant-numeric: tabular-nums;
-        }
+        /* 4:3 on a phone. Edge to edge — no radius, no inset.
 
-        .cs-cred-fact {
-            font-family: var(--font-display);
-            text-transform: uppercase;
-            font-size: var(--fs-h3);
-            font-weight: 400;
-            line-height: 1.3;
-            color: var(--ink);
-        }
-
-        .cs-cred-source {
-            font-size: var(--fs-body);
-            line-height: 1.4;
-            color: var(--ink-soft);
-            text-wrap: pretty;
-        }
-
-        /* Shorter than the 4/5 portrait this used to be. At phone width
-           a 4:5 frame ate most of the viewport on its own and pushed the
-           copy under the fold every time. Desktop is unaffected: the
-           pinned frame resets this to aspect-ratio: auto. */
+           The ratio is what gives this box a height here, so the image
+           can stay in flow at 100%/100% and fill it. That changes at
+           64rem — see the note there. */
         .cs-picture {
             display: block;
             width: 100%;
@@ -150,13 +765,7 @@
 
 /* Tablet - 48rem */
 @media only screen and (min-width: 48rem) {
-    #practice {
-        /* Shorter again. 4/3 is right for a phone but at tablet width
-           the frame is measured against ~700px, and the panel copy was
-           being pushed off the bottom of the screen by the photograph
-           above it. 16/9 matches what the unpinned desktop fallbacks
-           already use, so the section has one landscape ratio from
-           48rem up rather than three. */
+    #about {
         .cs-picture {
             aspect-ratio: 16 / 9;
         }
@@ -165,135 +774,79 @@
 
 /* Desktop - 64rem */
 @media only screen and (min-width: 64rem) {
-    #practice {
-        /* Two and a half viewports. The frame locks at the top and
-           holds for the last 150svh — that hold is the track's
-           travel. Shorten this and the track moves faster per pixel
-           of scroll; it does not change the distance covered. */
-        height: 250svh;
+    #about {
+        /* The photograph bleeds on all four sides here, so the section
+           gives up its vertical padding and the copy column carries it
+           instead. That inverts what sets the height: the copy's own
+           padding drives the row, and the picture stretches to match,
+           rather than a section height being handed down to both. */
         padding-block: 0;
+        min-height: 100vh;
+    min-height: 100svh;
 
-        /* Panel widths, and the total they add up to. The track
-           translates by the overflow — total minus one viewport —
-           so these four numbers are the only ones to edit.
-
-           copy + image = 100vw exactly, so the portrait is whole at
-           rest and the opening frame reads as a finished composition
-           rather than a photo waiting to slide in. Widen the copy
-           panel past 56 and the image loses its right edge. */
-        --panel-copy: 56vw;
-        --panel-image: 44vw;
-        --panel-creds: 60vw;
-        --track-width: 160vw;
-
-        .cs-frame {
-            position: sticky;
-            top: 0;
-            /* svh so a collapsing mobile toolbar can't overshoot and
-               clip the frame's bottom edge. */
-            height: 100svh;
-            overflow: hidden;
-        }
-
-        .cs-track {
-            display: flex;
-            align-items: stretch;
-            width: var(--track-width);
-            height: 100%;
-            /* No transition — the timeline drives this, and a
-               transition on the same property fights it on every
-               frame. */
-            will-change: transform;
-        }
-
-        .cs-panel {
-            flex: 0 0 auto;
-            height: 100%;
-            padding-block: 0;
-            display: grid;
-            align-content: center;
-        }
-
-        /* Every panel stretches its row rather than centring it.
-
-           The copy panels do it so the container can be a full-height
-           frame — topper pinned to the top edge, body centred in what
-           is left. A content-sized container would give the `1fr`
-           body row nothing definite to resolve against, and the
-           topper would sit straight back down against the statement.
-
-           The image has the same requirement for a different reason:
-           it runs the frame's full height, so `height: 100%` on the
-           picture needs a definite row or it collapses to the image's
-           intrinsic height. */
-        .cs-panel-copy {
-            width: var(--panel-copy);
-            align-content: stretch;
-        }
-
-        .cs-panel-image {
-            width: var(--panel-image);
-            align-content: stretch;
-        }
-
-        .cs-panel-creds {
-            width: var(--panel-creds);
-            align-content: stretch;
-        }
-
-        /* Left-aligned, not centred. `margin-inline: auto` inside a
-           panel wider than the 46rem cap pushes the copy toward the
-           middle and opens a dead gutter against the portrait. The
-           vw left padding keeps the text's left edge on the same
-           optical line as the nav logo at every width.
-
-           Two rows: the rail at its own height, the body taking the
-           rest. The top padding is now doing real work — it is the
-           rail's distance from the frame's top edge, not slack around
-           a centred stack.
-
-           The frame clips at 100svh, so the taller panel —
-           credentials, three ruled rows plus a closing link — has to
-           fit inside it with this padding included. Worth a look at
-           a short laptop viewport before launch. */
         .cs-container {
-            max-width: 46rem;
-            margin-inline: 0;
-            padding: 3rem 4rem 3rem 6vw;
-            grid-template-rows: auto 1fr;
-            align-content: normal;
-            gap: 1.5rem;
-        }
+        min-height: inherit;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+        align-items: stretch;
+        gap: 0;
+    }
 
-        /* The body sits in the optical middle of the row the rail
-           left behind — one selector, because both panels now put
-           everything below the topper inside this wrapper. */
-        .cs-content {
-            align-self: center;
-        }
+        /* This is the section's height control. Nothing else in the row
+           contributes an intrinsic height once the picture is taken out
+           of flow below, so this padding plus the copy's own content is
+           the whole measurement. */
+        .cs-copy {
+    padding-block: clamp(3rem, 5.5vw, 4.5rem);
+    padding-inline-end: clamp(3rem, 6vw, 5rem);
+    justify-content: center;
+}
 
-        .cs-statement {
-            max-width: 26ch;
-        }
+        .cs-lede {
+    max-width: 34ch;
+}
 
-        .cs-text {
-            max-width: 46ch;
-        }
+.cs-text {
+    max-width: 56ch;
+}
 
-        /* Down a step from --fs-h3. Cinzel caps at heading size land
-           three times in a row here; the hairlines carry the
-           structure the size was straining to carry. */
-        .cs-cred-fact {
-            font-size: var(--fs-h3);
-            letter-spacing: 0.02em;
-        }
+        /* The image comes out of flow here, and that is the whole point
+           of this block.
 
+           aspect-ratio: auto leaves .cs-picture with no intrinsic height
+           of its own, so its height falls to its content — and an <img>
+           at height: 100% against an indefinite parent resolves to auto
+           and lays out at its natural ratio. The source is 880x1100, so
+           in a column near 700px the image was contributing roughly
+           875px and it, not the copy, was sizing the grid row. Any
+           change to the copy's padding-block did nothing, because the
+           row was never being measured from that side.
+
+           position: absolute removes it from the measurement entirely.
+           .cs-picture is then a zero-height box that stretches to the
+           row, the row is the copy column, and the padding above is
+           live.
+
+           overflow: hidden on the parent because a stretched absolute
+           child can paint outside its box mid-resize before object-fit
+           settles. */
         .cs-picture {
-            height: 100%;
-            width: 100%;
             aspect-ratio: auto;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
 
+            /* 50% 30%, not 50% 50%. A 4:5 source fitted into a frame
+               that is now wider than it is tall crops from the top and
+               bottom, and she sits high in this photograph — centred,
+               the crop takes her head. Retune this with the copy's
+               padding-block, never independently: the two together
+               decide what stays in frame. */
             img {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
                 object-position: 50% 30%;
             }
         }
@@ -444,38 +997,6 @@
 }
 
 /*-- -------------------------- -->
-<---           Curtain          -->
-<--- -------------------------- -*/
-
-/* The hero pins and the practice frame rides up over it.
-   Desktop only — pinning a 92svh hero on a phone leaves the next
-   section crawling through a sliver, which reads as broken scroll.
-   Requires that nothing between #hero and <body> sets overflow:
-   hidden. root.less uses overflow-x: clip on html and body for
-   exactly this reason. */
-
-@media only screen and (min-width: 64rem) {
-    .cs-curtain {
-        position: relative;
-
-        > #hero {
-            position: sticky;
-            top: 0;
-            z-index: 1;
-        }
-
-        > #practice {
-            position: relative;
-            z-index: 2;
-
-            /* Load-bearing. Without an opaque ground the pinned
-               photograph reads straight through the curtain. */
-            background-color: var(--paper);
-        }
-    }
-}
-
-/*-- -------------------------- -->
 <---       Current Listings     -->
 <--- -------------------------- -*/
 
@@ -495,18 +1016,17 @@
         padding: var(--section-padding);
         background-color: var(--paper-warm);
 
-        /* The section header is the only copy sitting directly on
-           beige. --ink-soft is #8a7462, roughly 3.4:1 on Cashmere
-           Beige — under AA. Everything on the beige resolves to full
-           Dark Cocoa; the card interiors are on --pearl and keep
+        /* The header is the only copy sitting directly on beige.
+           --ink-soft is #8a7462, roughly 3.4:1 on Cashmere Beige —
+           under AA. Everything on the beige resolves to full Dark
+           Cocoa; the card interiors are on --pearl and keep
            --ink-soft. */
         .cs-header {
             display: flex;
-            flex-wrap: wrap;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: 1rem;
-            margin-bottom: 2.75rem;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.75rem;
+            margin-bottom: 1.75rem;
             color: var(--ink);
 
             .cs-topper,
@@ -514,6 +1034,124 @@
             .cs-text {
                 color: var(--ink);
             }
+        }
+
+        .cs-copy {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+
+            h2 {
+                margin: 0;
+            }
+        }
+
+        .cs-text {
+            max-width: 46ch;
+            margin: 0;
+        }
+
+        /* ── Region and city panel ──
+           A white island on the beige, no border. The tonal step is the
+           edge, the same way the listing cards work in reverse — this is
+           why the fields inside stay underlined rather than boxed: the
+           panel is already the separation, and boxed fields inside a
+           panel read as a form pasted onto a form.
+
+           Rebuilt under a class rather than reusing #finder's rules:
+           that stylesheet is ID-scoped and an ID cannot repeat on the
+           page. Keep the two in step by hand if the control chrome
+           moves. */
+        .cs-finder {
+            width: 100%;
+            margin-bottom: 2.75rem;
+        }
+
+        .cs-form {
+            width: 100%;
+            padding: clamp(1.25rem, 3vw, 1.75rem);
+            background-color: var(--paper);
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            align-items: end;
+            gap: 1rem;
+        }
+
+        .cs-field {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4375rem;
+        }
+
+        .cs-label {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            color: var(--ink);
+        }
+
+        .cs-select {
+            width: 100%;
+            min-height: var(--control-height);
+            padding: 0 1.75rem 0 0;
+            font-family: var(--font-body);
+            font-size: var(--fs-body);
+            font-weight: 300;
+            color: var(--ink);
+            background-color: transparent;
+            border: none;
+            border-bottom: 1px solid var(--rule-strong);
+            border-radius: 0;
+            appearance: none;
+            cursor: pointer;
+            transition: border-color var(--dur) var(--ease);
+
+            /* Drawn as a background image rather than a pseudo-element —
+               a select cannot carry one, and a wrapper span would need
+               its own pointer-events juggling. */
+            background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+                linear-gradient(135deg, currentColor 50%, transparent 50%);
+            background-position: calc(100% - 0.6875rem) 52%, calc(100% - 0.375rem) 52%;
+            background-size: 0.3125rem 0.3125rem, 0.3125rem 0.3125rem;
+            background-repeat: no-repeat;
+
+            /* Focus darkens the rule to cocoa, per the controls spec.
+               No red anywhere in the system. */
+            &:hover,
+            &:focus-visible {
+                border-bottom-color: var(--cocoa-500);
+            }
+        }
+
+                /* Sized by its label, not by the column. A grid item stretches
+           on the inline axis by default, and .cs-button-script draws a
+           rule under itself — stretched, that rule runs the panel's full
+           width and the CTA reads as a third empty field.
+
+           The rest is UA reset. .cs-button-script was written against an
+           <a>, so it never had to clear ButtonFace or the outset border
+           a <button> brings. border: 0 first, then border-bottom: this
+           nested rule compiles to `#listings .cs-submit`, which outranks
+           the bare class, so a lone `border: 0` would take the hairline
+           with it — and the class's own border-bottom cannot restore it
+           from lower specificity. */
+        .cs-submit {
+            width: auto;
+            justify-self: start;
+            color: var(--ink);
+            background-color: transparent;
+            border: 0;
+            border-bottom: 1px solid currentColor;
+            border-radius: 0;
+            appearance: none;
+            -webkit-appearance: none;
+            text-align: left;
+            cursor: pointer;
         }
 
         .cs-card-group {
@@ -652,12 +1290,47 @@
             text-align: right;
             text-wrap: pretty;
         }
+
+        .cs-button-script {
+    width: auto;
+    min-width: 0;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding-right: 0.5rem;
+}
     }
 }
 
 /* Tablet - 48rem */
 @media only screen and (min-width: 48rem) {
     #listings {
+        /* Copy left, CTA right. flex-end rather than baseline: the
+           solid button is a box, and baseline-aligning a filled control
+           to a Cinzel cap sits it visibly low. */
+        .cs-header {
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 1.5rem 2.5rem;
+        }
+
+        .cs-copy {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .cs-button-solid {
+            flex: 0 0 auto;
+        }
+
+        /* auto on the third track keeps the CTA at its label width so
+           the two fields split the remainder evenly. */
+        .cs-form {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+            align-items: end;
+            gap: clamp(1.25rem, 2.5vw, 2rem);
+        }
+
         .cs-card-group {
             grid-template-columns: repeat(2, minmax(0, 1fr));
         }
@@ -690,6 +1363,19 @@
 /* Desktop - 64rem */
 @media only screen and (min-width: 64rem) {
     #listings {
+        .cs-header {
+            margin-bottom: 2rem;
+        }
+
+        /* Capped rather than full-bleed: two selects and a short CTA
+           stretched across 90rem leave the fields absurdly wide and the
+           panel reads as an empty bar. Matched by eye to the card grid's
+           first two columns. */
+        .cs-finder {
+            width: min(100%, 60rem);
+            margin-bottom: 3.5rem;
+        }
+
         .cs-card-group {
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 2rem;
@@ -698,18 +1384,201 @@
 }
 
 /*-- -------------------------- -->
-<---       How A Sale Runs      -->
+<---        Valuation Form      -->
 <--- -------------------------- -*/
 
-/* .cs-on-dark in root.less already inverts headings, body, toppers
-   and controls. Nothing here re-declares a colour that the class
-   already handles — including the ask, which is a .cs-button-ghost
-   and is inverted there with every other ghost link on the site. */
+/* Copy left, form right. The section sits on --paper so it alternates
+   off #listings above it, which means the panel is the beige here
+   rather than the ground — the inverse of the listings finder.
+
+   That inversion is what boxes the field. Deck slide 14: underline by
+   default, boxed only where a field sits on a beige ground. An
+   underlined rule on Cashmere Beige is --rule-strong at 40% over a
+   warm mid-tone and it disappears; the box gives the input a --paper
+   fill and the contrast comes back. */
+
+@media only screen and (min-width: 0rem) {
+    #valuation {
+        padding: var(--section-padding);
+        background-color: var(--paper);
+
+        .cs-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        .cs-copy {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.25rem;
+
+            h2 {
+                margin: 0;
+                max-width: 18ch;
+            }
+        }
+
+        /* Both paragraphs sit well inside --measure on their own. The
+           caps are here so the lede breaks before the body does and the
+           two lines stay visibly different in weight, not just size. */
+        .cs-lede {
+            max-width: 34ch;
+            margin: 0;
+        }
+
+        .cs-text {
+            max-width: 42ch;
+            margin: 0;
+        }
+
+        .cs-panel {
+            width: 100%;
+            padding: clamp(1.5rem, 4vw, 2.25rem);
+            background-color: var(--paper-warm);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+
+        .cs-field {
+            width: 100%;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .cs-label {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            color: var(--ink);
+        }
+
+        /* Boxed variant. The placeholder shows format, never repeats
+           the label — the label stays visible above it.
+
+           --cocoa-300 is the placeholder role, and on --paper it
+           clears AA at this size. It is not reused anywhere the ground
+           is beige. */
+        .cs-input {
+            width: 100%;
+            min-height: var(--control-height);
+            padding: 0.75rem 1rem;
+            font-family: var(--font-body);
+            font-size: var(--fs-body);
+            font-weight: 300;
+            line-height: 1.2;
+            color: var(--ink);
+            background-color: var(--paper);
+            border: 1px solid var(--rule);
+            border-radius: 0;
+            appearance: none;
+            transition: border-color var(--dur) var(--ease);
+
+            &::placeholder {
+                color: var(--ink-soft);
+                opacity: 1;
+            }
+
+            /* Focus darkens and thickens the rule to cocoa. No red in
+               the system — an error uses this same treatment and puts
+               the hint in cocoa underneath. */
+            &:hover,
+            &:focus-visible {
+                border-color: var(--cocoa-500);
+            }
+
+            &:focus-visible {
+                border-width: 1.5px;
+                outline: none;
+            }
+        }
+
+        /* Filled, not script. Rosemartin is already spent on the
+           listings CTA above; one per page. */
+                /* Script rather than filled. Same UA reset as #listings
+           .cs-submit: .cs-button-script was written against an <a>, so
+           it never had to clear ButtonFace or a <button>'s outset
+           border. border: 0 first, then border-bottom — this nested
+           rule compiles to `#valuation .cs-button-script` and outranks
+           the bare class, so a lone `border: 0` would take the
+           hairline with it. */
+        .cs-button-script {
+            width: auto;
+            flex: 0 0 auto;
+            white-space: nowrap;
+            color: var(--ink);
+            background-color: transparent;
+            border: 0;
+            border-bottom: 1px solid currentColor;
+            border-radius: 0;
+            appearance: none;
+            -webkit-appearance: none;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .cs-caption {
+            margin: 0;
+            max-width: 38ch;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #valuation {
+        .cs-grid {
+            grid-template-columns: minmax(0, 6fr) minmax(0, 4fr);
+            gap: clamp(3rem, 6vw, 5rem);
+            align-items: center;
+        }
+
+        .cs-copy h2 {
+            max-width: 26ch;
+            text-wrap: pretty;
+        }
+
+        /* The mobile caps exist so the lede breaks before the body does
+           and the two paragraphs stay visibly different. Both go up here
+           and the 8ch differential between them is preserved — raising
+           only one would flatten the pair into a single block. */
+        .cs-lede {
+            max-width: 44ch;
+        }
+
+        .cs-text {
+            max-width: 52ch;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---      Where I Can Help      -->
+<--- -------------------------- -*/
+
+/* On paper. Headings, body and controls take their default on-paper
+   colours from root.less — .cs-on-dark is gone from the section and
+   nothing here re-declares a colour the base already handles, except
+   the two that were authored against the green field: the step
+   hairline and the description tone.
+
+   The list is three audiences, not three stages. It is a <ul>: an
+   ordered list would assert a sequence the words do not carry, and
+   the counter suppression the old sequence needed is gone with it. */
 
 @media only screen and (min-width: 0rem) {
     #process {
         padding: var(--section-padding);
-        background-color: var(--paper-field);
+        background-color: var(--cashmere-200);
 
         .cs-container {
             display: grid;
@@ -738,9 +1607,8 @@
         }
 
         /* Placement only. The chassis — face, size, tracking, case,
-           underline — comes from .cs-button-ghost in root.less, and
-           .cs-on-dark inverts it there for this field. Nothing about
-           colour belongs in this file.
+           underline — comes from .cs-button-ghost in root.less, which
+           already carries the on-paper colour.
 
            Small, because the ghost control carries 0.875rem of block
            padding of its own; the old 0.75rem was set against a bare
@@ -761,9 +1629,12 @@
 
         /* The rule belongs to the step, at every width. Stacked, the
            three read as one line down the column; across, the grid
-           gap breaks between them and they read as three. */
+           gap breaks between them and they read as three.
+
+           --rule, not --rule-invert: the hairline is cocoa on paper
+           now, not cashmere on green. */
         .cs-step {
-            border-top: 1.5px solid var(--rule-invert);
+            border-top: 1.5px solid var(--rule);
             padding-top: 1.375rem;
             display: flex;
             flex-direction: column;
@@ -774,28 +1645,30 @@
             }
         }
 
-        /* No counter. Three columns read as stages because the words
-           say Preparation, Market, Close, in that order, inside an
-           <ol> — the numerals were restating what the sequence
-           already carries. Belt and braces: if the counter rule is
-           still live elsewhere in the cascade, this kills the marker
-           it draws. Better to delete that rule at source. */
-        .cs-steps {
-            counter-reset: none;
-        }
+        /* Pushed to the floor of the card so all three sit on one
+           baseline across the row, however long the description runs.
+           The auto margin does that without putting a height on the
+           item; it only bites once the items are equal height, which
+           the grid gives for free from 48rem up. Stacked, it is inert
+           and the link simply follows its paragraph.
 
-        .cs-step {
-            counter-increment: none;
+           align-self keeps the underline at the label's own width — a
+           stretched flex child would run the rule the full column, and
+           the rule is drawn on the element's own border-bottom.
 
-            &::before {
-                content: none;
-            }
+           Colour and the hairline are the script control's defaults:
+           --ink, with the border drawn in currentColor. */
+        .cs-step-link {
+            margin-block-start: auto;
+            padding-block-start: 0.75rem;
+            align-self: flex-start;
+            white-space: nowrap;
         }
 
         /* The token rather than an opacity value — opacity on text
            multiplies against the ground and drifts per surface. */
         .cs-text {
-            color: var(--ink-invert-soft);
+            color: var(--ink-soft);
             max-width: none;
         }
     }
@@ -871,8 +1744,8 @@
 
         /* No padding-top. That only existed to clear the group rule
            the list used to carry; the rules sit on the steps now, and
-           the container's 3.5rem gap already sets the distance from
-           the intro. */
+           the container's gap already sets the distance from the
+           intro. */
         .cs-steps {
             gap: 3rem;
         }
@@ -1276,117 +2149,182 @@
 }
 
 /*-- -------------------------- -->
-<---            Vista           -->
+<---    Subscribe and Speaking  -->
 <--- -------------------------- -*/
 
-/* A full-bleed image band between the green field and the notes.
-   No container and no copy — the section is the frame and the
-   picture fills it. `overflow: hidden` is load-bearing: it clips
-   the parallax overscan at both ends. */
+/* Two bands under one section. The colour change is the only divider —
+   no rule between them, because a hairline on top of a tonal step reads
+   as a seam rather than a boundary.
+
+   #subscribe, not #notes: Market Notes already holds that ID on this
+   page. The class names below repeat ones used there and in #listings,
+   which is safe because every rule in both files is ID-scoped — but it
+   does mean the two have to be kept in step by hand if the control
+   chrome moves.
+
+   Both bands run the same grid so the subscribe control and the
+   speaking link land on one vertical line at the container's right
+   edge. That alignment is the reason the speaking band's column split
+   looks generous for a single paragraph: it is inherited, not chosen. */
 
 @media only screen and (min-width: 0rem) {
-    #vista {
-        /* vh, not svh. A collapsing mobile toolbar would resize the
-           frame mid-scroll and pull the slack out from under a
-           travel that is fixed in vh. */
-        height: clamp(18rem, 58vh, 26rem);
-        position: relative;
-        overflow: hidden;
+    #subscribe {
+        .cs-band {
+            padding: clamp(3rem, 6vw, 5rem) var(--gutter);
+            background-color: var(--paper);
+        }
 
-        /* Under the image while it loads, so the band never flashes
-           white against the field above it. */
-        background-color: var(--paper-warm);
+        .cs-band-warm {
+            background-color: var(--paper-warm);
+        }
 
-        .cs-picture {
-            display: block;
-            width: 100%;
-            height: 100%;
-            position: relative;
+        .cs-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2rem;
+            align-items: end;
+        }
 
-            img {
-                display: block;
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                object-position: 50% 50%;
+        .cs-copy {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.875rem;
+
+            h2 {
+                margin: 0;
+                /* One step down from a section title. This is a band,
+                   not a section opening, and --fs-h2 at its 56px cap
+                   would outweigh the h2 in #about above it. */
+                font-size: var(--fs-h3);
             }
+        }
+
+        /* ── The measure lever ──
+           58ch is past the 55ch these paragraphs used to hold and still
+           inside the 66ch upper bound for comfortable reading. The
+           column is wider than the copy needs at desktop, so this is
+           what decides where the lines break — raise it to run them
+           longer, drop it to break earlier. Nothing else in the band
+           moves when it changes. */
+        .cs-text {
+            margin: 0;
+            max-width: 58ch;
+        }
+
+        /* The field and its button on one baseline. The button is
+           sized by its label — a stretched grid item would run its
+           own hairline the full column and read as a second field. */
+        .cs-form {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            align-items: end;
+            gap: 1.25rem;
+        }
+
+        .cs-field {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4375rem;
+        }
+
+        .cs-label {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            color: var(--ink);
+        }
+
+        /* Underlined, not boxed. The field sits on beige here, which
+           is the one case the deck boxes — but the band has no panel
+           of its own, so a box would be the only rectangle on the row
+           and would read as pasted on. The rule is --rule-strong
+           rather than --rule to hold its weight against the warm
+           ground. */
+        .cs-input {
+            width: 100%;
+            min-height: var(--control-height);
+            padding: 0 0 0.5rem;
+            font-family: var(--font-body);
+            font-size: var(--fs-body);
+            font-weight: 300;
+            color: var(--ink);
+            background-color: transparent;
+            border: 0;
+            border-bottom: 1px solid var(--rule-strong);
+            border-radius: 0;
+            appearance: none;
+            transition: border-color var(--dur) var(--ease);
+
+            &::placeholder {
+                color: var(--ink-soft);
+                opacity: 1;
+            }
+
+            &:hover,
+            &:focus-visible {
+                border-bottom-color: var(--cocoa-500);
+                outline: none;
+            }
+        }
+
+        /* Same UA reset as #listings .cs-submit — .cs-button-script
+           was written against an <a> and never had to clear ButtonFace
+           or a <button>'s outset border. border: 0 first, then
+           border-bottom: this nested rule outranks the bare class, so
+           a lone `border: 0` would take the hairline with it.
+
+           Applied to the anchor in the second band too, where it is
+           inert but harmless, and keeps the two controls identical.
+
+           start, not end, below 64rem: single column, so the control
+           sits under its own copy on the gutter. The end alignment is
+           a desktop-only arrangement. */
+        .cs-action {
+            width: auto;
+            justify-self: start;
+            white-space: nowrap;
+            color: var(--ink);
+            background-color: transparent;
+            border: 0;
+            border-bottom: 1px solid currentColor;
+            border-radius: 0;
+            appearance: none;
+            -webkit-appearance: none;
+            text-align: left;
+            cursor: pointer;
         }
     }
 }
 
 /* Desktop - 64rem */
 @media only screen and (min-width: 64rem) {
-    #vista {
-        height: clamp(30rem, 76vh, 44rem);
-    }
-}
-
-/*-- -------------------------- -->
-<---       Vista Parallax       -->
-<--- -------------------------- -*/
-
-/* Keyframes at file scope — LESS drops them silently when nested.
-
-   Lags rather than leads, the mirror of the hero. The frame travels
-   up at scroll speed, the photograph at scroll speed minus the
-   travel, so it settles into the band as the section clears. The
-   slack therefore lives below: the image starts lifted by the
-   travel and ends flush at the top. Both ends stay covered as long
-   as --vista-overscan stays meaningfully above --vista-travel. */
-
-@keyframes vista-parallax {
-    from {
-        transform: translateY(calc(var(--vista-travel) * -1));
-    }
-    to {
-        transform: translateY(0);
-    }
-}
-
-/* The band declares the timeline; the image reads it. A named view
-   timeline resolves against ancestors, so no timeline-scope is
-   needed — and keeping the timeline off the image matters, because
-   the image is the thing being transformed.
-
-   `cover`, not `entry`: entry resolves over a few hundred pixels
-   for a band this size and the movement would be spent before it is
-   properly on screen.
-
-   The @supports guard is load-bearing. Without it, browsers with no
-   scroll-driven animation run these keyframes on a time basis and
-   the image slides once, on load, unscrolled. */
-
-@supports (animation-timeline: view()) {
-    #vista {
-        --vista-overscan: 26vh;
-        --vista-travel: 20vh;
-
-        view-timeline-name: --vista;
-        view-timeline-axis: block;
-
-        .cs-picture img {
-            height: calc(100% + var(--vista-overscan));
-            will-change: transform;
-
-            /* Shorthand first: `animation` resets animation-timeline
-               and animation-range to initial. */
-            animation: vista-parallax linear both;
-            animation-timeline: --vista;
-            animation-range: cover 0% cover 100%;
+    #subscribe {
+        .cs-row {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            column-gap: clamp(3rem, 6vw, 5rem);
+            align-items: end;
         }
-    }
 
-    /* root.less clamps animation-duration to 0.01ms under reduced
-       motion, which corrupts the range mapping rather than disabling
-       it. Detach, and drop the overscan with it — leaving the extra
-       height in place would ship a permanently recropped band for no
-       reason. */
-    @media (prefers-reduced-motion: reduce) {
-        #vista .cs-picture img {
-            height: 100%;
-            animation: none;
-            animation-timeline: none;
-            will-change: auto;
+        /* Full column width, uncapped. The button is in the auto track
+           at the far end, so anything capping this pulls the control
+           in off the container's right edge — which is where both
+           bands' controls line up. */
+        .cs-form {
+            grid-template-columns: minmax(0, 1fr) auto;
+            column-gap: 2rem;
+        }
+
+        /* Container's right edge, both bands. Inert inside .cs-form —
+           the button is already at the end of its auto track — and
+           live for the speaking link, which is a direct child of the
+           row. */
+        .cs-action {
+            justify-self: end;
         }
     }
 }

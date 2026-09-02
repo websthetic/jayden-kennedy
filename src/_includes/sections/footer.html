@@ -23,52 +23,74 @@
             <nav class="cs-col" aria-label="Footer">
                 <span class="cs-topper">Pages</span>
                 <ul class="cs-ul">
+                    <li class="cs-li"><a href="/buying/" class="cs-link">Buying</a></li>
+                    <li class="cs-li"><a href="/selling/" class="cs-link">Selling</a></li>
+                    <li class="cs-li"><a href="/investing/" class="cs-link">Investing</a></li>
                     <li class="cs-li"><a href="/listings/" class="cs-link">Listings</a></li>
-                    <li class="cs-li"><a href="/approach/" class="cs-link">Approach</a></li>
-                    <li class="cs-li"><a href="/about/" class="cs-link">About</a></li>
-                    <li class="cs-li"><a href="/reviews/" class="cs-link">Reviews</a></li>
-                    <li class="cs-li"><a href="/press/" class="cs-link">Press</a></li>
-                    <li class="cs-li"><a href="/journal/" class="cs-link">Journal</a></li>
+                    <li class="cs-li"><a href="/home-valuation/" class="cs-link">Home value</a></li>
+                    <li class="cs-li"><a href="/results/" class="cs-link">Results</a></li>
                 </ul>
             </nav>
 
-            <!-- ── Office ── -->
-            <div class="cs-col">
-                <span class="cs-topper">Office</span>
-                <address class="cs-address">
-                    {{ client.address.lineOne }}<br>
-                    {{ client.address.city }}, {{ client.address.state }} {{ client.address.zip }}
-                </address>
-            </div>
-
-            <!-- ── Direct ── -->
-            <div class="cs-col">
-                <span class="cs-topper">Direct</span>
+            <!-- ── More ── -->
+            <nav class="cs-col" aria-label="More from Jayden Kennedy">
+                <span class="cs-topper">More</span>
                 <ul class="cs-ul">
-                    <li class="cs-li">
-                        <a href="tel:{{ client.phoneForTel }}" class="cs-link">{{ client.phoneFormatted }}</a>
-                    </li>
-                    <li class="cs-li">
-                        <a href="mailto:{{ client.email }}" class="cs-link">{{ client.email }}</a>
-                    </li>
-                    <li class="cs-li">
-                        <a href="{{ client.socials.instagram }}" class="cs-link" target="_blank" rel="noopener">Instagram</a>
-                    </li>
+                    <li class="cs-li"><a href="/about/" class="cs-link">About</a></li>
+                    <li class="cs-li"><a href="/reviews/" class="cs-link">Reviews</a></li>
+                    <li class="cs-li"><a href="/speaking/" class="cs-link">Speaking</a></li>
+                    <li class="cs-li"><a href="/journal/" class="cs-link">Journal</a></li>
+                    <li class="cs-li"><a href="/contact/" class="cs-link">Contact</a></li>
                 </ul>
+            </nav>
+
+            <!-- ── Office and Direct ──
+                 Two groups in one column. They are separate blocks rather
+                 than one list because the address is an <address> and the
+                 contact points are links; a single ul would have to carry
+                 both. -->
+            <div class="cs-col cs-contact">
+                <div class="cs-group">
+                    <span class="cs-topper">Office</span>
+                    <address class="cs-address">
+                        {{ client.address.lineOne }}<br>
+                        {{ client.address.city }}, {{ client.address.state }} {{ client.address.zip }}
+                    </address>
+                </div>
+
+                <div class="cs-group">
+                    <span class="cs-topper">Direct</span>
+                    <ul class="cs-ul">
+                        <li class="cs-li">
+                            <a href="tel:{{ client.phoneForTel }}" class="cs-link">{{ client.phoneFormatted }}</a>
+                        </li>
+                        <li class="cs-li">
+                            <a href="mailto:{{ client.email }}" class="cs-link">{{ client.email }}</a>
+                        </li>
+                        <li class="cs-li">
+                            <a href="{{ client.socials.instagram }}" class="cs-link" target="_blank" rel="noopener">Instagram</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
 
-        <!-- ── Legal ── -->
+        <!-- ── Legal ──
+             Copy left, links and copyright right, on one row from 64rem.
+             .cs-legal-copy exists so the two paragraphs stay a single grid
+             item rather than each claiming a column of their own. -->
         <div class="cs-legal">
-            <p class="cs-smallprint">
-                {{ client.brokerage }}. Not intended to solicit buyers or sellers currently under contract. Listing data is provided by the Toronto Regional Real Estate Board and is deemed reliable but not guaranteed accurate.
-            </p>
+            <div class="cs-legal-copy">
+                <p class="cs-smallprint">
+                    {{ client.brokerage }}. Not intended to solicit buyers or sellers currently under contract. Listing data is provided by the Toronto Regional Real Estate Board and is deemed reliable but not guaranteed accurate.
+                </p>
 
-            <!-- CREA trademark attribution. Required of member sites using the
-                 REALTOR® marks — confirm with the brokerage before removing. -->
-            <p class="cs-fineprint">
-                REALTOR<sup>&reg;</sup>, REALTORS<sup>&reg;</sup>, and the REALTOR<sup>&reg;</sup> logo are certification marks owned by REALTOR<sup>&reg;</sup> Canada Inc., a corporation jointly owned by the National Association of REALTORS<sup>&reg;</sup> and the Canadian Real Estate Association. MLS<sup>&reg;</sup>, Multiple Listing Service<sup>&reg;</sup>, and the associated logos are owned by the Canadian Real Estate Association and identify the quality of services provided by real estate professionals who are members of CREA.
-            </p>
+                <!-- CREA trademark attribution. Required of member sites using the
+                     REALTOR® marks — confirm with the brokerage before removing. -->
+                <p class="cs-fineprint">
+                    REALTOR<sup>&reg;</sup>, REALTORS<sup>&reg;</sup>, and the REALTOR<sup>&reg;</sup> logo are certification marks owned by REALTOR<sup>&reg;</sup> Canada Inc., a corporation jointly owned by the National Association of REALTORS<sup>&reg;</sup> and the Canadian Real Estate Association. MLS<sup>&reg;</sup>, Multiple Listing Service<sup>&reg;</sup>, and the associated logos are owned by the Canadian Real Estate Association and identify the quality of services provided by real estate professionals who are members of CREA.
+                </p>
+            </div>
 
             <div class="cs-bottom">
                 <a href="/privacy-policy/" class="cs-legal-link">Privacy policy</a>

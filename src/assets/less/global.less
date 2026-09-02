@@ -4,11 +4,10 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 /*-- -------------------------- -->
-/*-- -------------------------- -->
 <---         Navigation         -->
 <--- -------------------------- -*/
 
-/* Three top-level items, two of which open a group of three.
+/* Six top-level items, the last of which opens a group of five.
    Shared across both variants and both breakpoints.
 
    Nothing in the header moves on hover: no transform, no height change,
@@ -71,8 +70,8 @@
             color: var(--ink);
             display: flex;
             align-items: center;
-            /* 12px - 18px */
-            gap: clamp(0.75rem, 1.4vw, 1.125rem);
+            /* 8px - 12px */
+            gap: clamp(0.5rem, 0.9vw, 0.75rem);
             flex: none;
             transition: color var(--dur) var(--ease);
         }
@@ -81,7 +80,7 @@
            its proportion when --nav-height changes at 900px. */
         .cs-mark {
             width: auto;
-            height: calc(var(--nav-height) * 0.5);
+            height: calc(var(--nav-height) * 0.42);
             display: block;
             flex: none;
         }
@@ -92,7 +91,7 @@
 
         .cs-logo-word {
             font-family: var(--font-display);
-            font-size: clamp(1rem, 2.6vw, 1.4375rem);
+            font-size: clamp(0.875rem, 2.1vw, 1.1875rem);
             font-weight: 500;
             line-height: 1;
             letter-spacing: 0.07em;
@@ -206,7 +205,17 @@
             }
         }
 
-        /* ── Action ── */
+        /* ── Action ──
+           Scoped to the header so the global button keeps the deck's
+           LARGE · 14PX everywhere else. Height held at --control-height:
+           the 44px minimum applies at every size, and the small variant
+           gains padding rather than shrinking its box. */
+        .cs-button-outline {
+            font-size: var(--fs-eyebrow);
+            padding-inline: clamp(1rem, 1.8vw, 1.5rem);
+            min-height: var(--control-height);
+        }
+
         .cs-nav-action {
             flex: none;
         }
@@ -280,7 +289,7 @@
    900px is a spec value from the design deck, not one of the project's
    0/48/64/90rem breakpoints. Paired with the min-width: 56.25rem block below.
 
-   The two groups become expanding rows here, not flyouts. */
+   The group becomes an expanding row here, not a flyout. */
 
 @media only screen and (max-width: 56.24rem) {
     #header {
@@ -424,7 +433,7 @@
 
         /* Collapsed by default. Display rather than height — an animated
            expand needs a measured height, and a wrong measurement clips
-           the third link. */
+           the last link. */
         .cs-sub {
             display: none;
             padding-bottom: 0.75rem;
@@ -479,7 +488,9 @@
            pushes the links off centre and up against the action. Scoped to
            desktop: below 900px space-between is what pins the burger right. */
         .cs-nav {
-            margin-left: auto;
+            flex: 1;
+            display: flex;
+            justify-content: center;
         }
 
         /* 32px - 48px. The container's default var(--gutter) reads tight
@@ -493,14 +504,15 @@
             align-items: center;
         }
 
+        /* 20px - 30px. Tighter than the three-item version: six labels plus
+           a bordered button run out of bar before 1280px otherwise. */
         .cs-ul {
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            /* 24px - 40px */
-            gap: clamp(1.5rem, 2.8vw, 2.5rem);
+            gap: clamp(1.25rem, 2vw, 1.875rem);
         }
 
         .cs-li {
@@ -528,9 +540,9 @@
             transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease), visibility var(--dur) var(--ease);
         }
 
-        /* About is now the last item before the action. Left-anchored, its
-           panel overhangs the button at narrow desktop widths — so the last
-           group opens leftward from the same offset. */
+        /* About is the last item before the action. Left-anchored, its panel
+           overhangs the button at narrow desktop widths — so the last group
+           opens leftward from the same offset. */
         .cs-group:last-of-type .cs-sub {
             left: auto;
             right: -1.25rem;
@@ -581,22 +593,37 @@
 <---           Footer           -->
 <--- -------------------------- -*/
 
-/* Cocoa ground, four columns. .cs-on-dark in root.less handles the type and
-   control inversions, so nothing here restates a colour that class already
-   sets. No rules between links — spacing does the separating. */
+/* Cocoa ground, four columns: brand, two link columns, and Office over
+   Direct stacked in the last. .cs-on-dark in root.less handles the type
+   and control inversions, so nothing here restates a colour that class
+   already sets. No rules under the links — spacing does the separating,
+   and the only hairline in the footer is the one above the legal block. */
 
 @media only screen and (min-width: 0rem) {
     #footer {
         padding: clamp(3.5rem, 7vw, 6rem) var(--gutter) clamp(2.5rem, 5vw, 4rem);
         background-color: var(--paper-deep);
 
+        /* Grid rather than flex at every width. The four blocks are not
+           equal — the brand is wider than a link column and the contact
+           column holds two groups — and column tracks say that once,
+           where flex-basis has to say it per item and per breakpoint.
+
+           Two columns on a phone: one nav down a full-width column
+           leaves most of the measure empty, and the pair side by side
+           closes that without either reading as a second nav. */
         .cs-top {
-            display: flex;
-            flex-direction: column;
-            gap: clamp(2.5rem, 5vw, 4rem);
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: 1.5rem;
+            row-gap: clamp(2.5rem, 5vw, 3.5rem);
         }
 
         /* ── Brand ── */
+        .cs-brand {
+            grid-column: 1 / -1;
+        }
+
         .cs-mark {
             display: inline-block;
             margin-bottom: 1.75rem;
@@ -624,9 +651,24 @@
 
         /* ── Columns ── */
         .cs-col {
-            .cs-topper {
-                margin-bottom: 1.5rem;
-            }
+            min-width: 0;
+        }
+
+        /* On the topper itself rather than on .cs-col, so the second
+           group in the contact column gets it too. */
+        .cs-topper {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Office and Direct share a column and stack. The gap is wider
+           than the list's own 0.875rem so the second topper reads as a
+           new group rather than as another line of the first. */
+        .cs-contact {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: 1.5rem;
+            row-gap: 2.25rem;
         }
 
         .cs-ul {
@@ -685,6 +727,7 @@
         /* The CREA attribution sits quieter than the brokerage line */
         .cs-fineprint {
             opacity: 0.72;
+            margin-bottom: 0;
 
             sup {
                 font-size: 0.7em;
@@ -720,58 +763,25 @@
     }
 }
 
-/* Mobile only — Pages in two columns.
-
-   Below 48rem the .cs-top stack gives the Pages nav the full
-   measure, and six single-line links down one edge leave most of it
-   empty. Two columns closes that up without the list reading as a
-   second nav.
-
-   grid-auto-flow: column against three explicit rows fills
-   column-wise — 1-3 in the first, 4-6 in the second — so the split
-   is fixed by the DOM order rather than by the browser balancing
-   heights. columns: 2 would land on the same result today and
-   re-divide the moment a link wraps to two lines.
-
-   Scoped to nav.cs-col: the Direct list is in a plain div and stays
-   a single column. If a second nav ever lands in this footer, put a
-   class on the ul and swap the selector rather than widening it. */
-
-@media only screen and (max-width: 47.9375rem) {
-    #footer {
-        nav.cs-col .cs-ul {
-            /* display wins over the flex above; flex-direction on the
-               base rule is inert here, not conflicting. */
-            display: grid;
-            grid-auto-flow: column;
-            grid-template-rows: repeat(3, auto);
-            /* Equal halves. max-content instead would pull the second
-               column tight against the first — narrower, but the
-               ragged inner edge tracks the longest word. */
-            grid-auto-columns: minmax(0, 1fr);
-            row-gap: 0.875rem;
-            column-gap: 1.5rem;
-        }
-    }
-}
-
 /* Tablet - 48rem */
 @media only screen and (min-width: 48rem) {
     #footer {
+        /* Brand across the top, the three columns in a row beneath it.
+           The four-across arrangement needs the brand to give up its
+           descriptor width, which it cannot do until 64rem. */
         .cs-top {
-            flex-direction: row;
-            flex-wrap: wrap;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             column-gap: clamp(2rem, 5vw, 4rem);
             row-gap: 3rem;
         }
 
-        .cs-brand {
-            width: 100%;
-        }
-
-        .cs-col {
-            flex: 1 1 0;
-            min-width: 11rem;
+        /* Back to one column, groups stacked. Side by side they were a
+           phone accommodation for a full-width block; in a third of the
+           row there is no width to spare. */
+        .cs-contact {
+            grid-column: auto;
+            grid-template-columns: minmax(0, 1fr);
+            row-gap: 2.25rem;
         }
     }
 }
@@ -779,20 +789,42 @@
 /* Desktop - 64rem */
 @media only screen and (min-width: 64rem) {
     #footer {
+        /* Four across. The brand track is wider than a link column
+           because it carries the descriptor and the script CTA, not a
+           list — 1.4fr is set by eye against the descriptor's 26rem
+           cap, so retune the two together if that cap moves. */
         .cs-top {
-            flex-wrap: nowrap;
-            align-items: flex-start;
+            grid-template-columns: minmax(0, 1.4fr) repeat(3, minmax(0, 1fr));
             column-gap: clamp(2rem, 5vw, 5rem);
+            align-items: start;
         }
 
         .cs-brand {
-            width: auto;
-            flex: 1.4 1 0;
+            grid-column: auto;
             max-width: 32rem;
         }
 
-        .cs-col {
-            flex: 1 1 0;
+        /* Copy left, links and copyright right, both on the block's top
+           line. align-items: start rather than end — the copy runs to
+           four lines and the links would otherwise drop to its floor
+           with nothing beside them. */
+        .cs-legal {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            column-gap: clamp(2rem, 5vw, 4rem);
+            align-items: start;
+        }
+
+        .cs-legal-copy {
+            min-width: 0;
+        }
+
+        /* The margin was clearing the copy above it in the stacked
+           arrangement. Beside it, there is nothing to clear. */
+        .cs-bottom {
+            margin-top: 0;
+            flex-wrap: nowrap;
+            justify-content: flex-end;
         }
     }
 }

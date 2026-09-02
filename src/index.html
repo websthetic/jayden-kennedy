@@ -27,6 +27,7 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
     {% endif %}
 
     <script defer src="/assets/js/homepage.js"></script>
+    <script defer src="/assets/js/finder-relocate.js"></script>
 
     <!-- To ensure proper validation, prevent errors, and encourage developers to check, schema's are an opt-in feature. They're very bespoke and requires some customising  -->
     <!-- Uncomment the code below to enable Structured Data, and test it when you deploy to Netlify - https://developers.google.com/search/docs/appearance/structured-data -->
@@ -35,11 +36,19 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 
 {% block body %}
 
-    <div class="cs-curtain">
+   
 
-       <!-- ============================================ -->
+<!-- ============================================ -->
 <!--                     Hero                     -->
 <!-- ============================================ -->
+
+<!-- Three children in .cs-container: headline, lede, intents. The
+     nth-child stagger in critical.less is keyed to that count — a fourth
+     child needs a fourth delay or it arrives unstaggered.
+
+     No curtain wrapper. The hero no longer pins and #practice no longer
+     rides over it, so the hero is a plain section that subtracts --strip-h
+     at 64rem and lets the finder sit on the fold beneath it. -->
 
 <section id="hero" class="cs-on-dark" data-hero>
     <picture class="cs-background">
@@ -53,277 +62,446 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 
     <div class="cs-container">
         <h1>Top 1% real estate broker in the GTA</h1>
-        <p class="cs-credential">Know what the number supports</p>
+
         <p class="cs-lede">
-            I explain the mechanics of how a property carries its price: the comparables, the carrying costs, the exit. Then you decide.
+            Buying, selling, and investing across the Greater Toronto Area. I show you the numbers behind the price. Then you decide.
         </p>
-        <a href="/contact/" class="cs-button-script">book a consultation</a>
-    </div>
-</section>
 
-<!-- ============================================ -->
-<!--          The Practice · Credentials          -->
-<!-- ============================================ -->
-
-<!--! CONFIRM before launch — licence 888867 against RECO's public
-      register, and "Five years in the market" against Jayden's
-      actual licence date. Both are open items in the deck. -->
-
-<!-- Three panels on one horizontal track inside a pinned frame.
-     The section is 250svh: the frame locks at the top and holds
-     for the remaining 150svh, and that hold is the track's travel. -->
-
-<section id="practice">
-    <div class="cs-frame">
-        <div class="cs-track">
-
-            <div class="cs-panel cs-panel-copy">
-                <div class="cs-container">
-                    <div class="cs-rail">
-                        <span class="cs-topper">The practice</span>
-                    </div>
-
-                    <div class="cs-content">
-                        <p class="cs-statement">
-                            Most people are never taught how property creates wealth. I was not either, until I started reading the numbers for a living.
-                        </p>
-                        <p class="cs-text">
-                            Every comparative market analysis I send is written by hand. By the time an offer is written, the comparables are already read, the carrying cost is on the page, and you know what happens to the number if rates move. If a property is wrong for you, I will say so.
-                        </p>
-                        <a href="/approach/" class="cs-button-ghost">Read how I work</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cs-panel cs-panel-image">
-                <picture class="cs-picture">
-                    <img
-                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/hero-img-interior.jpg"
-                        alt="Jayden Kennedy, seated portrait"
-                        width="880"
-                        height="1100"
-                        loading="lazy"
-                        decoding="async">
-                </picture>
-            </div>
-
-            <div class="cs-panel cs-panel-creds">
-                <div class="cs-container">
-                    <div class="cs-rail">
-                        <span class="cs-topper">On record</span>
-                    </div>
-
-                    <!-- Same wrapper as the copy panel, so the list
-                         and its link move as one centred group and
-                         the two ghost links sit on the same footing. -->
-                    <div class="cs-content">
-                        <ul class="cs-cred-list">
-                            <li class="cs-cred-item">
-                                <span class="cs-cred-index" aria-hidden="true">01</span>
-                                <span class="cs-cred-fact">Broker, licence 888867</span>
-                                <span class="cs-cred-source">Keller Williams Energy Real Estate, Brokerage</span>
-                            </li>
-
-                            <li class="cs-cred-item">
-                                <span class="cs-cred-index" aria-hidden="true">02</span>
-                                <span class="cs-cred-fact">AVCA All-America, 2017</span>
-                                <span class="cs-cred-source">University of San Diego</span>
-                            </li>
-
-                            <li class="cs-cred-item">
-                                <span class="cs-cred-index" aria-hidden="true">03</span>
-                                <span class="cs-cred-fact">Five years in the market</span>
-                                <span class="cs-cred-source">Member, Toronto Regional Real Estate Board</span>
-                            </li>
-                        </ul>
-
-                        <a href="/contact/" class="cs-button-ghost">Ask me anything</a>
-                    </div>
-                </div>
-            </div>
-
+        <!-- Stacked below 48rem, one row above it. .cs-button-ghost carries
+             the underline, the 44px target and the .cs-on-dark inversion. -->
+        <div class="cs-actions">
+            <a href="/buying/" class="cs-button-ghost">I'm looking to buy</a>
+            <a href="/selling/" class="cs-button-ghost">I'm thinking of selling</a>
+            <a href="/home-valuation/" class="cs-button-ghost">What's my home worth</a>
         </div>
     </div>
 </section>
 
+<!-- ============================================ -->
+<!--                    Finder                    -->
+<!-- ============================================ -->
 
+<section id="finder" aria-label="Find a home">
+    <div class="cs-container">
+        <form class="cs-form" action="/listings/" method="get">
+            <div class="cs-field">
+                <label class="cs-label" for="finder-region">Region</label>
+                <select class="cs-select" id="finder-region" name="region">
+                    <option value="durham">Durham Region</option>
+                    <option value="toronto">Toronto</option>
+                    <option value="york">York Region</option>
+                    <option value="peel">Peel Region</option>
+                </select>
+            </div>
+
+            <div class="cs-field">
+                <label class="cs-label" for="finder-city">City</label>
+                <select class="cs-select" id="finder-city" name="city">
+                    <option value="">All cities</option>
+                    <option value="whitby">Whitby</option>
+                    <option value="oshawa">Oshawa</option>
+                    <option value="ajax">Ajax</option>
+                    <option value="pickering">Pickering</option>
+                    <option value="bowmanville">Bowmanville</option>
+                    <option value="courtice">Courtice</option>
+                </select>
+            </div>
+
+            <button type="submit" class="cs-button-script cs-submit">search</button>
+        </form>
     </div>
+</section>
 
-    <!-- ============================================ -->
-    <!--               Current Listings               -->
-    <!-- ============================================ -->
+<!-- ============================================ -->
+<!--                  On Record                   -->
+<!-- ============================================ -->
 
-    <!--! Placeholder markup. Bracketed values are TRREB RESO fields —
-          UnparsedAddress, City, ListPrice, BedroomsTotal,
-          BathroomsTotalInteger, LivingAreaRange, ListingKey,
-          StandardStatus. Replace this block with a Nunjucks loop over
-          the feed once access is granted.
+<section id="record" data-reveal>
+    <h2 class="cs-sr-only">On record</h2>
 
-          Deck slide 18: three listings, never more. If fewer than three
-          are active the row becomes a single wide card plus a link to
-          recent sales. That conditional goes here.
+    <div class="cs-container">
+        <ul class="cs-stats">
 
-          The sold variant (.cs-badge-sold, ClosePrice, "Represented
-          the [BUYER/SELLER]" in place of the specs) is specified on
-          deck slide 15 and styled in local.less. It stays in the
-          stylesheet for the /results/ page — no sold card renders on
-          the home row. -->
+            <!--! CONFIRM: "Top 1%" — against what population, measured by
+                  whom, over what period? Board-wide, brokerage-wide, by
+                  volume or by units? The claim needs a source before it
+                  ships, and the source line is what makes it credible
+                  rather than decorative. -->
+            <li class="cs-stat cs-reveal">
+                <span class="cs-figure">Top 1%</span>
+                <p class="cs-claim">Real estate broker in the Greater Toronto Area</p>
+            </li>
 
-    <section id="listings" data-reveal>
-        <div class="cs-container">
-            <div class="cs-header cs-reveal">
-                <h2>Current listings</h2>
-                <a href="/listings/" class="cs-button-ghost">All listings</a>
+            <!--! CONFIRM: 2026 is not over. If the Top 20 standing for
+                  2026 is a partial-year or interim figure, it cannot be
+                  stated flat alongside a completed 2025. Either confirm
+                  the award has been issued for 2026, or drop to 2025
+                  alone until it is. -->
+            <li class="cs-stat cs-reveal">
+                <span class="cs-figure">Top 20</span>
+                <p class="cs-claim">Individual agent, Keller Williams Canada, 2025 and 2026</p>
+            </li>
+
+            <!--! CONFIRM: exact review count, and the Google Business
+                  Profile URL — same open item as the reviews page. A
+                  number this specific should link to the place it can be
+                  checked; wrap .cs-figure and .cs-claim in an <a> once
+                  the URL lands. -->
+            <li class="cs-stat cs-reveal">
+                <span class="cs-figure">150+</span>
+                <p class="cs-claim">Five star reviews on Google</p>
+            </li>
+
+        </ul>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--                   Reviews                    -->
+<!-- ============================================ -->
+
+<section id="reviews" data-reveal>
+    <div class="cs-container">
+
+        <div class="cs-bar cs-reveal">
+            <div class="cs-intro">
+                <!--! CONFIRM: "150+" also appears in #record a few
+                      sections up. If both stay, one of the two should
+                      carry something other than the count. -->
+                <h2>Reviewed by 150+ clients</h2>
+                <p class="cs-lede">
+                    Hear directly from the clients I've had the privilege of helping.
+                </p>
+            </div>
+        </div>
+
+        <ul class="cs-cards">
+
+            <li class="cs-card cs-reveal">
+                <span class="cs-stars" role="img" aria-label="Five out of five stars">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                </span>
+
+                <blockquote class="cs-quote">
+                    [Google Review 1]
+                </blockquote>
+
+                <span class="cs-who">Seller &mdash; Whitby</span>
+            </li>
+
+            <li class="cs-card cs-reveal">
+                <span class="cs-stars" role="img" aria-label="Five out of five stars">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                </span>
+
+                <blockquote class="cs-quote">
+                    [Google Review 2]
+                </blockquote>
+
+                <span class="cs-who">First Time Buyer &mdash; Oshawa</span>
+            </li>
+
+            <li class="cs-card cs-reveal">
+                <span class="cs-stars" role="img" aria-label="Five out of five stars">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                </span>
+
+                <blockquote class="cs-quote">
+                    [Google Review 3]
+                </blockquote>
+
+                <span class="cs-who">Investor &mdash; Bowmanville</span>
+            </li>
+
+        </ul>
+
+        <!-- Rosemartin. .cs-button-script forces lowercase, so this renders
+             as "read all google reviews" regardless of how it is typed
+             here — the face loses its point set in caps.
+
+             This is the page's second script control; #finder's search
+             submit is the first. See the note at the top of the LESS. -->
+        <a href="/reviews/" class="cs-button-script cs-more cs-reveal">Read all Google reviews</a>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--               Current Listings               -->
+<!-- ============================================ -->
+
+<section id="listings" data-reveal>
+    <div class="cs-container">
+        <div class="cs-header cs-reveal">
+            <div class="cs-copy">
+                <h2>Search homes across the Greater Toronto Area</h2>
+
+                <p class="cs-text">
+                    Filter by city, price, type, and size. Save a search and I&rsquo;ll email you when something matches.
+                </p>
             </div>
 
-            <ul class="cs-card-group">
-                <li class="cs-item cs-reveal">
-                    <a href="/listings/" class="cs-link">
-                        <picture class="cs-picture">
-                            <img src="/assets/images/portfolio/port1.jpg"
-                                 alt=""
-                                 width="1200" height="800"
-                                 loading="lazy" decoding="async">
-                        </picture>
-
-                        <div class="cs-info">
-                            <div class="cs-meta">
-                                <span class="cs-badge">For sale</span>
-                                <span class="cs-mls">MLS&reg; [ListingKey]</span>
-                            </div>
-
-                            <span class="cs-address">[UnparsedAddress]</span>
-                            <span class="cs-city">[City], Durham Region</span>
-
-                            <div class="cs-figures">
-                                <span class="cs-price">[ListPrice]</span>
-                                <span class="cs-specs">[BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath &middot; [LivingAreaRange] sq ft</span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-
-                <li class="cs-item cs-reveal">
-                    <a href="/listings/" class="cs-link">
-                        <picture class="cs-picture">
-                            <img src="/assets/images/portfolio/port2.jpg"
-                                 alt=""
-                                 width="1200" height="800"
-                                 loading="lazy" decoding="async">
-                        </picture>
-
-                        <div class="cs-info">
-                            <div class="cs-meta">
-                                <span class="cs-badge">For sale</span>
-                                <span class="cs-mls">MLS&reg; [ListingKey]</span>
-                            </div>
-
-                            <span class="cs-address">[UnparsedAddress]</span>
-                            <span class="cs-city">[City], Durham Region</span>
-
-                            <div class="cs-figures">
-                                <span class="cs-price">[ListPrice]</span>
-                                <span class="cs-specs">[BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath &middot; [LivingAreaRange] sq ft</span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-
-                <li class="cs-item cs-reveal">
-                    <a href="/listings/" class="cs-link">
-                        <picture class="cs-picture">
-                            <img src="/assets/images/portfolio/port3.jpg"
-                                 alt=""
-                                 width="1200" height="800"
-                                 loading="lazy" decoding="async">
-                        </picture>
-
-                        <div class="cs-info">
-                            <div class="cs-meta">
-                                <span class="cs-badge">For sale</span>
-                                <span class="cs-mls">MLS&reg; [ListingKey]</span>
-                            </div>
-
-                            <span class="cs-address">[UnparsedAddress]</span>
-                            <span class="cs-city">[City], Durham Region</span>
-
-                            <div class="cs-figures">
-                                <span class="cs-price">[ListPrice]</span>
-                                <span class="cs-specs">[BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath &middot; [LivingAreaRange] sq ft</span>
-                            </div>
-                        </div>
-                    </a>
-                </li>
-            </ul>
+            <a href="/listings/" class="cs-button-script">All listings</a>
         </div>
-    </section>
 
-    <!-- ============================================ -->
-    <!--               How A Sale Runs                -->
-    <!-- ============================================ -->
+        <!-- Region / city panel. Same control set as the hero finder,
+             rebuilt under a class because #finder is an ID and cannot
+             appear twice on the page. GET to /listings/ so the panel
+             works with JS off. -->
+        <form class="cs-finder cs-reveal" action="/listings/" method="get">
+            <div class="cs-form">
+                <div class="cs-field">
+                    <label class="cs-label" for="listings-region">Region</label>
+                    <select class="cs-select" id="listings-region" name="region">
+                        <option value="durham">Durham Region</option>
+                        <option value="toronto">Toronto</option>
+                        <option value="york">York Region</option>
+                        <option value="peel">Peel Region</option>
+                        <option value="halton">Halton Region</option>
+                    </select>
+                </div>
 
-    <!-- The page's one saturated field. Deck slide 18: one green band
-         per page, and it never repeats below. -->
+                <div class="cs-field">
+                    <label class="cs-label" for="listings-city">City</label>
+                    <select class="cs-select" id="listings-city" name="city">
+                        <option value="">All cities</option>
+                        <option value="whitby">Whitby</option>
+                        <option value="oshawa">Oshawa</option>
+                        <option value="ajax">Ajax</option>
+                        <option value="pickering">Pickering</option>
+                        <option value="clarington">Clarington</option>
+                    </select>
+                </div>
 
-    <section id="process" class="cs-on-dark" data-reveal>
-        <div class="cs-container">
-            <div class="cs-intro cs-reveal">
-                <img class="cs-mark"
-                     src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/neighborhood-img/jayden-kennedy-icon.png"
-                     alt=""
-                     width="56"
-                     height="56"
-                     loading="lazy"
-                     decoding="async"
-                     aria-hidden="true">
-                <h2>How a sale runs</h2>
-                <a href="/contact/" class="cs-button-ghost cs-ask">Ask me anything</a>
+                                <button type="submit" class="cs-submit cs-button-script">Search</button>
+            </div>
+        </form>
+
+        <ul class="cs-card-group">
+            <li class="cs-item cs-reveal">
+                <a href="/listings/" class="cs-link">
+                    <picture class="cs-picture">
+                        <img src="/assets/images/portfolio/port1.jpg"
+                             alt=""
+                             width="1200" height="800"
+                             loading="lazy" decoding="async">
+                    </picture>
+
+                    <div class="cs-info">
+                        <div class="cs-meta">
+                            <span class="cs-badge">For sale</span>
+                            <span class="cs-mls">MLS&reg; [ListingKey]</span>
+                        </div>
+
+                        <span class="cs-address">[UnparsedAddress]</span>
+                        <span class="cs-city">[City], Durham Region</span>
+
+                        <div class="cs-figures">
+                            <span class="cs-price">[ListPrice]</span>
+                            <span class="cs-specs">[BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath &middot; [LivingAreaRange] sq ft</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+
+            <li class="cs-item cs-reveal">
+                <a href="/listings/" class="cs-link">
+                    <picture class="cs-picture">
+                        <img src="/assets/images/portfolio/port2.jpg"
+                             alt=""
+                             width="1200" height="800"
+                             loading="lazy" decoding="async">
+                    </picture>
+
+                    <div class="cs-info">
+                        <div class="cs-meta">
+                            <span class="cs-badge">For sale</span>
+                            <span class="cs-mls">MLS&reg; [ListingKey]</span>
+                        </div>
+
+                        <span class="cs-address">[UnparsedAddress]</span>
+                        <span class="cs-city">[City], Durham Region</span>
+
+                        <div class="cs-figures">
+                            <span class="cs-price">[ListPrice]</span>
+                            <span class="cs-specs">[BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath &middot; [LivingAreaRange] sq ft</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+
+            <li class="cs-item cs-reveal">
+                <a href="/listings/" class="cs-link">
+                    <picture class="cs-picture">
+                        <img src="/assets/images/portfolio/port3.jpg"
+                             alt=""
+                             width="1200" height="800"
+                             loading="lazy" decoding="async">
+                    </picture>
+
+                    <div class="cs-info">
+                        <div class="cs-meta">
+                            <span class="cs-badge">For sale</span>
+                            <span class="cs-mls">MLS&reg; [ListingKey]</span>
+                        </div>
+
+                        <span class="cs-address">[UnparsedAddress]</span>
+                        <span class="cs-city">[City], Durham Region</span>
+
+                        <div class="cs-figures">
+                            <span class="cs-price">[ListPrice]</span>
+                            <span class="cs-specs">[BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath &middot; [LivingAreaRange] sq ft</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--               Valuation Form                 -->
+<!-- ============================================ -->
+
+<section id="valuation" data-reveal>
+    <div class="cs-container">
+        <div class="cs-grid">
+            <div class="cs-copy cs-reveal">
+                <h2>How much is<br> my home worth?</h2>
+
+                <p class="cs-lede">
+                    Automated estimates divide by square footage. I walk the street.
+                </p>
+
+                <p class="cs-text">
+                    Every analysis is written by hand. If the read is to wait, I&rsquo;ll tell you.
+                </p>
             </div>
 
-            <ol class="cs-steps">
-                <li class="cs-step cs-reveal">
-                    <h3>Preparation</h3>
-                    <p class="cs-text">
-                        A written analysis of the last ninety days on your street, before anything is listed.
-                    </p>
-                </li>
+            <!-- GET to /home-valuation/ so the field still submits with
+                 JS off. Autocomplete runs on top of it, never instead. -->
+            <form class="cs-panel cs-reveal" action="/home-valuation/" method="get">
+                <div class="cs-field">
+                    <label class="cs-label" for="valuation-address">Property address</label>
+                    <input class="cs-input"
+                           type="text"
+                           id="valuation-address"
+                           name="address"
+                           autocomplete="street-address"
+                           placeholder="Start typing your address">
+                </div>
 
-                <li class="cs-step cs-reveal">
-                    <h3>Market</h3>
-                    <p class="cs-text">
-                        Photography, staging notes and the pricing band, with the reasoning attached to each.
-                    </p>
-                </li>
+                <button type="submit" class="cs-button-script">Continue</button>
 
-                <li class="cs-step cs-reveal">
-                    <h3>Close</h3>
-                    <p class="cs-text">
-                        Offers read out loud, term by term, so the decision is yours and not the room's.
-                    </p>
-                </li>
-            </ol>
+                <p class="cs-caption">
+                    Free, no obligation. I answer every enquiry myself.
+                </p>
+            </form>
         </div>
-    </section>
+    </div>
+</section>
 
-        <!-- ============================================ -->
-    <!--                    Vista                     -->
-    <!-- ============================================ -->
+<!-- ============================================ -->
+<!--                    About                     -->
+<!-- ============================================ -->
 
-    <!--! Placeholder source. No srcset — same open item as the hero
-          image; both bypass config/plugins/images.js. A band this
-          wide is the worst case for it, so it is worth doing before
-          launch rather than after. -->
+<!-- Copy and one photograph, stacked on a phone and side by side from
+     64rem. The photograph runs to the page edge at every width, so the
+     section carries no horizontal padding of its own — the copy holds
+     the gutter instead. -->
 
-    <section id="vista" aria-hidden="true">
-        <picture class="cs-picture">
-            <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder.jpg"
-                 alt=""
-                 width="2600" height="1400"
+<section id="about" data-reveal>
+    <div class="cs-container">
+
+        <div class="cs-copy cs-reveal">
+            <h2>Jayden Kennedy, Broker</h2>
+
+            <p class="cs-lede">
+                Nobody taught me how property builds wealth. I learned it by reading the numbers for a living.
+            </p>
+
+            <p class="cs-text">
+                I came to real estate from professional sport and kept the preparation. Based in Oshawa, working across the Greater Toronto Area with Keller Williams Energy. Every analysis I send is written by hand, so by the time you make an offer the comparables are read and the carrying cost is on the page.
+            </p>
+
+            <h3>If a property is wrong for you, I&rsquo;ll say so.</h3>
+
+            <div class="cs-actions">
+                <a href="/about/" class="cs-button-script">More about me</a>
+                <a href="/speaking/" class="cs-button-script">Speaking</a>
+            </div>
+        </div>
+
+        <picture class="cs-picture cs-reveal">
+            <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-portrait-img.png"
+                 alt="Jayden Kennedy, seated portrait"
+                 width="880" height="1100"
                  loading="lazy" decoding="async">
         </picture>
-    </section>
 
-    <!-- ============================================ -->
+    </div>
+</section>
+
+
+
+<!-- ============================================ -->
+<!--              Where I Can Help                -->
+<!-- ============================================ -->
+
+<!-- On paper, not the green field. -->
+
+<section id="process" data-reveal>
+    <div class="cs-container">
+        <div class="cs-intro cs-reveal">
+            
+            <h2>Where do you want to begin?</h2>
+            
+        </div>
+
+        <!-- ul, not ol. These are three audiences, not three stages —
+             an ordered list would assert a sequence that isn't there. -->
+        <ul class="cs-steps">
+            <li class="cs-step cs-reveal">
+                <h3>Buying</h3>
+                <p class="cs-text">
+                    Your first home or your fifth. Carrying costs, deposits, and what to ask before you offer.
+                </p>
+                <a href="/buying/" class="cs-button-script cs-step-link">Buying a home</a>
+            </li>
+
+            <li class="cs-step cs-reveal">
+                <h3>Selling</h3>
+                <p class="cs-text">
+                    A price is an argument. Mine comes with the comparables attached.
+                </p>
+                <a href="/selling/" class="cs-button-script cs-step-link">Selling a home</a>
+            </li>
+
+            <li class="cs-step cs-reveal">
+                <h3>Investing</h3>
+                <p class="cs-text">
+                    Rent evidence, vacancy, debt service coverage. On the page before you commit.
+                </p>
+                <a href="/investing/" class="cs-button-script cs-step-link">Investment property</a>
+            </li>
+        </ul>
+    </div>
+</section>
+
+       
+
+<!-- ============================================ -->
 <!--                 Market Notes                 -->
 <!-- ============================================ -->
 
@@ -336,7 +514,7 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
   <div class="cs-container">
     <div class="cs-header cs-reveal">
       <h2>Market notes</h2>
-      <a href="/" class="cs-button-ghost">All notes</a>
+      <a href="/" class="cs-button-script">all notes</a>
     </div>
 
     <!-- .cs-body exists so the aside can sit outside .cs-row.
@@ -425,10 +603,69 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
         <p class="cs-text">
           Short pieces on the mechanics: what a comparable really proves, how deposits are read, where the carrying cost hides.
         </p>
-        <a href="/" class="cs-button-ghost">Ask me anything</a>
+        
       </div>
     </div>
   </div>
+</section>
+
+<!-- ============================================ -->
+<!--            Subscribe and Speaking            -->
+<!-- ============================================ -->
+
+<!-- Not #notes — that ID belongs to Market Notes further up the page,
+     and an ID cannot repeat. The class names inside are shared with
+     other sections but every rule is ID-scoped, so they do not meet.
+
+     Both bands carry the same anatomy — title, copy, control — so the
+     two read as a pair. The second band's title is what stops it
+     looking like a stray paragraph under the first. -->
+
+<section id="subscribe">
+    <div class="cs-band cs-band-warm" data-reveal>
+        <div class="cs-container">
+            <div class="cs-row">
+                <div class="cs-copy cs-reveal">
+                    <h2>Two notes a month</h2>
+
+                    <p class="cs-text">
+                        What the numbers are doing across the GTA. Nothing else.
+                    </p>
+                </div>
+
+                <form class="cs-form cs-reveal" action="/subscribe/" method="get">
+                    <div class="cs-field">
+                        <label class="cs-label" for="subscribe-email">Email</label>
+                        <input class="cs-input"
+                               type="email"
+                               id="subscribe-email"
+                               name="email"
+                               autocomplete="email"
+                               required
+                               placeholder="jayden@soldbykennedy.ca">
+                    </div>
+
+                    <button type="submit" class="cs-button-script cs-action">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="cs-band" data-reveal>
+        <div class="cs-container">
+            <div class="cs-row">
+                <div class="cs-copy cs-reveal">
+                    <h2>Talks and workshops</h2>
+
+                    <p class="cs-text">
+                        I speak to schools, brokerages and community groups on how property builds wealth, using real local figures instead of national averages.
+                    </p>
+                </div>
+
+                <a href="/speaking/" class="cs-button-script cs-action cs-reveal">Book me to speak</a>
+            </div>
+        </div>
+    </div>
 </section>
 
     {% include 'sections/cta.html' %}
