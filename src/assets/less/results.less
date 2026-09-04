@@ -213,8 +213,10 @@
    pair of cards outweighs what it is filtering. It stays grouped for
    as long as the results are.
 
-   The panel collapses with the form rather than the form alone —
-   otherwise a closed filter set leaves an empty white box behind. */
+   .cs-open sits on the panel rather than the form: the panel is what
+   collapses, so keying its own display off its own class keeps the
+   state and the element together. A :has() on the parent reading a
+   class on the child works, but puts the two an element apart. */
 .js #listings-filters {
     .cs-bar {
         display: block;
@@ -224,7 +226,7 @@
         display: none;
     }
 
-    .cs-panel:has(.cs-form.cs-open) {
+    .cs-panel.cs-open {
         display: block;
     }
 }
@@ -595,7 +597,7 @@
         }
 
         .cs-panel,
-        .cs-panel:has(.cs-form.cs-open) {
+        .cs-panel.cs-open {
             display: block;
         }
     }
