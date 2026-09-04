@@ -1,0 +1,246 @@
+---
+title: "Selling | Jayden Kennedy"
+description: "Every comparable read by hand before a price goes on your home. Jayden Kennedy, Broker, Durham Region and the Greater Toronto Area."
+permalink: "/selling/"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/selling.css">
+{% endblock %}
+
+{% block body %}
+
+<!-- ============================================ -->
+<!--                Selling Hero                  -->
+<!-- ============================================ -->
+
+<section id="hero" class="cs-hero-interior" data-reveal>
+    <div class="cs-container">
+        <div class="cs-copy cs-reveal">
+
+            <h1>Selling your home in the Greater Toronto Area</h1>
+
+            <p class="cs-lede">
+                A listing price is an argument. Mine comes with the comparables attached, so you can see what the number is standing before you agree to it.
+            </p>
+
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--              How A Sale Runs                 -->
+<!-- ============================================ -->
+
+<section id="how-a-sale-runs">
+    <div class="cs-container">
+        <div class="cs-masthead" data-reveal>
+            <div class="cs-reveal">
+                <h2 class="cs-title">How a sale runs</h2>
+                <p class="cs-lede">Three stages, and you always know which one you&rsquo;re in.</p>
+            </div>
+        </div>
+
+        <ol class="cs-stages">
+            <li class="cs-stage" data-reveal>
+                <span class="cs-marker" aria-hidden="true"></span>
+                <div class="cs-stage-body cs-reveal">
+                    <div class="cs-stage-head">
+                        <span class="cs-num">01</span>
+                        <h3 class="cs-stage-title">Preparation</h3>
+                    </div>
+                    <p class="cs-text">
+                        A written analysis of the last ninety days on your street, before anything is listed. What sold, what didn&rsquo;t, and what made the difference.
+                    </p>
+                </div>
+            </li>
+
+            <li class="cs-stage" data-reveal>
+                <span class="cs-marker" aria-hidden="true"></span>
+                <div class="cs-stage-body cs-reveal">
+                    <div class="cs-stage-head">
+                        <span class="cs-num">02</span>
+                        <h3 class="cs-stage-title">Market</h3>
+                    </div>
+                    <p class="cs-text">
+                        Photography, staging notes and the pricing band, with the reasoning attached to each one. You&rsquo;ll know why the number sits where it sits.
+                    </p>
+                </div>
+            </li>
+
+            <li class="cs-stage" data-reveal>
+                <span class="cs-marker" aria-hidden="true"></span>
+                <div class="cs-stage-body cs-reveal">
+                    <div class="cs-stage-head">
+                        <span class="cs-num">03</span>
+                        <h3 class="cs-stage-title">Close</h3>
+                    </div>
+                    <p class="cs-text">
+                        Offers read out loud, term by term, so the decision is yours and not the room&rsquo;s.
+                    </p>
+                </div>
+            </li>
+        </ol>
+    </div>
+</section>
+
+<script>(function () {
+    const rail = document.querySelector('#how-a-sale-runs .cs-stages');
+    if (!rail) return;
+
+    const stages = Array.from(rail.querySelectorAll('.cs-stage'));
+    if (!stages.length) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    // The rail stops at the last marker's centre rather than running
+    // on to the bottom of the last stage's copy. CSS has no way to
+    // reach that point, so it's measured here and written back as a
+    // custom property. Recomputed on resize because the copy reflows
+    // and the last stage's height changes with it.
+    function measureEnd() {
+        const listRect = rail.getBoundingClientRect();
+        const last = stages[stages.length - 1].querySelector('.cs-marker');
+        const m = last.getBoundingClientRect();
+        const end = listRect.bottom - (m.top + m.height / 2);
+        rail.style.setProperty('--rail-end', Math.max(0, end).toFixed(2) + 'px');
+        return end;
+    }
+
+    // Settle everything and never listen. The CSS already handles the
+    // static case, but the markers need the class since .is-active is
+    // what the selector keys on, and the rail still needs measuring.
+    if (reduced.matches) {
+        measureEnd();
+        stages.forEach((s) => s.classList.add('is-active'));
+        window.addEventListener('resize', measureEnd);
+        return;
+    }
+
+    rail.style.setProperty('--rail-progress', '0');
+
+    let queued = false;
+
+    function update() {
+        queued = false;
+
+        const end = measureEnd();
+        const r = rail.getBoundingClientRect();
+        // Progress runs over the rail's own length now, not the list's
+        // — otherwise the fill would reach 100% while still short of
+        // the last marker.
+        const railTop = r.top;
+        const railLen = Math.max(1, r.height - end - (r.height - r.height));
+        const usable = Math.max(1, r.height - end);
+
+        // The fill line sits just below centre. Higher and the rail
+        // completes before the last stage is read; lower and it lags
+        // behind the copy the reader is already on.
+        const line = window.innerHeight * 0.55;
+        const p = Math.min(1, Math.max(0, (line - railTop) / usable));
+
+        rail.style.setProperty('--rail-progress', p.toFixed(4));
+
+        const fillY = railTop + usable * p;
+
+        for (const stage of stages) {
+            const m = stage.querySelector('.cs-marker').getBoundingClientRect();
+            stage.classList.toggle('is-active', fillY >= m.top + m.height / 2);
+        }
+    }
+
+    function onScroll() {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(update);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    update();
+})();</script>
+
+<!-- ============================================ -->
+<!--                What It Costs                 -->
+<!-- ============================================ -->
+
+<section id="costs" class="cs-on-dark" data-reveal>
+    <div class="cs-container">
+        <div class="cs-rail cs-reveal">
+            <h2 class="cs-title">The Analysis</h2>
+            <p class="cs-body-sm">Takes an afternoon, done by hand.</p>
+        </div>
+
+        <div class="cs-content cs-reveal">
+            <p class="cs-text">
+                An algorithm can't see the renovation, the lot line, or the ninety days of offers that never registered. You get a range rather than one number, the evidence under it, and what would move it away. 
+            </p>
+            <p class="cs-text cs-statement">
+                If the read is to wait, i'll tell you, with the numbers that say so. Even though waiting doesn't pay me this year. 
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--             What I Need From You             -->
+<!-- ============================================ -->
+
+<section id="what-i-need" data-reveal>
+    <div class="cs-container">
+        <div class="cs-rail cs-reveal">
+            <h2 class="cs-title">What I need from you</h2>
+            <p class="cs-body-sm">Very little, and none of it before you&rsquo;ve decided anything.</p>
+        </div>
+
+        <div class="cs-content cs-reveal">
+            <ol class="cs-asks">
+                <li class="cs-ask">
+                    <span class="cs-num">01</span>
+                    <p class="cs-text">The address, so I can pull the street.</p>
+                </li>
+                <li class="cs-ask">
+                    <span class="cs-num">02</span>
+                    <p class="cs-text">Anything you&rsquo;ve changed since you bought, with rough dates.</p>
+                </li>
+                <li class="cs-ask">
+                    <span class="cs-num">03</span>
+                    <p class="cs-text">Your timing, and how firm it is.</p>
+                </li>
+            </ol>
+
+            <p class="cs-text cs-close">
+                That&rsquo;s enough for a first analysis. The rest can wait until the number makes sense to you.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--                     CTA                      -->
+<!-- ============================================ -->
+
+<section id="cta" class="cs-on-dark" data-reveal>
+    <div class="cs-container">
+        <div class="cs-rail cs-reveal">
+            <h2>Start with the number</h2>
+        </div>
+
+        <div class="cs-content cs-reveal">
+            <p class="cs-lede">
+                A handwritten analysis of your street. Free, no obligation, no automated estimate. 
+            </p>
+
+            <div class="cs-actions">
+                <a href="/contact/" class="cs-button-script">Get my home evaluation</a>
+                <a href="/listings/" class="cs-button-script">See recent sales</a>
+            </div>
+
+            <p class="cs-fine">I answer every enquiry myself.</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

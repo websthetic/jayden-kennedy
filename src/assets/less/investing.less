@@ -1,0 +1,540 @@
+/*-- -------------------------- -->
+<---       Investing Hero       --->
+<--- -------------------------- -*/
+
+/* Same chassis as the Buying and Selling interior heroes — identical
+   clamps, h2-scale title, uncapped desktop measure — with one
+   departure: the palest Cashmere wash rather than white.
+
+   The wash is --cashmere-100, not --paper-warm. The full Cashmere
+   Beige is the panel fill and belongs to one field per page; this is
+   the page ground, a step off white. */
+
+#hero.cs-hero-interior {
+    padding: var(--section-padding);
+        padding-top: clamp(8rem, 13vw, 12rem);
+    background-color: var(--paper);
+
+    .cs-copy {
+        width: 100%;
+        max-width: 34rem;
+    }
+
+    h1 {
+        font-size: var(--fs-h2);
+        line-height: var(--lh-tight);
+        margin: 0 0 2.5rem;
+        color: var(--ink);
+        text-transform: uppercase;
+        text-wrap: balance;
+        max-width: 28ch;
+    }
+
+    .cs-lede {
+        margin: 0;
+        color: var(--ink);
+        max-width: 64ch;
+    }
+}
+
+/* Tablet -------------------------------------- */
+
+@media only screen and (min-width: 48rem) {
+    #hero.cs-hero-interior {
+        /* The Buying page caps this at 98rem, which exceeds root's
+           90rem container and so never applies. Dropped rather than
+           copied forward. */
+        .cs-copy { max-width: none; }
+    }
+}
+
+/* Desktop ------------------------------------- */
+
+@media only screen and (min-width: 64rem) {
+    #hero.cs-hero-interior {
+        h1 { max-width: 98ch; }
+    }
+}
+
+/*-- -------------------------- -->
+<---            Band            -->
+<--- -------------------------- -*/
+
+/* Full-bleed image, no container and no copy. Shorter than the
+   homepage vista on purpose: two 60vw bleed blocks follow it, and
+   three images at one size read as a gallery rather than a page.
+
+   overflow: hidden is load-bearing — it clips the parallax
+   overscan at both ends. */
+
+@media only screen and (min-width: 0rem) {
+    #band {
+        height: clamp(14rem, 44vh, 20rem);
+        position: relative;
+        overflow: hidden;
+        /* Under the image while it loads, so the band never flashes
+           white between two paper sections. */
+        background-color: var(--paper-warm);
+
+        .cs-picture {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: relative;
+
+            img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: 50% 50%;
+            }
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #band {
+        height: clamp(22rem, 52vh, 30rem);
+    }
+}
+
+/*-- -------------------------- -->
+<---        Band Parallax       -->
+<--- -------------------------- -*/
+
+/* Keyframes at file scope. LESS drops them silently when nested
+   inside a media query or a rule.
+
+   Lags rather than leads: the frame travels up at scroll speed, the
+   photograph at scroll speed minus the travel, so it settles into
+   the band as the section clears. The slack therefore lives below —
+   the image starts lifted by the travel and ends flush at the top.
+
+   Keep --band-overscan meaningfully above --band-travel. Equal
+   values put the image's bottom edge exactly on the band's at the
+   end of the range, and a rounding error there shows as a hairline
+   of --paper-warm. */
+
+@keyframes band-parallax {
+    from {
+        transform: translateY(calc(var(--band-travel) * -1));
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* The @supports guard is load-bearing. Without it, browsers lacking
+   scroll-driven animation run these keyframes on a time basis and
+   the image slides once, on load, unscrolled. */
+
+@supports (animation-timeline: view()) {
+    #band {
+        --band-overscan: 22vh;
+        --band-travel: 16vh;
+
+        /* Declared on the band, read by the image. A named view
+           timeline resolves against ancestors, so no timeline-scope
+           is needed — and it has to stay off the image, which is
+           the element being transformed. */
+        view-timeline-name: --band;
+        view-timeline-axis: block;
+
+        .cs-picture img {
+            height: calc(100% + var(--band-overscan));
+            will-change: transform;
+
+            /* Shorthand first: `animation` resets animation-timeline
+               and animation-range to initial. */
+            animation: band-parallax linear both;
+            animation-timeline: --band;
+            /* cover, not entry — entry resolves within a few hundred
+               pixels for a band this short and the travel would be
+               spent before it is properly on screen. */
+            animation-range: cover 5% cover 95%;
+        }
+    }
+
+    /* root.less clamps animation-duration to 0.01ms under reduced
+       motion, which corrupts the range mapping rather than disabling
+       it. Detach, and drop the overscan with it — leaving the extra
+       height would ship a permanently recropped band for no reason. */
+    @media (prefers-reduced-motion: reduce) {
+        #band .cs-picture img {
+            height: 100%;
+            animation: none;
+            animation-timeline: none;
+            will-change: auto;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---      The Four Returns      -->
+<--- -------------------------- -*/
+
+/* Two by two on the hero's ground, so the page opens as one continuous
+   field rather than a hero with a section under it.
+
+   Each <li> is its own [data-reveal] group with a single .cs-reveal
+   child, so the four arrive independently as they enter rather than
+   all at once. Root's selector is a descendant match, so the section
+   itself must not carry [data-reveal] — a wrapping group would fire
+   every nested .cs-reveal the moment the section entered. */
+
+@media only screen and (min-width: 0rem) {
+    #four-returns {
+        padding: var(--section-padding);
+        background-color: var(--cashmere-100);
+
+        .cs-returns {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: clamp(2.5rem, 6vw, 4rem);
+        }
+
+        /* --rule-strong, not --rule. The hairline sits on Cashmere
+           rather than white, and the 18% cocoa nearly disappears
+           against the warmer ground. */
+        .cs-return {
+            border-block-start: 1px solid var(--rule-strong);
+            padding-block-start: clamp(1.5rem, 3vw, 2rem);
+        }
+
+        /* Number beside the title, centred against it rather than on
+           its baseline — at a 36px-to-11px size difference, baseline
+           alignment reads as the number having dropped below the
+           word. */
+        .cs-return-head {
+            display: flex;
+            align-items: center;
+            gap: clamp(0.625rem, 1.5vw, 1rem);
+            margin-block-end: clamp(1.25rem, 2.5vw, 1.75rem);
+        }
+
+        .cs-num {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: var(--track-eyebrow);
+            color: var(--ink-soft);
+            /* Holds the numbers on one edge whether they're 01 or 10,
+               so the titles beside them stay aligned. */
+            flex: 0 0 auto;
+            min-width: 2ch;
+        }
+
+        .cs-return-title {
+            font-size: var(--fs-h3);
+            line-height: var(--lh-tight);
+            margin: 0;
+            color: var(--ink);
+        }
+
+        .cs-return .cs-text {
+            margin: 0;
+            max-width: 52ch;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #four-returns {
+        .cs-returns {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: clamp(3rem, 7vw, 7rem);
+            row-gap: clamp(4rem, 8vw, 6rem);
+        }
+
+        .cs-return .cs-text {
+            max-width: 46ch;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---   What I Run On Every Deal -->
+<--- -------------------------- -*/
+
+/* The page's one Cashmere field, stepping up from the --cashmere-100
+   wash the hero and #four-returns sit on. Same rail-and-list chassis
+   as #what-i-need on the Selling page. */
+
+@media only screen and (min-width: 0rem) {
+    #every-deal {
+        padding: var(--section-padding);
+        background-color: var(--paper-warm);
+
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.5rem;
+        }
+
+        .cs-rail {
+            .cs-title {
+                margin: 0 0 clamp(0.75rem, 2vw, 1rem);
+                max-width: none;
+                line-height: var(--lh-tight);
+                /* --ink-soft is #8a7462, about 3.4:1 on Cashmere
+                   Beige — under AA. Everything sitting directly on the
+                   beige resolves to full Dark Cocoa. */
+                color: var(--ink);
+            }
+
+            .cs-body-sm {
+                margin: 0;
+                max-width: 34ch;
+                /* Same reason. --cocoa-300 fails on this ground, so
+                   the set-back is carried by size, not colour. */
+                color: var(--ink);
+            }
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .cs-checks {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            /* The opening rule is --rule-strong and the ones between
+               rows are --rule. The heavier line reads as the top edge
+               of the block; matching all five would make the list look
+               like a table. */
+            border-block-start: 1px solid var(--rule-strong);
+        }
+
+        .cs-check {
+            display: grid;
+            grid-template-columns: 3.5rem minmax(0, 1fr);
+            column-gap: clamp(1rem, 3vw, 2rem);
+            align-items: baseline;
+            padding-block: clamp(1.5rem, 3vw, 2rem);
+            border-block-end: 1px solid var(--rule);
+        }
+
+        .cs-num {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: var(--track-eyebrow);
+            color: var(--ink);
+        }
+
+        .cs-check .cs-text {
+            margin: 0;
+            max-width: 56ch;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #every-deal {
+        /* The container keeps root's 90rem cap and auto margins so the
+           title sits on the same optical line as every other section's
+           heading. */
+        .cs-container {
+            grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+            column-gap: clamp(3rem, 7vw, 7rem);
+            align-items: start;
+        }
+
+        .cs-rail {
+            /* Cinzel and Elms Sans have different cap heights; without
+               the nudge the title reads high against the top rule
+               beside it. */
+            padding-block-start: 0.35rem;
+        }
+
+        .cs-check {
+            grid-template-columns: 4.5rem minmax(0, 1fr);
+        }
+
+        .cs-check .cs-text {
+            max-width: 62ch;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---       What I Won't Do      -->
+<--- -------------------------- -*/
+
+/* Back on the page wash after #every-deal's Cashmere field, so the
+   beige reads as one panel in the scroll rather than the start of a
+   new ground. Same rail-and-argument chassis as the sections above. */
+
+@media only screen and (min-width: 0rem) {
+    #wont-do {
+        padding: var(--section-padding);
+        background-color: var(--cashmere-100);
+
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.5rem;
+        }
+
+        .cs-rail {
+            .cs-title {
+                margin: 0 0 clamp(0.75rem, 2vw, 1rem);
+                max-width: none;
+                line-height: var(--lh-tight);
+            }
+
+            /* --ink-soft clears AA on --cashmere-100, unlike on the
+               full Cashmere Beige field above where it drops to about
+               3.4:1 and has to resolve to full cocoa. */
+            .cs-body-sm {
+                margin: 0;
+                max-width: 34ch;
+                color: var(--ink-soft);
+            }
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.25rem;
+        }
+
+        .cs-text {
+            /* Beats root's --measure (40rem), which is narrower than
+               this column wants. */
+            margin: 0;
+            max-width: 62ch;
+            font-size: var(--fs-lede);
+            line-height: 1.5;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #wont-do {
+        /* The container keeps root's 90rem cap and auto margins so the
+           title sits on the same optical line as every other section's
+           heading. */
+        .cs-container {
+    /* 1.05fr, not 0.85fr. "What I won't do" needs about 620px at the
+       top of the --fs-h2 clamp and the narrower track resolves to
+       roughly 480px — the wrap is the track, not a ch cap. */
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    column-gap: clamp(3rem, 7vw, 7rem);
+    align-items: start;
+}
+
+        .cs-rail {
+            /* Cinzel and Elms Sans have different cap heights; without
+               the nudge the title reads high against the first line of
+               copy beside it. */
+            padding-block-start: 0.35rem;
+        }
+
+        .cs-text {
+            max-width: 52ch;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---             CTA            -->
+<--- -------------------------- -*/
+
+/* Even two-column split on cocoa. The rail carries the title alone —
+   no caption underneath, so it needs no flex column of its own. */
+
+@media only screen and (min-width: 0rem) {
+    #cta {
+        padding: var(--section-padding);
+        background-color: var(--cocoa-500);
+
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2.5rem;
+        }
+
+        .cs-rail {
+            h2 {
+                margin: 0;
+                color: var(--ink-invert);
+                text-transform: uppercase;
+                text-wrap: balance;
+                /* Mobile only. The desktop block drops the cap and
+                   lets the track govern — see below. */
+                max-width: 18ch;
+            }
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2.5rem;
+        }
+
+        .cs-lede {
+            margin: 0;
+            font-size: var(--fs-lede);
+            line-height: 1.5;
+            color: var(--ink-invert);
+            max-width: 40ch;
+        }
+
+        .cs-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 1.5rem 2.5rem;
+        }
+
+        .cs-fine {
+            margin: 0;
+            font-size: var(--fs-body-sm);
+            line-height: 1.4;
+            /* Set back from the copy above it without dropping to
+               --ink-soft, which is a warm brown tuned for light
+               grounds and goes muddy on cocoa. */
+            color: var(--cashmere-300);
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #cta {
+        .cs-container {
+            max-width: none;
+            margin-inline: 0;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: clamp(3rem, 7vw, 7rem);
+            align-items: start;
+        }
+
+        .cs-rail {
+            padding-block-start: 0.15rem;
+
+            /* The track is the constraint now. A ch cap here would
+               re-break the title at a width the grid already fixed —
+               the 14ch was what kept it stacked, not the 0.5fr. */
+            h2 {
+                max-width: none;
+            }
+        }
+    }
+}

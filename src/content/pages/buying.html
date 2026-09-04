@@ -1,0 +1,159 @@
+---
+title: "Buying | Jayden Kennedy"
+description: "Ask a question about a property. Jayden Kennedy answers every enquiry herself, usually within a day."
+permalink: "/buying/"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/buying.css">
+    <!-- base.html has no scripts block, so page scripts load here with defer. -->
+    
+{% endblock %}
+
+{% block body %}
+
+<!-- ============================================ -->
+<!--                 Buying Hero                  -->
+<!-- ============================================ -->
+
+<section id="hero" class="cs-hero-interior" data-reveal>
+    <div class="cs-container">
+        <div class="cs-copy cs-reveal">
+
+            <h1>Buying a home in the Greater Toronto Area</h1>
+
+            <p class="cs-lede">
+                Know what a home costs to own before you know what it costs to buy. They're two different numbers, and only one shows up on your bank statement every month. 
+            </p>
+
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--               Before You Look                -->
+<!-- ============================================ -->
+
+<section id="financing" data-reveal>
+    <div class="cs-container">
+        <div class="cs-rail cs-reveal">
+            <h2 class="cs-title">Before you look</h2>
+        </div>
+
+        <div class="cs-content cs-reveal">
+            <p class="cs-text fs-lede">
+                Financing first. What a lender approves and what you can comfortably carry are rarely the same figure, and looking at homes you can&rsquo;t hold is how people end up overextended.
+            </p>
+            <p class="cs-text fs-body">
+                Send me your pre-approval. I&rsquo;ll tell you what it means at today&rsquo;s rates, and at two points higher.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--          What You Get · Every Property       -->
+<!-- ============================================ -->
+
+<section id="every-property" data-reveal>
+    <figure class="cs-figure cs-reveal" style="--reveal-i: 0">
+        <img
+            src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/interio-img-placeholder.jpg"
+            alt="Dining room and open kitchen in a staged Durham Region home"
+            width="1600"
+            height="1600"
+            loading="lazy"
+            decoding="async"
+        />
+    </figure>
+
+    <div class="cs-copy">
+        <h2 class="cs-title cs-reveal" style="--reveal-i: 1">What you get on every property</h2>
+
+        <ol class="cs-list">
+            <li class="cs-item cs-reveal" style="--reveal-i: 2">
+                <span class="cs-num">01</span>
+                <p class="cs-text">The comparables, and what makes each one actually comparable.</p>
+            </li>
+            <li class="cs-item cs-reveal" style="--reveal-i: 3">
+                <span class="cs-num">02</span>
+                <p class="cs-text">The full carrying cost. Mortgage, tax, insurance, utilities, condo fee.</p>
+            </li>
+            <li class="cs-item cs-reveal" style="--reveal-i: 4">
+                <span class="cs-num">03</span>
+                <p class="cs-text">What that number does if rates move.</p>
+            </li>
+            <li class="cs-item cs-reveal" style="--reveal-i: 5">
+                <span class="cs-num">04</span>
+                <p class="cs-text">The three year exit, and what has to be true for it to hold.</p>
+            </li>
+        </ol>
+
+        <p class="cs-body-sm cs-reveal" style="--reveal-i: 6">Before you offer, not after.</p>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--                  The Offer                   -->
+<!-- ============================================ -->
+
+<section id="offer" class="cs-on-dark" data-reveal>
+    <div class="cs-container">
+        <div class="cs-masthead">
+            <h2 class="cs-title cs-reveal" style="--reveal-i: 0">The offer</h2>
+
+            <p class="cs-lede cs-reveal" style="--reveal-i: 1">
+                Offer nights are built to rush you. Mine aren&rsquo;t. If the price stops making sense, we walk. There&rsquo;ll be another house.
+            </p>
+        </div>
+
+        <div class="cs-notes">
+            <div class="cs-note cs-reveal" style="--reveal-i: 2">
+                <h3 class="cs-note-title">First time buying?</h3>
+                <p class="cs-text">
+                    Nothing gets assumed and nothing gets skipped. Ask the question you think is too basic. It usually isn&rsquo;t, and the people who ask it end up better off than the people who nod.
+                </p>
+            </div>
+
+            <div class="cs-note cs-reveal" style="--reveal-i: 3">
+                <h3 class="cs-note-title">The honest part</h3>
+                <p class="cs-text">
+                    If a property is wrong for you, I&rsquo;ll say so. It has cost me commissions. It&rsquo;s also why people come back and send their friends.
+                </p>
+            </div>
+        </div>
+
+        <p class="cs-body-sm cs-reveal" style="--reveal-i: 4">
+            Deposits, conditions and timelines read out loud before you sign anything.
+        </p>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--                     CTA                      -->
+<!-- ============================================ -->
+
+<section id="cta" class="cs-on-dark" data-reveal>
+    <div class="cs-container">
+        <div class="cs-rail cs-reveal">
+            <h2>Tell me what you&rsquo;re looking at</h2>
+        </div>
+
+        <div class="cs-content cs-reveal">
+            <p class="cs-lede">
+                An address, a street, or a budget you&rsquo;re not sure about. Free, no obligation.
+            </p>
+
+            <div class="cs-actions">
+                <a href="/contact/" class="cs-button-script">Ask about a property</a>
+                <a href="/listings/" class="cs-button-script">Browse listings</a>
+            </div>
+
+            <p class="cs-fine">I answer every enquiry myself.</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

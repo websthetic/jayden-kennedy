@@ -1,11 +1,33 @@
 /*-- -------------------------- -->
-<---     Listings — Intro        -->
+<---     Results — Shared        -->
 <--- -------------------------- -*/
 
-/* Every section on this page sits on --cashmere-100 so the filter
-   panel and the cards read as raised white against a warm ground.
-   Leaving any one of them on --paper produces a visible white band
-   between two cream ones. */
+//! CONFIRM — root.less may already carry a visually-hidden utility. If it
+//! does, swap .cs-sr for it in the markup and delete this block.
+
+/* File scope rather than nested: it is used inside every card, under a
+   different section ID from anything else that might want it later. */
+.cs-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+/*-- -------------------------- -->
+<---     Results — Intro         -->
+<--- -------------------------- -*/
+
+/* Every section on this page sits on --cashmere-100 so the filter panel
+   and the cards read as raised white against a warm ground. Leaving any
+   one of them on --paper produces a visible white band between two
+   cream ones, and the panel loses the tonal step that makes it read as
+   a panel rather than an outlined box. */
 
 #listings-intro {
     padding: clamp(8rem, 13vw, 12rem) var(--gutter) 0;
@@ -18,11 +40,6 @@
         gap: 1.25rem;
     }
 
-    .cs-topper {
-        color: var(--heritage-500);
-        margin-bottom: 0;
-    }
-
     .cs-title {
         font-size: var(--fs-h2);
         line-height: var(--lh-tight);
@@ -30,21 +47,28 @@
         margin: 0;
     }
 
+    /* Root's paragraph margin stacked on top of the flex gap here, so the
+       lede sat further from the title than the 1.25rem the container asks
+       for. Same reset as .cs-title above it. */
     .cs-text {
         font-size: var(--fs-lede);
         max-width: 56ch;
+        margin: 0;
         color: var(--ink-soft);
     }
 }
 
 /*-- -------------------------- -->
-<---     Listings — Filters      -->
+<---     Results — Filters       -->
 <--- -------------------------- -*/
 
 #listings-filters {
     padding: clamp(2rem, 4vw, 2.75rem) var(--gutter) 1.625rem;
     background-color: var(--cashmere-100);
 
+    /* Raised white against the page wash. The border alone is not what
+       makes this read as a panel — the tonal step under it is, which is
+       why every section on this page moved off --paper. */
     .cs-panel {
         background-color: var(--paper);
         border: 1px solid var(--rule);
@@ -98,8 +122,20 @@
         &:hover {
             border-bottom-color: var(--rule-strong);
         }
+
+        /* appearance: none plus border: none strips the UA focus ring, so
+           without this the filter row is invisible to the keyboard. Outline
+           rather than a border swap: a border change would shift nothing
+           here but would be the only focus signal on the page that is not
+           a ring. */
+        &:focus-visible {
+            outline: 2px solid var(--heritage-500);
+            outline-offset: 3px;
+        }
     }
 
+    /* Column layout stretches children, so this stops the button spanning
+       the field width on phones. It is unset at 48rem — see the note there. */
     .cs-form > .cs-button {
         align-self: flex-start;
     }
@@ -149,11 +185,15 @@
         &:hover {
             border-bottom-color: var(--rule-strong);
         }
+
+        &:focus-visible {
+            outline: 2px solid var(--heritage-500);
+            outline-offset: 3px;
+        }
     }
 
-    /* Parenthesised rather than a badge shape — the page has no pills
-       outside .cs-status, and inventing one here for a digit would
-       read as a notification. */
+    /* Parenthesised rather than a badge shape — the page has no pills, and
+       inventing one here for a digit would read as a notification. */
     .cs-toggle-count {
         margin-left: 0.375rem;
 
@@ -174,8 +214,7 @@
    as long as the results are.
 
    The panel collapses with the form rather than the form alone —
-   otherwise a closed filter set leaves an empty white box on the
-   page. */
+   otherwise a closed filter set leaves an empty white box behind. */
 .js #listings-filters {
     .cs-bar {
         display: block;
@@ -191,7 +230,7 @@
 }
 
 /*-- -------------------------- -->
-<---     Listings — Results      -->
+<---     Results — Results       -->
 <--- -------------------------- -*/
 
 #listings-results {
@@ -203,6 +242,9 @@
         display: none !important;
     }
 
+    /* Sort moved into the filter panel, so this bar carries the count
+       alone. flex-start rather than space-between: with one child the
+       latter is inert, and start states the intent. */
     .cs-summary {
         padding-inline: var(--gutter);
 
@@ -210,69 +252,27 @@
             padding-block: 1.625rem;
             display: flex;
             flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem 1.5rem;
-            border-bottom: 1px solid var(--rule-strong);
+            align-items: baseline;
+            justify-content: flex-start;
+            gap: 1rem;
         }
     }
 
     .cs-count-group {
         display: flex;
         flex-wrap: wrap;
-        align-items: center;
+        align-items: baseline;
         gap: 1.25rem;
     }
 
-    /* Segmented pair sharing one border box, so the divider between
-       the two links is a single hairline rather than two adjacent
-       borders. */
-    .cs-views {
-        display: flex;
-        border: 1px solid var(--ink);
-        flex: 0 0 auto;
-    }
-
-    .cs-view {
-        padding: 0.75rem 1.5rem;
-        font-family: var(--font-body);
-        font-size: var(--fs-eyebrow);
-        font-weight: 500;
-        line-height: 1;
-        letter-spacing: var(--track-eyebrow);
-        text-transform: uppercase;
-        text-decoration: none;
-        color: var(--ink);
-        background-color: transparent;
-        transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease);
-
-        &:hover {
-            background-color: var(--cashmere-300);
-        }
-
-        /* aria-current, not a class: the attribute is what tells a
-           screen reader which view is active, so styling from it keeps
-           the two in step. */
-        &[aria-current="page"] {
-            background-color: var(--ink);
-            color: var(--ink-invert);
-
-            &:hover {
-                background-color: var(--ink);
-            }
-        }
-    }
-
-    /* Body scale, not the Cinzel h3 it used to carry. The List/Map
-       pair now anchors this row, and a display-scale count beside it
-       gives the row two competing focal points. */
     .cs-count {
-        font-family: var(--font-body);
-        font-size: var(--fs-body);
-        font-weight: 300;
-        line-height: 1.4;
+        font-family: var(--font-display);
+        font-size: var(--fs-h3);
+        font-weight: 500;
+        line-height: var(--lh-title);
+        letter-spacing: var(--track-title);
+        text-transform: uppercase;
         margin: 0;
-        color: var(--ink-soft);
     }
 
     .cs-applied {
@@ -289,51 +289,10 @@
         border-bottom: 1px solid var(--rule);
         transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
 
-        &:hover {
+        &:hover,
+        &:focus-visible {
             color: var(--ink);
             border-bottom-color: var(--rule-strong);
-        }
-    }
-
-    .cs-view-group {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 1.25rem 2rem;
-    }
-
-    .cs-sort-label {
-        font-family: var(--font-body);
-        font-size: var(--fs-eyebrow);
-        font-weight: 500;
-        letter-spacing: var(--track-eyebrow);
-        text-transform: uppercase;
-        color: var(--ink-soft);
-    }
-
-    /* Eyebrow scale so it reads as a control label rather than a
-       field value — it sits in a row of labels, not a form. */
-    .cs-sort {
-        appearance: none;
-        padding: 0 1.25rem 0 0;
-        font-family: var(--font-body);
-        font-size: var(--fs-eyebrow);
-        font-weight: 500;
-        letter-spacing: var(--track-eyebrow);
-        text-transform: uppercase;
-        color: var(--ink-soft);
-        background-color: transparent;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238a7462' stroke-width='1.4'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right center;
-        background-size: 0.5rem auto;
-        border: none;
-        border-radius: 0;
-        cursor: pointer;
-        transition: color var(--dur) var(--ease);
-
-        &:hover {
-            color: var(--ink);
         }
     }
 
@@ -365,13 +324,17 @@
         list-style: none;
     }
 
+    /* focus-within, not just hover: the whole card is one link, so a
+       keyboard visitor otherwise gets the lift, the shadow, the border
+       and the image scale on none of the six. */
     .cs-item {
         list-style: none;
         background-color: var(--paper);
         border: 1px solid var(--rule);
         transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
 
-        &:hover {
+        &:hover,
+        &:focus-within {
             border-color: var(--rule-strong);
             box-shadow: var(--shadow-card);
             transform: translateY(-0.25rem);
@@ -388,10 +351,21 @@
         flex-direction: column;
         text-decoration: none;
         color: inherit;
+
+        /* The card already answers focus through :focus-within above, so
+           the ring goes on the whole tile rather than round the inline
+           text the link happens to contain. */
+        &:focus-visible {
+            outline: 2px solid var(--heritage-500);
+            outline-offset: 3px;
+        }
     }
 
+    /* No overlay badge here — every card on this page is a closing, so a
+       status pill on all six is noise. Its removal also gets the stray
+       <span> out of <picture>, which only ever permits <source> and one
+       <img>, and takes position: relative with it. */
     .cs-picture {
-        position: relative;
         width: 100%;
         height: 15.625rem;
         display: block;
@@ -407,29 +381,19 @@
         transition: transform var(--dur-slow) var(--ease);
     }
 
-    .cs-status {
-        position: absolute;
-        top: 1rem;
-        left: 1rem;
-        padding: 0.4375rem 0.8125rem;
-        font-family: var(--font-body);
-        font-size: var(--fs-eyebrow);
-        font-weight: 500;
-        line-height: 1.2;
-        letter-spacing: var(--track-eyebrow);
-        text-transform: uppercase;
-        color: var(--ink-invert);
-        background-color: var(--heritage-500);
-    }
-
     .cs-info {
         padding: 1.5rem;
         display: flex;
         flex-direction: column;
+        align-items: flex-start;
         gap: 0.5625rem;
     }
 
-    .cs-price {
+    /* The address leads on this page rather than the price. On Listings
+       the price is the question; here the outcome pair below is, and two
+       display-weight figures competing at the top of the card would
+       flatten the hierarchy. */
+    .cs-address {
         font-family: var(--font-display);
         font-size: var(--fs-h4);
         font-weight: 500;
@@ -438,9 +402,51 @@
         color: var(--ink);
     }
 
-    .cs-address {
+    .cs-city {
+        font-size: var(--fs-body-sm);
+        line-height: 1.4;
+        color: var(--ink-soft);
+    }
+
+    /* margin-top stacks on the flex gap: 0.5625 + 1 = 1.5625rem above the
+       rule, against 0.5625 between address and city. The rule needs the
+       wider field or it reads as an underline on the city. */
+    .cs-outcome {
+        width: 100%;
+        margin: 1rem 0 0;
+        padding-top: 1.375rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.625rem;
+        border-top: 1px solid var(--rule);
+    }
+
+    /* Struck in CSS rather than with <s>, and labelled for assistive tech
+       instead: a line-through is not announced, so without .cs-sr the card
+       reads as two unexplained figures side by side. */
+    .cs-ask {
+        font-size: var(--fs-body);
+        font-weight: 300;
+        line-height: 1.4;
+        color: var(--ink-soft);
+        text-decoration: line-through;
+        text-decoration-thickness: 1px;
+        text-decoration-color: var(--rule-strong);
+    }
+
+    .cs-arrow {
         font-size: var(--fs-body);
         line-height: 1.4;
+        color: var(--ink-soft);
+    }
+
+    .cs-close {
+        font-family: var(--font-display);
+        font-size: var(--fs-h4);
+        font-weight: 500;
+        line-height: var(--lh-title);
+        letter-spacing: var(--track-title);
         color: var(--ink);
     }
 
@@ -474,13 +480,15 @@
         margin: 0;
     }
 
+    /* Same stacked-margin reset as #listings-intro .cs-text. */
     .cs-empty .cs-text {
+        margin: 0;
         color: var(--ink-soft);
     }
 }
 
 /*-- -------------------------- -->
-<---     Listings — Disclosure   -->
+<---     Results — Disclosure    -->
 <--- -------------------------- -*/
 
 #listings-disclosure {
@@ -509,7 +517,7 @@
    This file used to carry a second implementation on .cs-armed /
    .cs-active with a 60ms step — a different class contract and a
    different rhythm from the rest of the site. It is gone; the card
-   indices are inline on the markup in listings.html.
+   indices are inline on the markup in results.html.
 
    Card results are injected after load once the feed lands, so the
    observer has to be re-run against new nodes rather than assumed to
@@ -517,11 +525,15 @@
 
 @media (prefers-reduced-motion: reduce) {
 
-    #listings-results .cs-item:hover {
-        transform: none;
+    #listings-results .cs-item {
 
-        .cs-img {
+        &:hover,
+        &:focus-within {
             transform: none;
+
+            .cs-img {
+                transform: none;
+            }
         }
     }
 }
@@ -541,16 +553,30 @@
             gap: 1.75rem;
         }
 
-        .cs-field-sm {
-            flex: 0 0 6rem;
+        /* flex-start survived the switch to a row and pinned the button to
+           the top of the cross axis, level with the labels, while every
+           field's hairline sat at the bottom. auto hands it back to the
+           row's align-items.
+
+           margin-left: auto puts it on the panel's right edge — with
+           three short fields the row would otherwise leave a wide empty
+           stretch to the right of the button rather than before it. */
+        .cs-form > .cs-button {
+            align-self: auto;
+            margin-left: auto;
+        }
+
+        /* Fixed widths rather than the flex: 1 the base rule gives them.
+           Listings had five fields sharing the row, so growing to fill was
+           right there; with three, flex: 1 hands each a quarter of a 90rem
+           row and the hairline under Transaction runs on well past the
+           word Leased. These are sized to their longest option instead. */
+        .cs-field-lg {
+            flex: 0 0 13rem;
         }
 
         .cs-field-md {
-            flex: 0 0 9.5rem;
-        }
-
-        .cs-field-lg {
-            flex: 0 0 12rem;
+            flex: 0 0 11rem;
         }
     }
 }
@@ -572,28 +598,6 @@
         .cs-panel:has(.cs-form.cs-open) {
             display: block;
         }
-
-        /* Seven fields on one row leave no room for a button, and with
-           a script the row applies on change. */
-        .cs-form > .cs-button {
-            display: none;
-        }
-    }
-
-    #listings-filters {
-        .cs-form {
-            flex-wrap: nowrap;
-            gap: clamp(1rem, 2vw, 1.75rem);
-        }
-
-        /* Every field flexes on the desktop row rather than holding the
-           fixed widths above — seven fixed tracks overflow a 90rem
-           container at the smaller end of the range. */
-        .cs-field-sm,
-        .cs-field-md,
-        .cs-field-lg {
-            flex: 1 1 0;
-        }
     }
 
     #listings-results {
@@ -604,161 +608,75 @@
 }
 
 /*-- -------------------------- -->
-<---        Save This Search    -->
+<---      How This Sale Ran     -->
 <--- -------------------------- -*/
 
-/* One band rather than the two on the home page. The grid is
-   unchanged so the control lands on the container's right edge the
-   same way, which matters here because the filter row above ends on
-   that same line.
-
-   The class names repeat ones used in #listings and #subscribe. Safe
-   because every rule in all three files is ID-scoped, but it does mean
-   the control chrome has to be kept in step by hand if it moves. */
+/* Masthead over a three-column row on the Cashmere field. Each column
+   carries its own rule so the line stops at the column edge and the
+   grid gap becomes the break between them — same treatment as the
+   notes row on the Buying page. */
 
 @media only screen and (min-width: 0rem) {
-    #save-search {
-        .cs-band {
-            padding: clamp(3rem, 6vw, 5rem) var(--gutter);
-            background-color: var(--paper);
+    #sale-ran {
+        padding: var(--section-padding);
+        background-color: var(--paper-warm);
+
+        .cs-masthead {
+            margin-block-end: clamp(2.5rem, 5vw, 3.5rem);
         }
 
-        .cs-band-warm {
-            background-color: var(--paper-warm);
+        .cs-title {
+            margin: 0 0 clamp(1rem, 2.5vw, 1.5rem);
+            max-width: 24ch;
+            line-height: var(--lh-tight);
+            /* --ink-soft is #8a7462, about 3.4:1 on Cashmere Beige —
+               under AA. Everything sitting directly on the beige
+               resolves to full Dark Cocoa. */
+            color: var(--ink);
         }
 
-        .cs-row {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr);
-            gap: 2rem;
-            align-items: end;
-        }
-
-        .cs-copy {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0.875rem;
-
-            h2 {
-                margin: 0;
-                /* One step down from a section title. This is a band,
-                   not a section opening. */
-                font-size: var(--fs-h3);
-                /* --ink-soft is about 3.4:1 on Cashmere Beige — under
-                   AA. Everything on the beige resolves to full cocoa. */
-                color: var(--ink);
-            }
-        }
-
-        .cs-text {
+        .cs-lede {
             margin: 0;
-            max-width: 58ch;
+            max-width: 46ch;
             color: var(--ink);
         }
 
-        /* The field and its button on one baseline. The button is
-           sized by its label — a stretched grid item would run its own
-           hairline the full column and read as a second field. */
-        .cs-form {
+        .cs-columns {
             display: grid;
             grid-template-columns: minmax(0, 1fr);
-            align-items: end;
-            gap: 1.25rem;
+            gap: clamp(2rem, 4vw, 2.5rem);
         }
 
-        .cs-field {
-            min-width: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.4375rem;
+        .cs-column {
+            border-block-start: 1px solid var(--rule-strong);
+            padding-block-start: clamp(1.5rem, 3vw, 2rem);
         }
 
-        .cs-label {
-            font-family: var(--font-body);
-            font-size: var(--fs-eyebrow);
-            font-weight: 500;
-            line-height: 1;
-            letter-spacing: var(--track-eyebrow);
-            text-transform: uppercase;
+        .cs-column-title {
+            font-size: var(--fs-h4);
+            line-height: var(--lh-title);
+            margin: 0 0 clamp(1rem, 2.5vw, 1.5rem);
             color: var(--ink);
         }
 
-        /* Underlined, not boxed. The field sits on beige here, which is
-           the one case the deck boxes — but the band has no panel of
-           its own, so a box would be the only rectangle on the row and
-           would read as pasted on. --rule-strong rather than --rule to
-           hold its weight against the warm ground. */
-        .cs-input {
-            width: 100%;
-            min-height: var(--control-height);
-            padding: 0 0 0.5rem;
-            font-family: var(--font-body);
-            font-size: var(--fs-body);
-            font-weight: 300;
+        .cs-column .cs-text {
+            margin: 0;
+            max-width: 46ch;
             color: var(--ink);
-            background-color: transparent;
-            border: 0;
-            border-bottom: 1px solid var(--rule-strong);
-            border-radius: 0;
-            appearance: none;
-            transition: border-color var(--dur) var(--ease);
-
-            &::placeholder {
-                color: var(--ink-soft);
-                opacity: 1;
-            }
-
-            &:hover,
-            &:focus-visible {
-                border-bottom-color: var(--cocoa-500);
-                outline: none;
-            }
-        }
-
-        /* .cs-button-script was written against an <a> and never had to
-           clear ButtonFace or a <button>'s outset border. border: 0
-           first, then border-bottom: this nested rule outranks the bare
-           class, so a lone `border: 0` would take the hairline with it.
-
-           start, not end, below 64rem: single column, so the control
-           sits under its own copy on the gutter. */
-        .cs-action {
-            width: auto;
-            justify-self: start;
-            white-space: nowrap;
-            color: var(--ink);
-            background-color: transparent;
-            border: 0;
-            border-bottom: 1px solid currentColor;
-            border-radius: 0;
-            appearance: none;
-            -webkit-appearance: none;
-            text-align: left;
-            cursor: pointer;
         }
     }
 }
 
 /* Desktop - 64rem */
 @media only screen and (min-width: 64rem) {
-    #save-search {
-        .cs-row {
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-            column-gap: clamp(3rem, 6vw, 5rem);
-            align-items: end;
+    #sale-ran {
+        .cs-columns {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            column-gap: clamp(2.5rem, 5vw, 4rem);
         }
 
-        /* Full column width, uncapped. The button is in the auto track
-           at the far end, so anything capping this pulls the control in
-           off the container's right edge. */
-        .cs-form {
-            grid-template-columns: minmax(0, 1fr) auto;
-            column-gap: 2rem;
-        }
-
-        .cs-action {
-            justify-self: end;
+        .cs-column .cs-text {
+            max-width: 38ch;
         }
     }
 }
@@ -767,13 +685,18 @@
 <---             CTA            -->
 <--- -------------------------- -*/
 
-/* Even two-column split on cocoa. The rail carries the title alone —
-   no caption underneath, so it needs no flex column of its own. */
+/* Even two-column split on Heritage Green. The rail carries the title
+   alone — no caption underneath, so it needs no flex column of its
+   own.
+
+   Colour is handled by .cs-on-dark on the section rather than by hand
+   here: the inverted tokens are already tuned for saturated grounds,
+   and hand-set values drift from them as the page grows. */
 
 @media only screen and (min-width: 0rem) {
     #cta {
         padding: var(--section-padding);
-        background-color: var(--cocoa-500);
+        background-color: var(--paper-field);
 
         .cs-container {
             display: grid;
@@ -784,7 +707,6 @@
         .cs-rail {
             h2 {
                 margin: 0;
-                color: var(--ink-invert);
                 text-transform: uppercase;
                 text-wrap: balance;
                 /* Mobile only. The desktop block drops the cap and
@@ -804,7 +726,6 @@
             margin: 0;
             font-size: var(--fs-lede);
             line-height: 1.5;
-            color: var(--ink-invert);
             max-width: 40ch;
         }
 
@@ -819,10 +740,11 @@
             margin: 0;
             font-size: var(--fs-body-sm);
             line-height: 1.4;
-            /* Set back from the copy above it without dropping to
-               --ink-soft, which is a warm brown tuned for light
-               grounds and goes muddy on cocoa. */
-            color: var(--cashmere-300);
+            /* Set back from the copy above it. --ink-invert-soft is
+               cashmere at 72%, about 7:1 on Heritage Green. --ink-soft
+               is a warm brown tuned for light grounds and goes muddy
+               here. */
+            color: var(--ink-invert-soft);
         }
     }
 }

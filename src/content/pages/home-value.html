@@ -1,0 +1,385 @@
+---
+title: "Home Value | Jayden Kennedy"
+description: "A comparative market analysis read by hand, not an automated estimate. Jayden Kennedy, Broker, Durham Region and the Greater Toronto Area."
+permalink: "/home-valuation/"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/home-value.css">
+{% endblock %}
+
+{% block body %}
+
+<!-- ============================================ -->
+<!--               Home Value Hero                -->
+<!-- ============================================ -->
+
+<section id="hero" class="cs-hero-interior" data-reveal>
+    <div class="cs-container">
+        <div class="cs-copy cs-reveal">
+
+            <h1>How much is my home worth?</h1>
+
+            <p class="cs-lede">
+                Automated estimates divide by square footage. I&rsquo;ve walked the street.
+            </p>
+
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--          What You Get · Valuation            -->
+<!-- ============================================ -->
+
+<section id="valuation" data-reveal>
+    <div class="cs-container">
+        <div class="cs-copy cs-reveal">
+            <h2 class="cs-title">What you get</h2>
+
+            <ol class="cs-gets">
+                <li class="cs-get">
+                    <span class="cs-num">01</span>
+                    <p class="cs-text">A range, not one number. A single number is a guess wearing a suit.</p>
+                </li>
+                <li class="cs-get">
+                    <span class="cs-num">02</span>
+                    <p class="cs-text">The comparables it rests on, and why each one counts.</p>
+                </li>
+                <li class="cs-get">
+                    <span class="cs-num">03</span>
+                    <p class="cs-text">The last ninety days on your street, including what didn&rsquo;t sell.</p>
+                </li>
+                <li class="cs-get">
+                    <span class="cs-num">04</span>
+                    <p class="cs-text">What would move the range up or down.</p>
+                </li>
+            </ol>
+
+            <p class="cs-text cs-gets-note">
+                Written by me. If the read is to wait, I&rsquo;ll tell you.
+            </p>
+        </div>
+
+        <div class="cs-panel cs-reveal">
+            <form
+                class="cs-valuation-form"
+                action="/api/home-valuation/"
+                method="post"
+                novalidate
+            >
+                <!-- Tagged at the source so Follow Up Boss can route
+                     without inferring from the payload. -->
+                <input type="hidden" name="source" value="home-valuation">
+
+                <ol class="cs-stepper" aria-hidden="true">
+                    <li class="cs-step-dot is-current" data-step-dot="1">1</li>
+                    <li class="cs-step-line" data-step-line="1"></li>
+                    <li class="cs-step-dot" data-step-dot="2">2</li>
+                    <li class="cs-step-line" data-step-line="2"></li>
+                    <li class="cs-step-dot" data-step-dot="3">3</li>
+                </ol>
+
+                <!-- Step one ------------------------------------ -->
+                <fieldset class="cs-step" data-step="1">
+                    <legend class="cs-sr-only">Step one, property address</legend>
+                    <p class="cs-topper" aria-hidden="true">Step one</p>
+
+                    <div class="cs-field cs-field-boxed">
+                        <label class="cs-label" for="val-address">Property address</label>
+                        <input
+                            type="text"
+                            id="val-address"
+                            name="address"
+                            autocomplete="street-address"
+                            placeholder="Start typing your address"
+                            required
+                        >
+                        <p class="cs-hint" data-error-for="val-address" hidden></p>
+                    </div>
+
+                    <button type="button" class="cs-button-script" data-step-next>Continue</button>
+                </fieldset>
+
+                <!-- Step two ------------------------------------ -->
+                <fieldset class="cs-step" data-step="2" hidden>
+                    <legend class="cs-sr-only">Step two, your details</legend>
+                    <p class="cs-topper" aria-hidden="true">Step two</p>
+                    <h3 class="cs-step-title">Almost there. One step away.</h3>
+
+                    <!-- Honeypot. Off-screen rather than display:none —
+                         some bots skip hidden fields, most fill this. -->
+                    <div class="cs-trap" aria-hidden="true">
+                        <label for="val-company">Company</label>
+                        <input type="text" id="val-company" name="company" tabindex="-1" autocomplete="off">
+                    </div>
+
+                    <div class="cs-field">
+                        <label class="cs-label" for="val-name">Full name</label>
+                        <input type="text" id="val-name" name="name" autocomplete="name" required>
+                        <p class="cs-hint" data-error-for="val-name" hidden></p>
+                    </div>
+
+                    <div class="cs-field">
+                        <label class="cs-label" for="val-email">Email address</label>
+                        <input type="email" id="val-email" name="email" autocomplete="email" required>
+                        <p class="cs-hint" data-error-for="val-email" hidden></p>
+                    </div>
+
+                    <div class="cs-field">
+                        <label class="cs-label" for="val-phone">Phone number</label>
+                        <input type="tel" id="val-phone" name="phone" autocomplete="tel" required>
+                        <p class="cs-hint" data-error-for="val-phone" hidden></p>
+                    </div>
+
+                    <fieldset class="cs-field cs-choices">
+                        <legend class="cs-label">Time frame</legend>
+
+                        <label class="cs-choice">
+                            <input type="radio" name="timeframe" value="now" required>
+                            <span>I want to sell now</span>
+                        </label>
+                        <label class="cs-choice">
+                            <input type="radio" name="timeframe" value="3-months">
+                            <span>In the next 3 months</span>
+                        </label>
+                        <label class="cs-choice">
+                            <input type="radio" name="timeframe" value="12-months">
+                            <span>In the next 12 months</span>
+                        </label>
+                        <label class="cs-choice">
+                            <input type="radio" name="timeframe" value="curious">
+                            <span>Just curious what it&rsquo;s worth</span>
+                        </label>
+
+                        <p class="cs-hint" data-error-for="timeframe" hidden></p>
+                    </fieldset>
+
+                    <div class="cs-consent">
+                        <label class="cs-choice">
+                            <input type="checkbox" name="consent" value="yes" required>
+                            <span>I agree to be contacted by Jayden Kennedy about real estate services by call, email or text. Reply stop to opt out. <a href="/privacy/">Privacy policy</a></span>
+                        </label>
+                        <p class="cs-hint" data-error-for="consent" hidden></p>
+                    </div>
+
+                    <button type="submit" class="cs-button-script">Get my valuation</button>
+
+                    <p class="cs-body-sm cs-fine">
+                        Free and no obligation. I answer every enquiry myself, and your details are never shared or sold.
+                    </p>
+                </fieldset>
+
+                <!-- Step three ---------------------------------- -->
+                <fieldset class="cs-step" data-step="3" hidden>
+                    <legend class="cs-sr-only">Step three, confirmation</legend>
+                    <p class="cs-topper" aria-hidden="true">Step three</p>
+                    <h3 class="cs-step-title">Sent.</h3>
+
+                    <p class="cs-text">
+                        I&rsquo;ll read the street and come back to you, usually within a day. If anything about the property is unusual, tell me now and I&rsquo;ll factor it in.
+                    </p>
+                </fieldset>
+
+                <p class="cs-hint cs-form-error" data-form-error hidden></p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+(function () {
+    const form = document.querySelector('#valuation .cs-valuation-form');
+    if (!form) return;
+
+    const steps = Array.from(form.querySelectorAll('[data-step]'));
+    const dots = Array.from(form.querySelectorAll('[data-step-dot]'));
+    const lines = Array.from(form.querySelectorAll('[data-step-line]'));
+    const formError = form.querySelector('[data-form-error]');
+    let current = 1;
+
+    // Step one prefills from the homepage address field. Query param
+    // first (a real navigation), then sessionStorage (a same-tab hand
+    // off). Neither is trusted for anything but convenience — the
+    // server validates the address on receipt.
+    (function prefill() {
+        const input = form.querySelector('#val-address');
+        if (!input || input.value) return;
+
+        const fromQuery = new URLSearchParams(window.location.search).get('address');
+        let fromStore = null;
+        try {
+            fromStore = sessionStorage.getItem('jk:address');
+        } catch (e) {
+            // Private mode or storage disabled. Not worth reporting.
+        }
+
+        const value = fromQuery || fromStore;
+        if (value) input.value = value.slice(0, 200);
+    })();
+
+    function show(n, moveFocus) {
+        current = n;
+
+        for (const step of steps) {
+            step.hidden = Number(step.dataset.step) !== n;
+        }
+
+        for (const dot of dots) {
+            const i = Number(dot.dataset.stepDot);
+            dot.classList.toggle('is-current', i === n);
+            dot.classList.toggle('is-done', i < n);
+        }
+
+        // A line is done once the step it leads away from is behind us.
+        for (const line of lines) {
+            line.classList.toggle('is-done', Number(line.dataset.stepLine) < n);
+        }
+
+        // Focus only on a real step change. On first render there is no
+        // navigation to announce, and focusing the panel would fire
+        // :focus-visible and outline the form before anyone has touched
+        // it.
+        if (!moveFocus) return;
+
+        const panel = steps.find((s) => Number(s.dataset.step) === n);
+        if (panel) {
+            panel.setAttribute('tabindex', '-1');
+            panel.focus({ preventScroll: true });
+        }
+    }
+
+    function setError(field, message) {
+        const wrap = field.closest('.cs-field') || field.closest('.cs-consent');
+        const hint = form.querySelector('[data-error-for="' + (field.id || field.name) + '"]');
+
+        if (wrap) wrap.classList.toggle('has-error', Boolean(message));
+        if (!hint) return;
+
+        hint.textContent = message || '';
+        hint.hidden = !message;
+    }
+
+    function validate(stepEl) {
+        let ok = true;
+        let firstBad = null;
+
+        const named = new Set();
+
+        for (const field of stepEl.querySelectorAll('input[required]')) {
+            // Radios share a name; check the group once.
+            if (field.type === 'radio') {
+                if (named.has(field.name)) continue;
+                named.add(field.name);
+
+                const checked = stepEl.querySelector('input[name="' + field.name + '"]:checked');
+                if (!checked) {
+                    setError(field, 'Choose one.');
+                    ok = false;
+                    firstBad = firstBad || field;
+                } else {
+                    setError(field, '');
+                }
+                continue;
+            }
+
+            if (field.type === 'checkbox') {
+                if (!field.checked) {
+                    setError(field, 'Please agree before sending.');
+                    ok = false;
+                    firstBad = firstBad || field;
+                } else {
+                    setError(field, '');
+                }
+                continue;
+            }
+
+            const value = field.value.trim();
+
+            if (!value) {
+                setError(field, 'This one is needed.');
+                ok = false;
+                firstBad = firstBad || field;
+            } else if (field.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+                setError(field, 'Check the email address.');
+                ok = false;
+                firstBad = firstBad || field;
+            } else if (field.type === 'tel' && value.replace(/\D/g, '').length < 10) {
+                setError(field, 'Include the area code.');
+                ok = false;
+                firstBad = firstBad || field;
+            } else {
+                setError(field, '');
+            }
+        }
+
+        if (firstBad) firstBad.focus();
+        return ok;
+    }
+
+    // Clear an error the moment the field is edited, rather than
+    // waiting for the next submit.
+    form.addEventListener('input', function (e) {
+        if (e.target.matches('input')) setError(e.target, '');
+    });
+
+    form.addEventListener('change', function (e) {
+        if (e.target.matches('input[type="radio"], input[type="checkbox"]')) setError(e.target, '');
+    });
+
+    form.addEventListener('click', function (e) {
+        const next = e.target.closest('[data-step-next]');
+        if (!next) return;
+
+        const stepEl = next.closest('[data-step]');
+        if (validate(stepEl)) show(current + 1, true);
+    });
+
+    form.addEventListener('submit', function (e) {
+        const stepEl = steps.find((s) => Number(s.dataset.step) === current);
+        if (!stepEl || !validate(stepEl)) {
+            e.preventDefault();
+            return;
+        }
+
+        // Honeypot. Silently accept and advance rather than erroring —
+        // a bot that learns it was caught adapts.
+        const trap = form.querySelector('[name="company"]');
+        if (trap && trap.value) {
+            e.preventDefault();
+            show(3, true);
+            return;
+        }
+
+        e.preventDefault();
+        formError.hidden = true;
+
+        const submit = form.querySelector('button[type="submit"]');
+        if (submit) submit.disabled = true;
+
+        fetch(form.action, {
+            method: 'POST',
+            headers: { Accept: 'application/json' },
+            body: new FormData(form),
+        })
+            .then(function (res) {
+                if (!res.ok) throw new Error(res.status);
+                try {
+                    sessionStorage.removeItem('jk:address');
+                } catch (err) {}
+                show(3, true);
+            })
+            .catch(function () {
+                formError.textContent = 'That did not send. Try again, or email jayden@soldbykennedy.ca.';
+                formError.hidden = false;
+                if (submit) submit.disabled = false;
+            });
+    });
+
+    show(1);
+})();
+</script>
+
+{% endblock %}

@@ -1,0 +1,439 @@
+/*-- -------------------------- -->
+<---      Home Value Hero       --->
+<--- -------------------------- -*/
+
+/* Same chassis as the Buying, Selling and Investing interior heroes —
+   identical clamps, h2-scale title, uncapped desktop measure — on the
+   Investing page's Cashmere wash. */
+
+#hero.cs-hero-interior {
+    padding: var(--section-padding);
+        padding-top: clamp(8rem, 13vw, 12rem);
+    background-color: var(--paper);
+
+    .cs-copy {
+        width: 100%;
+        max-width: 34rem;
+    }
+
+    h1 {
+        font-size: var(--fs-h2);
+        line-height: var(--lh-tight);
+        margin: 0 0 2.5rem;
+        color: var(--ink);
+        text-transform: uppercase;
+        text-wrap: balance;
+        max-width: 28ch;
+    }
+
+    .cs-lede {
+        margin: 0;
+        color: var(--ink);
+        max-width: 64ch;
+    }
+}
+
+/* Tablet -------------------------------------- */
+
+@media only screen and (min-width: 48rem) {
+    #hero.cs-hero-interior {
+        .cs-copy { max-width: none; }
+    }
+}
+
+
+/*-- -------------------------- -->
+<---     What You Get · Form    -->
+<--- -------------------------- -*/
+
+/* List on the page wash, form on a raised white panel. One step is
+   visible at a time — the three panels in the design are three states
+   of one form, not a stacked sequence.
+
+   No-JS: the steps ship [hidden] for the scripted path, because the
+   script is what advances them. The html:not(.js) block below restores
+   the whole form as one page when the script never runs. */
+
+@media only screen and (min-width: 0rem) {
+    #valuation {
+        padding: var(--section-padding);
+        background-color: var(--cashmere-100);
+
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: clamp(3rem, 7vw, 5rem);
+        }
+
+        /* ---- Element resets ---- */
+
+        /* fieldset, not .cs-step: .cs-choices is a fieldset too, and a
+           UA border on either one draws a box the design doesn't have.
+           The UA also ships padding, margin-inline and a
+           min-inline-size that the class-level resets miss. */
+        fieldset {
+            border: 0;
+            margin: 0;
+            padding: 0;
+            min-inline-size: 0;
+        }
+
+        /* .cs-button-ghost and .cs-button-script were written for
+           anchors — neither clears the UA background or the three
+           unwanted border sides, so on a <button> they render as
+           native controls with a hairline underneath. This belongs in
+           root's Controls block long term; every form on the site will
+           hit it. */
+        button.cs-button-ghost,
+        button.cs-button-script {
+            background: none;
+            border: 0;
+            border-block-end: 1px solid currentColor;
+            width: auto;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        /* ---- Left column ---- */
+
+        .cs-title {
+            margin: 0 0 clamp(1.5rem, 3vw, 2rem);
+            font-size: var(--fs-h2);
+            max-width: none;
+            line-height: var(--lh-tight);
+        }
+
+        .cs-gets {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            /* Heavier top edge, lighter dividers — matching all five
+               would make the list read as a table. */
+            border-block-start: 1px solid var(--rule-strong);
+        }
+
+        .cs-get {
+            display: grid;
+            grid-template-columns: 3.5rem minmax(0, 1fr);
+            column-gap: clamp(1rem, 3vw, 2rem);
+            align-items: baseline;
+            padding-block: clamp(1.25rem, 2.5vw, 1.75rem);
+            border-block-end: 1px solid var(--rule);
+        }
+
+        .cs-num {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: var(--track-eyebrow);
+            color: var(--ink-soft);
+        }
+
+        .cs-get .cs-text {
+            margin: 0;
+            max-width: 48ch;
+        }
+
+        .cs-gets-note {
+            margin: clamp(1.75rem, 3.5vw, 2.5rem) 0 0;
+            max-width: 48ch;
+            color: var(--ink-soft);
+        }
+
+        /* ---- Panel ---- */
+
+        .cs-panel {
+            background-color: var(--paper);
+            border: 1px solid var(--rule);
+            padding: clamp(2rem, 5vw, 3.5rem);
+        }
+
+        /* ---- Stepper ---- */
+
+        /* aria-hidden in the markup: it duplicates what the legend
+           already says, and a screen reader announcing "1 2 3" adds
+           nothing. Connectors are their own <li> rather than a ::after
+           on the dot — the pseudo-element version needed the fill
+           moved onto an inner span to stop it painting the line, which
+           was more CSS than the two extra elements cost. */
+        .cs-stepper {
+            list-style: none;
+            margin: 0 0 clamp(2.5rem, 5vw, 3.5rem);
+            padding: 0;
+            display: flex;
+            align-items: center;
+            gap: clamp(0.75rem, 2vw, 1.25rem);
+        }
+
+        .cs-step-dot {
+            flex: 0 0 auto;
+            width: clamp(2.5rem, 5vw, 3rem);
+            height: clamp(2.5rem, 5vw, 3rem);
+            display: grid;
+            place-items: center;
+            border: 1px solid var(--rule-strong);
+            font-family: var(--font-body);
+            font-size: var(--fs-body);
+            line-height: 1;
+            color: var(--ink-soft);
+            transition: background-color var(--dur) var(--ease), color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+        }
+
+        .cs-step-dot.is-done,
+        .cs-step-dot.is-current {
+            background-color: var(--ink);
+            border-color: var(--ink);
+            color: var(--ink-invert);
+        }
+
+        .cs-step-line {
+            flex: 1 1 auto;
+            height: 1px;
+            min-width: 1.5rem;
+            background-color: var(--rule);
+            transition: background-color var(--dur) var(--ease);
+        }
+
+        .cs-step-line.is-done {
+            background-color: var(--ink);
+        }
+
+        /* ---- Steps ---- */
+
+        .cs-step {
+            min-width: 0;
+        }
+
+        /* Two eyebrows stack here — the step marker and the field
+           label — so the gap between them has to read as deliberate
+           rather than as a wrap. */
+        .cs-topper {
+            margin-bottom: clamp(1.5rem, 3.5vw, 2.25rem);
+        }
+
+        .cs-step-title {
+            font-size: var(--fs-h4);
+            line-height: var(--lh-title);
+            margin: 0 0 clamp(1.5rem, 3vw, 2rem);
+            color: var(--ink);
+        }
+
+        /* ---- Fields ---- */
+
+        .cs-field {
+            margin: 0 0 clamp(1.5rem, 3vw, 2rem);
+            min-width: 0;
+        }
+
+        /* Labels stay visible; the placeholder shows format, never the
+           label. */
+        .cs-label {
+            display: block;
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: var(--track-eyebrow);
+            text-transform: uppercase;
+            color: var(--ink-soft);
+            margin-bottom: 1rem;
+            padding: 0;
+        }
+
+        /* Underline by default. The address input is the one boxed
+           field in the system — see .cs-field-boxed. */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"] {
+            width: 100%;
+            min-height: var(--control-height);
+            font-family: var(--font-body);
+            font-size: var(--fs-body);
+            line-height: var(--lh-body);
+            color: var(--ink);
+            background-color: transparent;
+            border: 0;
+            border-radius: 0;
+            border-block-end: 1px solid var(--rule);
+            padding: 0.5rem 0;
+            transition: border-color var(--dur) var(--ease);
+
+            &::placeholder {
+                color: var(--ink-soft);
+            }
+
+            /* Focus darkens the rule rather than adding a ring. */
+            &:focus {
+                outline: none;
+                border-block-end-color: var(--cocoa-900);
+                border-block-end-width: 1.5px;
+            }
+        }
+
+        /* The one boxed field in the system. Larger than the underlined
+           fields but not a panel in its own right. */
+        .cs-field-boxed {
+            margin-bottom: clamp(2rem, 4vw, 2.75rem);
+
+            input[type="text"] {
+                border: 1px solid var(--ink);
+                padding: clamp(0.875rem, 2vw, 1.125rem) clamp(1rem, 2.5vw, 1.25rem);
+                min-height: clamp(3.5rem, 6vw, 4rem);
+                font-size: var(--fs-lede);
+                line-height: 1.3;
+
+                &:focus {
+                    border-color: var(--cocoa-900);
+                    border-width: 1.5px;
+                }
+            }
+        }
+
+        /* ---- Choices ---- */
+
+        .cs-choices {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .cs-choice {
+            display: grid;
+            grid-template-columns: 1.125rem minmax(0, 1fr);
+            column-gap: 0.875rem;
+            align-items: start;
+            min-height: var(--control-height);
+            padding-block: 0.625rem;
+            cursor: pointer;
+
+            input {
+                width: 1.125rem;
+                height: 1.125rem;
+                margin: 0;
+                accent-color: var(--cocoa-500);
+                /* Optical: the control aligns to the cap line of the
+                   label, not the top of its line box. */
+                margin-block-start: 0.1875rem;
+            }
+
+            span {
+                font-size: var(--fs-body);
+                line-height: var(--lh-body);
+                color: var(--ink);
+            }
+        }
+
+        .cs-consent {
+            margin-block: clamp(1.5rem, 3vw, 2rem);
+            padding-block-start: clamp(1.5rem, 3vw, 2rem);
+            border-block-start: 1px solid var(--rule);
+
+            .cs-choice span {
+                font-size: var(--fs-body-sm);
+                line-height: 1.5;
+                color: var(--ink-soft);
+            }
+        }
+
+        /* ---- Errors ---- */
+
+        /* No red in the system. An error darkens the rule to
+           --cocoa-900, thickens it to 1.5px, and sets the hint in the
+           same colour. */
+        .cs-hint {
+            margin: 0.625rem 0 0;
+            font-size: var(--fs-caption);
+            line-height: 1.45;
+            color: var(--cocoa-900);
+        }
+
+        .cs-field.has-error {
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"] {
+                border-block-end-color: var(--cocoa-900);
+                border-block-end-width: 1.5px;
+            }
+        }
+
+        .cs-field-boxed.has-error input[type="text"] {
+            border-color: var(--cocoa-900);
+            border-width: 1.5px;
+        }
+
+        .cs-form-error {
+            margin-block-start: 1.5rem;
+        }
+
+        /* ---- Honeypot ---- */
+
+        /* Off-screen, not display:none — most bots skip fields they
+           can't render, and this one needs to be fillable. */
+        .cs-trap {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip-path: inset(50%);
+            white-space: nowrap;
+        }
+
+        /* ---- Actions ---- */
+
+        /* Root's script scale tops out at 20px, which reads small
+           against the panel. Scoped up here rather than changed at
+           root, where every other page's CTA depends on the smaller
+           size. */
+        .cs-button-script {
+            
+            padding-block: 0.625rem;
+            margin-block-start: 0;
+        }
+
+        .cs-fine {
+            margin: clamp(1.5rem, 3vw, 2rem) 0 0;
+            max-width: 44ch;
+            color: var(--ink-soft);
+        }
+    }
+}
+
+/* No JS: the steps ship [hidden] for the scripted path. Without the
+   script there is nothing to advance them, so the whole form shows as
+   one page and the native submit carries it. */
+html:not(.js) #valuation {
+    .cs-stepper {
+        display: none;
+    }
+
+    .cs-step[hidden] {
+        display: block;
+    }
+
+    /* Step three is a confirmation state, not a field set — it has
+       nothing to submit and would read as an empty panel. */
+    .cs-step[data-step="3"] {
+        display: none;
+    }
+
+    [data-step-next] {
+        display: none;
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #valuation {
+        .cs-container {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            column-gap: clamp(3rem, 7vw, 7rem);
+            align-items: start;
+        }
+
+        .cs-get .cs-text {
+            max-width: 42ch;
+        }
+    }
+}

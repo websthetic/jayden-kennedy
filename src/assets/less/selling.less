@@ -1,0 +1,564 @@
+/*-- -------------------------- -->
+<---        Selling Hero        --->
+<--- -------------------------- -*/
+
+/* Matches #hero.cs-hero-interior on the Buying page exactly — same
+   clamps, same h2-scale title, same uncapped desktop measure. The two
+   interior heroes should be indistinguishable in structure so the
+   pages read as one site.
+
+   The tablet .cs-copy cap is dropped: 98rem exceeds root's 90rem
+   container, so it never applied. */
+
+#hero.cs-hero-interior {
+    padding: var(--section-padding);
+        padding-top: clamp(8rem, 13vw, 12rem);
+    background-color: var(--paper);
+
+    .cs-copy {
+        width: 100%;
+        max-width: 34rem;
+    }
+
+    h1 {
+        font-size: var(--fs-h2);
+        line-height: var(--lh-tight);
+        margin: 0 0 2.5rem;
+        color: var(--ink);
+        text-transform: uppercase;
+        text-wrap: balance;
+        max-width: 28ch;
+    }
+
+    .cs-lede {
+        margin: 0;
+        color: var(--ink);
+        max-width: 64ch;
+    }
+}
+
+/* Tablet -------------------------------------- */
+
+@media only screen and (min-width: 48rem) {
+    #hero.cs-hero-interior {
+        .cs-copy { max-width: none; }
+    }
+}
+
+/* Desktop ------------------------------------- */
+
+@media only screen and (min-width: 64rem) {
+    #hero.cs-hero-interior {
+        h1 { max-width: 98ch; }
+    }
+}
+
+/*-- -------------------------- -->
+<---       How A Sale Runs      -->
+<--- -------------------------- -*/
+
+/* Two mechanisms, deliberately separate.
+
+   The step reveal is root's sitewide system, reused as-is: each <li>
+   is its own [data-reveal] group with a single .cs-reveal child, so
+   each stage fades and rises once, on its own, when it enters. One
+   .cs-reveal per stage — not one per line — because the brief is a
+   single gesture per step, not an internal stagger. --reveal-step is
+   zeroed for the same reason.
+
+   The rail fill is the opposite: a scrubber, tied to scroll position
+   rather than to a threshold. It scales a pseudo-element via
+   --rail-progress, which the page script writes on each frame.
+
+   Note the section itself carries no [data-reveal]. Root's selector is
+   `[data-reveal] .cs-reveal`, a descendant match — a wrapping group
+   would reveal every nested .cs-reveal the moment the section entered,
+   defeating the per-step timing entirely. */
+
+@media only screen and (min-width: 0rem) {
+    #how-a-sale-runs {
+        padding: var(--section-padding);
+        background-color: var(--cashmere-100);
+
+        --reveal-dur: 800ms;
+        --reveal-step: 0ms;
+        --reveal-shift: 1rem;
+
+        /* Half the marker's width, so the rail runs through its
+           centre. Both values move together — change one, change
+           the other. */
+        --marker-size: 0.625rem;
+        --rail-x: calc(var(--marker-size) / 2);
+
+        .cs-masthead {
+            margin-block-end: clamp(3rem, 7vw, 5rem);
+        }
+
+        .cs-title {
+            margin: 0 0 clamp(1rem, 2.5vw, 1.5rem);
+            max-width: 20ch;
+            line-height: var(--lh-tight);
+        }
+
+        .cs-lede {
+            margin: 0;
+            max-width: 46ch;
+            color: var(--ink-soft);
+        }
+
+        .cs-stages {
+            position: relative;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(3rem, 7vw, 5.5rem);
+
+            /* No JS, no scrub: the rail renders full rather than
+               empty. --rail-end is the distance from the bottom of the
+               list to the last marker's centre; the script measures it
+               because CSS can't. The 0 fallback means the rail runs to
+               the bottom of the list until it does — same as before,
+               and correct if the script never loads. */
+            --rail-progress: 1;
+            --rail-end: 0px;
+        }
+
+        /* Track and fill. Two pseudo-elements rather than a background
+           gradient: the fill has to scale independently of the track,
+           and transform is the only property here that doesn't force
+           layout on every frame. */
+        .cs-stages::before,
+        .cs-stages::after {
+            content: "";
+            position: absolute;
+            inset-block: var(--rail-x) var(--rail-end);
+            inset-inline-start: calc(var(--rail-x) - 0.5px);
+            width: 1px;
+        }
+
+        .cs-stages::before {
+            background-color: var(--rule);
+        }
+
+        .cs-stages::after {
+            background-color: var(--ink);
+            transform: scaleY(var(--rail-progress, 1));
+            transform-origin: top;
+        }
+
+        .cs-stage {
+            position: relative;
+            display: grid;
+            grid-template-columns: var(--marker-size) minmax(0, 1fr);
+            column-gap: clamp(1.5rem, 4vw, 3rem);
+            align-items: start;
+        }
+
+        /* Sits outside .cs-reveal on purpose — the marker belongs to
+           the rail, not to the copy, and shouldn't rise with it. */
+        .cs-marker {
+            width: var(--marker-size);
+            height: var(--marker-size);
+            border: 1px solid var(--ink);
+            background-color: var(--paper);
+            transition: background-color var(--dur) var(--ease);
+        }
+
+        .cs-stage.is-active .cs-marker {
+            background-color: var(--ink);
+        }
+
+        .cs-stage-body {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1rem;
+        }
+
+        /* Number sits beside the title, centred against it rather than
+           on its baseline. Baseline alignment puts the eyebrow's
+           baseline on Cinzel's, which at a 36px-to-11px size
+           difference reads as the number having dropped below the
+           word. */
+        .cs-stage-head {
+            display: flex;
+            align-items: center;
+            gap: clamp(0.75rem, 2vw, 1.25rem);
+        }
+
+        .cs-num {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: var(--track-eyebrow);
+            color: var(--ink-soft);
+            /* Holds the numbers on one edge whether they're 01 or 10,
+               so the titles beside them stay aligned. */
+            flex: 0 0 auto;
+            min-width: 2ch;
+        }
+
+        .cs-stage-title {
+            font-size: var(--fs-h3);
+            line-height: var(--lh-tight);
+            margin: 0;
+            color: var(--ink);
+        }
+
+        .cs-stage .cs-text {
+            max-width: 60ch;
+            margin: 0;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #how-a-sale-runs {
+
+        
+
+        .cs-stage-body {
+    /* A fixed track, not min-content. Each .cs-stage-body is its own
+       grid, so a content-sized column resolves per stage and the copy
+       starts at a different x in each one. A shared value is the only
+       thing that puts all three on one edge. Sized to clear
+       "Preparation" — the longest title — at the top of the h3 clamp,
+       plus the number and its gap. */
+    grid-template-columns: clamp(18rem, 26vw, 24rem) minmax(0, 1fr);
+    column-gap: clamp(4.5rem, 9vw, 9rem);
+    align-items: start;
+}
+        .cs-stage .cs-text {
+            max-width: 66ch;
+        }
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    #how-a-sale-runs {
+        /* Root already kills the reveal. This settles the rail and the
+           markers into their finished state so the section reads as
+           complete rather than as an animation caught at zero. */
+        .cs-stages {
+            --rail-progress: 1;
+        }
+
+        .cs-marker {
+            background-color: var(--ink);
+            transition: none;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---        What It Costs       -->
+<--- -------------------------- -*/
+
+/* Colour is handled by .cs-on-dark on the section, not here: --ink and
+   --ink-soft are tuned for paper and go muddy or invisible on Heritage
+   Green. The hand-set colour on .cs-statement is gone so cs-on-dark's
+   --ink-invert can win. */
+
+@media only screen and (min-width: 0rem) {
+    #costs {
+        padding: var(--section-padding);
+        background-color: var(--paper-field);
+
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.5rem;
+        }
+
+        .cs-rail {
+            .cs-title {
+                /* .cs-title ships a 1rem bottom margin for stacked
+                   header blocks. Here the rail owns its own spacing
+                   and .cs-container owns the gap to the column. */
+                margin: 0 0 clamp(0.75rem, 2vw, 1rem);
+                max-width: none;
+                line-height: var(--lh-tight);
+            }
+
+            .cs-body-sm {
+                margin: 0;
+                max-width: 34ch;
+            }
+        }
+
+        /* Cinzel at h4 scale, but still a paragraph — it's a claim,
+           not a section heading, and an h4 here would both enter the
+           outline and skip a level under the h2. Colour comes from
+           cs-on-dark, which sends .cs-text to --ink-invert. */
+        .cs-statement {
+            font-family: var(--font-display);
+            font-size: var(--fs-h4);
+            font-weight: 500;
+            line-height: var(--lh-title);
+            letter-spacing: var(--track-title);
+            text-transform: uppercase;
+            text-wrap: balance;
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 3rem;
+        }
+
+        .cs-text {
+            /* Beats root's --measure (40rem), which is narrower than
+               this column wants. */
+            max-width: 62ch;
+
+            /* Lede paragraph carries the argument, the follow-up
+               drops back to running size. */
+            &:first-of-type {
+                font-size: var(--fs-lede);
+                line-height: 1.5;
+            }
+        }
+
+        .cs-button-ghost {
+            margin-block-start: 0.75rem;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #costs {
+        /* The container keeps root's 90rem cap and auto margins so the
+           title sits on the same optical line as every other section's
+           heading. Cancelling the cap here is what pulls a section
+           100px left of the rest of the page. */
+        .cs-container {
+            grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+            column-gap: clamp(3rem, 7vw, 7rem);
+            align-items: start;
+        }
+
+        .cs-rail {
+            /* Cinzel and Elms Sans have different cap heights; without
+               the nudge the title reads high against the first line of
+               copy beside it. */
+            padding-block-start: 0.35rem;
+        }
+
+        .cs-text {
+            max-width: 58ch;
+
+            /* ch scales with font-size, so the lede would otherwise
+               run wider than the paragraph below it. */
+            &:first-of-type {
+                max-width: 47ch;
+            }
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---      What I Need From You  -->
+<--- -------------------------- -*/
+
+/* Same rail-and-content chassis as #costs. The list borrows .cs-num
+   from #how-a-sale-runs so both numbered sequences on the page read as
+   one system rather than two treatments. */
+
+@media only screen and (min-width: 0rem) {
+    #what-i-need {
+        padding: var(--section-padding);
+        background-color: var(--paper);
+
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.5rem;
+        }
+
+        .cs-rail {
+            .cs-title {
+                margin: 0 0 clamp(0.75rem, 2vw, 1rem);
+                max-width: none;
+                line-height: var(--lh-tight);
+            }
+
+            .cs-body-sm {
+                margin: 0;
+                max-width: 34ch;
+                color: var(--ink-soft);
+            }
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .cs-asks {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            /* The opening rule is --rule-strong and the ones between
+               rows are --rule. The heavier line reads as the top edge
+               of the block; matching all four would make the list look
+               like a table. */
+            border-block-start: 1px solid var(--rule-strong);
+        }
+
+        .cs-ask {
+            display: grid;
+            grid-template-columns: 3.5rem minmax(0, 1fr);
+            column-gap: clamp(1rem, 3vw, 2rem);
+            align-items: baseline;
+            padding-block: clamp(1.5rem, 3vw, 2rem);
+            border-block-end: 1px solid var(--rule);
+        }
+
+        .cs-num {
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: var(--track-eyebrow);
+            color: var(--ink-soft);
+        }
+
+        .cs-ask .cs-text {
+            margin: 0;
+            max-width: 52ch;
+        }
+
+        /* Closes the list rather than joining it, so it sits clear of
+           the last rule and holds no number column. */
+        .cs-close {
+            margin: clamp(2rem, 4vw, 2.75rem) 0 0;
+            max-width: 52ch;
+            color: var(--ink-soft);
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #what-i-need {
+        /* The container keeps root's 90rem cap and auto margins so the
+           title sits on the same optical line as every other section's
+           heading. */
+        .cs-container {
+            grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+            column-gap: clamp(3rem, 7vw, 7rem);
+            align-items: start;
+        }
+
+        .cs-rail {
+            /* Cinzel and Elms Sans have different cap heights; without
+               the nudge the title reads high against the top rule
+               beside it. */
+            padding-block-start: 0.35rem;
+        }
+
+        .cs-ask {
+            grid-template-columns: 4.5rem minmax(0, 1fr);
+        }
+
+        .cs-ask .cs-text,
+        .cs-close {
+            max-width: 58ch;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---             CTA            -->
+<--- -------------------------- -*/
+
+/* Even two-column split on cocoa. The rail carries the title alone —
+   no caption underneath, so it needs no flex column of its own. */
+
+@media only screen and (min-width: 0rem) {
+    #cta {
+        padding: var(--section-padding);
+        background-color: var(--cocoa-500);
+
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2.5rem;
+        }
+
+        .cs-rail {
+            h2 {
+                margin: 0;
+                color: var(--ink-invert);
+                text-transform: uppercase;
+                text-wrap: balance;
+                /* Mobile only. The desktop block drops the cap and
+                   lets the track govern — see below. */
+                max-width: 18ch;
+            }
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2.5rem;
+        }
+
+        .cs-lede {
+            margin: 0;
+            font-size: var(--fs-lede);
+            line-height: 1.5;
+            color: var(--ink-invert);
+            max-width: 40ch;
+        }
+
+        .cs-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 1.5rem 2.5rem;
+        }
+
+        .cs-fine {
+            margin: 0;
+            font-size: var(--fs-body-sm);
+            line-height: 1.4;
+            /* Set back from the copy above it without dropping to
+               --ink-soft, which is a warm brown tuned for light
+               grounds and goes muddy on cocoa. */
+            color: var(--cashmere-300);
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #cta {
+        .cs-container {
+            max-width: none;
+            margin-inline: 0;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: clamp(3rem, 7vw, 7rem);
+            align-items: start;
+        }
+
+        .cs-rail {
+            padding-block-start: 0.15rem;
+
+            /* The track is the constraint now. A ch cap here would
+               re-break the title at a width the grid already fixed —
+               the 14ch was what kept it stacked, not the 0.5fr. */
+            h2 {
+                max-width: none;
+            }
+        }
+    }
+}

@@ -1,0 +1,462 @@
+/*-- -------------------------- -->
+<---        Buying Hero         --->
+<--- -------------------------- -*/
+
+/* Padding and title scale both match #listings-intro: one fluid clamp
+   for the top, the shared gutter inline, no breakpoint overrides, and
+   an h2-scale title on --lh-tight. The bottom padding is its own clamp
+   rather than 0 — the listings intro can run to 0 because
+   #listings-filters carries its own top padding, and this hero has no
+   such neighbour. */
+
+#hero.cs-hero-interior {
+    padding: var(--section-padding);
+        padding-top: clamp(8rem, 13vw, 12rem);
+    background-color: var(--paper);
+
+    .cs-copy {
+        width: 100%;
+        max-width: 34rem;
+    }
+
+    h1 {
+        font-size: var(--fs-h2);
+        line-height: var(--lh-tight);
+        margin: 0 0 2.5rem;
+        color: var(--ink);
+        text-transform: uppercase;
+        text-wrap: balance;
+        max-width: 28ch;
+    }
+
+    .cs-lede {
+        margin: 0;
+        color: var(--ink);
+        max-width: 64ch;
+    }
+}
+
+/* Tablet -------------------------------------- */
+
+@media only screen and (min-width: 48rem) {
+    #hero.cs-hero-interior {
+        .cs-copy { max-width: 98rem; }
+    }
+}
+
+/* Desktop ------------------------------------- */
+
+@media only screen and (min-width: 64rem) {
+    #hero.cs-hero-interior {
+        h1 { max-width: 98ch; }
+    }
+}
+
+/*-- -------------------------- -->
+<---     Before You Look        -->
+<--- -------------------------- -*/
+
+/* The one beige field on the page. Narrow rail carrying the title,
+   wide column carrying the argument. */
+
+@media only screen and (min-width: 0rem) {
+    #financing {
+        padding: var(--section-padding);
+        background-color: var(--paper-warm);
+
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 1.5rem;
+        }
+
+        .cs-rail {
+            .cs-title {
+                /* .cs-title ships a 1rem bottom margin for stacked
+                   header blocks. Here the rail is its own grid cell
+                   and .cs-container owns the gap. */
+                margin: 0;
+                max-width: none;
+                line-height: var(--lh-tight);
+                /* --ink-soft is #8a7462, about 3.4:1 on Cashmere
+                   Beige — under AA. Everything sitting directly on
+                   the beige resolves to full Dark Cocoa. */
+                color: var(--ink);
+            }
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.25rem;
+        }
+
+        .cs-text {
+            /* Beats root's --measure (40rem), which is narrower than
+               this column wants. */
+            max-width: 62ch;
+
+            /* Lede paragraph carries the argument, the follow-up
+               drops back to running size. */
+            &:first-of-type {
+                font-size: var(--fs-lede);
+                line-height: 1.5;
+            }
+
+            &:nth-of-type(2) {
+                font-size: var(--fs-lede);
+            }
+        }
+
+        .cs-button-ghost {
+            margin-block-start: 0.75rem;
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #financing {
+        /* The container keeps root's 90rem cap and auto margins so
+           the title starts on the same optical line as the hero h1
+           above it. Cancelling the cap here is what pulled this
+           section 100px left of every other block on the page. */
+        .cs-container {
+            grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+            column-gap: clamp(3rem, 7vw, 7rem);
+            align-items: start;
+        }
+
+        .cs-text {
+            max-width: 58ch;
+
+            /* ch scales with font-size, so the lede would otherwise
+               run wider than the paragraph below it. */
+            &:first-of-type {
+                max-width: 47ch;
+            }
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<--   What You Get · Property    -->
+<--- -------------------------- -*/
+
+/* Full bleed on the left, so the section is the grid and there is no
+   .cs-container. The copy column carries the page inset itself — see
+   the desktop block for how it stays on the container's right edge
+   without a wrapper. */
+
+@media only screen and (min-width: 0rem) {
+    #every-property {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        background-color: var(--paper);
+
+        /* 3:2 on mobile, per the deck's interior ratio. Desktop drops
+           the ratio and stretches instead — see below. */
+        .cs-figure {
+            margin: 0;
+
+            img {
+                width: 100%;
+                height: 100%;
+                aspect-ratio: 3 / 2;
+                object-fit: cover;
+                object-position: center;
+            }
+        }
+
+        .cs-copy {
+            padding: var(--section-padding);
+            /* Image sits above on mobile; drop the top padding so the
+               two aren't separated by a dead band. */
+            padding-block-start: clamp(2.5rem, 6vw, 3.5rem);
+        }
+
+        .cs-title {
+            margin: 0 0 clamp(2rem, 5vw, 3rem);
+            max-width: 24ch;
+            line-height: var(--lh-tight);
+        }
+
+        /* No rules between rows. Spacing carries the separation, and
+           the Cinzel figures already mark where each item starts. */
+        .cs-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(1.5rem, 3.5vw, 2.25rem);
+        }
+
+        .cs-item {
+            display: grid;
+            grid-template-columns: 2.5rem minmax(0, 1fr);
+            column-gap: 1rem;
+            align-items: baseline;
+        }
+
+        /* Cinzel figure, not a list marker. --ink-soft is the deck's
+           number colour and clears AA on white. */
+        .cs-num {
+            font-family: var(--font-display);
+            font-size: var(--fs-body-sm);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: var(--track-title);
+            color: var(--ink-soft);
+        }
+
+        .cs-item .cs-text {
+            max-width: 46ch;
+            margin: 0;
+        }
+
+        .cs-body-sm {
+            margin-block-start: clamp(2rem, 4.5vw, 3rem);
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #every-property {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        column-gap: clamp(3rem, 6vw, 6rem);
+        align-items: stretch;
+
+        /* The page inset, reconstructed on the right. Every other
+           section gets its edges from .cs-container's 90rem cap plus
+           auto margins; this one can't use a container without capping
+           the image too, so it recreates the same edge as padding. The
+           percentage resolves against the section's containing block,
+           which is the body — not 100vw, which counts the scrollbar
+           and would push the copy a few pixels off every heading above
+           it. max() holds the edge at --gutter below 90rem, where the
+           centring offset would go negative. */
+        padding-inline-end: max(var(--gutter), calc((100% - var(--container)) / 2 + var(--gutter)));
+
+        .cs-figure {
+            height: 100%;
+
+            img {
+                /* Ratio is off on desktop on purpose: the frame is
+                   whatever height the copy makes it, and the crop
+                   absorbs the difference. */
+                aspect-ratio: auto;
+                min-height: 34rem;
+            }
+        }
+
+        .cs-copy {
+            padding-inline: 0;
+            padding-block: clamp(5rem, 9vw, 8rem);
+            /* The list is short; without this the copy sits at the top
+               of a tall image and the column reads unbalanced. */
+            align-self: center;
+        }
+
+        .cs-title {
+            max-width: 20ch;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---          The Offer         -->
+<--- -------------------------- -*/
+
+/* The page's one saturated field. Masthead over notes, closing caption
+   underneath. Title, lede, both notes and the caption share one left
+   edge — no rail, no offset column. */
+
+@media only screen and (min-width: 0rem) {
+    #offer {
+        padding: var(--section-padding);
+        background-color: var(--paper-field);
+
+        .cs-masthead {
+            margin-block-end: clamp(2.5rem, 5vw, 3.5rem);
+        }
+
+        .cs-title {
+            /* Full width now, so the 43.75rem cap .cs-title ships would
+               break it early against a container that has room. */
+            max-width: 20ch;
+            margin: 0 0 clamp(1.5rem, 3vw, 2rem);
+            line-height: var(--lh-tight);
+        }
+
+        .cs-lede {
+            /* Wider than root's --measure: this is the section's claim,
+               and it sits above the notes row that would otherwise
+               overshoot it by half the container. */
+            max-width: 54ch;
+            margin: 0;
+        }
+
+        .cs-notes {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: clamp(2rem, 4vw, 2.5rem);
+        }
+
+        /* Each note carries its own rule, so the line stops at the
+           column edge and the grid gap becomes the break between them.
+           --rule-invert, not --rule: the cocoa hairline is invisible on
+           Heritage Green. */
+        .cs-note {
+            border-block-start: 1px solid var(--rule-invert);
+            padding-block-start: clamp(1.75rem, 3.5vw, 2.25rem);
+        }
+
+        /* h3 scale. Sits close to --fs-h2 at the small end of the
+           clamp, so the two nearly collide on a phone — see the
+           mobile step-down below. */
+        .cs-note-title {
+            font-size: var(--fs-h3);
+            line-height: var(--lh-title);
+            margin: 0 0 1rem;
+        }
+
+        .cs-note .cs-text {
+            max-width: 46ch;
+            margin: 0;
+        }
+
+        /* Closes the section rather than annotating the lede. Sits
+           clear of the notes row so it reads as a footnote to the
+           whole block, not to the second column. */
+        .cs-body-sm {
+            margin-block-start: clamp(2.5rem, 5vw, 3.5rem);
+            max-width: 52ch;
+        }
+    }
+}
+
+/* Mobile - under 48rem */
+@media only screen and (max-width: 47.99rem) {
+    #offer {
+        /* --fs-h2 is 32px here and --fs-h3 is 28px: four pixels apart,
+           which reads as no hierarchy at all. h4 scale keeps the h3
+           semantics and restores the step. */
+        .cs-note-title {
+            font-size: var(--fs-h4);
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #offer {
+        .cs-title {
+            max-width: none;
+        }
+
+        .cs-lede {
+            font-size: var(--fs-lede);
+            max-width: 62ch;
+        }
+
+        .cs-notes {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: clamp(3rem, 6vw, 6rem);
+        }
+
+        .cs-note .cs-text {
+            max-width: 42ch;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---             CTA            -->
+<--- -------------------------- -*/
+
+/* Even two-column split on cocoa. The rail carries the title alone —
+   no caption underneath, so it needs no flex column of its own. */
+
+@media only screen and (min-width: 0rem) {
+    #cta {
+        padding: var(--section-padding);
+        background-color: var(--cocoa-500);
+
+        .cs-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: 2.5rem;
+        }
+
+        .cs-rail {
+            h2 {
+                margin: 0;
+                color: var(--ink-invert);
+                text-transform: uppercase;
+                text-wrap: balance;
+                /* Mobile only. The desktop block drops the cap and
+                   lets the track govern — see below. */
+                max-width: 18ch;
+            }
+        }
+
+        .cs-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2.5rem;
+        }
+
+        .cs-lede {
+            margin: 0;
+            font-size: var(--fs-lede);
+            line-height: 1.5;
+            color: var(--ink-invert);
+            max-width: 40ch;
+        }
+
+        .cs-actions {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 1.5rem 2.5rem;
+        }
+
+        .cs-fine {
+            margin: 0;
+            font-size: var(--fs-body-sm);
+            line-height: 1.4;
+            /* Set back from the copy above it without dropping to
+               --ink-soft, which is a warm brown tuned for light
+               grounds and goes muddy on cocoa. */
+            color: var(--cashmere-300);
+        }
+    }
+}
+
+/* Desktop - 64rem */
+@media only screen and (min-width: 64rem) {
+    #cta {
+        .cs-container {
+            max-width: none;
+            margin-inline: 0;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            column-gap: clamp(3rem, 7vw, 7rem);
+            align-items: start;
+        }
+
+        .cs-rail {
+            padding-block-start: 0.15rem;
+
+            /* The track is the constraint now. A ch cap here would
+               re-break the title at a width the grid already fixed —
+               the 14ch was what kept it stacked, not the 0.5fr. */
+            h2 {
+                max-width: none;
+            }
+        }
+    }
+}

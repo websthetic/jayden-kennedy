@@ -46,68 +46,101 @@ permalink: "/listings/"
           </button>
         </div>
 
-        <form class="cs-form" id="listings-form" method="get" action="/listings/" role="search" aria-label="Filter listings">
-          <div class="cs-field">
-            <label class="cs-label" for="municipality">Municipality</label>
-            <select class="cs-select" id="municipality" name="municipality">
-              <option value="">All of Durham</option>
-              <option value="ajax">Ajax</option>
-              <option value="bowmanville">Bowmanville</option>
-              <option value="clarington">Clarington</option>
-              <option value="courtice">Courtice</option>
-              <option value="oshawa">Oshawa</option>
-              <option value="pickering">Pickering</option>
-              <option value="uxbridge">Uxbridge</option>
-              <option value="whitby">Whitby</option>
-            </select>
-          </div>
+        <div class="cs-panel">
+          <form class="cs-form" id="listings-form" method="get" action="/listings/" role="search" aria-label="Filter listings">
+            <div class="cs-field cs-field-lg">
+              <label class="cs-label" for="region">Region</label>
+              <select class="cs-select" id="region" name="region" data-region>
+                <option value="gta" selected>Greater Toronto Area</option>
+                <option value="durham">Durham Region</option>
+                <option value="york">York Region</option>
+                <option value="peel">Peel Region</option>
+                <option value="toronto">City of Toronto</option>
+              </select>
+            </div>
 
-          <div class="cs-field">
-            <label class="cs-label" for="price">Price</label>
-            <select class="cs-select" id="price" name="price">
-              <option value="">Any</option>
-              <option value="0-600000">Under $600k</option>
-              <option value="600000-800000">$600k to $800k</option>
-              <option value="800000-1000000">$800k to $1M</option>
-              <option value="1000000-1500000">$1M to $1.5M</option>
-              <option value="1500000-">$1.5M and up</option>
-            </select>
-          </div>
+            <div class="cs-field cs-field-lg">
+              <label class="cs-label" for="city">City</label>
+              <!-- Options carry data-region so the city list can narrow
+                   when a region is chosen. Without JS every city stays
+                   selectable and the server filters on submit. -->
+              <select class="cs-select" id="city" name="city" data-city>
+                <option value="">All cities</option>
+                <option value="ajax" data-region="durham">Ajax</option>
+                <option value="bowmanville" data-region="durham">Bowmanville</option>
+                <option value="clarington" data-region="durham">Clarington</option>
+                <option value="courtice" data-region="durham">Courtice</option>
+                <option value="oshawa" data-region="durham">Oshawa</option>
+                <option value="pickering" data-region="durham">Pickering</option>
+                <option value="uxbridge" data-region="durham">Uxbridge</option>
+                <option value="whitby" data-region="durham">Whitby</option>
+                <option value="markham" data-region="york">Markham</option>
+                <option value="richmond-hill" data-region="york">Richmond Hill</option>
+                <option value="vaughan" data-region="york">Vaughan</option>
+                <option value="brampton" data-region="peel">Brampton</option>
+                <option value="mississauga" data-region="peel">Mississauga</option>
+                <option value="toronto" data-region="toronto">Toronto</option>
+              </select>
+            </div>
 
-          <div class="cs-field cs-field-sm">
-            <label class="cs-label" for="beds">Beds</label>
-            <select class="cs-select" id="beds" name="beds">
-              <option value="">Any</option>
-              <option value="1">1+</option>
-              <option value="2">2+</option>
-              <option value="3">3+</option>
-              <option value="4">4+</option>
-              <option value="5">5+</option>
-            </select>
-          </div>
+            <div class="cs-field cs-field-md">
+              <label class="cs-label" for="price">Price</label>
+              <select class="cs-select" id="price" name="price">
+                <option value="">Any</option>
+                <option value="0-600000">Under $600k</option>
+                <option value="600000-800000">$600k to $800k</option>
+                <option value="800000-1000000">$800k to $1M</option>
+                <option value="1000000-1500000">$1M to $1.5M</option>
+                <option value="1500000-">$1.5M and up</option>
+              </select>
+            </div>
 
-          <div class="cs-field cs-field-md">
-            <label class="cs-label" for="type">Type</label>
-            <select class="cs-select" id="type" name="type">
-              <option value="">Any</option>
-              <option value="detached">Detached</option>
-              <option value="semi-detached">Semi-detached</option>
-              <option value="townhouse">Townhouse</option>
-              <option value="condo">Condo</option>
-              <option value="multiplex">Multiplex</option>
-            </select>
-          </div>
+            <div class="cs-field cs-field-sm">
+              <label class="cs-label" for="beds">Beds</label>
+              <select class="cs-select" id="beds" name="beds">
+                <option value="">Any</option>
+                <option value="1">1+</option>
+                <option value="2">2+</option>
+                <option value="3">3+</option>
+                <option value="4">4+</option>
+                <option value="5">5+</option>
+              </select>
+            </div>
 
-          <div class="cs-field cs-field-md">
-            <label class="cs-label" for="status">Status</label>
-            <select class="cs-select" id="status" name="status">
-              <option value="active" selected>Active</option>
-              <option value="any">Active and sold</option>
-            </select>
-          </div>
+            <div class="cs-field cs-field-sm">
+              <label class="cs-label" for="baths">Baths</label>
+              <select class="cs-select" id="baths" name="baths">
+                <option value="">Any</option>
+                <option value="1">1+</option>
+                <option value="2">2+</option>
+                <option value="3">3+</option>
+                <option value="4">4+</option>
+              </select>
+            </div>
 
-          <button class="cs-button" type="submit">Apply</button>
-        </form>
+            <div class="cs-field cs-field-md">
+              <label class="cs-label" for="type">Property type</label>
+              <select class="cs-select" id="type" name="type">
+                <option value="">Any</option>
+                <option value="detached">Detached</option>
+                <option value="semi-detached">Semi-detached</option>
+                <option value="townhouse">Townhouse</option>
+                <option value="condo">Condo</option>
+                <option value="multiplex">Multiplex</option>
+              </select>
+            </div>
+
+            <div class="cs-field cs-field-md">
+              <label class="cs-label" for="status">Status</label>
+              <select class="cs-select" id="status" name="status">
+                <option value="active" selected>For sale</option>
+                <option value="any">For sale and sold</option>
+              </select>
+            </div>
+
+            <button class="cs-button" type="submit">Apply</button>
+          </form>
+        </div>
       </div>
     </section>
 
@@ -115,7 +148,16 @@ permalink: "/listings/"
       <div class="cs-summary">
         <div class="cs-container">
           <div class="cs-count-group">
-            <p class="cs-count" data-count aria-live="polite">6 homes</p>
+            <!-- Two links, not a toggle button: each view is its own URL
+                 and has to survive a share, a bookmark and a back
+                 press. aria-current marks the one you are on. -->
+            <div class="cs-views">
+              <a class="cs-view" href="/listings/" aria-current="page">List</a>
+              <a class="cs-view" href="/listings/map/">Map</a>
+            </div>
+
+            <p class="cs-count" data-count aria-live="polite">[ResultCount] homes</p>
+
             <p class="cs-applied" data-applied hidden>
               <span data-applied-label></span>
               <a class="cs-clear" href="/listings/">Clear all</a>
@@ -123,13 +165,14 @@ permalink: "/listings/"
           </div>
 
           <div class="cs-view-group">
-            <a class="cs-view-link" href="/listings/map/">Map</a>
-            <label class="cs-sort-label" for="sort">Sort</label>
+            <label class="cs-sort-label cs-sr-only" for="sort">Sort</label>
             <select class="cs-select cs-sort" id="sort" name="sort">
-              <option value="newest">Newest</option>
+              <option value="newest">Most recent</option>
               <option value="price-desc">Price, high to low</option>
               <option value="price-asc">Price, low to high</option>
             </select>
+
+            <a class="cs-button-script" href="/contact/?intent=saved-search">Save this search</a>
           </div>
         </div>
       </div>
@@ -300,5 +343,75 @@ permalink: "/listings/"
         </p>
       </div>
     </section>
+
+    <!-- ============================================ -->
+<!--               Save This Search               -->
+<!-- ============================================ -->
+
+<!-- Sits under the results grid, above the disclosure. The form posts
+     the current query string alongside the email so the saved search
+     is the one the reader is actually looking at — see the hidden
+     inputs, which listings.js fills on load. -->
+
+<section id="save-search">
+    <div class="cs-band cs-band-warm" data-reveal>
+        <div class="cs-container">
+            <div class="cs-row">
+                <div class="cs-copy cs-reveal">
+                    <h2>Save this search</h2>
+
+                    <p class="cs-text">
+                        One email when something matching comes on. Nothing else, and you can stop it in one click.
+                    </p>
+                </div>
+
+                <form class="cs-form cs-reveal" action="/saved-search/" method="post">
+                    <!-- Filled by listings.js from the live filter row.
+                         Empty without a script, in which case the
+                         handler falls back to the unfiltered board
+                         rather than saving a search nobody asked for. -->
+                    <input type="hidden" name="query" data-saved-query value="">
+                    <input type="hidden" name="source" value="listings-saved-search">
+
+                    <div class="cs-field">
+                        <label class="cs-label" for="save-search-email">Email address</label>
+                        <input class="cs-input"
+                               type="email"
+                               id="save-search-email"
+                               name="email"
+                               autocomplete="email"
+                               required>
+                    </div>
+
+                    <button type="submit" class="cs-button-script cs-action">Save search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--                     CTA                      -->
+<!-- ============================================ -->
+
+<section id="cta" class="cs-on-dark" data-reveal>
+    <div class="cs-container">
+        <div class="cs-rail cs-reveal">
+            <h2>Found something worth a look?</h2>
+        </div>
+
+        <div class="cs-content cs-reveal">
+            <p class="cs-lede">
+               Send me the address and i'll tell you what the street says about the price.
+            </p>
+
+            <div class="cs-actions">
+                <a href="/contact/" class="cs-button-script">ask about a property</a>
+            </div>
+
+            <p class="cs-fine">I answer every enquiry myself.</p>
+        </div>
+    </div>
+</section>
 
 {% endblock %}

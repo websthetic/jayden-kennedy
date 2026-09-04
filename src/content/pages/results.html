@@ -1,0 +1,502 @@
+---
+title: "Results | Jayden Kennedy"
+description: "Recent closings across Durham Region — asking price beside what the market paid, with days on market for each."
+permalink: "/results/"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/results.css">
+    <!-- base.html has no scripts block, so page scripts load here with
+         defer — the same as contact.html. This used to sit in a
+         {% raw %}{% block scripts %}{% endraw %} at the foot of the file, which Nunjucks
+         discarded silently: the filters, the sort and Load more were
+         all inert. -->
+    <script defer src="/assets/js/listings.js"></script>
+{% endblock %}
+
+{% block body %}
+
+    <section id="listings-intro">
+      <div class="cs-container">
+        <h1 class="cs-title">Homes I've Sold</h1>
+        <p class="cs-text">
+          Every number here is a real closing of mine. Where I recommended a price,
+          it sits next to what the market actually paid.
+        </p>
+      </div>
+    </section>
+
+    <section id="listings-filters">
+      <div class="cs-container">
+        <!-- Phone only, and JS only. CSS keeps this hidden until the .js
+             class lands, so without a script the form is simply open and
+             the button never appears — nothing is reachable only by a
+             control that cannot work. -->
+        <div class="cs-bar">
+          <button
+            class="cs-toggle"
+            type="button"
+            data-filter-toggle
+            aria-expanded="false"
+            aria-controls="listings-form"
+          >
+            Filters<span class="cs-toggle-count" data-filter-count hidden></span>
+          </button>
+        </div>
+
+        <!-- action and the Clear all href both point at this page, not at
+             /listings/. Left as they were, applying a filter here walked the
+             visitor off the archive and onto the live board. -->
+        <div class="cs-panel">
+          <form class="cs-form" id="listings-form" method="get" action="/results/" role="search" aria-label="Filter closings">
+            <div class="cs-field cs-field-lg">
+              <label class="cs-label" for="municipality">Municipality</label>
+              <select class="cs-select" id="municipality" name="municipality">
+                <option value="">All cities</option>
+                <option value="ajax">Ajax</option>
+                <option value="bowmanville">Bowmanville</option>
+                <option value="clarington">Clarington</option>
+                <option value="courtice">Courtice</option>
+                <option value="oshawa">Oshawa</option>
+                <option value="pickering">Pickering</option>
+                <option value="uxbridge">Uxbridge</option>
+                <option value="whitby">Whitby</option>
+              </select>
+            </div>
+
+            <!-- Was Active / Active and sold, carried over from Listings. Every
+                 record on this page is closed, so the old default filtered the
+                 page down to nothing it can contain. -->
+            <div class="cs-field cs-field-md">
+              <label class="cs-label" for="tenure">Transaction</label>
+              <select class="cs-select" id="tenure" name="tenure">
+                <option value="">Sold or leased</option>
+                <option value="sold">Sold</option>
+                <option value="leased">Leased</option>
+              </select>
+            </div>
+
+            <!-- Sort lives inside the form now rather than in the results
+                 bar. It gains a submit that way, so it works without a
+                 script — which is why .cs-view-group and its no-JS gate
+                 are both gone. -->
+            <div class="cs-field cs-field-md">
+              <label class="cs-label" for="sort">Sort</label>
+              <select class="cs-select" id="sort" name="sort">
+                <option value="newest">Most recent</option>
+                <option value="price-desc">Highest price</option>
+                <option value="price-asc">Lowest price</option>
+              </select>
+            </div>
+
+            <button class="cs-button" type="submit">Apply</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="listings-results">
+      
+      <div class="cs-container">
+        <ul class="cs-card-group" data-reveal data-results>
+          <li class="cs-item cs-reveal" style="--reveal-i: 0">
+            {#! CONFIRM — individual closing pages may not exist. If they do
+                not, drop the <a> wrapper and let .cs-info sit in the <li>
+                directly rather than shipping six links to 404s. #}
+            <a class="cs-link" href="/results/result-one/">
+              <picture class="cs-picture">
+                <img
+                  class="cs-img"
+                  src="/assets/images/results/result-01.jpg"
+                  alt=""
+                  width="640"
+                  height="500"
+                  loading="eager"
+                  fetchpriority="high"
+                  decoding="async"
+                >
+              </picture>
+              <div class="cs-info">
+                <span class="cs-address">[UnparsedAddress]</span>
+                <span class="cs-city">[City]</span>
+                <p class="cs-outcome">
+                  <span class="cs-ask"><span class="cs-sr">Asking </span>[ListPrice]</span>
+                  <span class="cs-arrow" aria-hidden="true">&rarr;</span>
+                  <span class="cs-close"><span class="cs-sr">sold for </span>[ClosePrice]</span>
+                </p>
+                <span class="cs-meta">
+                  [DaysOnMarket] days &middot; [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="cs-item cs-reveal" style="--reveal-i: 1">
+            <a class="cs-link" href="/results/result-two/">
+              <picture class="cs-picture">
+                <img
+                  class="cs-img"
+                  src="/assets/images/results/result-02.jpg"
+                  alt=""
+                  width="640"
+                  height="500"
+                  loading="eager"
+                  decoding="async"
+                >
+              </picture>
+              <div class="cs-info">
+                <span class="cs-address">[UnparsedAddress]</span>
+                <span class="cs-city">[City]</span>
+                <p class="cs-outcome">
+                  <span class="cs-ask"><span class="cs-sr">Asking </span>[ListPrice]</span>
+                  <span class="cs-arrow" aria-hidden="true">&rarr;</span>
+                  <span class="cs-close"><span class="cs-sr">sold for </span>[ClosePrice]</span>
+                </p>
+                <span class="cs-meta">
+                  [DaysOnMarket] days &middot; [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="cs-item cs-reveal" style="--reveal-i: 2">
+            <a class="cs-link" href="/results/result-three/">
+              <picture class="cs-picture">
+                <img
+                  class="cs-img"
+                  src="/assets/images/results/result-03.jpg"
+                  alt=""
+                  width="640"
+                  height="500"
+                  loading="eager"
+                  decoding="async"
+                >
+              </picture>
+              <div class="cs-info">
+                <span class="cs-address">[UnparsedAddress]</span>
+                <span class="cs-city">[City]</span>
+                <p class="cs-outcome">
+                  <span class="cs-ask"><span class="cs-sr">Asking </span>[ListPrice]</span>
+                  <span class="cs-arrow" aria-hidden="true">&rarr;</span>
+                  <span class="cs-close"><span class="cs-sr">sold for </span>[ClosePrice]</span>
+                </p>
+                <span class="cs-meta">
+                  [DaysOnMarket] days &middot; [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="cs-item cs-reveal" style="--reveal-i: 3">
+            <a class="cs-link" href="/results/result-four/">
+              <picture class="cs-picture">
+                <img
+                  class="cs-img"
+                  src="/assets/images/results/result-04.jpg"
+                  alt=""
+                  width="640"
+                  height="500"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </picture>
+              <div class="cs-info">
+                <span class="cs-address">[UnparsedAddress]</span>
+                <span class="cs-city">[City]</span>
+                <p class="cs-outcome">
+                  <span class="cs-ask"><span class="cs-sr">Asking </span>[ListPrice]</span>
+                  <span class="cs-arrow" aria-hidden="true">&rarr;</span>
+                  <span class="cs-close"><span class="cs-sr">sold for </span>[ClosePrice]</span>
+                </p>
+                <span class="cs-meta">
+                  [DaysOnMarket] days &middot; [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="cs-item cs-reveal" style="--reveal-i: 4">
+            <a class="cs-link" href="/results/result-five/">
+              <picture class="cs-picture">
+                <img
+                  class="cs-img"
+                  src="/assets/images/results/result-05.jpg"
+                  alt=""
+                  width="640"
+                  height="500"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </picture>
+              <div class="cs-info">
+                <span class="cs-address">[UnparsedAddress]</span>
+                <span class="cs-city">[City]</span>
+                <p class="cs-outcome">
+                  <span class="cs-ask"><span class="cs-sr">Asking </span>[ListPrice]</span>
+                  <span class="cs-arrow" aria-hidden="true">&rarr;</span>
+                  <span class="cs-close"><span class="cs-sr">sold for </span>[ClosePrice]</span>
+                </p>
+                <span class="cs-meta">
+                  [DaysOnMarket] days &middot; [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath
+                </span>
+              </div>
+            </a>
+          </li>
+          <li class="cs-item cs-reveal" style="--reveal-i: 5">
+            <a class="cs-link" href="/results/result-six/">
+              <picture class="cs-picture">
+                <img
+                  class="cs-img"
+                  src="/assets/images/results/result-06.jpg"
+                  alt=""
+                  width="640"
+                  height="500"
+                  loading="lazy"
+                  decoding="async"
+                >
+              </picture>
+              <div class="cs-info">
+                <span class="cs-address">[UnparsedAddress]</span>
+                <span class="cs-city">[City]</span>
+                <p class="cs-outcome">
+                  <span class="cs-ask"><span class="cs-sr">Asking </span>[ListPrice]</span>
+                  <span class="cs-arrow" aria-hidden="true">&rarr;</span>
+                  <span class="cs-close"><span class="cs-sr">sold for </span>[ClosePrice]</span>
+                </p>
+                <span class="cs-meta">
+                  [DaysOnMarket] days &middot; [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath
+                </span>
+              </div>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Copy rewritten for a closed archive. "Nothing on the board matches
+             that yet" promised future stock, which this page cannot deliver —
+             it is a record of what has already happened. -->
+        <div class="cs-empty" data-empty hidden>
+          <p class="cs-empty-title">No closings match that.</p>
+          <p class="cs-text">
+            Widen the filters, or ask me what a home like yours would fetch today
+            and I will show you the comparables behind the number.
+          </p>
+          <a class="cs-button" href="/contact/">Ask what yours is worth</a>
+        </div>
+
+        {#! CONFIRM — ?page=2 returns page one on a static build. Wire this to
+            11ty pagination (/results/page/2/) or remove it until the feed and
+            the closing count justify a second page. #}
+        <div class="cs-more" data-more>
+          <a class="cs-button-outline" href="/results/?page=2">Load more</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="listings-disclosure">
+      <div class="cs-container">
+        {#! CONFIRM — N14. Sold data is board-restricted. Confirm display
+            rights with TRREB, and confirm whether co-operating brokerage
+            attribution is required per record, before this page ships. #}
+        <p class="cs-fine">
+          Sold and leased figures shown are transactions in which Jayden Kennedy
+          acted for the buyer, the seller, or both. Data is provided by the Toronto
+          Regional Real Estate Board and is deemed reliable but not guaranteed
+          accurate. Past results are not a guarantee of future results. Not intended
+          to solicit buyers or sellers currently under contract.
+        </p>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!--             How This Sale Ran                -->
+    <!-- ============================================ -->
+
+    <section id="sale-ran" data-reveal>
+      <div class="cs-container">
+        <div class="cs-masthead cs-reveal">
+          <h2 class="cs-title">How this sale ran</h2>
+          <p class="cs-lede">One sale, start to finish, with the working shown.</p>
+        </div>
+
+        <div class="cs-columns">
+          <div class="cs-column cs-reveal">
+            <h3 class="cs-column-title">The recommendation</h3>
+            <p class="cs-text">
+              [Recommended list price, and the three comparables inside four hundred metres that supported it.]
+            </p>
+          </div>
+
+          <div class="cs-column cs-reveal">
+            <h3 class="cs-column-title">What we did differently</h3>
+            <p class="cs-text">
+              [The specific decision. Staging, timing, or holding the price.]
+            </p>
+          </div>
+
+          <div class="cs-column cs-reveal">
+            <h3 class="cs-column-title">The result</h3>
+            <p class="cs-text">
+              [Offer count, days on market, closing price against the original recommendation.]
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!--                     CTA                      -->
+    <!-- ============================================ -->
+
+    <section id="cta" class="cs-on-dark" data-reveal>
+      <div class="cs-container">
+        <div class="cs-rail cs-reveal">
+          <h2>What would yours do?</h2>
+        </div>
+
+        <div class="cs-content cs-reveal">
+          <p class="cs-lede">
+            A handwritten analysis of your street.
+          </p>
+
+          <div class="cs-actions">
+            <a href="/contact/" class="cs-button-script">Get my home evaluation</a>
+          </div>
+
+          <p class="cs-fine">I answer every enquiry myself.</p>
+        </div>
+      </div>
+    </section>
+
+    <script>/**
+ * Results archive.
+ *
+ * The filter form is a real GET form, so every state is linkable and the page
+ * degrades to the unfiltered grid without JS. This reads the query string back
+ * on load and restores the selects, the count and the applied-filter label —
+ * the parts the static build cannot know.
+ *
+ * //! CONFIRM — filtering itself is not wired here. Until the TRREB feed lands
+ * //! there is nothing to filter against, so this only restores UI state.
+ */
+
+const FIELDS = ["municipality", "tenure", "sort"];
+
+function labelFor(select) {
+  const option = select.options[select.selectedIndex];
+  return option ? option.textContent.trim() : "";
+}
+
+/**
+ * Restores the selects from the query string and writes the applied
+ * label. Returns the count of meaningful filters so the collapsed
+ * toggle can show it — see initFilterToggle.
+ *
+ * Sort is excluded: it changes the order of the result set, not its
+ * membership, so counting it would tell someone two filters are hiding
+ * homes when none are.
+ *
+ * @returns {number} filters in effect, excluding sort
+ */
+function restoreState() {
+  const params = new URLSearchParams(window.location.search);
+  const applied = [];
+
+  FIELDS.forEach((name) => {
+    const select = document.getElementById(name);
+    if (!select) return;
+
+    const value = params.get(name);
+    if (value !== null) select.value = value;
+
+    if (name === "sort") return;
+    if (select.value) applied.push(labelFor(select));
+  });
+
+  const meaningful = applied.filter(Boolean);
+
+  const appliedEl = document.querySelector("[data-applied]");
+  const labelEl = document.querySelector("[data-applied-label]");
+  if (!appliedEl || !labelEl) return meaningful.length;
+
+  if (meaningful.length) {
+    labelEl.textContent = meaningful.join(" \u00B7 ");
+    appliedEl.hidden = false;
+  } else {
+    appliedEl.hidden = true;
+  }
+
+  return meaningful.length;
+}
+
+function syncCount() {
+  const results = document.querySelector("[data-results]");
+  const countEl = document.querySelector("[data-count]");
+  if (!results || !countEl) return;
+
+  const total = results.querySelectorAll(".cs-item").length;
+  countEl.textContent = total === 1 ? "1 closing" : total + " closings";
+
+  const emptyEl = document.querySelector("[data-empty]");
+  const moreEl = document.querySelector("[data-more]");
+
+  if (emptyEl) emptyEl.hidden = total !== 0;
+  if (moreEl) moreEl.hidden = total === 0;
+  results.hidden = total === 0;
+}
+
+/**
+ * Sort is a form field now, so a plain submit carries it and the page
+ * works without a script. This only saves the reach for Apply, which is
+ * the behaviour it had when it lived in the results bar.
+ */
+function initSort() {
+  const sort = document.getElementById("sort");
+  const form = document.getElementById("listings-form");
+  if (!sort || !form) return;
+
+  sort.addEventListener("change", () => {
+    form.submit();
+  });
+}
+
+/**
+ * Collapses the filter form behind a button on phones.
+ *
+ * The collapse itself is CSS — .cs-open on the form, gated on .js in
+ * results.less — so there is no flash of an open form before this
+ * runs, and no-JS gets the form open with no button at all.
+ *
+ * The count is the whole point of the pattern. A collapsed bar reading
+ * only "Filters" lets someone stare at four closings without
+ * registering that a filter is hiding the rest; "Filters (2)" does not.
+ *
+ * @param {number} count - filters in effect, from restoreState
+ */
+function initFilterToggle(count) {
+  const toggle = document.querySelector("[data-filter-toggle]");
+  const form = document.getElementById("listings-form");
+  if (!toggle || !form) return;
+
+  const countEl = toggle.querySelector("[data-filter-count]");
+  if (countEl) {
+    countEl.textContent = count;
+    countEl.hidden = count === 0;
+  }
+
+  // Open on arrival when something is already applied — landing on a
+  // filtered URL behind a closed bar hides the reason for the result.
+  if (count > 0) {
+    form.classList.add("cs-open");
+    toggle.setAttribute("aria-expanded", "true");
+  }
+
+  toggle.addEventListener("click", () => {
+    const open = form.classList.toggle("cs-open");
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+}
+
+window.revealScan?.();
+initFilterToggle(restoreState());
+syncCount();
+initSort();</script>
+
+{% endblock %}
