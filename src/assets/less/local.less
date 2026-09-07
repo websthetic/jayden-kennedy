@@ -237,17 +237,17 @@
    baseline sharing, the reveal indices. Only the ground and the four
    colour declarations that sit on it have moved.
 
-   The ground is Heritage Green. That resolves the CONFIRM that used to
-   sit on this block — it is no longer the page's second warm field,
-   because it is not a warm field. It is now the page's saturated one.
+   The ground is Cashmere Beige. That makes this a warm field rather
+   than a saturated one, so the deck's one-green-band rule is no longer
+   in play here — #process keeps the page's single --paper-field and
+   this section sits a step above --paper without competing with it.
 
-   !! One consequence, and it needs a decision before this ships:
-      #process further down this file is also var(--paper-field). Two
-      saturated green grounds on one page is the thing the deck's
-      one-band rule exists to prevent, and this one arrives first. Either
-      repaint #process to var(--paper-deep), or accept the repeat
-      deliberately and add a third so it reads as rhythm. Left alone, the
-      page has two. */
+   The consequence to watch is the opposite of the one this block used
+   to carry: cashmere is close enough to --paper that the band needs its
+   own separation. The section is bounded by its padding and by the
+   hairlines between the stats, not by a rule at either edge. If the
+   sections either side of it are also light, check the seam at full
+   height before signing off. */
 
 @media only screen and (min-width: 0rem) {
     #record {
@@ -261,7 +261,7 @@
         padding: var(--section-padding);
         padding-block: clamp(2.5rem, 5vw, 4.5rem);
 
-        background-color: var(--paper-field);
+        background-color: var(--paper-warm);
 
         /* Centred, against the grain of the rest of the page. The
            reference is centred and the content earns it: three figures of
@@ -295,20 +295,15 @@
            third, so the section's own bottom padding is never doubled by
            a trailing rule.
 
-           --rule-invert, not --rule: the latter is the cocoa hairline and
-           it is invisible against #20301a. */
+           Back to --rule: the cocoa hairline reads correctly on cashmere.
+           --rule-invert is cashmere at 24% and would be invisible here. */
         .cs-stat:not(:last-child) {
             padding-bottom: clamp(2rem, 6vw, 2.75rem);
-            border-bottom: 1px solid var(--rule-invert);
+            border-bottom: 1px solid var(--rule);
         }
 
-        /* Was --cocoa-500 on cashmere. Cocoa on heritage is 1.5:1 — not a
-           contrast choice, an invisible one. Cashmere on heritage lands
-           near 11:1, which is where a figure this size should be anyway.
-
-           The old comment here sanctioned heritage-as-ink via .cs-color.
-           That no longer applies: heritage is the ground now, so the ink
-           inverts and .cs-color has nothing to do on this section.
+        /* Cocoa on cashmere, which is where this started. The figure is
+           the largest thing in the section and takes full ink.
 
            Not --fs-display: that tops out at 6.75rem, and "TOP 1%" is six
            characters where the reference had two. At 108px the widest
@@ -322,23 +317,27 @@
             /* Explicit: the global uppercase lives on h1-h6, and this is
                a span. */
             text-transform: uppercase;
-            color: var(--ink-invert);
+            color: var(--ink);
         }
 
         /* The unit under the figure — "of brokers", "on Google". Soft, so
            the figure keeps the weight and the claim keeps the sentence.
 
-           --ink-invert-soft, not --ink-soft: cocoa-300 was already the
-           weakest thing on cashmere and it disappears entirely on green.
-           The soft invert is cashmere at 72%, which holds the same
-           relationship to the figure that the old pairing did. */
+           //! CONFIRM — --ink-soft is cocoa-300 on cashmere-500, which is
+           //! about 3.4:1. That passes AA for large text only, and this is
+           //! set at --fs-caption. The honours caption elsewhere in the
+           //! project took full --ink for exactly this reason. Either drop
+           //! this to --ink or accept the shortfall knowingly.
+
+           No markup currently renders .cs-unit — the three stats carry a
+           figure and a claim only — so this is inert until one does. */
         .cs-unit {
             font-family: var(--font-body);
             font-size: var(--fs-caption);
             font-weight: 300;
             line-height: 1.4;
             margin-top: clamp(0.875rem, 2vw, 1.25rem);
-            color: var(--ink-invert-soft);
+            color: var(--ink-soft);
         }
 
         /* The claim. Capped in ch rather than left to the column: the
@@ -346,13 +345,15 @@
            where the column happens to end, which puts the ragged edges in
            different places on each.
 
-           Full-strength invert, not the soft one. The claim is the line
-           that has to survive a phone in daylight — it carries the
-           substance the figure only announces. */
+           Full ink. The claim is the line that has to survive a phone in
+           daylight — it carries the substance the figure only announces.
+
+           text-wrap: balance and max-width together: balance alone would
+           have nothing to act on if the column ran wider than the text. */
         .cs-claim {
             max-width: 26ch;
             margin-top: 0.5rem;
-            color: var(--ink-invert);
+            color: var(--ink);
             text-wrap: balance;
         }
 
@@ -365,12 +366,12 @@
             max-width: none;
             margin-top: clamp(2rem, 5vw, 3rem);
             padding-top: clamp(0.875rem, 2vw, 1.25rem);
-            border-top: 1px solid var(--rule-invert);
+            border-top: 1px solid var(--rule);
             font-family: var(--font-body);
             font-size: var(--fs-caption);
             font-weight: 300;
             line-height: 1.5;
-            color: var(--ink-invert-soft);
+            color: var(--ink-soft);
         }
 
         /* Indices for the sitewide reveal. The mechanism is in root.less;
@@ -428,7 +429,7 @@
            On the item rather than the grid: a pseudo-element on .cs-stats
            cannot know where the column gaps fall once the gap clamps. */
         .cs-stat + .cs-stat {
-            border-left: 1px solid var(--rule-invert);
+            border-left: 1px solid var(--rule);
         }
     }
 }

@@ -7,8 +7,11 @@
 <---         Navigation         -->
 <--- -------------------------- -*/
 
-/* Six top-level items, the last of which opens a group of five.
-   Shared across both variants and both breakpoints.
+/* Seven top-level items, one of which opens a group of four, followed by
+   the phone number. Shared across both variants and both breakpoints.
+
+   The header carries no button. Book a consultation lives in each page's
+   closing block; the standing action here is the number.
 
    Nothing in the header moves on hover: no transform, no height change,
    no shadow. Only colour and opacity change. The flyout is the one
@@ -142,6 +145,32 @@
             }
         }
 
+        /* ── Phone ──
+           Takes .cs-li-link wholesale and only adds the icon gap. The
+           underline is suppressed: it's the current-page signal, and the
+           phone is never a page. The number keeps its own tracking rather
+           than --track-eyebrow, which opens digits too far apart to scan
+           as a single number. */
+        .cs-tel {
+            letter-spacing: 0.04em;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: var(--fs-body-sm);
+
+            &:before {
+                display: none;
+            }
+        }
+
+        .cs-tel-icon {
+            width: 0.875rem;
+            height: 0.875rem;
+            flex: none;
+            /* The handset reads high against lining figures */
+            transform: translateY(0.5px);
+        }
+
         /* ── Group head ──
            The link and its chevron. Two separate targets on purpose:
            the link navigates, the button discloses. */
@@ -204,21 +233,6 @@
                 opacity: 0.72;
             }
         }
-
-        /* ── Action ──
-           Scoped to the header so the global button keeps the deck's
-           LARGE · 14PX everywhere else. Height held at --control-height:
-           the 44px minimum applies at every size, and the small variant
-           gains padding rather than shrinking its box. */
-        .cs-button-outline {
-            font-size: var(--fs-eyebrow);
-            padding-inline: clamp(1rem, 1.8vw, 1.5rem);
-            min-height: var(--control-height);
-        }
-
-        .cs-nav-action {
-            flex: none;
-        }
     }
 }
 
@@ -231,7 +245,10 @@
    unreadable at any opacity, and a beige panel over the hero is worse.
 
    .cs-hidden is absent for the same reason it isn't listed here — the
-   transform is variant-agnostic and lives on #header itself. */
+   transform is variant-agnostic and lives on #header itself.
+
+   The phone icon needs no entry: it strokes with currentColor and inherits
+   from .cs-li-link. */
 
 @media only screen and (min-width: 0rem) {
     #header.cs-transparent:not(.cs-solid):not(.cs-open) {
@@ -242,16 +259,6 @@
         .cs-li-link,
         .cs-group-toggle {
             color: var(--ink-invert);
-        }
-
-        .cs-button-outline {
-            border-color: var(--ink-invert);
-            color: var(--ink-invert);
-
-            &:hover {
-                background-color: var(--cashmere-500);
-                color: var(--cocoa-500);
-            }
         }
 
         .cs-line {
@@ -361,7 +368,9 @@
             bottom: 0;
         }
 
-        /* Full-height beige panel */
+        /* Full-height beige panel. Single child now that the panel action
+           is gone, so the 2rem gap has nothing to act on — kept for the
+           day something returns below the list. */
         .cs-panel {
             width: 100%;
             height: calc(100vh - var(--nav-height));
@@ -417,6 +426,13 @@
             }
         }
 
+        /* Last row in the panel. Set in cocoa rather than ink and given
+           the row's full height so it reads as the action it is, not as
+           a seventh destination. */
+        .cs-tel {
+            color: var(--cocoa-500);
+        }
+
         /* The chevron takes the right end of the row and is a full-height
            target, so a thumb landing anywhere near it opens the group. */
         .cs-group-head {
@@ -456,16 +472,6 @@
             align-items: center;
             color: var(--ink-soft);
         }
-
-        .cs-panel-action {
-            width: 100%;
-        }
-
-        /* Desktop action is hidden here — the panel carries its own.
-           Deliberately not .cs-hide-on-mobile, which flips at 64rem. */
-        .cs-nav-action {
-            display: none;
-        }
     }
 }
 
@@ -479,22 +485,21 @@
     }
 
     #header {
-        .cs-toggle,
-        .cs-panel-action {
+        .cs-toggle {
             display: none;
         }
 
-        /* An auto margin beats space-between for free space, so this alone
-           pushes the links off centre and up against the action. Scoped to
-           desktop: below 900px space-between is what pins the burger right. */
+        /* Two children in the container now, not three. Centring the nav
+           in the leftover space would sit it left of where the eye expects
+           it, so the list runs to the right edge instead and the wordmark
+           holds the left. */
         .cs-nav {
             flex: 1;
             display: flex;
-            justify-content: center;
+            justify-content: flex-end;
         }
 
-        /* 32px - 48px. The container's default var(--gutter) reads tight
-           once the links sit next to a bordered button. */
+        /* 32px - 48px */
         .cs-container {
             gap: clamp(2rem, 4vw, 3rem);
         }
@@ -504,20 +509,28 @@
             align-items: center;
         }
 
-        /* 20px - 30px. Tighter than the three-item version: six labels plus
-           a bordered button run out of bar before 1280px otherwise. */
+        /* 16px - 26px. Tighter again: seven labels plus a formatted phone
+           number is more cells than the six-plus-button version this
+           replaced, and the row runs out of bar before 1180px otherwise. */
         .cs-ul {
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
+            justify-content: flex-end;
             align-items: center;
-            gap: clamp(1.25rem, 2vw, 1.875rem);
+            gap: clamp(1rem, 1.6vw, 1.625rem);
         }
 
         .cs-li {
             list-style: none;
             flex: none;
+        }
+
+        /* A hairline separates the number from the destinations so the row
+           reads as six links and an action rather than seven links. */
+        .cs-li-tel {
+            padding-left: clamp(1rem, 1.6vw, 1.625rem);
+            border-left: 1px solid var(--rule);
         }
 
         /* ── Flyout ──
@@ -540,10 +553,14 @@
             transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease), visibility var(--dur) var(--ease);
         }
 
-        /* About is the last item before the action. Left-anchored, its panel
-           overhangs the button at narrow desktop widths — so the last group
-           opens leftward from the same offset. */
-        .cs-group:last-of-type .cs-sub {
+        /* About sits near the right edge with only the number beyond it, so
+           a left-anchored panel overhangs the bar at narrow desktop widths.
+           Opens leftward from the same offset.
+
+           Was :last-of-type — the phone li is the last li now, so that
+           selector stopped matching and the panel silently overhung. About
+           is the only group on the site, so the class alone is enough. */
+        .cs-group .cs-sub {
             left: auto;
             right: -1.25rem;
         }

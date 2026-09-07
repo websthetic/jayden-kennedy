@@ -1,6 +1,7 @@
 ---
 title: "Listings | Jayden Kennedy"
-description: "Meta description for the page"
+description: "Search every listing across the Greater Toronto Area. Filter by city, price, type and size, and save a
+search to get new matches by email."
 permalink: "/listings/"
 ---
 
@@ -20,10 +21,9 @@ permalink: "/listings/"
 
     <section id="listings-intro">
       <div class="cs-container">
-        <h1 class="cs-title">Everything currently on the market</h1>
+        <h1 class="cs-title">Homes for sale across the Greater Toronto Area</h1>
         <p class="cs-text">
-          The full board, not only my own listings. If a property here is wrong for
-          you, I will tell you why before you book a showing.
+          Filter by city, price, type and size. Save a search and I'll email you when something matches.
         </p>
       </div>
     </section>
@@ -47,6 +47,8 @@ permalink: "/listings/"
         </div>
 
         <div class="cs-panel">
+          <!-- Control names are query string params, not RESO fields. The
+               card below reads from the feed; this reads from the URL. -->
           <form class="cs-form" id="listings-form" method="get" action="/listings/" role="search" aria-label="Filter listings">
             <div class="cs-field cs-field-lg">
               <label class="cs-label" for="region">Region</label>
@@ -178,6 +180,8 @@ permalink: "/listings/"
       </div>
 
       <div class="cs-container">
+        <!-- Bracketed values are TRREB RESO field names, matching the card
+             on Results so one binding covers both. -->
         <ul class="cs-card-group" data-reveal data-results>
           <li class="cs-item cs-reveal" style="--reveal-i: 0">
             <a class="cs-link" href="/listings/listing-one/">
@@ -197,7 +201,7 @@ permalink: "/listings/"
                 <span class="cs-price">[ListPrice]</span>
                 <span class="cs-address">[UnparsedAddress]</span>
                 <span class="cs-meta">
-                  [Beds] bed &middot; [Baths] bath &middot; [LivingArea] sq ft
+                  [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath &middot; [LivingAreaRange] sq ft
                 </span>
               </div>
             </a>
@@ -220,7 +224,7 @@ permalink: "/listings/"
                 <span class="cs-price">[ListPrice]</span>
                 <span class="cs-address">[UnparsedAddress]</span>
                 <span class="cs-meta">
-                  [Beds] bed &middot; [Baths] bath &middot; [LivingArea] sq ft
+                  [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath &middot; [LivingAreaRange] sq ft
                 </span>
               </div>
             </a>
@@ -243,7 +247,7 @@ permalink: "/listings/"
                 <span class="cs-price">[ListPrice]</span>
                 <span class="cs-address">[UnparsedAddress]</span>
                 <span class="cs-meta">
-                  [Beds] bed &middot; [Baths] bath &middot; [LivingArea] sq ft
+                  [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath &middot; [LivingAreaRange] sq ft
                 </span>
               </div>
             </a>
@@ -266,7 +270,7 @@ permalink: "/listings/"
                 <span class="cs-price">[ListPrice]</span>
                 <span class="cs-address">[UnparsedAddress]</span>
                 <span class="cs-meta">
-                  [Beds] bed &middot; [Baths] bath &middot; [LivingArea] sq ft
+                  [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath &middot; [LivingAreaRange] sq ft
                 </span>
               </div>
             </a>
@@ -289,7 +293,7 @@ permalink: "/listings/"
                 <span class="cs-price">[ListPrice]</span>
                 <span class="cs-address">[UnparsedAddress]</span>
                 <span class="cs-meta">
-                  [Beds] bed &middot; [Baths] bath &middot; [LivingArea] sq ft
+                  [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath &middot; [LivingAreaRange] sq ft
                 </span>
               </div>
             </a>
@@ -312,7 +316,7 @@ permalink: "/listings/"
                 <span class="cs-price">[ListPrice]</span>
                 <span class="cs-address">[UnparsedAddress]</span>
                 <span class="cs-meta">
-                  [Beds] bed &middot; [Baths] bath &middot; [LivingArea] sq ft
+                  [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath &middot; [LivingAreaRange] sq ft
                 </span>
               </div>
             </a>

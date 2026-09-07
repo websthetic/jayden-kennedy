@@ -215,198 +215,12 @@
 }
 
 /*-- -------------------------- -->
-<---      Before real estate    -->
-<--- -------------------------- -*/
-
-/* The page's one warm ground. Green appears only as the rules on the table.
-
-   Header above a full-width table — centred and stacked on mobile, then
-   splitting into title-left / text-right at 64rem. Every rule for this
-   section lives in the three blocks below — the section previously
-   carried a second set of breakpoint rules further down the file that
-   reverted the container to a row and the rows to flex, which is what
-   produced the sticky left rail. Keep the section's rules together so
-   that cannot happen again. */
-
-@media only screen and (min-width: 0rem) {
-    #about-honours {
-        padding: var(--section-padding);
-        background-color: var(--paper-warm);
-
-        .cs-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: clamp(2.5rem, 5vw, 4rem);
-        }
-
-        .cs-content,
-        .cs-table-wrap {
-            width: 100%;
-        }
-
-        .cs-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-        }
-
-        .cs-title {
-            font-size: var(--fs-h2);
-            max-width: 18ch;
-        }
-
-        .cs-text {
-            max-width: 52ch;
-        }
-
-        .cs-table {
-            width: 100%;
-        }
-
-        /* Mobile stacks the three fields; the grid arrives at 48rem. */
-        .cs-row {
-            padding: 1.125rem 0;
-            border-bottom: 1px solid var(--rule);
-            display: flex;
-            flex-direction: column;
-            gap: 0.4375rem;
-        }
-
-        /* A held item keeps full contrast and is marked, not dimmed —
-           dimming would read as less important rather than unconfirmed. */
-        .cs-row-held {
-            border-bottom: 1px dashed var(--heritage-500);
-        }
-
-        .cs-honour {
-            font-family: var(--font-display);
-            font-size: var(--fs-h3);
-            font-weight: 500;
-            line-height: var(--lh-title);
-            letter-spacing: var(--track-title);
-            text-transform: uppercase;
-        }
-
-        .cs-year,
-        .cs-body-name {
-            font-size: var(--fs-body);
-            line-height: 1.5;
-            color: var(--ink-soft);
-        }
-
-        .cs-tag {
-            display: inline-block;
-            padding: 0.3125rem 0.625rem;
-            font-family: var(--font-body);
-            font-size: var(--fs-eyebrow);
-            font-weight: 500;
-            line-height: 1.2;
-            letter-spacing: var(--track-eyebrow);
-            text-transform: uppercase;
-            color: var(--heritage-500);
-            border: 1px solid var(--heritage-500);
-        }
-
-        /* --ink-soft fails AA on beige, so the caption takes full ink here */
-        .cs-caption {
-            max-width: 62ch;
-            margin-top: 2rem;
-            margin-inline: auto;
-            text-align: center;
-            color: var(--ink);
-        }
-    }
-}
-
-/*-- -------------------------- -->
-<---     Before — tablet up     -->
-<--- -------------------------- -*/
-
-/* Three columns separated by gap alone. Only the row rules are drawn, so
-   the table reads as a list of entries rather than a grid of cells — the
-   columns are held by alignment, which at this width is enough.
-
-   Track widths are deliberate: the honour takes most of the row so the
-   body name starts near it rather than out in the middle of the field,
-   and the year takes just enough to hold the right edge. */
-
-@media only screen and (min-width: 48rem) {
-    #about-honours {
-        /* Height lives on the row now that no cell carries a border for
-           text to clear. */
-        .cs-row {
-            display: grid;
-            grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 0.3fr);
-            align-items: baseline;
-            column-gap: clamp(1.5rem, 4vw, 3rem);
-            padding-block: 1.75rem;
-        }
-
-        .cs-honour,
-        .cs-body-name,
-        .cs-year {
-            padding: 0;
-        }
-
-        /* The 1fr track is wide enough to hold the longest body name on one
-           line, so text-wrap: balance has nothing to act on — capping the
-           measure is what forces the break. */
-        .cs-body-name {
-            max-width: 24ch;
-            text-align: left;
-        }
-
-        .cs-year {
-            text-align: right;
-        }
-    }
-}
-
-/*-- -------------------------- -->
-<---      Before — desktop      -->
-<--- -------------------------- -*/
-
-/* The header splits: title holds the left, supporting text the right.
-   Baseline alignment rather than start — the two blocks are set at
-   different sizes, and aligning their boxes would leave the first lines
-   sitting on different lines. Baseline puts them on the same one. */
-
-@media only screen and (min-width: 64rem) {
-    #about-honours {
-        .cs-content {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-            align-items: baseline;
-            column-gap: clamp(2.5rem, 6vw, 5rem);
-            text-align: left;
-        }
-
-        /* The mobile caps are released — the tracks are the measure now,
-           and an 18ch title inside a half-page column would wrap far
-           harder than it needs to. */
-        .cs-title {
-            max-width: none;
-            margin-bottom: 0;
-        }
-
-        .cs-text {
-            max-width: none;
-            margin-bottom: 0;
-        }
-
-        .cs-row {
-            padding-block: 2rem;
-        }
-    }
-}
-
-
-
-/*-- -------------------------- -->
 <---           Results          -->
 <--- -------------------------- -*/
+
+/* Commented out in about.html pending confirmed figures. Kept here so
+   the section renders correctly the moment the flag flips — not dead
+   code, deferred code. */
 
 @media only screen and (min-width: 0rem) {
     #about-results {
@@ -478,73 +292,6 @@
         .cs-figures {
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: clamp(1.5rem, 3vw, 2.5rem);
-        }
-    }
-}
-
-/*-- -------------------------- -->
-<---          Speaking          -->
-<--- -------------------------- -*/
-
-/* Cocoa, not green. .cs-on-dark in root.less inverts the type and the
-   outline button, so nothing here declares a colour it already owns. */
-
-@media only screen and (min-width: 0rem) {
-    #about-speaking {
-        padding: var(--section-padding);
-        background-color: var(--paper-deep);
-
-        .cs-container {
-            display: flex;
-            flex-direction: column;
-            gap: clamp(1.5rem, 3vw, 2.5rem);
-        }
-
-        .cs-title {
-            margin-bottom: 0;
-        }
-
-        .cs-content {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 1.125rem;
-        }
-
-        .cs-lede,
-        .cs-text {
-            max-width: 52ch;
-        }
-
-        .cs-text {
-            color: var(--ink-invert-soft);
-        }
-
-        .cs-button-outline {
-            margin-top: 0.5rem;
-        }
-    }
-}
-
-/*-- -------------------------- -->
-<---     Speaking — desktop     -->
-<--- -------------------------- -*/
-
-@media only screen and (min-width: 64rem) {
-    #about-speaking {
-        .cs-container {
-            flex-direction: row;
-            align-items: flex-start;
-            gap: clamp(3rem, 7vw, 5.5rem);
-        }
-
-        .cs-title {
-            flex: 0 0 20rem;
-        }
-
-        .cs-content {
-            flex: 1 1 auto;
-            min-width: 0;
         }
     }
 }
@@ -681,31 +428,22 @@
 
    The portrait leads the copy here rather than trailing it. On the
    homepage the image is the ground the copy resolves onto; on about it
-   is the subject, and the prose reads as caption to it. */
+   is the subject, and the prose reads as caption to it.
+
+   These previously named .cs-masthead and .cs-content, neither of which
+   exists in this section — only the picture was getting an index and
+   the other two fell through to the default. */
 
 #about-intro {
-    .cs-masthead {
-        --reveal-i: 0;
-    }
-
     .cs-picture {
-        --reveal-i: 1;
-    }
-
-    .cs-content {
-        --reveal-i: 2;
-    }
-}
-
-#about-honours {
-    .cs-content {
         --reveal-i: 0;
     }
 
-    /* The table is one item, not seven rows. Staggering the rows would
-       put ~900ms between the first honour and the last and turn a
-       reference block into a performance. */
-    .cs-table-wrap {
+    .cs-prose {
         --reveal-i: 1;
+    }
+
+    .cs-rail {
+        --reveal-i: 2;
     }
 }
