@@ -10,8 +10,10 @@
 /* Seven top-level items, one of which opens a group of four, followed by
    the phone number. Shared across both variants and both breakpoints.
 
-   The header carries no button. Book a consultation lives in each page's
-   closing block; the standing action here is the number.
+   The standing action in the header is the number — an icon beside the
+   burger under 900px, a full formatted row from 900px up. Exactly one of
+   the two renders at any width. Book a consultation is a mobile-panel
+   control only; on desktop the page's closing block carries it.
 
    Nothing in the header moves on hover: no transform, no height change,
    no shadow. Only colour and opacity change. The flyout is the one
@@ -145,7 +147,7 @@
             }
         }
 
-        /* ── Phone ──
+        /* ── Phone, panel row ──
            Takes .cs-li-link wholesale and only adds the icon gap. The
            underline is suppressed: it's the current-page signal, and the
            phone is never a page. The number keeps its own tracking rather
@@ -163,12 +165,43 @@
             }
         }
 
+        /* ── Phone, bar level ──
+           A second element rather than a repositioned .cs-li-tel: that one
+           lives inside .cs-panel, which is fixed below the bar and hidden
+           until open, so it can never sit beside the burger.
+
+           18px glyph in a 44px box — the target holds the deck's minimum
+           at every size even though the icon is small. No negative margin:
+           the burger is the edge element and keeps that job. */
+        .cs-tel-bar {
+            width: var(--control-height);
+            height: var(--control-height);
+            color: var(--ink);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: none;
+            transition: color var(--dur) var(--ease), opacity var(--dur) var(--ease);
+
+            &:hover {
+                opacity: 0.72;
+            }
+        }
+
         .cs-tel-icon {
             width: 0.875rem;
             height: 0.875rem;
             flex: none;
             /* The handset reads high against lining figures */
             transform: translateY(0.5px);
+        }
+
+        /* No lining figures to sit against on the bar, so the optical
+           nudge comes off and the glyph runs larger. */
+        .cs-tel-bar .cs-tel-icon {
+            width: 1.125rem;
+            height: 1.125rem;
+            transform: none;
         }
 
         /* ── Group head ──
@@ -244,11 +277,16 @@
    and cocoa type in both variants. Cashmere type on a photograph is
    unreadable at any opacity, and a beige panel over the hero is worse.
 
+   .cs-panel-action is absent for a different reason: the panel only ever
+   renders with .cs-open on the header, and the selector below excludes
+   that state. The button is never seen against the photograph.
+
    .cs-hidden is absent for the same reason it isn't listed here — the
    transform is variant-agnostic and lives on #header itself.
 
-   The phone icon needs no entry: it strokes with currentColor and inherits
-   from .cs-li-link. */
+   .cs-tel-bar needs its own entry: it does not carry .cs-li-link, so
+   without it the icon stays cocoa over the photograph and disappears.
+   The icon inside strokes with currentColor and follows for free. */
 
 @media only screen and (min-width: 0rem) {
     #header.cs-transparent:not(.cs-solid):not(.cs-open) {
@@ -257,7 +295,8 @@
 
         .cs-logo,
         .cs-li-link,
-        .cs-group-toggle {
+        .cs-group-toggle,
+        .cs-tel-bar {
             color: var(--ink-invert);
         }
 
@@ -326,6 +365,15 @@
             }
         }
 
+        /* The bar's two controls sit as a pair, phone then burger. .cs-nav
+           is also the panel's parent, but the panel is fixed and out of
+           flow, so it takes no space in this row. */
+        .cs-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
         .cs-toggle {
             width: var(--control-height);
             height: var(--control-height);
@@ -368,9 +416,8 @@
             bottom: 0;
         }
 
-        /* Full-height beige panel. Single child now that the panel action
-           is gone, so the 2rem gap has nothing to act on — kept for the
-           day something returns below the list. */
+        /* Full-height beige panel. Two children — the list and the action —
+           separated by the 2rem gap. */
         .cs-panel {
             width: 100%;
             height: calc(100vh - var(--nav-height));
@@ -426,11 +473,33 @@
             }
         }
 
-        /* Last row in the panel. Set in cocoa rather than ink and given
-           the row's full height so it reads as the action it is, not as
-           a seventh destination. */
-        .cs-tel {
-            color: var(--cocoa-500);
+        /* The number is on the bar at this width, so the panel row would be
+           the same action twice — and the panel's last row is where the eye
+           stops, which is the wrong place for a duplicate.
+
+           Note this leaves About as the last rendered .cs-li while the
+           phone li is still the last-of-type, so the :last-of-type rule
+           above strips the border from a hidden row and About keeps a
+           bottom rule it did not have before. See the sibling rule. */
+        .cs-li-tel {
+            display: none;
+        }
+
+        /* Restores the closing edge: the last visible row carries no rule. */
+        .cs-li:nth-last-child(2) {
+            border-bottom: none;
+        }
+
+        /* Full width at the foot of the panel, below the 2rem gap. Filled
+           rather than outline: it is the only box in the panel and has
+           nothing to distinguish itself from except the hairline rows
+           above it.
+
+           flex: none because .cs-panel is a column — without it the button
+           would stretch to fill the leftover height on a tall phone. */
+        .cs-panel-action {
+            width: 100%;
+            flex: none;
         }
 
         /* The chevron takes the right end of the row and is a full-height
@@ -485,7 +554,12 @@
     }
 
     #header {
-        .cs-toggle {
+        /* All three are mobile controls — from here up the panel row
+           carries the number and the page's closing block carries the
+           booking ask. */
+        .cs-toggle,
+        .cs-tel-bar,
+        .cs-panel-action {
             display: none;
         }
 
