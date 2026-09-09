@@ -60,6 +60,21 @@
 
     /* ---------------------------------------------
        Expand and collapse
+
+       CSS owns the open and closed states now. This
+       used to set rest.hidden, which is display:
+       none — nothing transitions out of display
+       none, so the card snapped. The height, the
+       fade and the visibility flip are all handled
+       by .cs-open in reviews.less; all this does is
+       toggle the class and keep aria-expanded
+       honest.
+
+       Nothing here needs to know the duration. The
+       old approach of hiding the panel on a timer
+       meant the JS and the CSS both carried the
+       same number and drifted apart the first time
+       either changed.
     --------------------------------------------- */
 
     var buttons = grid.querySelectorAll(".cs-more");
@@ -71,8 +86,23 @@
             if (!card || !rest) return;
 
             var open = card.classList.toggle("cs-open");
-            rest.hidden = !open;
             this.setAttribute("aria-expanded", String(open));
+
+            /* Collapsing a long card pulls the page up under the reader
+               — the eight-paragraph review is taller than most screens,
+               so the button they just pressed can end up well above the
+               fold. If that happens, put the card back in view. */
+            if (!open) {
+                var top = card.getBoundingClientRect().top;
+                if (top < 0) {
+                    card.scrollIntoView({
+                        block: "start",
+                        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+                            ? "auto"
+                            : "smooth",
+                    });
+                }
+            }
         });
     }
 

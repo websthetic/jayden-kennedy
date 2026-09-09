@@ -73,7 +73,8 @@ now isn't the right time to sell, I'll tell you.
                 novalidate
             >
                 <!-- Tagged at the source so Follow Up Boss can route
-                     without inferring from the payload. -->
+                     without inferring from the payload. The function
+                     reads this as the lead source. -->
                 <input type="hidden" name="source" value="home-valuation">
 
                 <ol class="cs-stepper" aria-hidden="true">
@@ -111,8 +112,19 @@ now isn't the right time to sell, I'll tell you.
                     <p class="cs-topper" aria-hidden="true">Step two</p>
                     <h3 class="cs-step-title">Almost there. One step away.</h3>
 
-                    <!-- Honeypot. Off-screen rather than display:none —
-                         some bots skip hidden fields, most fill this. -->
+                    <!--! The honeypot. Was off-screen (position: absolute,
+                          1px, clip-path) on the theory that bots skip
+                          fields they cannot render. It was showing on the
+                          built page between Property address and Full
+                          name, so it is now display: none — see .cs-trap
+                          in home-value.less.
+
+                          The trade is real but small: display: none is
+                          the most common honeypot technique precisely
+                          because most form bots parse the DOM and fill
+                          every input regardless of how it is painted. The
+                          server-side check in the function is unchanged
+                          and remains the actual defence. -->
                     <div class="cs-trap" aria-hidden="true">
                         <label for="val-company">Company</label>
                         <input type="text" id="val-company" name="company" tabindex="-1" autocomplete="off">
@@ -175,14 +187,44 @@ now isn't the right time to sell, I'll tell you.
                 </fieldset>
 
                 <!-- Step three ---------------------------------- -->
+
+                <!--! Confirmation, then the handoff to the brokerage's own
+                      IDX search defaulted to Oshawa. The href is a real
+                      link rather than a scripted redirect for two
+                      reasons: a popup blocker can stop window.open but
+                      cannot stop a link, and a link can be middle-clicked,
+                      copied and opened later.
+
+                      The script tries to open the tab as well, but only
+                      because it was asked for. If the browser blocks it,
+                      the link below is the whole feature and nothing is
+                      lost.
+
+                      The URL is also returned by the function as
+                      searchUrl, so the destination can be changed in one
+                      place server-side without a rebuild. The href here
+                      is the fallback for when the response does not carry
+                      one. -->
                 <fieldset class="cs-step" data-step="3" hidden>
                     <legend class="cs-sr-only">Step three, confirmation</legend>
                     <p class="cs-topper" aria-hidden="true">Step three</p>
                     <h3 class="cs-step-title">Sent.</h3>
 
                     <p class="cs-text">
-                        If anything about the property is unusual, tell me now and I&rsquo;ll factor it in.
+                        I read the comparables by hand, so this takes a day rather than a second. If anything about the property is unusual, tell me now and I&rsquo;ll factor it in.
                     </p>
+
+                    <p class="cs-text cs-step-handoff">
+                        While you wait, here is everything currently on the market near you.
+                    </p>
+
+                    <a
+                        class="cs-button-script"
+                        data-search-link
+                        href="https://kw-energy.yourkwoffice.com/search/ON/Oshawa?searchedText=Oshawa%2C%20ON"
+                        target="_blank"
+                        rel="noopener"
+                    >Browse homes in Oshawa</a>
                 </fieldset>
 
                 <p class="cs-hint cs-form-error" data-form-error hidden></p>
@@ -200,6 +242,7 @@ now isn't the right time to sell, I'll tell you.
     const dots = Array.from(form.querySelectorAll('[data-step-dot]'));
     const lines = Array.from(form.querySelectorAll('[data-step-line]'));
     const formError = form.querySelector('[data-form-error]');
+    const searchLink = form.querySelector('[data-search-link]');
     let current = 1;
 
     // Step one prefills from the homepage address field. Query param
@@ -358,22 +401,69 @@ now isn't the right time to sell, I'll tell you.
         e.preventDefault();
         formError.hidden = true;
 
+        // The search tab is opened HERE, inside the click that triggered
+        // the submit, not in the .then() below. A window.open that runs
+        // after an await has lost the user gesture and every browser
+        // blocks it. Opening blank now and pointing it at the search on
+        // success is the only reliable order.
+        //
+        // If the browser blocks it anyway, tab is null and the link in
+        // step three carries the handoff instead. Nothing depends on
+        // this succeeding.
+        let tab = null;
+        try {
+            tab = window.open('', '_blank', 'noopener');
+        } catch (err) {
+            tab = null;
+        }
+
         const submit = form.querySelector('button[type="submit"]');
         if (submit) submit.disabled = true;
 
+        // JSON rather than FormData: the function reads request.json(),
+        // and multipart parsing in a serverless handler is a dependency
+        // for no benefit.
+        const data = Object.fromEntries(new FormData(form).entries());
+
         fetch(form.action, {
             method: 'POST',
-            headers: { Accept: 'application/json' },
-            body: new FormData(form),
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
         })
             .then(function (res) {
                 if (!res.ok) throw new Error(res.status);
+                return res.json().catch(function () { return {}; });
+            })
+            .then(function (payload) {
                 try {
                     sessionStorage.removeItem('jk:address');
                 } catch (err) {}
+
+                // The function returns the destination so it can be
+                // changed server-side. Fall back to the href already in
+                // the markup.
+                const url = payload.searchUrl || (searchLink && searchLink.href);
+                if (url && searchLink) searchLink.href = url;
+
                 show(3, true);
+
+                if (tab && url) {
+                    tab.location = url;
+                } else if (tab) {
+                    tab.close();
+                }
             })
             .catch(function () {
+                // Close the tab that was opened optimistically. Leaving a
+                // blank tab behind after a failed submit is worse than
+                // not opening one.
+                if (tab) {
+                    try { tab.close(); } catch (err) {}
+                }
+
                 formError.textContent = 'That did not send. Try again, or email jayden@soldbykennedy.ca.';
                 formError.hidden = false;
                 if (submit) submit.disabled = false;

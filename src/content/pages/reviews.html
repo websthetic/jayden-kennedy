@@ -38,6 +38,22 @@ permalink: "/reviews/"
      paragraph on purpose — line-clamp moves its cut point with the
      viewport and lands mid-sentence.
 
+     //! CONFIRM — each reviewer name links out to that review at the
+     //! source. The hrefs are placeholders: REPLACE-WITH-REVIEW-URL-1
+     //! through -5, one per card, in card order. Grep for
+     //! REPLACE-WITH-REVIEW-URL before launch — they are deliberately
+     //! not valid URLs so a missed one fails loudly rather than
+     //! resolving to the wrong page. The name is the link text and the
+     //! date is not, so the anchor reads as attribution rather than as
+     //! a control.
+
+     Each .cs-rest is a grid row animated from 0fr to 1fr, which is why
+     it now wraps its paragraphs in .cs-rest__inner — the technique needs
+     one child to own the overflow. The hidden attribute has been dropped
+     with it: hidden is display: none, and nothing transitions out of
+     display: none. CSS holds the collapsed state and reviews.js only
+     toggles .cs-open. See the comment block in reviews.less.
+
      Dates: each <time> holds an absolute date and prints the month as
      its fallback. reviews.js rewrites it to Google's relative phrasing
      on load, so the page ages itself and nothing goes stale.
@@ -57,14 +73,16 @@ permalink: "/reviews/"
             <li class="cs-item cs-reveal">
                 <p class="cs-quote">We couldn't have asked for a better realtor. We've bought and sold homes with several different realtors over the last 3 years, and she was by far the best we've ever worked with — truly a 12/10 experience from start to finish.</p>
 
-                <div class="cs-rest" id="rest-1" hidden>
-                    <p>She was knowledgeable, responsive, honest, and always made us feel like a priority throughout the entire process. No question ever went unanswered, and she went above and beyond to work around our schedule and hectic moving situation to make buying our home as smooth and stress-free as possible.</p>
-                    <p>Her attention to detail, professionalism, and genuine care for her clients really set her apart. We are so grateful for all of her hard work and would recommend her to absolutely anyone looking to buy or sell a home.</p>
+                <div class="cs-rest" id="rest-1">
+                    <div class="cs-rest__inner">
+                        <p>She was knowledgeable, responsive, honest, and always made us feel like a priority throughout the entire process. No question ever went unanswered, and she went above and beyond to work around our schedule and hectic moving situation to make buying our home as smooth and stress-free as possible.</p>
+                        <p>Her attention to detail, professionalism, and genuine care for her clients really set her apart. We are so grateful for all of her hard work and would recommend her to absolutely anyone looking to buy or sell a home.</p>
+                    </div>
                 </div>
 
                 <span class="cs-stars" role="img" aria-label="Rated 5 out of 5">★★★★★</span>
 
-                <span class="cs-topper cs-attribution">Vesta Mourato · <time datetime="2026-06-15" data-relative>June 2026</time></span>
+                <span class="cs-topper cs-attribution"><a class="cs-review-link" href="https://maps.app.goo.gl/mEBHs3D5ehpkS5ZQ7" target="_blank" rel="noopener" aria-label="Read Vesta Mourato’s review on Google">Vesta Mourato</a> · <time datetime="2026-06-15" data-relative>June 2026</time></span>
 
                 <button class="cs-more" type="button" aria-expanded="false" aria-controls="rest-1">
                     <span class="cs-label-more">Read more</span><span class="cs-label-less">Read less</span>
@@ -74,15 +92,17 @@ permalink: "/reviews/"
             <li class="cs-item cs-reveal">
                 <p class="cs-quote">I can't even begin to put into words how grateful we are for Jayden. From the moment we found out we were moving, the stress hit hard. We had a small window to sell, buy, and move across provinces. The minute Jayden stepped in, an enormous weight lifted off our shoulders.</p>
 
-                <div class="cs-rest" id="rest-2" hidden>
-                    <p>She is an absolute dynamo in her business. Jayden gave us a short (and honestly, crazy!) timeline to get our home ready, and she did everything to support us through it. She helped coordinate touch-ups, cleaning, staging all the little things that make a huge difference. She had our home looking absolutely beautiful.</p>
-                    <p>Within two weeks she had our house listed, hosted an open house, and it sold within a week. Her communication, negotiation skills, professionalism, and genuine kindness are top-notch. She never once made us feel like just another client; she truly cared about our family and our outcome.</p>
-                    <p>We are so incredibly grateful for her, her generosity, and the time she poured into us. If you are looking for a realtor who knows her stuff, goes above and beyond, and genuinely cares while getting the job DONE — she is the one for your family.</p>
+                <div class="cs-rest" id="rest-2">
+                    <div class="cs-rest__inner">
+                        <p>She is an absolute dynamo in her business. Jayden gave us a short (and honestly, crazy!) timeline to get our home ready, and she did everything to support us through it. She helped coordinate touch-ups, cleaning, staging all the little things that make a huge difference. She had our home looking absolutely beautiful.</p>
+                        <p>Within two weeks she had our house listed, hosted an open house, and it sold within a week. Her communication, negotiation skills, professionalism, and genuine kindness are top-notch. She never once made us feel like just another client; she truly cared about our family and our outcome.</p>
+                        <p>We are so incredibly grateful for her, her generosity, and the time she poured into us. If you are looking for a realtor who knows her stuff, goes above and beyond, and genuinely cares while getting the job DONE — she is the one for your family.</p>
+                    </div>
                 </div>
 
                 <span class="cs-stars" role="img" aria-label="Rated 5 out of 5">★★★★★</span>
 
-                <span class="cs-topper cs-attribution">Hailey Kinnear · <time datetime="2025-12-15" data-relative>December 2025</time></span>
+                <span class="cs-topper cs-attribution"><a class="cs-review-link" href="https://maps.app.goo.gl/8bQ4RKi4YtoY1BMB8" target="_blank" rel="noopener" aria-label="Read Hailey Kinnear’s review on Google">Hailey Kinnear</a> · <time datetime="2025-12-15" data-relative>December 2025</time></span>
 
                 <button class="cs-more" type="button" aria-expanded="false" aria-controls="rest-2">
                     <span class="cs-label-more">Read more</span><span class="cs-label-less">Read less</span>
@@ -96,20 +116,22 @@ permalink: "/reviews/"
             <li class="cs-item cs-item-feature cs-on-dark cs-reveal">
                 <p class="cs-quote">As first-time homebuyers, we honestly believed purchasing a home was a distant dream, until we worked with Jayden.</p>
 
-                <div class="cs-rest" id="rest-3" hidden>
-                    <p>We first came across Jayden through Instagram, but our real introduction to her professionalism happened two years ago when we attended an in-person workshop she organized. That session was incredibly informative and gave us a clear, realistic understanding of the entire homebuying process. More importantly, Jayden helped us realize that we weren't ready yet and instead of pushing us to buy, she encouraged us to take the time to prepare properly. That level of honesty and integrity left a lasting impression, and when we eventually found ourselves considering a purchase, there was no question about who we wanted to work with.</p>
-                    <p>When we started casually attending showings, our needs were far from fixed. What began as an interest in a condo evolved into a townhouse, and eventually a detached home. Throughout these shifts Jayden remained patient, adaptable, and incredibly thoughtful. She asked the right questions, helped us make sense of what truly mattered, and guided us through each change without pressure or frustration.</p>
-                    <p>Her responsiveness is unmatched. Calls were answered immediately, messages were replied to almost instantly, and she always made time for us. She showed up every single time with a positive attitude, prepared, informed, and ready to advocate for us.</p>
-                    <p>During showings, she asked seller agents the right questions, flagged things we wouldn't have noticed, and was always transparent about what worked in our favour and what didn't. When it came time to make an offer, she guided us on the right conditions to protect us, and her strategy worked exactly as intended.</p>
-                    <p>One moment that really stood out was when Jayden was on vacation when we decided to submit an offer on the home. Despite the tight timeline, she went out of her way to ensure our offer was submitted properly and on time, without us ever feeling stressed or unsupported.</p>
-                    <p>Throughout the entire process, Jayden was honest, never sales-driven, and always acted in our best interest. She made us feel confident, informed, educated, and fully supported, which is invaluable, especially as first-time buyers.</p>
-                    <p>Jayden is incredibly knowledgeable, thoughtful, and truly made for this profession. We would recommend her without hesitation to anyone, especially first-time homebuyers. She doesn't just do her job, she excels at it.</p>
-                    <p>What started as casual browsing turned into purchasing our first home, something we didn't think was possible at this stage. We are incredibly grateful to Jayden for guiding us through that journey with patience, expertise, and genuine care. Jayden, you're a GEM.</p>
+                <div class="cs-rest" id="rest-3">
+                    <div class="cs-rest__inner">
+                        <p>We first came across Jayden through Instagram, but our real introduction to her professionalism happened two years ago when we attended an in-person workshop she organized. That session was incredibly informative and gave us a clear, realistic understanding of the entire homebuying process. More importantly, Jayden helped us realize that we weren't ready yet and instead of pushing us to buy, she encouraged us to take the time to prepare properly. That level of honesty and integrity left a lasting impression, and when we eventually found ourselves considering a purchase, there was no question about who we wanted to work with.</p>
+                        <p>When we started casually attending showings, our needs were far from fixed. What began as an interest in a condo evolved into a townhouse, and eventually a detached home. Throughout these shifts Jayden remained patient, adaptable, and incredibly thoughtful. She asked the right questions, helped us make sense of what truly mattered, and guided us through each change without pressure or frustration.</p>
+                        <p>Her responsiveness is unmatched. Calls were answered immediately, messages were replied to almost instantly, and she always made time for us. She showed up every single time with a positive attitude, prepared, informed, and ready to advocate for us.</p>
+                        <p>During showings, she asked seller agents the right questions, flagged things we wouldn't have noticed, and was always transparent about what worked in our favour and what didn't. When it came time to make an offer, she guided us on the right conditions to protect us, and her strategy worked exactly as intended.</p>
+                        <p>One moment that really stood out was when Jayden was on vacation when we decided to submit an offer on the home. Despite the tight timeline, she went out of her way to ensure our offer was submitted properly and on time, without us ever feeling stressed or unsupported.</p>
+                        <p>Throughout the entire process, Jayden was honest, never sales-driven, and always acted in our best interest. She made us feel confident, informed, educated, and fully supported, which is invaluable, especially as first-time buyers.</p>
+                        <p>Jayden is incredibly knowledgeable, thoughtful, and truly made for this profession. We would recommend her without hesitation to anyone, especially first-time homebuyers. She doesn't just do her job, she excels at it.</p>
+                        <p>What started as casual browsing turned into purchasing our first home, something we didn't think was possible at this stage. We are incredibly grateful to Jayden for guiding us through that journey with patience, expertise, and genuine care. Jayden, you're a GEM.</p>
+                    </div>
                 </div>
 
                 <span class="cs-stars" role="img" aria-label="Rated 5 out of 5">★★★★★</span>
 
-                <span class="cs-topper cs-attribution">Rosh · <time datetime="2026-02-15" data-relative>February 2026</time></span>
+                <span class="cs-topper cs-attribution"><a class="cs-review-link" href="https://maps.app.goo.gl/F5iKKrZFTB2NAm9k9" target="_blank" rel="noopener" aria-label="Read Rosh’s review on Google">Rosh</a> · <time datetime="2026-02-15" data-relative>February 2026</time></span>
 
                 <button class="cs-more" type="button" aria-expanded="false" aria-controls="rest-3">
                     <span class="cs-label-more">Read more</span><span class="cs-label-less">Read less</span>
@@ -122,14 +144,16 @@ permalink: "/reviews/"
             <li class="cs-item cs-reveal">
                 <p class="cs-quote">As a mortgage broker, I've been working alongside Jayden as one of her trusted partners for nearly 3 years. However, recently Jayden was able to guide my fiancée and I to purchasing our family home.</p>
 
-                <div class="cs-rest" id="rest-4" hidden>
-                    <p>Being able to witness and experience first-hand the extra care and attention to detail that Jayden showcases to her client was very reassuring. Jayden did an exceptional job of keeping us composed during the height of negotiations with the seller and took every extra step possible to ensure that we were well-educated on value propositions within an offer, under-the-radar details to keep in mind during negotiation as well as an in-depth run-through of all key components within every piece fo documentation.</p>
-                    <p>Lastly, it's no coincidence that both my 3 year old son AND father, both seemed to truly bond with Jayden during our house-hunting process, which speaks to Jayden's exceptional interpersonal skills, as they're both not people that are easy to please. This level of professionalism, reliability and overall care is exactly why Jayden will continue to not only be one of my most trusted business partners, but also the realtor my family and I rely on for our next purchases as well. Thank you Jayden! My entire family appreciates you!</p>
+                <div class="cs-rest" id="rest-4">
+                    <div class="cs-rest__inner">
+                        <p>Being able to witness and experience first-hand the extra care and attention to detail that Jayden showcases to her client was very reassuring. Jayden did an exceptional job of keeping us composed during the height of negotiations with the seller and took every extra step possible to ensure that we were well-educated on value propositions within an offer, under-the-radar details to keep in mind during negotiation as well as an in-depth run-through of all key components within every piece fo documentation.</p>
+                        <p>Lastly, it's no coincidence that both my 3 year old son AND father, both seemed to truly bond with Jayden during our house-hunting process, which speaks to Jayden's exceptional interpersonal skills, as they're both not people that are easy to please. This level of professionalism, reliability and overall care is exactly why Jayden will continue to not only be one of my most trusted business partners, but also the realtor my family and I rely on for our next purchases as well. Thank you Jayden! My entire family appreciates you!</p>
+                    </div>
                 </div>
 
                 <span class="cs-stars" role="img" aria-label="Rated 5 out of 5">★★★★★</span>
 
-                <span class="cs-topper cs-attribution">Royston Simon · <time datetime="2025-09-15" data-relative>September 2025</time></span>
+                <span class="cs-topper cs-attribution"><a class="cs-review-link" href="https://maps.app.goo.gl/2WBUU1DoFrdjS6EVA" target="_blank" rel="noopener" aria-label="Read Royston Simon’s review on Google">Royston Simon</a> · <time datetime="2025-09-15" data-relative>September 2025</time></span>
 
                 <button class="cs-more" type="button" aria-expanded="false" aria-controls="rest-4">
                     <span class="cs-label-more">Read more</span><span class="cs-label-less">Read less</span>
@@ -139,15 +163,17 @@ permalink: "/reviews/"
             <li class="cs-item cs-reveal">
                 <p class="cs-quote">Wow — Jayden was absolutely phenomenal. She is truly one of the most professional and dedicated people I have ever met. From the very beginning, she never once made me feel pressured. As a first-time home buyer, that meant everything to me.</p>
 
-                <div class="cs-rest" id="rest-5" hidden>
-                    <p>Instead, she guided me with patience and wisdom, helping me think through my decisions so I could choose a home confidently — and I ended up with something that feels even better than what I had originally dreamed of. We went to so many showings, and when things didn't work out at first, she never gave up and never made me feel discouraged. She worked long hours and tirelessly to help me achieve my goal. Her commitment was unmatched.</p>
-                    <p>She also connected me with other trusted professionals — my mortgage broker and lawyer — which gave me a strong, supportive team throughout the entire process. That level of care and thoughtfulness speaks volumes.</p>
-                    <p>Beyond her professionalism, Jayden showed such generosity — with her time, her knowledge, and her genuine support. I am so proud to have had her as my realtor and truly couldn't have done this without her. I wish her nothing but continued success — she deserves it all.</p>
+                <div class="cs-rest" id="rest-5">
+                    <div class="cs-rest__inner">
+                        <p>Instead, she guided me with patience and wisdom, helping me think through my decisions so I could choose a home confidently — and I ended up with something that feels even better than what I had originally dreamed of. We went to so many showings, and when things didn't work out at first, she never gave up and never made me feel discouraged. She worked long hours and tirelessly to help me achieve my goal. Her commitment was unmatched.</p>
+                        <p>She also connected me with other trusted professionals — my mortgage broker and lawyer — which gave me a strong, supportive team throughout the entire process. That level of care and thoughtfulness speaks volumes.</p>
+                        <p>Beyond her professionalism, Jayden showed such generosity — with her time, her knowledge, and her genuine support. I am so proud to have had her as my realtor and truly couldn't have done this without her. I wish her nothing but continued success — she deserves it all.</p>
+                    </div>
                 </div>
 
                 <span class="cs-stars" role="img" aria-label="Rated 5 out of 5">★★★★★</span>
 
-                <span class="cs-topper cs-attribution">Sounia Yosufi · <time datetime="2026-03-15" data-relative>March 2026</time></span>
+                <span class="cs-topper cs-attribution"><a class="cs-review-link" href="https://maps.app.goo.gl/67AUqit1TMQEQscm7" target="_blank" rel="noopener" aria-label="Read Sounia Yosufi’s review on Google">Sounia Yosufi</a> · <time datetime="2026-03-15" data-relative>March 2026</time></span>
 
                 <button class="cs-more" type="button" aria-expanded="false" aria-controls="rest-5">
                     <span class="cs-label-more">Read more</span><span class="cs-label-less">Read less</span>

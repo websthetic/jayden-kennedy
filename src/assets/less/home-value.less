@@ -369,15 +369,22 @@
 
         /* ---- Honeypot ---- */
 
-        /* Off-screen, not display:none — most bots skip fields they
-           can't render, and this one needs to be fillable. */
+        /* Was off-screen (position: absolute, 1px, clip-path) on the
+           theory that a bot skips a field it cannot render. It was
+           showing on the built page between Property address and Full
+           name — position: absolute with no offsets leaves the box at
+           its static position, so anything that beat the clip-path (a
+           UA style on the label, a parent that is not a containing
+           block, the stylesheet loading late) put it back in the flow.
+
+           display: none is the fix asked for and the right one. It is
+           also the most common honeypot technique precisely because
+           most form bots read the DOM and fill every input regardless
+           of how it is painted. The server-side check in
+           netlify/functions/home-valuation.js is the actual defence;
+           this is a cheap first filter, not the wall. */
         .cs-trap {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            overflow: hidden;
-            clip-path: inset(50%);
-            white-space: nowrap;
+            display: none;
         }
 
         /* ---- Actions ---- */
@@ -396,6 +403,27 @@
             margin: clamp(1.5rem, 3vw, 2rem) 0 0;
             max-width: 44ch;
             color: var(--ink-soft);
+        }
+
+        /* ---- Step three handoff ---- */
+
+        /* The line that introduces the search link. Separated from the
+           confirmation above it by a rule, so the handoff reads as a
+           second thing being offered rather than as more confirmation
+           text. */
+        .cs-step-handoff {
+            margin-block: clamp(1.5rem, 3vw, 2rem) clamp(1.25rem, 2.5vw, 1.75rem);
+            padding-block-start: clamp(1.5rem, 3vw, 2rem);
+            border-block-start: 1px solid var(--rule);
+            max-width: 44ch;
+        }
+
+        /* The search link is an <a>, not a <button>, so it does not need
+           the button reset above — but it does sit at the bottom of the
+           panel with nothing under it, and without this it hugs the
+           paragraph. */
+        .cs-step[data-step="3"] .cs-button-script {
+            margin-block-start: 0;
         }
     }
 }

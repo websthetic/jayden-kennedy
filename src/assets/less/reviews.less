@@ -36,7 +36,15 @@
 <--- -------------------------- -*/
 
 /* Cashmere panels, one green. No avatars — the quote, the rating and
-   the attribution line carry the card. */
+   the attribution line carry the card.
+
+   //! FIXED — this whole section, the tablet block, the motion block and
+   //! the Reveal Indices below were duplicated verbatim in this file.
+   //! Not cosmetic: the second copy's .cs-more carried no colour and
+   //! dropped the .cs-item-feature inverted-colour rule, and being later
+   //! in the file it won. The stars and the Read more label on the green
+   //! feature card were rendering in the UA's buttontext near-black on
+   //! Heritage Green. The surviving copy is the first one. */
 
 @media only screen and (min-width: 0rem) {
     #reviews-grid {
@@ -56,6 +64,20 @@
             align-items: start;
             list-style: none;
         }
+
+        .cs-review-link {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 0.15em;
+    opacity: 0.9;
+    transition: opacity var(--dur) var(--ease);
+
+    &:hover,
+    &:focus-visible {
+        opacity: 1;
+    }
+}
 
         .cs-item {
             padding: clamp(1.75rem, 4vw, 2.5rem);
@@ -86,19 +108,76 @@
             line-height: 1.62;
         }
 
+        /* ---- The expanding remainder ----
+
+           Height is animated with the grid 0fr → 1fr technique rather
+           than max-height. max-height needs a guessed ceiling, and the
+           five cards here run from two paragraphs to eight: a ceiling
+           tall enough for the long one makes the short one sit still for
+           most of the duration, because the transition is timing the
+           distance to a number the content never reaches.
+
+           0fr → 1fr has no guess in it. The row resolves to the
+           content's real height at both ends, so every card takes the
+           same time regardless of length. It needs one wrapper element
+           with overflow hidden and min-height 0 — that is what
+           .cs-rest__inner is for, and why the markup gained a div.
+
+           visibility is transitioned alongside it, with 0s duration and
+           a delay equal to the height transition on the way out. A
+           collapsed 0fr row still leaves its content in the
+           accessibility tree and its links in the tab order; visibility
+           hidden takes both out, but only after the close has finished
+           playing, so the text does not vanish mid-collapse. */
         .cs-rest {
+            display: grid;
+            grid-template-rows: 0fr;
+            visibility: hidden;
+            width: 100%;
+            margin-top: 0;
+            transition:
+                grid-template-rows var(--dur) var(--ease),
+                margin-top var(--dur) var(--ease),
+                visibility 0s linear var(--dur);
+        }
+
+        .cs-rest__inner {
+            overflow: hidden;
+            /* Grid items floor at min-content without this, which keeps
+               the row from ever reaching zero. */
+            min-height: 0;
+            opacity: 0;
+            transition: opacity var(--dur) var(--ease);
+        }
+
+        .cs-item.cs-open .cs-rest {
+            grid-template-rows: 1fr;
+            visibility: visible;
             margin-top: clamp(0.75rem, 1.5vw, 1rem);
+            /* No delay on the way in — the content should be visible
+               from the first frame of the opening. */
+            transition:
+                grid-template-rows var(--dur) var(--ease),
+                margin-top var(--dur) var(--ease),
+                visibility 0s linear 0s;
+        }
 
-            p {
-                margin: 0 0 clamp(0.75rem, 1.5vw, 1rem);
-                font-family: var(--font-body);
-                font-size: var(--fs-body, 1rem);
-                line-height: 1.62;
-            }
+        .cs-item.cs-open .cs-rest__inner {
+            opacity: 1;
+            /* Slightly behind the height so the text arrives into a box
+               that is already opening rather than racing it. */
+            transition: opacity var(--dur) var(--ease) 0.08s;
+        }
 
-            p:last-child {
-                margin-bottom: 0;
-            }
+        .cs-rest__inner p {
+            margin: 0 0 clamp(0.75rem, 1.5vw, 1rem);
+            font-family: var(--font-body);
+            font-size: var(--fs-body, 1rem);
+            line-height: 1.62;
+        }
+
+        .cs-rest__inner p:last-child {
+            margin-bottom: 0;
         }
 
         /* Rating, attribution and button read as one block at the foot of
@@ -197,241 +276,22 @@
     }
 }
 
-/*-- -------------------------- -->
-<---       Grid · Tablet        -->
-<--- -------------------------- -*/
-
-@media only screen and (min-width: 48rem) {
-    #reviews-grid {
-        .cs-card-group {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-
-        /* Spans the pair rather than sitting in one column — it holds the
-           longest review and needs the width. */
-        .cs-item-feature {
-            grid-column: 1 / -1;
-        }
-    }
-}
-
-/*-- -------------------------- -->
-<---      Expand · Motion       -->
-<--- -------------------------- -*/
-
-@media (prefers-reduced-motion: no-preference) {
-    #reviews-grid .cs-rest {
-        animation: cs-rest-in 0.22s var(--ease);
+/* No JS: the remainder can never be opened, because the button that
+   opens it does nothing. Show it. A review cut off at one paragraph
+   with a dead control under it is worse than a long card. */
+html:not(.js) #reviews-grid {
+    .cs-rest {
+        grid-template-rows: 1fr;
+        visibility: visible;
+        margin-top: clamp(0.75rem, 1.5vw, 1rem);
     }
 
-    @keyframes cs-rest-in {
-        from {
-            opacity: 0;
-            transform: translateY(-3px);
-        }
-        to {
-            opacity: 1;
-            transform: none;
-        }
-    }
-}
-
-
-
-
-
-/*-- -------------------------- -->
-<---       Reveal Indices       -->
-<--- -------------------------- -*/
-
-/* File scope on purpose — every rule above sits inside a media query,
-   and these are unconditional. The mechanism lives in root.less. */
-
-#reviews-intro {
-    .cs-title {
-        --reveal-i: 0;
+    .cs-rest__inner {
+        opacity: 1;
     }
 
-    .cs-lede {
-        --reveal-i: 1;
-    }
-}
-
-/* Five cards at the standard 140ms step would run 700ms from first to
-   last, which is long enough to notice as a queue. The grid gets a
-   shorter step so the set lands as one movement. */
-#reviews-grid {
-    --reveal-step: 90ms;
-
-    .cs-item {
-        --reveal-i: 0;
-    }
-    .cs-item:nth-child(2) {
-        --reveal-i: 1;
-    }
-    .cs-item:nth-child(3) {
-        --reveal-i: 2;
-    }
-    .cs-item:nth-child(4) {
-        --reveal-i: 3;
-    }
-    .cs-item:nth-child(5) {
-        --reveal-i: 4;
-    }
-}
-
-/*-- -------------------------- -->
-<---            Grid            -->
-<--- -------------------------- -*/
-
-/* Cashmere panels, one green. No avatars — the quote, the rating and
-   the attribution line carry the card. */
-
-@media only screen and (min-width: 0rem) {
-    #reviews-grid {
-        padding: var(--section-padding);
-        padding-top: clamp(2.5rem, 6vw, 4rem);
-        background-color: var(--paper);
-
-        .cs-card-group {
-            width: 100%;
-            margin: 0;
-            padding: 0;
-            display: grid;
-            grid-template-columns: minmax(0, 1fr);
-            gap: clamp(1rem, 2vw, 1.5rem);
-            /* Cards size to their own content. A stretched row would
-               balloon the sibling every time one card expands. */
-            align-items: start;
-            list-style: none;
-        }
-
-        .cs-item {
-            padding: clamp(1.75rem, 4vw, 2.5rem);
-            background-color: var(--paper-warm);
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        /* The one green panel. .cs-on-dark inverts the type inside it —
-           see root.less. */
-        .cs-item-feature {
-            background-color: var(--heritage-500);
-        }
-
-        /* No colour declared on the bare class for any of these. Setting
-           one under the #reviews-grid ID outranks .cs-on-dark in
-           root.less and leaves the green panel's type cocoa on green.
-           Everything below is scoped off the feature card instead. */
-
-        /* Body copy, not display. The opening paragraph and the expanded
-           remainder have to read as one continuous review, and the
-           longest of the five runs to eight paragraphs — uppercase
-           Cinzel at --fs-h4 is unreadable at that length and contradicts
-           the review card on slide 15.
-           //! CONFIRM — token name for body size and line height. */
-        .cs-quote {
-            margin: 0;
-            font-family: var(--font-body);
-            font-size: var(--fs-body, 1rem);
-            line-height: 1.62;
-        }
-
-        .cs-rest {
-            margin-top: clamp(0.75rem, 1.5vw, 1rem);
-
-            p {
-                margin: 0 0 clamp(0.75rem, 1.5vw, 1rem);
-                font-family: var(--font-body);
-                font-size: var(--fs-body, 1rem);
-                line-height: 1.62;
-            }
-
-            p:last-child {
-                margin-bottom: 0;
-            }
-        }
-
-        /* Rating, attribution and button read as one block at the foot of
-           the card. The auto margin lives on the stars because they are
-           now the first of the three — moving it left it on
-           .cs-attribution would split the group. */
-        .cs-stars {
-            margin-top: auto;
-            padding-top: clamp(1.25rem, 2.5vw, 1.5rem);
-            font-size: var(--fs-eyebrow);
-            letter-spacing: 0.2em;
-            line-height: 1;
-        }
-
-        .cs-item:not(.cs-on-dark) .cs-stars {
-            color: var(--cocoa-500);
-        }
-
-        .cs-attribution {
-            margin-top: clamp(0.5rem, 1vw, 0.75rem);
-        }
-
-        .cs-item:not(.cs-on-dark) .cs-attribution {
-            color: var(--heritage-500);
-        }
-
-        /* The relative label is written by reviews.js. Inheriting keeps
-           it identical to the name beside it. */
-        .cs-attribution time {
-            color: inherit;
-        }
-
-        /* UA reset first — a bare <button> carries its own font, colour,
-           background and border, none of which inherit. */
-        .cs-more {
-            appearance: none;
-            -webkit-appearance: none;
-            background: none;
-            border: none;
-            border-bottom: 1px solid currentColor;
-            border-radius: 0;
-            padding: 0 0 0.2rem;
-            margin-top: clamp(0.75rem, 1.5vw, 1rem);
-            align-self: flex-start;
-            /* Deck minimum touch target. Padding, never a shrunk box. */
-            min-height: 44px;
-            display: inline-flex;
-            align-items: flex-end;
-            cursor: pointer;
-            font-family: var(--font-body);
-            font-size: var(--fs-eyebrow);
-            letter-spacing: var(--track-topper);
-            text-transform: uppercase;
-            opacity: 0.72;
-            transition: opacity var(--dur) var(--ease);
-        }
-
-        .cs-item:not(.cs-on-dark) .cs-more {
-            color: var(--cocoa-500);
-        }
-
-        .cs-more:hover {
-            opacity: 1;
-        }
-
-        .cs-more:focus-visible {
-            outline: 2px solid currentColor;
-            outline-offset: 4px;
-        }
-
-        .cs-label-less {
-            display: none;
-        }
-
-        .cs-item.cs-open .cs-label-more {
-            display: none;
-        }
-
-        .cs-item.cs-open .cs-label-less {
-            display: inline;
-        }
+    .cs-more {
+        display: none;
     }
 }
 
@@ -457,26 +317,26 @@
 <---      Expand · Motion       -->
 <--- -------------------------- -*/
 
-@media (prefers-reduced-motion: no-preference) {
-    #reviews-grid .cs-rest {
-        animation: cs-rest-in 0.22s var(--ease);
-    }
+/* The cs-rest-in keyframe that used to live here is gone. It faded the
+   remainder in on open and did nothing at all on close, so the card
+   snapped shut. The transitions above run both directions.
 
-    @keyframes cs-rest-in {
-        from {
-            opacity: 0;
-            transform: translateY(-3px);
-        }
-        to {
-            opacity: 1;
-            transform: none;
+   Root's blanket reduced-motion rule clamps transition-duration to
+   0.01ms, which is nearly right here but not quite: the visibility
+   delay is also a duration, and clamping it means visibility flips to
+   hidden before the row has finished collapsing. Settling both
+   explicitly is cleaner than relying on the clamp. */
+
+@media (prefers-reduced-motion: reduce) {
+    #reviews-grid {
+        .cs-rest,
+        .cs-item.cs-open .cs-rest,
+        .cs-rest__inner,
+        .cs-item.cs-open .cs-rest__inner {
+            transition: none;
         }
     }
 }
-
-
-
-
 
 /*-- -------------------------- -->
 <---       Reveal Indices       -->

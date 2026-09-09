@@ -452,23 +452,25 @@
 <--- -------------------------- -*/
 
 /* Drop-in replacement for the three #reviews blocks in local.less.
-   (Not assets/less/reviews.less — that file styles #reviews-intro on
-   the standalone /reviews/ page and is untouched by this.)
-
-   One change from what was there: .cs-more is now .cs-button-script
-   rather than .cs-button-ghost, so its top margin is retuned below.
+   (Not assets/less/reviews.less — that file styles the standalone
+   /reviews/ page and is untouched by this.)
 
    !! Two things this reverses, both deliberate decisions you may want
       to re-check before it ships:
 
-      Revision 1 set this link as READ ALL GOOGLE REVIEWS — uppercase,
-      weight 600, 0.12em tracking, no underline — and names it as a
-      flagged one-off exception to the lowercase call-to-action rule.
-      Rosemartin forces lowercase, so that exception is spent.
+      Revision 1 set the section link as READ ALL GOOGLE REVIEWS —
+      uppercase, weight 600, 0.12em tracking, no underline — and names
+      it as a flagged one-off exception to the lowercase call-to-action
+      rule. Rosemartin forces lowercase, so that exception is spent.
 
       The controls spec allows one Rosemartin per page and the homepage
       already uses it on #finder's search submit. This makes two. If
-      both stay, the face is a second body style rather than an accent. */
+      both stay, the face is a second body style rather than an accent.
+
+   !! Expand/collapse mirrors reviews.less: .cs-rest / .cs-rest__inner,
+      state class .cs-open, label swap in CSS. The button is .cs-read
+      here, NOT .cs-more — .cs-more on this page is the Rosemartin link
+      to /reviews/, and the two would collide. */
 
 @media only screen and (min-width: 0rem) {
     #reviews {
@@ -496,10 +498,7 @@
                Cinzel while the lede below is set in Elms Sans — so the
                same number in both places does not produce the same
                measure. Cinzel uppercase runs wide; 18ch here is roughly
-               24ch of body copy.
-
-               Raise it to let the title run on one line for longer, drop
-               it to force an earlier break. */
+               24ch of body copy. */
             h2 {
                 max-width: 24ch;
             }
@@ -508,22 +507,16 @@
         /* ── Width lever 2: the body ──
            44ch is inside the 66ch upper bound for comfortable reading and
            narrow enough that the line breaks land under the title rather
-           than running past it. Anything past about 55ch and the lede
-           stops looking related to the h2 above it. */
+           than running past it. */
         .cs-lede {
             max-width: 44ch;
             color: var(--ink-soft);
         }
 
         /* The CTA sits below the row rather than beside the title, so it
-           needs its own top margin.
-
-           Raised from the old clamp because the class changed underneath
-           it. .cs-button-ghost carried 0.875rem of padding above its
-           label; .cs-button-script carries 0.5rem. The optical gap is
-           this value plus that padding, so holding the old number would
-           have tightened the space under the cards by 6px and pulled the
-           link toward the row. */
+           needs its own top margin. .cs-button-script carries 0.5rem of
+           padding above its label; the optical gap is this value plus
+           that padding. */
         .cs-more {
             margin-top: clamp(1.75rem, 4vw, 2.75rem);
         }
@@ -534,9 +527,12 @@
            the right edge — that peek is the only affordance telling anyone
            there is more than one, since there are no dots and no arrows.
 
-           Contained rather than bled to the viewport edge: the section's
-           gutter is the scroller's own padding, so the first card starts
-           on the page's left edge like everything else. */
+           align-items: start, not the default stretch. A stretched row
+           grows every sibling to match whichever card is open, and the
+           Rosh card opens to eight paragraphs — stretch would put two
+           screens of empty box beside it. Equal heights in the CLOSED
+           state are held by a min-height floor that homepage.js measures,
+           which is the same trade reviews.js makes. */
         .cs-cards {
             list-style: none;
             margin: clamp(2rem, 5vw, 3rem) 0 0;
@@ -544,6 +540,7 @@
             display: grid;
             grid-auto-flow: column;
             grid-auto-columns: 78%;
+            align-items: start;
             gap: clamp(1rem, 2vw, 1.5rem);
             overflow-x: auto;
             overscroll-behavior-x: contain;
@@ -558,11 +555,10 @@
            40%-opacity line reads as a box being drawn, and a card is not
            a control.
 
-           Flex column so .cs-who can bottom-align: at three across the
-           quotes are different lengths, and attributions that float at
-           the end of each quote make the row look accidental. Without a
-           fill this matters more — a ragged set of last lines inside an
-           outlined box has nothing to sit against. */
+           Flex column so .cs-attrib can bottom-align. Once the cards
+           share a min-height floor, the star rows and names would
+           otherwise float at the end of quotes of three different
+           lengths and make the row look accidental. */
         .cs-card {
             padding: clamp(1.5rem, 2.6vw, 2.25rem);
             border: 1px solid var(--rule);
@@ -570,6 +566,156 @@
             display: flex;
             flex-direction: column;
             gap: 1rem;
+        }
+
+        /* Elms Sans, not Cinzel. At card size the display face turns a
+           client's sentence into a pull quote, and three pull quotes in a
+           row is three statements competing. Body type lets them read as
+           people talking. */
+        .cs-quote {
+            margin: 0;
+            font-size: var(--fs-body);
+            line-height: var(--lh-body);
+            color: var(--ink);
+
+            p {
+                margin: 0;
+            }
+        }
+
+        /* ── The expanding remainder ──
+           Same technique as reviews.less, and the reasoning carries over:
+           height animates as a grid track from 0fr to 1fr rather than as
+           max-height, because max-height needs a guessed ceiling and
+           these three cards run from two paragraphs to eight. A ceiling
+           tall enough for Rosh makes Vesta sit still for most of the
+           duration. 0fr → 1fr resolves to real height at both ends, so
+           all three take the same time.
+
+           .cs-rest sits INSIDE the blockquote deliberately. As a direct
+           child of .cs-card it would collect the card's 1rem gap even at
+           zero height, leaving a hole under every closed quote.
+
+           visibility is transitioned alongside, 0s duration with a delay
+           equal to the height transition on the way out: a collapsed 0fr
+           row still leaves its content in the accessibility tree, and
+           visibility takes it out — but only once the close has
+           finished playing. */
+        .cs-rest {
+            display: grid;
+            grid-template-rows: 0fr;
+            visibility: hidden;
+            width: 100%;
+            margin-top: 0;
+            transition:
+                grid-template-rows var(--dur) var(--ease),
+                margin-top var(--dur) var(--ease),
+                visibility 0s linear var(--dur);
+        }
+
+        .cs-rest__inner {
+            overflow: hidden;
+            /* Grid items floor at min-content without this, which keeps
+               the row from ever reaching zero. */
+            min-height: 0;
+            opacity: 0;
+            transition: opacity var(--dur) var(--ease);
+
+            p {
+                margin: 0 0 0.75em;
+            }
+
+            p:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        .cs-card.cs-open .cs-rest {
+            grid-template-rows: 1fr;
+            visibility: visible;
+            margin-top: 0.75em;
+            /* No delay on the way in — the content should be visible
+               from the first frame of the opening. */
+            transition:
+                grid-template-rows var(--dur) var(--ease),
+                margin-top var(--dur) var(--ease),
+                visibility 0s linear 0s;
+        }
+
+        .cs-card.cs-open .cs-rest__inner {
+            opacity: 1;
+            /* Slightly behind the height so the text arrives into a box
+               that is already opening rather than racing it. */
+            transition: opacity var(--dur) var(--ease) 0.08s;
+        }
+
+        /* ── The control ──
+           Deliberately not Rosemartin: the page is already at two script
+           controls and three would settle the question in the header
+           note the wrong way. This is the filter-row language instead —
+           caption Elms Sans, hairline underline, ink on hover.
+
+           UA reset first. A bare <button> carries its own font,
+           background, border and colour, and buttontext is a declared
+           near-black rather than an inherited value. */
+        .cs-read {
+            appearance: none;
+            -webkit-appearance: none;
+            align-self: flex-start;
+            /* Pulls against the card's 1rem gap, leaving 0.75rem above
+               the button. Raise toward 0 to let it breathe. */
+            margin: -0.25rem 0 0;
+            padding: 0 0 0.2rem;
+            background: none;
+            border: none;
+            border-bottom: 1px solid currentColor;
+            border-radius: 0;
+            /* Deck minimum touch target. Padding, never a shrunk box. */
+            min-height: 44px;
+            display: inline-flex;
+            align-items: flex-end;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: var(--fs-caption);
+            text-transform: uppercase;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            line-height: 1.6;
+            color: var(--ink-soft);
+            transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+
+            &:hover {
+                color: var(--ink);
+            }
+
+            &:focus-visible {
+                outline: 2px solid currentColor;
+                outline-offset: 4px;
+            }
+        }
+
+        /* Label swap in CSS, so the JS never has to hold the strings. */
+        .cs-label-less {
+            display: none;
+        }
+
+        .cs-card.cs-open .cs-label-more {
+            display: none;
+        }
+
+        .cs-card.cs-open .cs-label-less {
+            display: inline;
+        }
+
+        /* ── Card foot ──
+           Stars and attribution travel together, bottom-aligned as a
+           pair. margin-top: auto lives here rather than on .cs-who. */
+        .cs-attrib {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
         }
 
         /* Heritage as ink, the way #record used to and .cs-color
@@ -593,25 +739,41 @@
             }
         }
 
-        /* Elms Sans, not Cinzel. At card size the display face turns a
-           client's sentence into a pull quote, and three pull quotes in a
-           row is three statements competing. Body type lets them read as
-           people talking. */
-        .cs-quote {
-            margin: 0;
-            font-size: var(--fs-body);
-            line-height: var(--lh-body);
-            color: var(--ink);
-        }
-
+        /* Name, separator and date as one line. The uppercase is
+           inherited by the date too, so it renders as 3 MONTHS AGO —
+           consistent with the caption face. Drop text-transform to
+           sentence-case the pair. */
         .cs-who {
-            margin-top: auto;
             font-family: var(--font-body);
             font-size: var(--fs-caption);
             text-transform: uppercase;
             font-weight: 300;
             letter-spacing: 0.02em;
             color: var(--ink-soft);
+        }
+
+        /* Matches the anchor treatment on /reviews/. The name is the
+           link text and the date is not, so the anchor reads as
+           attribution rather than as a control. */
+        .cs-review-link {
+            color: inherit;
+            text-decoration: none;
+            border-bottom: 1px solid currentColor;
+            padding-bottom: 0.15em;
+            opacity: 0.9;
+            transition: opacity var(--dur) var(--ease), color var(--dur) var(--ease);
+
+            &:hover,
+            &:focus-visible {
+                opacity: 1;
+                color: var(--ink);
+            }
+        }
+
+        /* The relative label is written by homepage.js. Inheriting keeps
+           it identical to the name beside it. */
+        .cs-who time {
+            color: inherit;
         }
 
         /* Reveal indices. Mechanism is in root.less; this file only
@@ -631,6 +793,25 @@
         .cs-more {
             --reveal-i: 4;
         }
+    }
+}
+
+/* No JS: the remainder can never be opened, because the button that
+   opens it does nothing. Show it, hide the dead control. Same fallback
+   as reviews.less. */
+html:not(.js) #reviews {
+    .cs-rest {
+        grid-template-rows: 1fr;
+        visibility: visible;
+        margin-top: 0.75em;
+    }
+
+    .cs-rest__inner {
+        opacity: 1;
+    }
+
+    .cs-read {
+        display: none;
     }
 }
 
@@ -664,6 +845,22 @@
 
         .cs-card {
             scroll-snap-align: none;
+        }
+    }
+}
+
+/* Root's blanket reduced-motion rule clamps transition-duration to
+   0.01ms, which is nearly right here but not quite: the visibility
+   delay is also a duration, and clamping it flips visibility to hidden
+   before the row has finished collapsing. Settled explicitly, same as
+   reviews.less. */
+@media (prefers-reduced-motion: reduce) {
+    #reviews {
+        .cs-rest,
+        .cs-card.cs-open .cs-rest,
+        .cs-rest__inner,
+        .cs-card.cs-open .cs-rest__inner {
+            transition: none;
         }
     }
 }

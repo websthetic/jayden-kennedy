@@ -162,6 +162,46 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 <!--                   Reviews                    -->
 <!-- ============================================ -->
 
+<!--! Content is the first three cards from /reviews/, in the same order:
+      Vesta Mourato, Hailey Kinnear, Rosh.
+
+      Quotes, splits, hrefs and dates are now taken from /reviews/ rather
+      than restated here, so the two pages cannot drift. The split is by
+      whole paragraph, same rule as that page.
+
+      //! CONFIRM — Hailey's lead is now the full first paragraph, which
+      //! runs about 267 characters against the 240 on deck slide 15. The
+      //! homepage previously cut it after "provinces." to stay inside
+      //! the limit. To restore that cut, move the final sentence — "The
+      //! minute Jayden stepped in, an enormous weight lifted off our
+      //! shoulders." — out of the lead and into the top of her .cs-rest
+      //! as its own paragraph. That buys the limit at the cost of a
+      //! paragraph break the reviewer did not write, and of the two
+      //! pages showing different opening text.
+
+      //! CONFIRM — Rosh's remainder is the full eight paragraphs, as on
+      //! /reviews/. Open on desktop it is several screens tall inside a
+      //! three-card row. If that is too much for a homepage teaser, the
+      //! answer is to drop his card here for a shorter review (Royston
+      //! Simon or Sounia Yosufi) rather than to trim his — trimming puts
+      //! the section back to quoting a partial sentence.
+
+      Dates: each <time> holds an absolute date and prints the month as
+      its fallback. homepage.js rewrites it to Google's relative phrasing
+      on load. Same technique and same rounding as reviews.js.
+      //! CONFIRM — the datetime values are back-solved from Google's
+      //! relative labels and are mid-month guesses, inherited from
+      //! /reviews/. When the real posting dates come back from the
+      //! Business Profile, both files need the change.
+
+      //! CONFIRM — attribution is the reviewer's name, matching
+      //! /reviews/. The old placeholders read "Seller — Whitby",
+      //! "First Time Buyer — Oshawa" and "Investor — Bowmanville", which
+      //! is the deck slide 32 pattern. Those cannot be filled in from
+      //! the review text, so keeping that pattern would mean inventing
+      //! three cities. If the RECO question on slide 32 lands against
+      //! named testimonials, the names come off both pages together. -->
+
 <section id="reviews" data-reveal>
     <div class="cs-container">
 
@@ -180,51 +220,100 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
         <ul class="cs-cards">
 
             <li class="cs-card cs-reveal">
-                <span class="cs-stars" role="img" aria-label="Five out of five stars">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                </span>
 
                 <blockquote class="cs-quote">
-                    [Google Review 1]
+                    <p class="cs-quote-lead">We couldn't have asked for a better realtor. We've bought and sold homes with several different realtors over the last 3 years, and she was by far the best we've ever worked with &mdash; truly a 12/10 experience from start to finish.</p>
+
+                    <div class="cs-rest" id="home-rest-1">
+                        <div class="cs-rest__inner">
+                            <p>She was knowledgeable, responsive, honest, and always made us feel like a priority throughout the entire process. No question ever went unanswered, and she went above and beyond to work around our schedule and hectic moving situation to make buying our home as smooth and stress-free as possible.</p>
+                            <p>Her attention to detail, professionalism, and genuine care for her clients really set her apart. We are so grateful for all of her hard work and would recommend her to absolutely anyone looking to buy or sell a home.</p>
+                        </div>
+                    </div>
                 </blockquote>
 
-                <span class="cs-who">Seller &mdash; Whitby</span>
+                <button class="cs-read" type="button" aria-expanded="false" aria-controls="home-rest-1">
+                    <span class="cs-label-more">Read more</span><span class="cs-label-less">Read less</span>
+                </button>
+
+                <div class="cs-attrib">
+                    <span class="cs-stars" role="img" aria-label="Five out of five stars">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                    </span>
+
+                    <span class="cs-who"><a class="cs-review-link" href="https://maps.app.goo.gl/mEBHs3D5ehpkS5ZQ7" target="_blank" rel="noopener" aria-label="Read Vesta Mourato’s review on Google">Vesta Mourato</a> &middot; <time datetime="2026-06-15" data-relative>June 2026</time></span>
+                </div>
             </li>
 
             <li class="cs-card cs-reveal">
-                <span class="cs-stars" role="img" aria-label="Five out of five stars">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                </span>
 
                 <blockquote class="cs-quote">
-                    [Google Review 2]
+                    <p class="cs-quote-lead">I can't even begin to put into words how grateful we are for Jayden. From the moment we found out we were moving, the stress hit hard. We had a small window to sell, buy, and move across provinces. The minute Jayden stepped in, an enormous weight lifted off our shoulders.</p>
+
+                    <div class="cs-rest" id="home-rest-2">
+                        <div class="cs-rest__inner">
+                            <p>She is an absolute dynamo in her business. Jayden gave us a short (and honestly, crazy!) timeline to get our home ready, and she did everything to support us through it. She helped coordinate touch-ups, cleaning, staging all the little things that make a huge difference. She had our home looking absolutely beautiful.</p>
+                            <p>Within two weeks she had our house listed, hosted an open house, and it sold within a week. Her communication, negotiation skills, professionalism, and genuine kindness are top-notch. She never once made us feel like just another client; she truly cared about our family and our outcome.</p>
+                            <p>We are so incredibly grateful for her, her generosity, and the time she poured into us. If you are looking for a realtor who knows her stuff, goes above and beyond, and genuinely cares while getting the job DONE &mdash; she is the one for your family.</p>
+                        </div>
+                    </div>
                 </blockquote>
 
-                <span class="cs-who">First Time Buyer &mdash; Oshawa</span>
+                <button class="cs-read" type="button" aria-expanded="false" aria-controls="home-rest-2">
+                    <span class="cs-label-more">Read more</span><span class="cs-label-less">Read less</span>
+                </button>
+
+                <div class="cs-attrib">
+                    <span class="cs-stars" role="img" aria-label="Five out of five stars">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                    </span>
+
+                    <span class="cs-who"><a class="cs-review-link" href="https://maps.app.goo.gl/8bQ4RKi4YtoY1BMB8" target="_blank" rel="noopener" aria-label="Read Hailey Kinnear’s review on Google">Hailey Kinnear</a> &middot; <time datetime="2025-12-15" data-relative>December 2025</time></span>
+                </div>
             </li>
 
             <li class="cs-card cs-reveal">
-                <span class="cs-stars" role="img" aria-label="Five out of five stars">
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                </span>
 
                 <blockquote class="cs-quote">
-                    [Google Review 3]
+                    <p class="cs-quote-lead">As first-time homebuyers, we honestly believed purchasing a home was a distant dream, until we worked with Jayden.</p>
+
+                    <div class="cs-rest" id="home-rest-3">
+                        <div class="cs-rest__inner">
+                            <p>We first came across Jayden through Instagram, but our real introduction to her professionalism happened two years ago when we attended an in-person workshop she organized. That session was incredibly informative and gave us a clear, realistic understanding of the entire homebuying process. More importantly, Jayden helped us realize that we weren't ready yet and instead of pushing us to buy, she encouraged us to take the time to prepare properly. That level of honesty and integrity left a lasting impression, and when we eventually found ourselves considering a purchase, there was no question about who we wanted to work with.</p>
+                            <p>When we started casually attending showings, our needs were far from fixed. What began as an interest in a condo evolved into a townhouse, and eventually a detached home. Throughout these shifts Jayden remained patient, adaptable, and incredibly thoughtful. She asked the right questions, helped us make sense of what truly mattered, and guided us through each change without pressure or frustration.</p>
+                            <p>Her responsiveness is unmatched. Calls were answered immediately, messages were replied to almost instantly, and she always made time for us. She showed up every single time with a positive attitude, prepared, informed, and ready to advocate for us.</p>
+                            <p>During showings, she asked seller agents the right questions, flagged things we wouldn't have noticed, and was always transparent about what worked in our favour and what didn't. When it came time to make an offer, she guided us on the right conditions to protect us, and her strategy worked exactly as intended.</p>
+                            <p>One moment that really stood out was when Jayden was on vacation when we decided to submit an offer on the home. Despite the tight timeline, she went out of her way to ensure our offer was submitted properly and on time, without us ever feeling stressed or unsupported.</p>
+                            <p>Throughout the entire process, Jayden was honest, never sales-driven, and always acted in our best interest. She made us feel confident, informed, educated, and fully supported, which is invaluable, especially as first-time buyers.</p>
+                            <p>Jayden is incredibly knowledgeable, thoughtful, and truly made for this profession. We would recommend her without hesitation to anyone, especially first-time homebuyers. She doesn't just do her job, she excels at it.</p>
+                            <p>What started as casual browsing turned into purchasing our first home, something we didn't think was possible at this stage. We are incredibly grateful to Jayden for guiding us through that journey with patience, expertise, and genuine care. Jayden, you're a GEM.</p>
+                        </div>
+                    </div>
                 </blockquote>
 
-                <span class="cs-who">Investor &mdash; Bowmanville</span>
+                <button class="cs-read" type="button" aria-expanded="false" aria-controls="home-rest-3">
+                    <span class="cs-label-more">Read more</span><span class="cs-label-less">Read less</span>
+                </button>
+
+                <div class="cs-attrib">
+                    <span class="cs-stars" role="img" aria-label="Five out of five stars">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
+                    </span>
+
+                    <span class="cs-who"><a class="cs-review-link" href="https://maps.app.goo.gl/F5iKKrZFTB2NAm9k9" target="_blank" rel="noopener" aria-label="Read Rosh’s review on Google">Rosh</a> &middot; <time datetime="2026-02-15" data-relative>February 2026</time></span>
+                </div>
             </li>
 
         </ul>
@@ -234,7 +323,13 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
              here — the face loses its point set in caps.
 
              This is the page's second script control; #finder's search
-             submit is the first. See the note at the top of the LESS. -->
+             submit is the first. See the note at the top of the LESS.
+
+             NOTE — .cs-more is this link on the homepage and the Read
+             more BUTTON on /reviews/. Same class name, two different
+             elements, two different stylesheets. The homepage button is
+             .cs-read for exactly that reason; do not "tidy" the two into
+             one name without renaming this link first. -->
         <a href="/reviews/" class="cs-button-script cs-more cs-reveal">Read all Google reviews</a>
     </div>
 </section>

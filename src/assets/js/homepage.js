@@ -231,3 +231,167 @@ if (hero) {
 
     apply();
 })();
+
+
+/*-- -------------------------- -->
+<---   Reviews: dates, expand   -->
+<--- -------------------------- -*/
+
+/* Homepage twin of reviews.js, scoped to #reviews. Three jobs: rewrite
+   the absolute dates to Google's relative phrasing, toggle the expand
+   state, and hold the closed cards to one height.
+
+   //! CONFIRM — relativeLabel below is a verbatim copy of the one in
+   //! reviews.js, rounding rules included. Two copies will drift the
+   //! first time either is touched. Worth promoting to a shared
+   //! assets/js/relative-date.js and importing into both bundles. */
+
+(function () {
+    "use strict";
+
+    const section = document.querySelector("#reviews");
+    if (!section) return;
+
+    /* ---------------------------------------------
+       Relative dates
+       Markup holds an absolute date and prints the
+       month as its fallback, so a page with no JS
+       shows something true rather than something
+       that expires.
+    --------------------------------------------- */
+
+    /* Average month, not 30. Over a year the drift from using 30 is a
+       full week, which is enough to flip a label. */
+    const MONTH = 30.44;
+
+    function relativeLabel(iso) {
+        /* Midday, not midnight — a bare date string is parsed as UTC and
+           can land on the previous day in Eastern time. */
+        const then = new Date(iso + "T12:00:00");
+        if (isNaN(then)) return null;
+
+        const now = new Date();
+        if (then > now) return null;
+
+        const days = (now - then) / 86400000;
+
+        /* Rounded, not floored. Google rounds to the nearest month: a
+           review 2 months and 24 days old reads as 3 months there, and
+           flooring it to 2 makes the site disagree with the source it
+           quotes. */
+        const months = Math.round(days / MONTH);
+
+        if (months < 1) return "this month";
+        if (months === 1) return "a month ago";
+        if (months < 12) return months + " months ago";
+
+        /* Years floor. Google holds "a year ago" well past the twelve
+           month mark, so rounding here would age a review early. */
+        const years = Math.floor(months / 12);
+        return years === 1 ? "a year ago" : years + " years ago";
+    }
+
+    section.querySelectorAll("time[data-relative]").forEach(function (stamp) {
+        const iso = stamp.getAttribute("datetime");
+        const label = iso ? relativeLabel(iso) : null;
+        /* A bad or future date leaves the absolute month in place. */
+        if (!label) return;
+        stamp.setAttribute("title", stamp.textContent.trim());
+        stamp.textContent = label;
+    });
+
+    /* ---------------------------------------------
+       Expand and collapse
+
+       CSS owns both states — height, fade and the
+       visibility flip all hang off .cs-open in
+       local.less. This only toggles the class and
+       keeps aria-expanded honest, so no duration
+       is written down twice.
+    --------------------------------------------- */
+
+    const cards = Array.from(section.querySelectorAll(".cs-card"));
+
+    cards.forEach(function (card, i) {
+        const button = card.querySelector(".cs-read");
+        const rest = card.querySelector(".cs-rest");
+        if (!button || !rest) return;
+
+        /* A card with no remainder gets no control. This is why the
+           buttons were absent before the .cs-rest blocks were filled
+           in — not a styling problem. */
+        if (!rest.textContent.trim()) {
+            button.remove();
+            return;
+        }
+
+        /* Wired here so the ids in the markup cannot drift away from the
+           buttons pointing at them. */
+        if (!rest.id) rest.id = "home-rest-" + (i + 1);
+        button.setAttribute("aria-controls", rest.id);
+        button.setAttribute("aria-expanded", "false");
+
+        button.addEventListener("click", function () {
+            const open = card.classList.toggle("cs-open");
+            button.setAttribute("aria-expanded", String(open));
+
+            /* Collapsing a long card pulls the page up under the reader
+               — Rosh's review is taller than most screens, so the button
+               just pressed can end up well above the fold. If that
+               happens, put the card back in view. */
+            if (open) return;
+            if (card.getBoundingClientRect().top < 0) {
+                card.scrollIntoView({
+                    block: "start",
+                    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+                        ? "auto"
+                        : "smooth",
+                });
+            }
+        });
+    });
+
+    /* ---------------------------------------------
+       Card levelling
+       .cs-cards is align-items: start so an open
+       card cannot drag its siblings taller. That
+       leaves the closed row ragged, since the three
+       leads are one, three and four lines. A
+       measured floor squares them back up. A fixed
+       em value would only hold until the copy
+       changed.
+    --------------------------------------------- */
+
+    function level() {
+        cards.forEach(function (card) {
+            card.style.minHeight = "";
+        });
+
+        let tallest = 0;
+        cards.forEach(function (card) {
+            if (!card.classList.contains("cs-open")) {
+                tallest = Math.max(tallest, card.offsetHeight);
+            }
+        });
+
+        if (!tallest) return;
+
+        cards.forEach(function (card) {
+            card.style.minHeight = Math.ceil(tallest) + "px";
+        });
+    }
+
+    let timer;
+    window.addEventListener("resize", function () {
+        clearTimeout(timer);
+        timer = setTimeout(level, 120);
+    });
+
+    /* Measured against the fallback font, the floor locks in short and
+       the cards go uneven once the webfont swaps in. */
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(level);
+    }
+
+    level();
+})();
