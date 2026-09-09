@@ -21,6 +21,6 @@ Then the adjustments. A finished basement is not worth its cost. A third bathroo
 
 What comes back to you is a range rather than a figure, the evidence for each end of it, and the conditions that would move it — a rate change, two more listings on the street, a slow April.
 
-It takes an afternoon and I do it by hand. That is not a selling point, it is the only way the adjustments are defensible when an offer is on the table and someone asks where the number came from.
+It takes an afternoon, and I do it personally. That is not a selling point, it is the only way the adjustments are defensible when an offer is on the table and someone asks where the number came from.
 
 By the time an offer is written, the comparables are already read.

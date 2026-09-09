@@ -1,112 +1,131 @@
-/* ============================================
-   reviews.js
-   ============================================
-
-   Drives the one-at-a-time review pager in #reviews. Self-initialising,
-   same as reveal.js and finder-relocate.js.
-
-   Progressive by construction: the markup ships every review, visible and
-   stacked, and this file opts the section into the single-review view by
-   setting .cs-ready. If the script never runs — blocked, errored, still
-   loading — the reader gets six reviews and no controls, which is a worse
-   layout and a perfectly good page. Nothing is hidden by CSS that this
-   file has not already proven it can show again. */
+/* Reviews page — relative dates, expand/collapse, card levelling.
+   Loaded deferred from reviews.html. Nothing inline: an inline copy of
+   any of this would redeclare the same consts and fail silently. */
 
 (function () {
     "use strict";
 
-    function init() {
-        var section = document.querySelector("#reviews");
-        if (!section) return;
+    var grid = document.querySelector("#reviews-grid");
+    if (!grid) return;
 
-        var viewer = section.querySelector(".cs-viewer");
-        var items = [].slice.call(section.querySelectorAll("[data-review]"));
-        var pager = section.querySelector("[data-pager]");
-        var prev = section.querySelector("[data-prev]");
-        var next = section.querySelector("[data-next]");
-        var count = section.querySelector("[data-count]");
+    /* ---------------------------------------------
+       Relative dates
+       Markup holds an absolute date and prints the
+       month as its fallback, so a page with no JS
+       shows something true rather than something
+       that expires.
+    --------------------------------------------- */
 
-        /* One review needs no pager, and zero needs no section. Either
-           way, leave the stacked markup alone rather than half-applying
-           the behaviour. */
-        if (!viewer || !pager || !prev || !next || items.length < 2) return;
+    /* Average month, not 30. Over a year the drift from using 30 is a
+       full week, which is enough to flip a label. */
+    var MONTH = 30.44;
 
-        var index = 0;
+    function relativeLabel(iso) {
+        /* Midday, not midnight — a bare date string is parsed as UTC and
+           can land on the previous day in Eastern time. */
+        var then = new Date(iso + "T12:00:00");
+        if (isNaN(then)) return null;
 
-        function pad(n) {
-            return n < 10 ? "0" + n : String(n);
-        }
+        var now = new Date();
+        if (then > now) return null;
 
-        /* Locks the viewer to the tallest review before anything is
-           hidden, so the pager holds its line as the copy changes length.
-           Measured rather than guessed: the tallest review is a function
-           of the column width and the font, and both move.
+        var days = (now - then) / 86400000;
 
-           Cleared first — on a re-measure the old floor would otherwise
-           be the tallest thing in the box and every review would report
-           back the same height. */
-        function lock() {
-            viewer.style.minHeight = "";
+        /* Rounded, not floored. Google rounds to the nearest month: a
+           review 2 months and 24 days old reads as 3 months there, and
+           flooring it to 2 makes the site disagree with the source it
+           quotes. */
+        var months = Math.round(days / MONTH);
 
-            var was = section.classList.contains("cs-ready");
-            section.classList.remove("cs-ready");
+        if (months < 1) return "this month";
+        if (months === 1) return "a month ago";
+        if (months < 12) return months + " months ago";
 
-            var tallest = 0;
-            items.forEach(function (item) {
-                var h = item.getBoundingClientRect().height;
-                if (h > tallest) tallest = h;
-            });
+        /* Years floor. Google holds "a year ago" well past the twelve
+           month mark, so rounding here would age a review early. */
+        var years = Math.floor(months / 12);
+        return years === 1 ? "a year ago" : years + " years ago";
+    }
 
-            if (was) section.classList.add("cs-ready");
-            if (tallest) viewer.style.minHeight = Math.ceil(tallest) + "px";
-        }
-
-        function show(n) {
-            items[index].classList.remove("cs-active");
-            index = (n + items.length) % items.length;
-            items[index].classList.add("cs-active");
-            if (count) count.textContent = pad(index + 1) + " / " + pad(items.length);
-        }
-
-        lock();
-
-        section.classList.add("cs-ready");
-        pager.removeAttribute("hidden");
-        show(0);
-
-        prev.addEventListener("click", function () {
-            show(index - 1);
-        });
-
-        next.addEventListener("click", function () {
-            show(index + 1);
-        });
-
-        /* Width changes rewrap the quotes, so the tallest one can change
-           identity as well as height. rAF-debounced: a drag across a
-           desktop window fires resize continuously and each lock() forces
-           a synchronous layout of every review. */
-        var queued = false;
-        window.addEventListener("resize", function () {
-            if (queued) return;
-            queued = true;
-            window.requestAnimationFrame(function () {
-                queued = false;
-                lock();
-            });
-        });
-
-        /* The first measure runs against the fallback stack if Cinzel has
-           not landed yet, and Cinzel is wider than Times at the same size.
-           Re-measure once the real face is in. */
-        if (document.fonts && document.fonts.ready) {
-            document.fonts.ready.then(lock);
+    var stamps = grid.querySelectorAll("time[data-relative]");
+    for (var s = 0; s < stamps.length; s++) {
+        var iso = stamps[s].getAttribute("datetime");
+        var label = iso ? relativeLabel(iso) : null;
+        /* A bad or future date leaves the absolute month in place. */
+        if (label) {
+            stamps[s].setAttribute("title", stamps[s].textContent.trim());
+            stamps[s].textContent = label;
         }
     }
 
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", init);
-    } else {
-        init();
+    /* ---------------------------------------------
+       Expand and collapse
+    --------------------------------------------- */
+
+    var buttons = grid.querySelectorAll(".cs-more");
+
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener("click", function () {
+            var card = this.closest(".cs-item");
+            var rest = document.getElementById(this.getAttribute("aria-controls"));
+            if (!card || !rest) return;
+
+            var open = card.classList.toggle("cs-open");
+            rest.hidden = !open;
+            this.setAttribute("aria-expanded", String(open));
+        });
     }
+
+    /* ---------------------------------------------
+       Card levelling
+       The four cashmere cards share one collapsed
+       height, set by the tallest opening. A fixed em
+       floor would only hold until the copy changed.
+    --------------------------------------------- */
+
+    /* The feature card is excluded. Its opening is one sentence, and
+       holding it to the group height would leave a tall empty green
+       panel. */
+    var levelled = grid.querySelectorAll(".cs-item:not(.cs-item-feature)");
+
+    /* Matches the two-column breakpoint in reviews.less. Below it the
+       grid is one column and equal heights are just dead space. */
+    var wide = window.matchMedia("(min-width: 48rem)");
+
+    function level() {
+        var n;
+
+        for (n = 0; n < levelled.length; n++) {
+            levelled[n].style.minHeight = "";
+        }
+
+        if (!wide.matches) return;
+
+        var tallest = 0;
+        for (n = 0; n < levelled.length; n++) {
+            if (!levelled[n].classList.contains("cs-open")) {
+                tallest = Math.max(tallest, levelled[n].offsetHeight);
+            }
+        }
+
+        if (!tallest) return;
+
+        for (n = 0; n < levelled.length; n++) {
+            levelled[n].style.minHeight = Math.ceil(tallest) + "px";
+        }
+    }
+
+    var timer;
+    window.addEventListener("resize", function () {
+        clearTimeout(timer);
+        timer = setTimeout(level, 120);
+    });
+
+    /* Measured against the fallback font, the floor locks in short and
+       the cards go uneven once the webfont swaps in. */
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(level);
+    }
+
+    level();
 })();

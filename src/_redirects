@@ -1,1 +1,9 @@
 
+# ── Round 2 renames ──────────────────────────────────────────────
+# Staging was indexable while both of these were live, so the old
+# URLs may already be in Google. 301, not a delete — a 404 loses
+# whatever authority the page had and shows a dead result until
+# Google recrawls.
+
+/approach/*   /about/      301!
+/press/*      /speaking/   301!

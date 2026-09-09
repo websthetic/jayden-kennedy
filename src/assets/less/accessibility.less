@@ -1,42 +1,50 @@
 /* ==========================================================================
-   privacy-policy.less
-   Compiles to /assets/css/privacy-policy.css
+   accessibility.less
+   Compiles to /assets/css/accessibility.css
 
    NOTE: match the first line to whatever about.less imports — if your
    per-page files pull in tokens/base/mixins, this file needs the same
    import or every var() below resolves as invalid.
    e.g. @import "shared.less";
 
-   COLOUR — same treatment as accessibility.less, same reason.
-   No --ink-soft on this page. That token resolves to --cocoa-300
-   (#8a7462), which measures 4.42:1 on --paper and 3.48:1 on
-   --paper-warm; AA wants 4.5:1 at these sizes. A privacy policy is
-   read by people trying to work out what happens to their data, often
-   quickly and often on a phone in bad light. It is the wrong page to
-   set in the lightest tone in the system.
+   Namespace is .cs-a11y, not .cs-policy. The two pages are visually
+   identical but per-page stylesheets are global once their <link> loads,
+   so sharing one namespace across two pages recreates the .cs-legal
+   footer collision the moment either file drifts. One namespace per page.
+
+   COLOUR — read before editing.
+   This page carries no --ink-soft. Not one instance. That token resolves
+   to --cocoa-300 (#8a7462), which measures 4.42:1 on --paper and 3.48:1
+   on --paper-warm; AA wants 4.5:1 at these sizes. The page states in
+   writing that its body text meets AA, so it is the one page in the
+   build that cannot set its own prose in a colour that misses.
 
    Root is untouched. Every colour below is an existing role token used
-   at a ratio it passes:
+   at a ratio it actually passes:
 
      --ink          13.65 on --paper · 10.75 on --paper-warm
      --ink-soft      4.42 on --paper ·  3.48 on --paper-warm  ← unused here
 
-   Root has no lighter tone that clears the bar, so hierarchy is carried
-   by size, tracking, case and rule weight rather than tint.
+   Root offers no lighter tone that clears the bar, so the hierarchy that
+   was carried by tint is carried by size, tracking, case and rule weight
+   instead. That is why the eyebrow, the meta line and the dt labels all
+   sit at --ink and still read as subordinate: 11px uppercase at 0.08em
+   against 16px sentence case is a wide enough gap without a tint.
 
    LAYOUT — the contents rail is gone.
    The grid, the sticky rail, the ordered-list counter and the 900px
    reflow that moved the rail above the body have all been removed
    rather than left in place unused. What is left is a single column
-   held at 62ch and aligned to the same left edge as the hero, so the
-   h1 and the first h2 sit on one optical line.
+   aligned to the same left edge as the hero, so the h1 and the first h2
+   sit on one optical line.
 
-   The column is held at 78ch. 62ch is the comfortable measure for
-   running prose, but this page is not read that way — it is scanned
-   for the section that answers a question, and the dl rows in sections
-   3, 9 and 13 were wrapping their definitions onto three lines at the
-   narrower width. 78ch is the top of the readable band; past roughly
-   80 the eye starts losing the line return.
+   The column is held at 88ch, set deliberately wider than the privacy
+   policy's 78ch. That is past the comfortable measure for running
+   prose. It suits this page better than most because the bulk of the
+   content is dl rows — a short uppercase term over one or two lines of
+   definition — where the eye returns to the left edge often enough that
+   line length matters less. The paragraphs in "The commitment" and
+   "The standard" are the ones that carry the cost.
 
    scroll-margin-top stays on &__block. Nothing on the page links to
    those ids now, but they are still linkable from outside and still
@@ -47,7 +55,7 @@
    Hero
    -------------------------------------------------------------------------- */
 
-.cs-policy-hero {
+.cs-a11y-hero {
   background: var(--paper-warm);
   padding-block-start: clamp(8rem, 13vw, 12rem);
   padding-block-end: clamp(3rem, 6vw, 5rem);
@@ -78,9 +86,8 @@
     color: var(--ink);
   }
 
-  /* Carries the last-updated date. 11px uppercase, no large-text
-     exemption, and the one line a reader checks to know whether the
-     policy they are reading is the current one. */
+  /* 11px uppercase has no large-text exemption to fall back on, so this
+     line needs the full 4.5:1 more than anything else in the hero. */
   &__meta {
     margin-block-start: 2rem;
     font-size: var(--fs-eyebrow);
@@ -94,7 +101,7 @@
    Body
    -------------------------------------------------------------------------- */
 
-.cs-policy {
+.cs-a11y {
   background: var(--paper);
   padding-block: var(--section-padding);
   padding-inline: var(--gutter);
@@ -132,7 +139,14 @@
       margin-block: 0 1.25rem;
     }
 
+    /* The sentence in "Text and contrast" is about this rule. It was
+       --ink-soft: 4.42:1 against the ground it sits on.
+
+       Held to 72ch inside the 88ch column. At the full width these
+       paragraphs run past 100 characters and the line return gets hard
+       to find; the dl rows below are what the wider column is for. */
     p {
+      max-width: 72ch;
       color: var(--ink);
       margin-block: 0 1.1em;
 
@@ -169,8 +183,9 @@
       border-block-start: 1px solid var(--rule);
     }
 
-    /* dt and dd are both --ink. The term stays distinguishable by case,
-       size and the rule above it. */
+    /* dt and dd are both --ink now. The term stays distinguishable by
+       case, size and the rule above it — the same separation the dl in
+       the privacy policy uses. */
     dd {
       margin: 0.5rem 0 0;
       padding-block-end: 1rem;
@@ -183,7 +198,10 @@
     color: var(--ink);
   }
 
-  /* --fs-small is not declared in root — the scale runs --fs-eyebrow,
+  /* The last thing on the page. No reason for it to be the one line
+     set below the threshold.
+
+     --fs-small is not declared in root — the scale runs --fs-eyebrow,
      --fs-caption, --fs-body-sm, --fs-body, --fs-lede. The old
      var(--fs-small) resolved as invalid and this line inherited 16px,
      so the "small print" was never small. --fs-body-sm is the 14px
@@ -196,14 +214,17 @@
 }
 
 /* --------------------------------------------------------------------------
-   Under 900px the measure comes off — at that width the gutter is doing
-   the work that 78ch was doing on desktop, and holding both squeezes
-   the column.
+   Under 900px both measures come off — at that width the gutter is
+   doing the work, and holding a ch limit as well squeezes the column.
    -------------------------------------------------------------------------- */
 
 @media (max-width: 900px) {
-  .cs-policy {
+  .cs-a11y {
     &__body {
+      max-width: none;
+    }
+
+    &__block p {
       max-width: none;
     }
   }

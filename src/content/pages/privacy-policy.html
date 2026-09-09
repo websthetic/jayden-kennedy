@@ -1,6 +1,6 @@
 ---
 title: "Privacy Policy | Jayden Kennedy Real Estate"
-description: "How soldbykennedy.ca collects, uses, and stores your information, and what you can ask to have done with it."
+description: "How soldbykennedy.ca collects, uses, discloses, and stores your personal information, and the choices you have about it."
 permalink: "/privacy-policy/"
 ---
 
@@ -12,13 +12,42 @@ permalink: "/privacy-policy/"
 
 {% block body %}
 
+{#
+  STRUCTURE NOTE
+  Rebuilt to the shape of the Keller Williams corporate policy at
+  legal.kw.com/privacy-policy: numbered sections, terms defined before
+  they are used, and the sections that policy carries which this one did
+  not — security, minors, third-party links, changes, an explicit
+  no-sale statement, and a warning against emailing sensitive data.
+
+  The law is not theirs. That document is written for a US franchisor
+  under CCPA, the state privacy acts, the TCPA and the EU-U.S. Data
+  Privacy Framework. This one is written under PIPEDA, CASL, the
+  National Do Not Call List and TRESA. Nothing about California rights,
+  verifiable consumer requests, DPF arbitration or Do Not Call
+  registries belongs here.
+
+  It also carves agents out by name: it does not apply to the practices
+  of a Market Center or its agents, and tells consumers to ask the agent
+  directly. This is that document. It has to stand on its own.
+
+  The contents rail has been removed. The section ids are kept — the
+  headings reference each other by number ("see section 12"), and an id
+  that nothing on the page links to is still worth having for anyone
+  linking in from outside.
+
+  CONFIRM — reviewed by the brokerage's compliance contact before
+  launch, together with the accessibility statement.
+#}
+
 <section class="cs-policy-hero">
   <div class="cs-policy-hero__inner">
     <h1>Privacy Policy</h1>
     <p class="cs-policy-hero__standfirst">
-      How this website collects, uses, and stores your information &mdash; and what you can ask me to do with it.
+      How this website collects, uses, discloses, and stores your personal information &mdash; and what you can ask me to do with it.
     </p>
-    {# CONFIRM: set to the launch date, not the build date #}
+    {# CONFIRM: set to the launch date, not the build date. Keep in step
+       with the accessibility statement, which uses the same format. #}
     <p class="cs-policy-hero__meta">Last updated <time datetime="2026-01-01">[CONFIRM &middot; launch date]</time></p>
   </div>
 </section>
@@ -26,127 +55,184 @@ permalink: "/privacy-policy/"
 <section class="cs-policy">
   <div class="cs-policy__inner">
 
-    <nav class="cs-policy__rail" aria-label="On this page">
-      <p class="cs-eyebrow">Contents</p>
-      <ol class="cs-policy__toc">
-        <li><a href="#who-i-am">Who I am</a></li>
-        <li><a href="#what-i-collect">What this site collects</a></li>
-        <li><a href="#why">Why I collect it</a></li>
-        <li><a href="#listing-data">Listing data</a></li>
-        <li><a href="#reviews">Reviews</a></li>
-        <li><a href="#cookies">Cookies and analytics</a></li>
-        <li><a href="#email">Email and text messages</a></li>
-        <li><a href="#sharing">Who else sees your information</a></li>
-        <li><a href="#storage">Where your information is stored</a></li>
-        <li><a href="#retention">How long I keep it</a></li>
-        <li><a href="#your-choices">Your choices</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ol>
-    </nav>
-
     <div class="cs-policy__body">
 
       <article class="cs-policy__block" id="who-i-am">
-        <h2>Who I am</h2>
-        <p>This website is published by Jayden Kennedy, Broker, of Keller Williams Energy Real Estate, Brokerage, Independently Owned &amp; Operated, serving Durham Region and the Greater Toronto Area.</p>
-        <p>For questions about privacy on this site, I am the person to contact. Where the brokerage holds records under its own obligations as a registrant under Ontario&rsquo;s <em>Trust in Real Estate Services Act</em>, the brokerage&rsquo;s own privacy practices also apply to those records.</p>
+        <h2>1 &middot; Who I am</h2>
+        <p>This website is published by Jayden Kennedy, Broker, of Keller Williams Energy Real Estate, Brokerage, Independently Owned &amp; Operated, serving Durham Region and the Greater Toronto Area. In this policy, &ldquo;I&rdquo; and &ldquo;me&rdquo; mean Jayden Kennedy; &ldquo;this site&rdquo; means soldbykennedy.ca.</p>
+        <p>&ldquo;Personal information&rdquo; means information about an identifiable individual, as that term is used in Canada&rsquo;s <em>Personal Information Protection and Electronic Documents Act</em>. That is the law this policy is written under.</p>
         <p class="cs-policy__aside">
           285 Taunton Road East, Unit 1<br>
           Oshawa, ON L1G 3V2
         </p>
       </article>
 
+      <article class="cs-policy__block" id="scope">
+        <h2>2 &middot; What this policy covers</h2>
+        <p>This policy covers information collected through this website and through the emails, calls, and messages that follow from it. It is my policy, for my practice.</p>
+        <p>Two other sets of practices sit alongside it. The brokerage holds records under its own obligations as a registrant under Ontario&rsquo;s <em>Trust in Real Estate Services Act</em>, and its practices govern those records. Keller Williams Realty, LLC, the franchisor, publishes a separate corporate privacy policy for the systems it operates; that policy states plainly that it does not cover the practices of individual market centres or their agents. Where your information sits with one of them rather than with me, theirs applies and not this one.</p>
+      </article>
+
       <article class="cs-policy__block" id="what-i-collect">
-        <h2>What this site collects</h2>
-        <p>I collect only what you type into a form, plus a small amount of technical information your browser sends automatically.</p>
+        <h2>3 &middot; What I collect</h2>
+        <p>Only what you type into a form, plus a small amount of technical information your browser sends automatically.</p>
         <dl class="cs-policy__list">
           <dt>From the home valuation form</dt>
-          <dd>Property address, your name, email address, phone number, and anything you write in the notes field.</dd>
+          <dd>Property address, your name, email address, phone number, your timeframe, and anything you write in the notes field.</dd>
           <dt>From the contact and enquiry forms</dt>
           <dd>Your name, email address, phone number where you provide it, and the content of your message.</dd>
           <dt>From the subscribe form</dt>
           <dd>Your email address.</dd>
           <dt>Automatically</dt>
-          <dd>Your browser sends an IP address, browser type, and the page you arrived from with every request. This is ordinary web traffic information and I do not use it to identify you.</dd>
+          <dd>Your browser sends an IP address, browser and device type, and the page you arrived from with every request. This is ordinary web traffic information and I do not use it to identify you.</dd>
         </dl>
         <p>I do not ask for a Social Insurance Number, date of birth, banking details, or identity documents through this website. If a transaction reaches the stage where those are required, they are collected through the brokerage under separate paperwork, never through this site.</p>
+        <p>Please do not send sensitive information by email. Email is not a secure channel, and nothing on this site needs a SIN, an account number, or a scan of your identification to be useful to you.</p>
       </article>
 
       <article class="cs-policy__block" id="why">
-        <h2>Why I collect it</h2>
-        <p>To answer you. A valuation request is answered with a valuation. An enquiry is answered with a reply. A subscription is answered with the emails you subscribed to.</p>
-        <p>I do not sell your information, rent it, or trade it to lead-generation services.</p>
+        <h2>4 &middot; Why I collect it</h2>
+        <p>To answer you. A valuation request is answered with a valuation. An enquiry is answered with a reply. A subscription is answered with the emails you subscribed to. Where a conversation becomes a transaction, the same information is used to carry out the work you have engaged me for, and to meet the record-keeping obligations that come with it.</p>
+        <p><strong>I do not sell your personal information, rent it, or trade it to lead-generation services.</strong> It is not shared with advertisers, and there is no arrangement under which anyone pays for access to it.</p>
+        <p>Consent is how collection is justified here. Filling in a form is consent to be answered through it. You can withdraw consent at any time, subject to the records I am required to keep, which are described in section 12.</p>
       </article>
 
       <article class="cs-policy__block" id="listing-data">
-        <h2>Listing data</h2>
+        <h2>5 &middot; Listing data</h2>
         <p>Listing information on this site is provided by the Toronto Regional Real Estate Board and is deemed reliable but not guaranteed accurate. It is displayed under the terms of my board membership. Nothing you enter on this site is sent back to the board.</p>
-        {# CONFIRM: browser-only storage, or against an account #}
+        {# CONFIRM: browser-only storage, or against an account. If saved
+           searches ever move server-side, this paragraph becomes false
+           and section 3 needs a matching entry. #}
         <p>Saved searches and saved listings, if you use them, are stored in your browser only. Clearing your browser data removes them and I never see them.</p>
       </article>
 
+      {#
+        Rewritten to match /reviews/ as built. The earlier version
+        described an API feed with names withheld and no editorial
+        selection. The page hardcodes five reviews, chosen by hand, with
+        full reviewer names shown. This now says that.
+
+        CONFIRM — two open questions behind this section:
+        1. Deck slide 15 requires reviews to render from the live Google
+           feed with nothing copied into the codebase. The page departs
+           from that. Amend the deck or the page; do not leave the two
+           in disagreement.
+        2. Deck slide 32 holds names back, citing RECO. The page shows
+           them. This is a question for the brokerage's compliance
+           contact. If the names come off, the first paragraph below
+           reduces to role, municipality and year.
+      #}
       <article class="cs-policy__block" id="reviews">
-        <h2>Reviews</h2>
-        <p>Reviews shown on this site are published from my Google Business Profile through Google&rsquo;s API and are displayed as Google returns them. I do not retype, edit, or reorder them. Reviewer names are held back on this website; the originals are public and verifiable on Google. Google&rsquo;s own privacy terms govern the review you leave there.</p>
+        <h2>6 &middot; Reviews</h2>
+        <p>The reviews on this site are quoted from my Google Business Profile. Five are shown and I chose which five. The wording is reproduced as it was written &mdash; nothing is rewritten, corrected, or shortened, and where a review runs long the remainder sits behind a &ldquo;Read more&rdquo; control rather than being trimmed. Each one carries the reviewer&rsquo;s name and the month it was posted, exactly as it appears on Google.</p>
+        <p>The reviews page links to the full, unfiltered list at the source, so you can read everything on the profile including anything I have not quoted here. A review you leave on Google is public there by your own choice, and is governed by Google&rsquo;s terms rather than by this policy.</p>
+        <p>If you have written one of these and would rather it not appear on this site, email me and I will take it off the page. It stays on Google either way &mdash; that is yours to remove, not mine.</p>
       </article>
 
       {#
         CONFIRM — analytics not yet decided.
-        Publish exactly one of the two paragraphs below and delete the other.
-        Do not publish a claim that outruns what is actually installed.
+        Publish exactly one of the two paragraphs below and delete the
+        other. Do not publish a claim that outruns what is installed.
       #}
       <article class="cs-policy__block" id="cookies">
-        <h2>Cookies and analytics</h2>
-        <p>This site sets no advertising cookies and runs no third-party analytics. Nothing on this site follows you to another website.</p>
+        <h2>7 &middot; Cookies and analytics</h2>
+        <p>This site sets no advertising cookies and runs no third-party analytics. Nothing on this site follows you to another website. No profile is built about you from your browsing, and no automated system makes decisions about you.</p>
         {#
-        <p>This site uses [name the tools] to understand which pages are read and how people arrive. These tools set cookies and share information with [Google / Meta], who process it under their own terms. You can refuse these cookies through the banner or block them in your browser without losing access to any part of the site.</p>
+        <p>This site uses [name the tools] to understand which pages are read and how people arrive. These tools set cookies and share information with [Google / Meta], who process it under their own terms. You can refuse these cookies through the banner or block them in your browser without losing access to any part of the site. No automated system makes decisions about you on the basis of what they collect.</p>
         #}
       </article>
 
-      {# CONFIRM — mailing list not yet decided. If there is no list, remove the subscribe form from the site rather than publishing the second paragraph. #}
+      {# CONFIRM — mailing list not yet decided. If there is no list,
+         remove the subscribe form from the site rather than publishing
+         the second paragraph. #}
       <article class="cs-policy__block" id="email">
-        <h2>Email and text messages</h2>
-        <p>I email or call you because you asked me to. If you send an enquiry, my reply is a response to your request, not marketing.</p>
+        <h2>8 &middot; Email, calls, and texts</h2>
+        <p>I email, call, or text you because you asked me to. If you send an enquiry, my reply is a response to your request, not marketing.</p>
         <p>Subscribing is an express consent under Canada&rsquo;s anti-spam legislation. Every email carries an unsubscribe link that works within ten business days, and the sender address and mailing address appear in every message. Unsubscribing from the list does not affect a conversation already underway about a property.</p>
+        <p>Giving me your phone number is consent to be called or texted about what you asked about. That consent is separate from the mailing list and can be withdrawn on its own &mdash; say so in a reply, or tell me on the phone, and it stops. I do not make unsolicited marketing calls to numbers I have not been given directly.</p>
       </article>
 
-      {# CONFIRM — form handling not wired up. Name every service that touches a submission before launch. #}
+      {# CONFIRM — form handling not wired up. Name every service that
+         touches a submission before launch. A policy that says
+         "[CONFIRM]" in production is worse than no policy. #}
       <article class="cs-policy__block" id="sharing">
-        <h2>Who else sees your information</h2>
-        <p>Form submissions reach me through [CONFIRM &middot; email, CRM, or form service]. That provider processes the submission on my behalf and is not permitted to use it for its own purposes.</p>
-        <p>Beyond that, your information is shared only where a transaction requires it &mdash; with the brokerage, and with the lawyers, lenders, inspectors, or other parties you and I agree to involve &mdash; or where the law requires disclosure.</p>
+        <h2>9 &middot; Who else sees it</h2>
+        <p>Form submissions reach me through [CONFIRM &middot; email, CRM, or form service]. That provider processes the submission on my behalf, under contract, and is not permitted to use it for its own purposes.</p>
+        <p>Beyond that, your information is disclosed only in these circumstances:</p>
+        <dl class="cs-policy__list">
+          <dt>To the brokerage</dt>
+          <dd>Where a transaction requires it, or where the brokerage&rsquo;s obligations as a registrant require it.</dd>
+          <dt>To the people a deal needs</dt>
+          <dd>Lawyers, lenders, inspectors, and other parties you and I agree to involve.</dd>
+          <dt>Where the law requires it</dt>
+          <dd>To a court, a regulator, or a law enforcement agency acting under authority. I do not volunteer your information to anyone on request without that authority.</dd>
+        </dl>
       </article>
 
-      {# CONFIRM — depends on the section above. Delete this whole block if every provider stores in Canada. #}
+      {# CONFIRM — depends on section 9. Delete this whole block if every
+         provider stores in Canada. #}
       <article class="cs-policy__block" id="storage">
-        <h2>Where your information is stored</h2>
-        <p>Some of the services used to run this site store data on servers outside Canada, including in the United States. Where that is the case, your information may be accessible to courts and law enforcement in that country under its laws. If you would rather not have a form submission handled this way, phone or email me directly instead.</p>
+        <h2>10 &middot; Where it is stored</h2>
+        <p>Some of the services used to run this site store data on servers outside Canada, including in the United States. Where that is the case, your information is subject to the laws of that country, and courts or law enforcement there may be entitled to access it. If you would rather not have a form submission handled that way, phone or email me directly instead and it will not pass through those systems.</p>
+      </article>
+
+      <article class="cs-policy__block" id="security">
+        <h2>11 &middot; Security</h2>
+        <p>This site is served over an encrypted connection, and the services that handle submissions are chosen for their own security practices. Access to enquiries is limited to me and, where a transaction requires it, the brokerage.</p>
+        <p>No system is completely secure, and I would rather say that than imply otherwise. If you have reason to think a message you sent me has been intercepted, or you have found a problem with this site, tell me using the details in section 17 and I will look into it.</p>
       </article>
 
       {# CONFIRM — retention period is the brokerage's to specify. #}
       <article class="cs-policy__block" id="retention">
-        <h2>How long I keep it</h2>
+        <h2>12 &middot; How long I keep it</h2>
         <p>Enquiries that do not lead anywhere are kept for [CONFIRM &middot; defined period] and then deleted.</p>
-        <p>Records connected to a completed or attempted trade in real estate are retained for the period required of a registrant under Ontario&rsquo;s real estate legislation, which is longer, and I cannot delete those on request during that period.</p>
+        <p>Records connected to a completed or attempted trade in real estate are retained for the period required of a registrant under Ontario&rsquo;s real estate legislation, which is longer. I cannot delete those on request during that period, and I will tell you so rather than agreeing and quietly not doing it.</p>
         <p>Mailing list addresses are kept until you unsubscribe.</p>
       </article>
 
       <article class="cs-policy__block" id="your-choices">
-        <h2>Your choices</h2>
-        <p>You can ask me what information I hold about you, ask for a copy of it, ask me to correct it, or ask me to delete it where I am not required to keep it. You can withdraw consent to marketing at any time. Ask by email and I will respond within thirty days.</p>
-        <p>If you are not satisfied with how I have handled a privacy question, you can raise it with the Office of the Privacy Commissioner of Canada.</p>
+        <h2>13 &middot; Your rights and choices</h2>
+        <dl class="cs-policy__list">
+          <dt>Access</dt>
+          <dd>Ask what information I hold about you and ask for a copy of it.</dd>
+          <dt>Correction</dt>
+          <dd>Ask me to correct anything that is wrong or out of date.</dd>
+          <dt>Deletion</dt>
+          <dd>Ask me to delete it, where I am not required to keep it under section 12.</dd>
+          <dt>Withdrawing consent</dt>
+          <dd>Stop the mailing list, the calls, the texts, or all three, at any time and without explaining why.</dd>
+        </dl>
+        <p>Ask by email and I will respond within thirty days. There is no charge. If I cannot do what you have asked, I will tell you which of the reasons above applies.</p>
+        <p>If you are not satisfied with how I have handled a privacy question, raise it with the Office of the Privacy Commissioner of Canada, which oversees compliance with the legislation this policy is written under.</p>
+      </article>
+
+      <article class="cs-policy__block" id="minors">
+        <h2>14 &middot; Young people</h2>
+        <p>This site is meant for adults buying, selling, or holding property. It is not directed at children, and I do not knowingly collect personal information from anyone under sixteen. If you believe a young person has sent me information through this site, tell me and I will delete it.</p>
+      </article>
+
+      <article class="cs-policy__block" id="third-parties">
+        <h2>15 &middot; Other websites</h2>
+        <p>This site links out &mdash; to Google, to the board&rsquo;s listing data, to Instagram, and occasionally to a news article or a municipal page. Those sites have their own privacy practices and this policy does not cover them. A link is not an endorsement of how the other site handles your information.</p>
+      </article>
+
+      <article class="cs-policy__block" id="changes">
+        <h2>16 &middot; Changes to this policy</h2>
+        <p>The date at the top is the date this policy last changed. If the way information is handled here changes in a way that matters &mdash; a new analytics tool, a different form provider, a mailing list where there was none &mdash; this page changes with it, and the date moves. It is not backdated and old versions are not quietly overwritten in substance without the date reflecting it.</p>
       </article>
 
       <article class="cs-policy__block" id="contact">
-        <h2>Contact</h2>
-        <p>Jayden Kennedy, Broker</p>
+        <h2>17 &middot; Contact</h2>
+        <p>Jayden Kennedy, Broker &mdash; the person responsible for personal information collected through this site.</p>
         <p class="cs-policy__contact">
           <a href="mailto:jayden@soldbykennedy.ca">jayden@soldbykennedy.ca</a><br>
-          {# CONFIRM: deck footer shows (289) 943-7934, brand kit shows +905-723-5944. One number site-wide. #}
+          {# CONFIRM: deck footer shows (289) 943-7934, brand kit shows
+             +905-723-5944. One number site-wide, here and in the header,
+             the footer and the accessibility statement. #}
           <a href="tel:+12899437934">(289) 943-7934</a><br>
           285 Taunton Road East, Unit 1, Oshawa, ON L1G 3V2
         </p>
-        <p class="cs-policy__note">This policy is reviewed when the site changes. The date at the top is the date of the last change.</p>
+        <p class="cs-policy__note">Because email is not always secure, please do not include a Social Insurance Number, an account number, or identification documents in a message to me.</p>
       </article>
 
     </div>

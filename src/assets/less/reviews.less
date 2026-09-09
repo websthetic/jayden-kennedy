@@ -35,8 +35,8 @@
 <---            Grid            -->
 <--- -------------------------- -*/
 
-/* Cashmere panels, one green. No avatars and no star graphics — the
-   quote and its attribution line carry the whole card. */
+/* Cashmere panels, one green. No avatars — the quote, the rating and
+   the attribution line carry the card. */
 
 @media only screen and (min-width: 0rem) {
     #reviews-grid {
@@ -51,6 +51,258 @@
             display: grid;
             grid-template-columns: minmax(0, 1fr);
             gap: clamp(1rem, 2vw, 1.5rem);
+            /* Cards size to their own content. A stretched row would
+               balloon the sibling every time one card expands. */
+            align-items: start;
+            list-style: none;
+        }
+
+        .cs-item {
+            padding: clamp(1.75rem, 4vw, 2.5rem);
+            background-color: var(--paper-warm);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        /* The one green panel. .cs-on-dark inverts the type inside it —
+           see root.less. Note that .cs-on-dark only reaches elements that
+           inherit their colour; the stars and the button are given
+           explicit inverted values further down. */
+        .cs-item-feature {
+            background-color: var(--heritage-500);
+        }
+
+        /* Body copy, not display. The opening paragraph and the expanded
+           remainder have to read as one continuous review, and the
+           longest of the five runs to eight paragraphs — uppercase
+           Cinzel at --fs-h4 is unreadable at that length and contradicts
+           the review card on slide 15.
+           //! CONFIRM — token name for body size and line height. */
+        .cs-quote {
+            margin: 0;
+            font-family: var(--font-body);
+            font-size: var(--fs-body, 1rem);
+            line-height: 1.62;
+        }
+
+        .cs-rest {
+            margin-top: clamp(0.75rem, 1.5vw, 1rem);
+
+            p {
+                margin: 0 0 clamp(0.75rem, 1.5vw, 1rem);
+                font-family: var(--font-body);
+                font-size: var(--fs-body, 1rem);
+                line-height: 1.62;
+            }
+
+            p:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        /* Rating, attribution and button read as one block at the foot of
+           the card. The auto margin lives on the stars because they are
+           the first of the three. */
+        .cs-stars {
+            margin-top: auto;
+            padding-top: clamp(1.25rem, 2.5vw, 1.5rem);
+            font-size: var(--fs-eyebrow);
+            letter-spacing: 0.2em;
+            line-height: 1;
+        }
+
+        .cs-item:not(.cs-on-dark) .cs-stars {
+            color: var(--cocoa-500);
+        }
+
+        .cs-attribution {
+            margin-top: clamp(0.5rem, 1vw, 0.75rem);
+        }
+
+        .cs-item:not(.cs-on-dark) .cs-attribution {
+            color: var(--heritage-500);
+        }
+
+        /* The relative label is written by reviews.js. Inheriting keeps
+           it identical to the name beside it. */
+        .cs-attribution time {
+            color: inherit;
+        }
+
+        /* UA reset first — a bare <button> carries its own font,
+           background, border and colour, none of which inherit. The
+           colour is the one that bites: buttontext is a near-black
+           declaration, not an inherited value, so .cs-on-dark in
+           root.less never overrides it and the label goes dark on green.
+           inherit hands the button back to its container. */
+        .cs-more {
+            appearance: none;
+            -webkit-appearance: none;
+            background: none;
+            border: none;
+            border-bottom: 1px solid currentColor;
+            border-radius: 0;
+            padding: 0 0 0.2rem;
+            margin-top: clamp(0.75rem, 1.5vw, 1rem);
+            align-self: flex-start;
+            /* Deck minimum touch target. Padding, never a shrunk box. */
+            min-height: 44px;
+            display: inline-flex;
+            align-items: flex-end;
+            cursor: pointer;
+            color: inherit;
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            letter-spacing: var(--track-topper);
+            text-transform: uppercase;
+            opacity: 0.72;
+            transition: opacity var(--dur) var(--ease);
+        }
+
+        .cs-item:not(.cs-on-dark) .cs-more {
+            color: var(--cocoa-500);
+        }
+
+        /* Explicit inverted values rather than relying on .cs-on-dark to
+           reach a bare span and a button. Both sit under the
+           #reviews-grid ID so they outrank root.less, which is the point
+           here — the inverted colour is being supplied deliberately, not
+           left to fall through. */
+        .cs-item-feature .cs-stars,
+        .cs-item-feature .cs-more {
+            color: var(--ink-invert);
+        }
+
+        .cs-more:hover {
+            opacity: 1;
+        }
+
+        .cs-more:focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 4px;
+        }
+
+        .cs-label-less {
+            display: none;
+        }
+
+        .cs-item.cs-open .cs-label-more {
+            display: none;
+        }
+
+        .cs-item.cs-open .cs-label-less {
+            display: inline;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---       Grid · Tablet        -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 48rem) {
+    #reviews-grid {
+        .cs-card-group {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        /* Spans the pair rather than sitting in one column — it holds the
+           longest review and needs the width. */
+        .cs-item-feature {
+            grid-column: 1 / -1;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---      Expand · Motion       -->
+<--- -------------------------- -*/
+
+@media (prefers-reduced-motion: no-preference) {
+    #reviews-grid .cs-rest {
+        animation: cs-rest-in 0.22s var(--ease);
+    }
+
+    @keyframes cs-rest-in {
+        from {
+            opacity: 0;
+            transform: translateY(-3px);
+        }
+        to {
+            opacity: 1;
+            transform: none;
+        }
+    }
+}
+
+
+
+
+
+/*-- -------------------------- -->
+<---       Reveal Indices       -->
+<--- -------------------------- -*/
+
+/* File scope on purpose — every rule above sits inside a media query,
+   and these are unconditional. The mechanism lives in root.less. */
+
+#reviews-intro {
+    .cs-title {
+        --reveal-i: 0;
+    }
+
+    .cs-lede {
+        --reveal-i: 1;
+    }
+}
+
+/* Five cards at the standard 140ms step would run 700ms from first to
+   last, which is long enough to notice as a queue. The grid gets a
+   shorter step so the set lands as one movement. */
+#reviews-grid {
+    --reveal-step: 90ms;
+
+    .cs-item {
+        --reveal-i: 0;
+    }
+    .cs-item:nth-child(2) {
+        --reveal-i: 1;
+    }
+    .cs-item:nth-child(3) {
+        --reveal-i: 2;
+    }
+    .cs-item:nth-child(4) {
+        --reveal-i: 3;
+    }
+    .cs-item:nth-child(5) {
+        --reveal-i: 4;
+    }
+}
+
+/*-- -------------------------- -->
+<---            Grid            -->
+<--- -------------------------- -*/
+
+/* Cashmere panels, one green. No avatars — the quote, the rating and
+   the attribution line carry the card. */
+
+@media only screen and (min-width: 0rem) {
+    #reviews-grid {
+        padding: var(--section-padding);
+        padding-top: clamp(2.5rem, 6vw, 4rem);
+        background-color: var(--paper);
+
+        .cs-card-group {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr);
+            gap: clamp(1rem, 2vw, 1.5rem);
+            /* Cards size to their own content. A stretched row would
+               balloon the sibling every time one card expands. */
+            align-items: start;
             list-style: none;
         }
 
@@ -68,27 +320,117 @@
             background-color: var(--heritage-500);
         }
 
-        /* No colour declared here. body already sets --ink, and any
-           colour set under the #reviews-grid ID would outrank
-           .cs-on-dark p in root.less and leave the green panel's quote
-           cocoa on green. */
+        /* No colour declared on the bare class for any of these. Setting
+           one under the #reviews-grid ID outranks .cs-on-dark in
+           root.less and leaves the green panel's type cocoa on green.
+           Everything below is scoped off the feature card instead. */
+
+        /* Body copy, not display. The opening paragraph and the expanded
+           remainder have to read as one continuous review, and the
+           longest of the five runs to eight paragraphs — uppercase
+           Cinzel at --fs-h4 is unreadable at that length and contradicts
+           the review card on slide 15.
+           //! CONFIRM — token name for body size and line height. */
         .cs-quote {
-            margin: 0 0 clamp(1.5rem, 3.5vw, 2.25rem);
-            font-family: var(--font-display);
-            font-size: var(--fs-h4);
-            line-height: var(--lh-title);
-            letter-spacing: var(--track-title);
+            margin: 0;
+            font-family: var(--font-body);
+            font-size: var(--fs-body, 1rem);
+            line-height: 1.62;
         }
 
-        /* Scoped away from the feature panel rather than overridden after
-           it — green on green is invisible, and .cs-on-dark already
-           carries the inverted topper colour. */
+        .cs-rest {
+            margin-top: clamp(0.75rem, 1.5vw, 1rem);
+
+            p {
+                margin: 0 0 clamp(0.75rem, 1.5vw, 1rem);
+                font-family: var(--font-body);
+                font-size: var(--fs-body, 1rem);
+                line-height: 1.62;
+            }
+
+            p:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        /* Rating, attribution and button read as one block at the foot of
+           the card. The auto margin lives on the stars because they are
+           now the first of the three — moving it left it on
+           .cs-attribution would split the group. */
+        .cs-stars {
+            margin-top: auto;
+            padding-top: clamp(1.25rem, 2.5vw, 1.5rem);
+            font-size: var(--fs-eyebrow);
+            letter-spacing: 0.2em;
+            line-height: 1;
+        }
+
+        .cs-item:not(.cs-on-dark) .cs-stars {
+            color: var(--cocoa-500);
+        }
+
+        .cs-attribution {
+            margin-top: clamp(0.5rem, 1vw, 0.75rem);
+        }
+
         .cs-item:not(.cs-on-dark) .cs-attribution {
             color: var(--heritage-500);
         }
 
-        .cs-attribution {
-            margin-top: auto;
+        /* The relative label is written by reviews.js. Inheriting keeps
+           it identical to the name beside it. */
+        .cs-attribution time {
+            color: inherit;
+        }
+
+        /* UA reset first — a bare <button> carries its own font, colour,
+           background and border, none of which inherit. */
+        .cs-more {
+            appearance: none;
+            -webkit-appearance: none;
+            background: none;
+            border: none;
+            border-bottom: 1px solid currentColor;
+            border-radius: 0;
+            padding: 0 0 0.2rem;
+            margin-top: clamp(0.75rem, 1.5vw, 1rem);
+            align-self: flex-start;
+            /* Deck minimum touch target. Padding, never a shrunk box. */
+            min-height: 44px;
+            display: inline-flex;
+            align-items: flex-end;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: var(--fs-eyebrow);
+            letter-spacing: var(--track-topper);
+            text-transform: uppercase;
+            opacity: 0.72;
+            transition: opacity var(--dur) var(--ease);
+        }
+
+        .cs-item:not(.cs-on-dark) .cs-more {
+            color: var(--cocoa-500);
+        }
+
+        .cs-more:hover {
+            opacity: 1;
+        }
+
+        .cs-more:focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 4px;
+        }
+
+        .cs-label-less {
+            display: none;
+        }
+
+        .cs-item.cs-open .cs-label-more {
+            display: none;
+        }
+
+        .cs-item.cs-open .cs-label-less {
+            display: inline;
         }
     }
 }
@@ -104,9 +446,30 @@
         }
 
         /* Spans the pair rather than sitting in one column — it holds the
-           longest quote and needs the width. */
+           longest review and needs the width. */
         .cs-item-feature {
             grid-column: 1 / -1;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---      Expand · Motion       -->
+<--- -------------------------- -*/
+
+@media (prefers-reduced-motion: no-preference) {
+    #reviews-grid .cs-rest {
+        animation: cs-rest-in 0.22s var(--ease);
+    }
+
+    @keyframes cs-rest-in {
+        from {
+            opacity: 0;
+            transform: translateY(-3px);
+        }
+        to {
+            opacity: 1;
+            transform: none;
         }
     }
 }
@@ -123,16 +486,12 @@
    and these are unconditional. The mechanism lives in root.less. */
 
 #reviews-intro {
-    .cs-topper {
+    .cs-title {
         --reveal-i: 0;
     }
 
-    .cs-title {
-        --reveal-i: 1;
-    }
-
     .cs-lede {
-        --reveal-i: 2;
+        --reveal-i: 1;
     }
 }
 

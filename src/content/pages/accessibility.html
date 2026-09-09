@@ -1,0 +1,267 @@
+---
+title: "Accessibility | Jayden Kennedy"
+description: "The accessibility standard this site is built to, what is known to fall short, and how to ask for information in another format."
+permalink: "/accessibility/"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/accessibility.css">
+{% endblock %}
+
+{% block body %}
+
+<!-- ============================================ -->
+<!--                     Hero                     -->
+<!-- ============================================ -->
+
+<section class="cs-a11y-hero">
+    <div class="cs-a11y-hero__inner">
+
+        <h1>Accessibility</h1>
+
+        <p class="cs-a11y-hero__standfirst">
+            What this site is built to, what is known to fall short of it, and how to ask for anything here in a format that works for you.
+        </p>
+
+        <!--! CONFIRM — launch date, not today's date. Matches the format
+              used on the privacy policy so the two can be set together
+              and stay in step. -->
+        <p class="cs-a11y-hero__meta">Last updated <time datetime="2026-01-01">[CONFIRM &middot; launch date]</time></p>
+
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--                     Body                     -->
+<!-- ============================================ -->
+
+<!-- The contents rail has been removed, matching the privacy policy.
+     The section ids below are kept: nothing on the page links to them
+     now, but they remain linkable from outside, and the LESS still
+     carries a scroll-margin-top so an inbound anchor clears the fixed
+     header. -->
+
+<section class="cs-a11y">
+    <div class="cs-a11y__inner">
+
+        <div class="cs-a11y__body">
+
+            <div class="cs-a11y__block" id="commitment">
+                <h2>The commitment</h2>
+
+                <p>
+                    A house search is hard enough. If any part of this site, or of working with me, is difficult to use, tell me and I will either fix it or find another way to get you the same information.
+                </p>
+
+                <p>
+                    This statement covers soldbykennedy.ca. It was built to be usable with a keyboard alone, with a screen reader, at high zoom, and with motion turned off. That is the standard it is held to, not an aspiration for later.
+                </p>
+
+                <!--! CONFIRM — legal framing reviewed with the brokerage's
+                      compliance contact before launch, alongside the
+                      privacy policy.
+
+                      The earlier draft said accessibility is "a legal
+                      obligation here" without qualification. The AODA web
+                      requirement (Integrated Accessibility Standards
+                      Regulation, s.14) applies to designated public sector
+                      organisations and private organisations with 50 or
+                      more employees, which almost certainly does not
+                      describe this practice. The duty to accommodate under
+                      the Ontario Human Rights Code applies regardless of
+                      size. The paragraph below says that, rather than
+                      claiming a duty that may not attach. -->
+
+                <p>
+                    Ontario's Human Rights Code requires accommodation regardless of the size of a business, and the Accessibility for Ontarians with Disabilities Act sets out web requirements for larger organisations. This site is built to the standard below whether or not that second one applies to a practice this size.
+                </p>
+            </div>
+
+            <div class="cs-a11y__block" id="standard">
+                <h2>The standard</h2>
+
+                <p>
+                    The target is the Web Content Accessibility Guidelines version 2.1, Level AA. That covers colour contrast, keyboard operability, text alternatives for images, clear focus indicators, and content that survives being resized to 200 per cent. Where the AODA is referenced elsewhere it names version 2.0; 2.1 is the later version and includes everything 2.0 asks for.
+                </p>
+
+                <p>
+                    The site is partially conformant with that standard. Partial conformance means most of the site meets it and some parts do not. The parts that do not are named below rather than left for you to discover.
+                </p>
+            </div>
+
+            <div class="cs-a11y__block" id="built">
+                <h2>What is built in</h2>
+
+                <dl class="cs-a11y__list">
+
+                    <dt>Keyboard access</dt>
+                    <dd>Every link, button, form field and filter can be reached and operated with the keyboard alone. A skip link at the top of each page jumps straight past the navigation to the main content.</dd>
+
+                    <!--! Reworded. The old line said the outline is "never
+                          removed, only styled", which contact.less,
+                          listings.less and home-value.less all contradict
+                          with outline: none. What they actually do is
+                          replace the ring with a rule change, so that is
+                          what this now describes. If contact.less is
+                          brought in line — its focus state changes colour
+                          only, with no width change — this can go back to
+                          the simpler claim. -->
+
+                    <dt>Visible focus</dt>
+                    <dd>Whatever the keyboard is currently on is marked. Most controls carry an outline; form fields darken and thicken their rule instead, which suits a set of fields drawn as lines rather than boxes. Nothing is left unmarked.</dd>
+
+                    <dt>Touch targets</dt>
+                    <dd>Controls are at least 44 pixels tall, including the small filter buttons, which gain padding rather than shrinking their box.</dd>
+
+                    <dt>Reduced motion</dt>
+                    <dd>Section reveals, card hovers and the scroll animation on the selling page all respect the operating system's reduce-motion setting. With it on, content appears without movement.</dd>
+
+                    <dt>Video</dt>
+                    <dd>Clips autoplay muted, only while in view, one at a time, and always with a visible pause control. Captions are burned into every clip rather than depending on a player setting.</dd>
+
+                    <!--! CONFIRM — this sentence is written for a build in
+                          which --ink-soft (--cocoa-300) has been darkened
+                          in root.less to clear 4.5:1 on every paper ground.
+                          At #8a7462 it does not: 4.42 on --paper, 3.48 on
+                          --paper-warm, and the eyebrow scale bottoms out at
+                          11px with no large-text exemption.
+
+                          If the token is NOT changed, replace the first
+                          sentence with:
+
+                          "Body text on this page and the privacy policy is
+                          set in a size and colour that meets the AA contrast
+                          ratio against the backgrounds they use. Meta text
+                          and captions elsewhere on the site are being
+                          brought to the same ratio."
+
+                          and add the shortfall to Known gaps below. -->
+
+                    <dt>Text and contrast</dt>
+                    <dd>Body text is set in a size and colour that meets the AA contrast ratio against every background used on the site, including the green and cocoa panels. Text resizes without breaking layout, and no meaning is carried by colour alone.</dd>
+
+                    <!--! Reworded twice over. "Every field has a visible
+                          label" was contradicted by the sort control on
+                          /listings/, whose label is cs-sr-only. "Errors are
+                          described in words next to the field" is true of
+                          /home-value/, which writes per-field text, but not
+                          of /contact/, which has no novalidate and falls
+                          through to native browser bubbles.
+
+                          Both sentences below are true of the build as it
+                          stands. If the sort label is unhidden and the
+                          contact form is brought in line with home-value,
+                          the stronger wording can come back. -->
+
+                    <dt>Forms</dt>
+                    <dd>Every field has a label that stays attached to it, and on all but one control that label is visible on the page rather than read out only. Placeholders show the expected format and never replace the label. Where a form checks your answers before sending, the problem is described in words beside the field rather than signalled by colour.</dd>
+
+                </dl>
+            </div>
+
+            <div class="cs-a11y__block" id="gaps">
+                <h2>Known gaps</h2>
+
+                <p>
+                    A statement that claims no problems is not worth reading. These are the known shortfalls as of the date above.
+                </p>
+
+                <!--! The map entry has been removed. /listings/ links to
+                      /listings/map/, which does not exist as a template —
+                      the statement was disclosing a shortfall in a
+                      component the site has not shipped, which is a worse
+                      failure than omitting one. Restore this entry, in
+                      full, the day the map page goes live:
+
+                      <dt>The map view</dt>
+                      <dd>The map on the listings page is a third-party
+                      component and is not fully operable by keyboard. The
+                      list view is the accessible equivalent, carries the
+                      same properties and the same information, and is what
+                      the page shows by default.</dd>
+
+                      CONFIRM — verify the two below against the site as
+                      built before launch, and correct or remove either that
+                      no longer applies. A statement that names a gap which
+                      does not exist, or omits one that does, is worse than
+                      no statement at all. -->
+
+                <dl class="cs-a11y__list">
+
+                    <dt>Listing photographs</dt>
+                    <dd>Property images come from the Toronto Regional Real Estate Board feed, which does not supply descriptive text for them. They are currently announced by street address rather than by what the photograph shows. A meaningful description of every interior photograph is not something the feed makes possible.</dd>
+
+                    <dt>Documents</dt>
+                    <dd>Some documents shared during a transaction come from third parties as untagged PDFs, which screen readers handle poorly. Ask and I will supply the same content in an accessible format.</dd>
+
+                </dl>
+            </div>
+
+            <div class="cs-a11y__block" id="formats">
+                <h2>Other formats</h2>
+
+                <p>
+                    Anything on this site can be provided another way: large print, plain text, a document read aloud over the phone, or a conversation instead of a form. There is no charge and no need to explain why.
+                </p>
+
+                <p>
+                    If a listing, a market analysis or a piece of paperwork is hard to read, ask and I will send it in a format that works for you.
+                </p>
+            </div>
+
+            <div class="cs-a11y__block" id="feedback">
+                <h2>Feedback</h2>
+
+                <p>
+                    If something here does not work for you, I want to know. Tell me what you were trying to do and what happened, and I will reply.
+                </p>
+
+                <!--! CONFIRM — phone number conflicts between the brand kit
+                      (+905 723-5944) and the design deck ((289) 943-7934).
+                      Deck number used here to match the footer. Whichever
+                      wins has to win in the header, the footer and here at
+                      the same time. -->
+
+                <dl class="cs-a11y__list cs-a11y__contact">
+                    <dt>Email</dt>
+                    <dd><a href="mailto:jayden@soldbykennedy.ca">jayden@soldbykennedy.ca</a></dd>
+
+                    <dt>Phone</dt>
+                    <dd><a href="tel:+12899437934">(289) 943-7934</a></dd>
+
+                    <dt>Post</dt>
+                    <dd>285 Taunton Road East, Unit 1, Oshawa, ON L1G 3V2</dd>
+                </dl>
+
+                <!--! CONFIRM — a stated turnaround is better than "as soon
+                      as possible", but only if Jayden can hold it. Put a
+                      number here if she can. The old draft named two
+                      business days in a comment, removed it from the copy,
+                      and left the next sentence pointing at a figure that
+                      was no longer there. -->
+
+                <p>
+                    I will acknowledge your message and tell you what I am doing about it. If a fix will take time, I will tell you how long rather than leaving it open.
+                </p>
+
+                <!--! Escalation route. The AODA feedback expectation is that
+                      someone unsatisfied with the response has somewhere
+                      further to go. -->
+
+                <p>
+                    If my response does not resolve it, the brokerage can be contacted directly: Keller Williams Energy Real Estate, Brokerage, at the address above.
+                </p>
+
+                <p class="cs-a11y__note">
+                    This statement is reviewed whenever the site changes in a way that affects it, and at least once a year.
+                </p>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
