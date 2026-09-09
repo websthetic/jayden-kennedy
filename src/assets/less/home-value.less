@@ -144,10 +144,16 @@
 
         /* ---- Panel ---- */
 
+        /* scroll-margin-top is the header offset for the step-change
+           scroll in the page script. The script calls scrollIntoView on
+           this element and takes the offset from here rather than
+           carrying a pixel value of its own, so the header height and
+           the offset stay in one place. */
         .cs-panel {
             background-color: var(--paper);
             border: 1px solid var(--rule);
             padding: clamp(2rem, 5vw, 3.5rem);
+            scroll-margin-top: clamp(6rem, 11vw, 8.5rem);
         }
 
         /* ---- Stepper ---- */
@@ -380,9 +386,10 @@
            display: none is the fix asked for and the right one. It is
            also the most common honeypot technique precisely because
            most form bots read the DOM and fill every input regardless
-           of how it is painted. The server-side check in
-           netlify/functions/home-valuation.js is the actual defence;
-           this is a cheap first filter, not the wall. */
+           of how it is painted. Netlify is told about this field via
+           data-netlify-honeypot on the form and discards a filled
+           submission server side; this is a cheap first filter, not
+           the wall. */
         .cs-trap {
             display: none;
         }
@@ -407,23 +414,32 @@
 
         /* ---- Step three handoff ---- */
 
-        /* The line that introduces the search link. Separated from the
-           confirmation above it by a rule, so the handoff reads as a
-           second thing being offered rather than as more confirmation
-           text. */
+        /* The line that carries the countdown. Separated from the
+           confirmation above it by a rule, so it reads as a second
+           thing being told rather than as more confirmation text. It is
+           the last element in the panel — the search opens in a new tab
+           when the count reaches zero.
+
+           The anchor only appears if the browser blocked that tab, in
+           which case the script rewrites this line into a link. */
         .cs-step-handoff {
-            margin-block: clamp(1.5rem, 3vw, 2rem) clamp(1.25rem, 2.5vw, 1.75rem);
+            margin-block: clamp(1.5rem, 3vw, 2rem) 0;
             padding-block-start: clamp(1.5rem, 3vw, 2rem);
             border-block-start: 1px solid var(--rule);
             max-width: 44ch;
-        }
 
-        /* The search link is an <a>, not a <button>, so it does not need
-           the button reset above — but it does sit at the bottom of the
-           panel with nothing under it, and without this it hugs the
-           paragraph. */
-        .cs-step[data-step="3"] .cs-button-script {
-            margin-block-start: 0;
+            a {
+                color: var(--ink);
+                text-decoration: none;
+                border-block-end: 1px solid var(--rule-strong);
+                padding-block-end: 0.125rem;
+                transition: border-color var(--dur) var(--ease);
+
+                &:hover,
+                &:focus-visible {
+                    border-block-end-color: var(--cocoa-900);
+                }
+            }
         }
     }
 }
