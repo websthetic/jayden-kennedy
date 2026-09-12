@@ -65,19 +65,18 @@
             list-style: none;
         }
 
+           
         .cs-review-link {
-    color: inherit;
-    text-decoration: none;
-    border-bottom: 1px solid currentColor;
-    padding-bottom: 0.15em;
-    opacity: 0.9;
-    transition: opacity var(--dur) var(--ease);
+            color: inherit;
+            text-decoration: none;
+            opacity: 0.9;
+            transition: opacity var(--dur) var(--ease);
 
-    &:hover,
-    &:focus-visible {
-        opacity: 1;
-    }
-}
+            &:hover,
+            &:focus-visible {
+                opacity: 1;
+            }
+        }
 
         .cs-item {
             padding: clamp(1.75rem, 4vw, 2.5rem);
@@ -85,6 +84,13 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            /* Each card is a fragment target — the homepage teaser links
+               here as /reviews/#<slug> rather than expanding in place.
+               The header is fixed, so a bare anchor jump would put the
+               card's first line underneath it. Header height plus air.
+               Applies to the native jump and to the scrollIntoView call
+               reviews.js makes after opening the card. */
+            scroll-margin-top: clamp(6rem, 10vw, 8rem);
         }
 
         /* The one green panel. .cs-on-dark inverts the type inside it —
@@ -278,7 +284,12 @@
 
 /* No JS: the remainder can never be opened, because the button that
    opens it does nothing. Show it. A review cut off at one paragraph
-   with a dead control under it is worse than a long card. */
+   with a dead control under it is worse than a long card.
+
+   This also covers the fragment case with JS off: reviews.js is what
+   opens a linked card, but with every card already open the link still
+   lands on the right review — the browser's own anchor jump does the
+   rest. */
 html:not(.js) #reviews-grid {
     .cs-rest {
         grid-template-rows: 1fr;

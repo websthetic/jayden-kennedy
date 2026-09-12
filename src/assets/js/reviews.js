@@ -1,4 +1,5 @@
-/* Reviews page — relative dates, expand/collapse, card levelling.
+/* Reviews page — relative dates, expand/collapse, card levelling,
+   fragment landings from the homepage.
    Loaded deferred from reviews.html. Nothing inline: an inline copy of
    any of this would redeclare the same consts and fail silently. */
 
@@ -107,6 +108,74 @@
     }
 
     /* ---------------------------------------------
+       Fragment landings
+
+       The homepage teaser links here as
+       /reviews/#<slug>, where the slug is the id on
+       the matching .cs-item. Arriving on one of
+       those should show the whole review, not the
+       opening paragraph with a Read more under it —
+       the reader already pressed the equivalent of
+       that button on the previous page.
+
+       Opening is a class flip, same as a click. The
+       scroll is separate and has to come after,
+       because the browser resolves the fragment
+       against the CLOSED height: by the time the
+       card has expanded, the position it jumped to
+       is stale. scroll-margin-top on .cs-item keeps
+       both the native jump and this one clear of
+       the fixed header.
+    --------------------------------------------- */
+
+    function cardFromHash() {
+        var hash = window.location.hash;
+        if (!hash || hash.length < 2) return null;
+
+        var target;
+        /* A hash can be any string — "#" plus a stray character throws
+           in querySelector. Fall back to getElementById, which never
+           does. */
+        try {
+            target = grid.querySelector(hash);
+        } catch (e) {
+            target = document.getElementById(hash.slice(1));
+        }
+
+        if (!target || !target.classList.contains("cs-item")) return null;
+        return target;
+    }
+
+    function openCard(card, scroll) {
+        if (!card) return;
+
+        if (!card.classList.contains("cs-open")) {
+            card.classList.add("cs-open");
+            var button = card.querySelector(".cs-more");
+            if (button) button.setAttribute("aria-expanded", "true");
+        }
+
+        if (!scroll) return;
+
+        /* Re-measure after the class flip, and after level() below has
+           cleared the min-height on the opened card. Two frames is
+           enough — the height transition is still running, but
+           scroll-margin-top is measured from the element's top edge,
+           which does not move as it grows downward. */
+        requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+                card.scrollIntoView({ block: "start", behavior: "auto" });
+            });
+        });
+    }
+
+    /* On load, and again if the hash changes while the page is open —
+       an in-page link or the back button after one. */
+    window.addEventListener("hashchange", function () {
+        openCard(cardFromHash(), true);
+    });
+
+    /* ---------------------------------------------
        Card levelling
        The four cashmere cards share one collapsed
        height, set by the tallest opening. A fixed em
@@ -157,5 +226,11 @@
         document.fonts.ready.then(level);
     }
 
+    /* Order matters: open first so level() measures the arriving card as
+       open and leaves it out of the floor, then scroll to where it
+       actually ended up. */
+    var landing = cardFromHash();
+    openCard(landing, false);
     level();
+    openCard(landing, true);
 })();

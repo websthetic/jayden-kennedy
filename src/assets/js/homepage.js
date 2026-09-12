@@ -234,12 +234,17 @@ if (hero) {
 
 
 /*-- -------------------------- -->
-<---   Reviews: dates, expand   -->
+<---     Reviews: dates only    -->
 <--- -------------------------- -*/
 
-/* Homepage twin of reviews.js, scoped to #reviews. Three jobs: rewrite
-   the absolute dates to Google's relative phrasing, toggle the expand
-   state, and hold the closed cards to one height.
+/* Homepage twin of reviews.js, scoped to #reviews. Two jobs now:
+   rewrite the absolute dates to Google's relative phrasing, and hold
+   the cards to one height.
+
+   The expand/collapse handler is gone. The per-card control is a link
+   to /reviews/#<slug>; reviews.js opens the targeted card on arrival.
+   Nothing on this page toggles .cs-open any more, and the markup has no
+   .cs-rest to toggle.
 
    //! CONFIRM — relativeLabel below is a verbatim copy of the one in
    //! reviews.js, rounding rules included. Two copies will drift the
@@ -301,66 +306,16 @@ if (hero) {
     });
 
     /* ---------------------------------------------
-       Expand and collapse
-
-       CSS owns both states — height, fade and the
-       visibility flip all hang off .cs-open in
-       local.less. This only toggles the class and
-       keeps aria-expanded honest, so no duration
-       is written down twice.
+       Card levelling
+       .cs-cards is align-items: start, so the closed
+       row is ragged — the three leads are one, three
+       and four lines. A measured floor squares them
+       back up. A fixed em value would only hold
+       until the copy changed.
     --------------------------------------------- */
 
     const cards = Array.from(section.querySelectorAll(".cs-card"));
-
-    cards.forEach(function (card, i) {
-        const button = card.querySelector(".cs-read");
-        const rest = card.querySelector(".cs-rest");
-        if (!button || !rest) return;
-
-        /* A card with no remainder gets no control. This is why the
-           buttons were absent before the .cs-rest blocks were filled
-           in — not a styling problem. */
-        if (!rest.textContent.trim()) {
-            button.remove();
-            return;
-        }
-
-        /* Wired here so the ids in the markup cannot drift away from the
-           buttons pointing at them. */
-        if (!rest.id) rest.id = "home-rest-" + (i + 1);
-        button.setAttribute("aria-controls", rest.id);
-        button.setAttribute("aria-expanded", "false");
-
-        button.addEventListener("click", function () {
-            const open = card.classList.toggle("cs-open");
-            button.setAttribute("aria-expanded", String(open));
-
-            /* Collapsing a long card pulls the page up under the reader
-               — Rosh's review is taller than most screens, so the button
-               just pressed can end up well above the fold. If that
-               happens, put the card back in view. */
-            if (open) return;
-            if (card.getBoundingClientRect().top < 0) {
-                card.scrollIntoView({
-                    block: "start",
-                    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-                        ? "auto"
-                        : "smooth",
-                });
-            }
-        });
-    });
-
-    /* ---------------------------------------------
-       Card levelling
-       .cs-cards is align-items: start so an open
-       card cannot drag its siblings taller. That
-       leaves the closed row ragged, since the three
-       leads are one, three and four lines. A
-       measured floor squares them back up. A fixed
-       em value would only hold until the copy
-       changed.
-    --------------------------------------------- */
+    if (!cards.length) return;
 
     function level() {
         cards.forEach(function (card) {
@@ -369,9 +324,7 @@ if (hero) {
 
         let tallest = 0;
         cards.forEach(function (card) {
-            if (!card.classList.contains("cs-open")) {
-                tallest = Math.max(tallest, card.offsetHeight);
-            }
+            tallest = Math.max(tallest, card.offsetHeight);
         });
 
         if (!tallest) return;

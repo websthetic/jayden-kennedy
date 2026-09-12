@@ -165,26 +165,19 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 <!--! Content is the first three cards from /reviews/, in the same order:
       Vesta Mourato, Hailey Kinnear, Rosh.
 
-      Quotes, splits, hrefs and dates are now taken from /reviews/ rather
-      than restated here, so the two pages cannot drift. The split is by
-      whole paragraph, same rule as that page.
+      Each card shows the reviewer's opening paragraph only. The control
+      is a LINK to that reviewer's card on /reviews/, not an expander —
+      href="/reviews/#<slug>" where the slug is the id on the matching
+      <li class="cs-item"> over there. reviews.js opens the targeted
+      card on arrival. If a slug is renamed on one page it must be
+      renamed on the other; there is no build-time check.
 
-      //! CONFIRM — Hailey's lead is now the full first paragraph, which
-      //! runs about 267 characters against the 240 on deck slide 15. The
-      //! homepage previously cut it after "provinces." to stay inside
-      //! the limit. To restore that cut, move the final sentence — "The
-      //! minute Jayden stepped in, an enormous weight lifted off our
-      //! shoulders." — out of the lead and into the top of her .cs-rest
-      //! as its own paragraph. That buys the limit at the cost of a
-      //! paragraph break the reviewer did not write, and of the two
-      //! pages showing different opening text.
-
-      //! CONFIRM — Rosh's remainder is the full eight paragraphs, as on
-      //! /reviews/. Open on desktop it is several screens tall inside a
-      //! three-card row. If that is too much for a homepage teaser, the
-      //! answer is to drop his card here for a shorter review (Royston
-      //! Simon or Sounia Yosufi) rather than to trim his — trimming puts
-      //! the section back to quoting a partial sentence.
+      The remainder paragraphs that used to sit in .cs-rest here are
+      gone. Two consequences, both wanted: the 240-character question on
+      Hailey's lead no longer applies (nothing is being truncated to
+      meet a card limit — the lead is her whole first paragraph, same as
+      /reviews/), and Rosh's eight paragraphs are no longer a homepage
+      layout problem, so his card can stay in the teaser row.
 
       Dates: each <time> holds an absolute date and prints the month as
       its fallback. homepage.js rewrites it to Google's relative phrasing
@@ -223,18 +216,9 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 
                 <blockquote class="cs-quote">
                     <p class="cs-quote-lead">We couldn't have asked for a better realtor. We've bought and sold homes with several different realtors over the last 3 years, and she was by far the best we've ever worked with &mdash; truly a 12/10 experience from start to finish.</p>
-
-                    <div class="cs-rest" id="home-rest-1">
-                        <div class="cs-rest__inner">
-                            <p>She was knowledgeable, responsive, honest, and always made us feel like a priority throughout the entire process. No question ever went unanswered, and she went above and beyond to work around our schedule and hectic moving situation to make buying our home as smooth and stress-free as possible.</p>
-                            <p>Her attention to detail, professionalism, and genuine care for her clients really set her apart. We are so grateful for all of her hard work and would recommend her to absolutely anyone looking to buy or sell a home.</p>
-                        </div>
-                    </div>
                 </blockquote>
 
-                <button class="cs-read" type="button" aria-expanded="false" aria-controls="home-rest-1">
-                    <span class="cs-label-more">Read more</span><span class="cs-label-less">Read less</span>
-                </button>
+                <a class="cs-read" href="/reviews/#vesta-mourato">Read the full review</a>
 
                 <div class="cs-attrib">
                     <span class="cs-stars" role="img" aria-label="Five out of five stars">
@@ -253,19 +237,9 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 
                 <blockquote class="cs-quote">
                     <p class="cs-quote-lead">I can't even begin to put into words how grateful we are for Jayden. From the moment we found out we were moving, the stress hit hard. We had a small window to sell, buy, and move across provinces. The minute Jayden stepped in, an enormous weight lifted off our shoulders.</p>
-
-                    <div class="cs-rest" id="home-rest-2">
-                        <div class="cs-rest__inner">
-                            <p>She is an absolute dynamo in her business. Jayden gave us a short (and honestly, crazy!) timeline to get our home ready, and she did everything to support us through it. She helped coordinate touch-ups, cleaning, staging all the little things that make a huge difference. She had our home looking absolutely beautiful.</p>
-                            <p>Within two weeks she had our house listed, hosted an open house, and it sold within a week. Her communication, negotiation skills, professionalism, and genuine kindness are top-notch. She never once made us feel like just another client; she truly cared about our family and our outcome.</p>
-                            <p>We are so incredibly grateful for her, her generosity, and the time she poured into us. If you are looking for a realtor who knows her stuff, goes above and beyond, and genuinely cares while getting the job DONE &mdash; she is the one for your family.</p>
-                        </div>
-                    </div>
                 </blockquote>
 
-                <button class="cs-read" type="button" aria-expanded="false" aria-controls="home-rest-2">
-                    <span class="cs-label-more">Read more</span><span class="cs-label-less">Read less</span>
-                </button>
+                <a class="cs-read" href="/reviews/#hailey-kinnear">Read the full review</a>
 
                 <div class="cs-attrib">
                     <span class="cs-stars" role="img" aria-label="Five out of five stars">
@@ -284,24 +258,9 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 
                 <blockquote class="cs-quote">
                     <p class="cs-quote-lead">As first-time homebuyers, we honestly believed purchasing a home was a distant dream, until we worked with Jayden.</p>
-
-                    <div class="cs-rest" id="home-rest-3">
-                        <div class="cs-rest__inner">
-                            <p>We first came across Jayden through Instagram, but our real introduction to her professionalism happened two years ago when we attended an in-person workshop she organized. That session was incredibly informative and gave us a clear, realistic understanding of the entire homebuying process. More importantly, Jayden helped us realize that we weren't ready yet and instead of pushing us to buy, she encouraged us to take the time to prepare properly. That level of honesty and integrity left a lasting impression, and when we eventually found ourselves considering a purchase, there was no question about who we wanted to work with.</p>
-                            <p>When we started casually attending showings, our needs were far from fixed. What began as an interest in a condo evolved into a townhouse, and eventually a detached home. Throughout these shifts Jayden remained patient, adaptable, and incredibly thoughtful. She asked the right questions, helped us make sense of what truly mattered, and guided us through each change without pressure or frustration.</p>
-                            <p>Her responsiveness is unmatched. Calls were answered immediately, messages were replied to almost instantly, and she always made time for us. She showed up every single time with a positive attitude, prepared, informed, and ready to advocate for us.</p>
-                            <p>During showings, she asked seller agents the right questions, flagged things we wouldn't have noticed, and was always transparent about what worked in our favour and what didn't. When it came time to make an offer, she guided us on the right conditions to protect us, and her strategy worked exactly as intended.</p>
-                            <p>One moment that really stood out was when Jayden was on vacation when we decided to submit an offer on the home. Despite the tight timeline, she went out of her way to ensure our offer was submitted properly and on time, without us ever feeling stressed or unsupported.</p>
-                            <p>Throughout the entire process, Jayden was honest, never sales-driven, and always acted in our best interest. She made us feel confident, informed, educated, and fully supported, which is invaluable, especially as first-time buyers.</p>
-                            <p>Jayden is incredibly knowledgeable, thoughtful, and truly made for this profession. We would recommend her without hesitation to anyone, especially first-time homebuyers. She doesn't just do her job, she excels at it.</p>
-                            <p>What started as casual browsing turned into purchasing our first home, something we didn't think was possible at this stage. We are incredibly grateful to Jayden for guiding us through that journey with patience, expertise, and genuine care. Jayden, you're a GEM.</p>
-                        </div>
-                    </div>
                 </blockquote>
 
-                <button class="cs-read" type="button" aria-expanded="false" aria-controls="home-rest-3">
-                    <span class="cs-label-more">Read more</span><span class="cs-label-less">Read less</span>
-                </button>
+                <a class="cs-read" href="/reviews/#rosh">Read the full review</a>
 
                 <div class="cs-attrib">
                     <span class="cs-stars" role="img" aria-label="Five out of five stars">
@@ -327,9 +286,9 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 
              NOTE — .cs-more is this link on the homepage and the Read
              more BUTTON on /reviews/. Same class name, two different
-             elements, two different stylesheets. The homepage button is
-             .cs-read for exactly that reason; do not "tidy" the two into
-             one name without renaming this link first. -->
+             elements, two different stylesheets. The per-card link above
+             is .cs-read for exactly that reason; do not "tidy" the two
+             into one name without renaming this link first. -->
         <a href="/reviews/" class="cs-button-script cs-more cs-reveal">Read all Google reviews</a>
     </div>
 </section>

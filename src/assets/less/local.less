@@ -455,22 +455,21 @@
    (Not assets/less/reviews.less — that file styles the standalone
    /reviews/ page and is untouched by this.)
 
-   !! Two things this reverses, both deliberate decisions you may want
-      to re-check before it ships:
+   !! Expand/collapse is gone from this section. The per-card control is
+      now a LINK to /reviews/#<slug> and the remainder paragraphs are no
+      longer in the homepage markup. Everything that supported the
+      accordion — .cs-rest, .cs-rest__inner, .cs-open, the label swap,
+      the html:not(.js) fallback and the reduced-motion override — has
+      been removed with it. /reviews/ still expands in place; that file
+      is unchanged.
 
-      Revision 1 set the section link as READ ALL GOOGLE REVIEWS —
-      uppercase, weight 600, 0.12em tracking, no underline — and names
-      it as a flagged one-off exception to the lowercase call-to-action
-      rule. Rosemartin forces lowercase, so that exception is spent.
+   !! Still open from revision 1: the controls spec allows one Rosemartin
+      per page and the homepage already uses it on #finder's search
+      submit. The section link at the foot makes two. If both stay, the
+      face is a second body style rather than an accent.
 
-      The controls spec allows one Rosemartin per page and the homepage
-      already uses it on #finder's search submit. This makes two. If
-      both stay, the face is a second body style rather than an accent.
-
-   !! Expand/collapse mirrors reviews.less: .cs-rest / .cs-rest__inner,
-      state class .cs-open, label swap in CSS. The button is .cs-read
-      here, NOT .cs-more — .cs-more on this page is the Rosemartin link
-      to /reviews/, and the two would collide. */
+   !! .cs-read is the per-card link, NOT .cs-more — .cs-more on this page
+      is the Rosemartin link to /reviews/, and the two would collide. */
 
 @media only screen and (min-width: 0rem) {
     #reviews {
@@ -527,12 +526,12 @@
            the right edge — that peek is the only affordance telling anyone
            there is more than one, since there are no dots and no arrows.
 
-           align-items: start, not the default stretch. A stretched row
-           grows every sibling to match whichever card is open, and the
-           Rosh card opens to eight paragraphs — stretch would put two
-           screens of empty box beside it. Equal heights in the CLOSED
-           state are held by a min-height floor that homepage.js measures,
-           which is the same trade reviews.js makes. */
+           align-items: start, not the default stretch. Nothing expands in
+           place here any more, but the three leads are one, three and
+           four lines, so the closed row is still ragged — the min-height
+           floor homepage.js measures is what squares it up. Stretch would
+           do it too, but it would also tie every card's height to the
+           tallest for reasons the markup no longer has. */
         .cs-cards {
             list-style: none;
             margin: clamp(2rem, 5vw, 3rem) 0 0;
@@ -583,98 +582,26 @@
             }
         }
 
-        /* ── The expanding remainder ──
-           Same technique as reviews.less, and the reasoning carries over:
-           height animates as a grid track from 0fr to 1fr rather than as
-           max-height, because max-height needs a guessed ceiling and
-           these three cards run from two paragraphs to eight. A ceiling
-           tall enough for Rosh makes Vesta sit still for most of the
-           duration. 0fr → 1fr resolves to real height at both ends, so
-           all three take the same time.
-
-           .cs-rest sits INSIDE the blockquote deliberately. As a direct
-           child of .cs-card it would collect the card's 1rem gap even at
-           zero height, leaving a hole under every closed quote.
-
-           visibility is transitioned alongside, 0s duration with a delay
-           equal to the height transition on the way out: a collapsed 0fr
-           row still leaves its content in the accessibility tree, and
-           visibility takes it out — but only once the close has
-           finished playing. */
-        .cs-rest {
-            display: grid;
-            grid-template-rows: 0fr;
-            visibility: hidden;
-            width: 100%;
-            margin-top: 0;
-            transition:
-                grid-template-rows var(--dur) var(--ease),
-                margin-top var(--dur) var(--ease),
-                visibility 0s linear var(--dur);
-        }
-
-        .cs-rest__inner {
-            overflow: hidden;
-            /* Grid items floor at min-content without this, which keeps
-               the row from ever reaching zero. */
-            min-height: 0;
-            opacity: 0;
-            transition: opacity var(--dur) var(--ease);
-
-            p {
-                margin: 0 0 0.75em;
-            }
-
-            p:last-child {
-                margin-bottom: 0;
-            }
-        }
-
-        .cs-card.cs-open .cs-rest {
-            grid-template-rows: 1fr;
-            visibility: visible;
-            margin-top: 0.75em;
-            /* No delay on the way in — the content should be visible
-               from the first frame of the opening. */
-            transition:
-                grid-template-rows var(--dur) var(--ease),
-                margin-top var(--dur) var(--ease),
-                visibility 0s linear 0s;
-        }
-
-        .cs-card.cs-open .cs-rest__inner {
-            opacity: 1;
-            /* Slightly behind the height so the text arrives into a box
-               that is already opening rather than racing it. */
-            transition: opacity var(--dur) var(--ease) 0.08s;
-        }
-
         /* ── The control ──
-           Deliberately not Rosemartin: the page is already at two script
-           controls and three would settle the question in the header
-           note the wrong way. This is the filter-row language instead —
-           caption Elms Sans, hairline underline, ink on hover.
+           An anchor now, styled exactly as the button was: the filter-row
+           language — caption Elms Sans, hairline underline, ink on hover.
+           Deliberately not Rosemartin; the page is already at two script
+           controls and three would settle the header note the wrong way.
 
-           UA reset first. A bare <button> carries its own font,
-           background, border and colour, and buttontext is a declared
-           near-black rather than an inherited value. */
+           text-decoration: none because the underline is the border, not
+           the UA rule — the two together read as a double line. */
         .cs-read {
-            appearance: none;
-            -webkit-appearance: none;
             align-self: flex-start;
             /* Pulls against the card's 1rem gap, leaving 0.75rem above
-               the button. Raise toward 0 to let it breathe. */
+               the link. Raise toward 0 to let it breathe. */
             margin: -0.25rem 0 0;
             padding: 0 0 0.2rem;
-            background: none;
-            border: none;
+            text-decoration: none;
             border-bottom: 1px solid currentColor;
-            border-radius: 0;
             /* Deck minimum touch target. Padding, never a shrunk box. */
             min-height: 44px;
             display: inline-flex;
             align-items: flex-end;
-            cursor: pointer;
             font-family: var(--font-body);
             font-size: var(--fs-caption);
             text-transform: uppercase;
@@ -692,19 +619,6 @@
                 outline: 2px solid currentColor;
                 outline-offset: 4px;
             }
-        }
-
-        /* Label swap in CSS, so the JS never has to hold the strings. */
-        .cs-label-less {
-            display: none;
-        }
-
-        .cs-card.cs-open .cs-label-more {
-            display: none;
-        }
-
-        .cs-card.cs-open .cs-label-less {
-            display: inline;
         }
 
         /* ── Card foot ──
@@ -752,14 +666,10 @@
             color: var(--ink-soft);
         }
 
-        /* Matches the anchor treatment on /reviews/. The name is the
-           link text and the date is not, so the anchor reads as
-           attribution rather than as a control. */
+        
         .cs-review-link {
             color: inherit;
             text-decoration: none;
-            border-bottom: 1px solid currentColor;
-            padding-bottom: 0.15em;
             opacity: 0.9;
             transition: opacity var(--dur) var(--ease), color var(--dur) var(--ease);
 
@@ -796,25 +706,6 @@
     }
 }
 
-/* No JS: the remainder can never be opened, because the button that
-   opens it does nothing. Show it, hide the dead control. Same fallback
-   as reviews.less. */
-html:not(.js) #reviews {
-    .cs-rest {
-        grid-template-rows: 1fr;
-        visibility: visible;
-        margin-top: 0.75em;
-    }
-
-    .cs-rest__inner {
-        opacity: 1;
-    }
-
-    .cs-read {
-        display: none;
-    }
-}
-
 /* Tablet - 48rem */
 @media only screen and (min-width: 48rem) {
     #reviews {
@@ -845,22 +736,6 @@ html:not(.js) #reviews {
 
         .cs-card {
             scroll-snap-align: none;
-        }
-    }
-}
-
-/* Root's blanket reduced-motion rule clamps transition-duration to
-   0.01ms, which is nearly right here but not quite: the visibility
-   delay is also a duration, and clamping it flips visibility to hidden
-   before the row has finished collapsing. Settled explicitly, same as
-   reviews.less. */
-@media (prefers-reduced-motion: reduce) {
-    #reviews {
-        .cs-rest,
-        .cs-card.cs-open .cs-rest,
-        .cs-rest__inner,
-        .cs-card.cs-open .cs-rest__inner {
-            transition: none;
         }
     }
 }
