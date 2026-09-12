@@ -2,6 +2,44 @@
 title: "Selling | Jayden Kennedy"
 description: "Every comparable read by hand before a price goes on your home. Jayden Kennedy, Broker, Greater Toronto Area."
 permalink: "/selling/"
+hero:
+    heading: "Selling your home in the Greater Toronto Area"
+    lede: "Your listing price should be something you can see the evidence for. I'll show you the comparable sales behind the number before you agree to it."
+saleRuns:
+    heading: "How a sale runs"
+    lede: "Three stages, and you always know which one you're in."
+    stages:
+        - num: "01"
+          title: "Preparation"
+          text: "A written analysis of the last ninety days on your street, before anything is listed. What sold, what didn't, and what made the difference."
+        - num: "02"
+          title: "Market"
+          text: "Photography, staging notes and the pricing band, with the reasoning attached to each one. You'll know why the number sits where it sits."
+        - num: "03"
+          title: "Close"
+          text: "Offers read out loud, term by term, so the decision is yours and not the room's."
+costs:
+    heading: "The analysis"
+    subtext: "It takes an afternoon, and I do it personally."
+    text: "An algorithm can't see the renovation, the lot line, or the ninety days of offers that never registered. You get a range rather than one number, the evidence under it, and what would move it away."
+    statement: "And if now isn't the right time to sell, I'll tell you, and show you the numbers that say so. Even though waiting doesn't pay me this year."
+whatINeed:
+    heading: "What I need from you"
+    subtext: "Very little, and none of it before you've decided anything."
+    asks:
+        - num: "01"
+          text: "The address, so I can pull the street."
+        - num: "02"
+          text: "Anything you've changed since you bought, with rough dates."
+        - num: "03"
+          text: "Your timing, and how firm it is."
+    close: "That's enough for a first analysis. The rest can wait until the number makes sense to you."
+cta:
+    heading: "Start with the number"
+    lede: "A personal analysis of your street, done by me."
+    primaryButtonLabel: "Get my valuation"
+    secondaryButtonLabel: "See recent sales"
+    fine: "I answer every enquiry myself."
 ---
 
 {% extends "layouts/base.html" %}
@@ -20,11 +58,10 @@ permalink: "/selling/"
     <div class="cs-container">
         <div class="cs-copy cs-reveal">
 
-            <h1>Selling your home in the Greater Toronto Area</h1>
+            <h1>{{ hero.heading }}</h1>
 
             <p class="cs-lede">
-                Your listing price should be something you can see the evidence for. I'll show you the comparable sales
-behind the number before you agree to it.
+                {{ hero.lede }}
             </p>
 
         </div>
@@ -39,50 +76,26 @@ behind the number before you agree to it.
     <div class="cs-container">
         <div class="cs-masthead" data-reveal>
             <div class="cs-reveal">
-                <h2 class="cs-title">How a sale runs</h2>
-                <p class="cs-lede">Three stages, and you always know which one you&rsquo;re in.</p>
+                <h2 class="cs-title">{{ saleRuns.heading }}</h2>
+                <p class="cs-lede">{{ saleRuns.lede }}</p>
             </div>
         </div>
 
         <ol class="cs-stages">
+            {% for stage in saleRuns.stages %}
             <li class="cs-stage" data-reveal>
                 <span class="cs-marker" aria-hidden="true"></span>
                 <div class="cs-stage-body cs-reveal">
                     <div class="cs-stage-head">
-                        <span class="cs-num">01</span>
-                        <h3 class="cs-stage-title">Preparation</h3>
+                        <span class="cs-num">{{ stage.num }}</span>
+                        <h3 class="cs-stage-title">{{ stage.title }}</h3>
                     </div>
                     <p class="cs-text">
-                        A written analysis of the last ninety days on your street, before anything is listed. What sold, what didn&rsquo;t, and what made the difference.
+                        {{ stage.text }}
                     </p>
                 </div>
             </li>
-
-            <li class="cs-stage" data-reveal>
-                <span class="cs-marker" aria-hidden="true"></span>
-                <div class="cs-stage-body cs-reveal">
-                    <div class="cs-stage-head">
-                        <span class="cs-num">02</span>
-                        <h3 class="cs-stage-title">Market</h3>
-                    </div>
-                    <p class="cs-text">
-                        Photography, staging notes and the pricing band, with the reasoning attached to each one. You&rsquo;ll know why the number sits where it sits.
-                    </p>
-                </div>
-            </li>
-
-            <li class="cs-stage" data-reveal>
-                <span class="cs-marker" aria-hidden="true"></span>
-                <div class="cs-stage-body cs-reveal">
-                    <div class="cs-stage-head">
-                        <span class="cs-num">03</span>
-                        <h3 class="cs-stage-title">Close</h3>
-                    </div>
-                    <p class="cs-text">
-                        Offers read out loud, term by term, so the decision is yours and not the room&rsquo;s.
-                    </p>
-                </div>
-            </li>
+            {% endfor %}
         </ol>
     </div>
 </section>
@@ -170,17 +183,16 @@ behind the number before you agree to it.
 <section id="costs" class="cs-on-dark" data-reveal>
     <div class="cs-container">
         <div class="cs-rail cs-reveal">
-            <h2 class="cs-title">The analysis</h2>
-            <p class="cs-body-sm">It takes an afternoon, and I do it personally.</p>
+            <h2 class="cs-title">{{ costs.heading }}</h2>
+            <p class="cs-body-sm">{{ costs.subtext }}</p>
         </div>
 
         <div class="cs-content cs-reveal">
             <p class="cs-text">
-                An algorithm can't see the renovation, the lot line, or the ninety days of offers that never registered. You get a range rather than one number, the evidence under it, and what would move it away. 
+                {{ costs.text }}
             </p>
             <p class="cs-text cs-statement">
-                And if now isn't the right time to sell, I'll tell you, and show you the numbers that say so. Even though
-waiting doesn't pay me this year.
+                {{ costs.statement }}
             </p>
         </div>
     </div>
@@ -193,28 +205,22 @@ waiting doesn't pay me this year.
 <section id="what-i-need" data-reveal>
     <div class="cs-container">
         <div class="cs-rail cs-reveal">
-            <h2 class="cs-title">What I need from you</h2>
-            <p class="cs-body-sm">Very little, and none of it before you&rsquo;ve decided anything.</p>
+            <h2 class="cs-title">{{ whatINeed.heading }}</h2>
+            <p class="cs-body-sm">{{ whatINeed.subtext }}</p>
         </div>
 
         <div class="cs-content cs-reveal">
             <ol class="cs-asks">
+                {% for ask in whatINeed.asks %}
                 <li class="cs-ask">
-                    <span class="cs-num">01</span>
-                    <p class="cs-text">The address, so I can pull the street.</p>
+                    <span class="cs-num">{{ ask.num }}</span>
+                    <p class="cs-text">{{ ask.text }}</p>
                 </li>
-                <li class="cs-ask">
-                    <span class="cs-num">02</span>
-                    <p class="cs-text">Anything you&rsquo;ve changed since you bought, with rough dates.</p>
-                </li>
-                <li class="cs-ask">
-                    <span class="cs-num">03</span>
-                    <p class="cs-text">Your timing, and how firm it is.</p>
-                </li>
+                {% endfor %}
             </ol>
 
             <p class="cs-text cs-close">
-                That&rsquo;s enough for a first analysis. The rest can wait until the number makes sense to you.
+                {{ whatINeed.close }}
             </p>
         </div>
     </div>
@@ -227,21 +233,20 @@ waiting doesn't pay me this year.
 <section id="cta" class="cs-on-dark" data-reveal>
     <div class="cs-container">
         <div class="cs-rail cs-reveal">
-            <h2>Start with the number</h2>
+            <h2>{{ cta.heading }}</h2>
         </div>
 
         <div class="cs-content cs-reveal">
             <p class="cs-lede">
-                A personal analysis of your street,
-done by me.
+                {{ cta.lede }}
             </p>
 
             <div class="cs-actions">
-                <a href="/contact/" class="cs-button-script">Get my valuation</a>
-                <a href="/listings/" class="cs-button-script">See recent sales</a>
+                <a href="/contact/" class="cs-button-script">{{ cta.primaryButtonLabel }}</a>
+                <a href="/listings/" class="cs-button-script">{{ cta.secondaryButtonLabel }}</a>
             </div>
 
-            <p class="cs-fine">I answer every enquiry myself.</p>
+            <p class="cs-fine">{{ cta.fine }}</p>
         </div>
     </div>
 </section>

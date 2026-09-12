@@ -2,6 +2,26 @@
 title: "Results | Jayden Kennedy"
 description: "Recent closings across the Greater Toronto Area, asking price beside what the market paid."
 permalink: "/results/"
+intro:
+    heading: "Homes I've sold"
+    text: "Every number here is a real closing of mine. Where I recommended a price, it sits next to what the market actually paid."
+disclosure:
+    text: "Sold and leased figures shown are transactions in which Jayden Kennedy acted for the buyer, the seller, or both. Data is provided by the Toronto Regional Real Estate Board and is deemed reliable but not guaranteed accurate. Past results are not a guarantee of future results. Not intended to solicit buyers or sellers currently under contract."
+saleRan:
+    heading: "How this sale ran"
+    lede: "One sale, start to finish, with the working shown."
+    columns:
+        - title: "The recommendation"
+          text: "[Recommended list price, and the three comparables inside four hundred metres that supported it.]"
+        - title: "What we did differently"
+          text: "[The specific decision. Staging, timing, or holding the price.]"
+        - title: "The result"
+          text: "[Offer count, days on market, closing price against the original recommendation.]"
+cta:
+    heading: "What would yours do?"
+    lede: "A personal analysis of your street, done by me."
+    buttonLabel: "Get my valuation"
+    fine: "I answer every enquiry myself."
 ---
 
 {% extends "layouts/base.html" %}
@@ -20,10 +40,9 @@ permalink: "/results/"
 
     <section id="listings-intro">
       <div class="cs-container">
-        <h1 class="cs-title">Homes I've sold</h1>
+        <h1 class="cs-title">{{ intro.heading }}</h1>
         <p class="cs-text">
-          Every number here is a real closing of mine. Where I recommended a price,
-          it sits next to what the market actually paid.
+          {{ intro.text }}
         </p>
       </div>
     </section>
@@ -53,16 +72,21 @@ permalink: "/results/"
           <form class="cs-form" id="listings-form" method="get" action="/results/" role="search" aria-label="Filter closings">
             <div class="cs-field cs-field-lg">
               <label class="cs-label" for="municipality">Municipality</label>
+              <!-- Options come from src/_data/listingFilters.json's
+                   resultsCities list, editable in the CMS under Listing
+                   Search Filters — a separate list from the Listings
+                   page's regions/cities, since a closed deal can be
+                   anywhere Jayden has ever transacted, not just the
+                   areas with current active inventory. Was hardcoded to
+                   a fixed Durham city list that didn't match any real
+                   closed record (no Bowmanville/Clarington/Courtice/
+                   Pickering/Uxbridge closings exist under this token,
+                   and it was missing Milton and Quinte West, which do). -->
               <select class="cs-select" id="municipality" name="municipality">
                 <option value="">All cities</option>
-                <option value="ajax">Ajax</option>
-                <option value="bowmanville">Bowmanville</option>
-                <option value="clarington">Clarington</option>
-                <option value="courtice">Courtice</option>
-                <option value="oshawa">Oshawa</option>
-                <option value="pickering">Pickering</option>
-                <option value="uxbridge">Uxbridge</option>
-                <option value="whitby">Whitby</option>
+                {% for city in listingFilters.resultsCities %}
+                <option value="{{ city.value }}">{{ city.label }}</option>
+                {% endfor %}
               </select>
             </div>
 
@@ -121,11 +145,18 @@ permalink: "/results/"
               <div class="cs-info">
                 <span class="cs-address">[UnparsedAddress]</span>
                 <span class="cs-city">[City]</span>
+                <!-- //! CONFIRM — ClosePrice/CloseDate are not in this
+                     feed at all (verified against live data, not just
+                     unset on these records) — this token is IDX-tier,
+                     and sold price is normally VOW-gated at TRREB.
+                     Re-enable this block if that entitlement changes.
                 <p class="cs-outcome">
                   <span class="cs-ask"><span class="cs-sr">Asking </span>[ListPrice]</span>
                   <span class="cs-arrow" aria-hidden="true">&rarr;</span>
                   <span class="cs-close"><span class="cs-sr">sold for </span>[ClosePrice]</span>
                 </p>
+                -->
+                <span class="cs-close">[ListPrice]</span>
                 <span class="cs-meta">
                   [DaysOnMarket] days &middot; [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath
                 </span>
@@ -148,11 +179,18 @@ permalink: "/results/"
               <div class="cs-info">
                 <span class="cs-address">[UnparsedAddress]</span>
                 <span class="cs-city">[City]</span>
+                <!-- //! CONFIRM — ClosePrice/CloseDate are not in this
+                     feed at all (verified against live data, not just
+                     unset on these records) — this token is IDX-tier,
+                     and sold price is normally VOW-gated at TRREB.
+                     Re-enable this block if that entitlement changes.
                 <p class="cs-outcome">
                   <span class="cs-ask"><span class="cs-sr">Asking </span>[ListPrice]</span>
                   <span class="cs-arrow" aria-hidden="true">&rarr;</span>
                   <span class="cs-close"><span class="cs-sr">sold for </span>[ClosePrice]</span>
                 </p>
+                -->
+                <span class="cs-close">[ListPrice]</span>
                 <span class="cs-meta">
                   [DaysOnMarket] days &middot; [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath
                 </span>
@@ -175,11 +213,18 @@ permalink: "/results/"
               <div class="cs-info">
                 <span class="cs-address">[UnparsedAddress]</span>
                 <span class="cs-city">[City]</span>
+                <!-- //! CONFIRM — ClosePrice/CloseDate are not in this
+                     feed at all (verified against live data, not just
+                     unset on these records) — this token is IDX-tier,
+                     and sold price is normally VOW-gated at TRREB.
+                     Re-enable this block if that entitlement changes.
                 <p class="cs-outcome">
                   <span class="cs-ask"><span class="cs-sr">Asking </span>[ListPrice]</span>
                   <span class="cs-arrow" aria-hidden="true">&rarr;</span>
                   <span class="cs-close"><span class="cs-sr">sold for </span>[ClosePrice]</span>
                 </p>
+                -->
+                <span class="cs-close">[ListPrice]</span>
                 <span class="cs-meta">
                   [DaysOnMarket] days &middot; [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath
                 </span>
@@ -202,11 +247,18 @@ permalink: "/results/"
               <div class="cs-info">
                 <span class="cs-address">[UnparsedAddress]</span>
                 <span class="cs-city">[City]</span>
+                <!-- //! CONFIRM — ClosePrice/CloseDate are not in this
+                     feed at all (verified against live data, not just
+                     unset on these records) — this token is IDX-tier,
+                     and sold price is normally VOW-gated at TRREB.
+                     Re-enable this block if that entitlement changes.
                 <p class="cs-outcome">
                   <span class="cs-ask"><span class="cs-sr">Asking </span>[ListPrice]</span>
                   <span class="cs-arrow" aria-hidden="true">&rarr;</span>
                   <span class="cs-close"><span class="cs-sr">sold for </span>[ClosePrice]</span>
                 </p>
+                -->
+                <span class="cs-close">[ListPrice]</span>
                 <span class="cs-meta">
                   [DaysOnMarket] days &middot; [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath
                 </span>
@@ -229,11 +281,18 @@ permalink: "/results/"
               <div class="cs-info">
                 <span class="cs-address">[UnparsedAddress]</span>
                 <span class="cs-city">[City]</span>
+                <!-- //! CONFIRM — ClosePrice/CloseDate are not in this
+                     feed at all (verified against live data, not just
+                     unset on these records) — this token is IDX-tier,
+                     and sold price is normally VOW-gated at TRREB.
+                     Re-enable this block if that entitlement changes.
                 <p class="cs-outcome">
                   <span class="cs-ask"><span class="cs-sr">Asking </span>[ListPrice]</span>
                   <span class="cs-arrow" aria-hidden="true">&rarr;</span>
                   <span class="cs-close"><span class="cs-sr">sold for </span>[ClosePrice]</span>
                 </p>
+                -->
+                <span class="cs-close">[ListPrice]</span>
                 <span class="cs-meta">
                   [DaysOnMarket] days &middot; [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath
                 </span>
@@ -256,11 +315,18 @@ permalink: "/results/"
               <div class="cs-info">
                 <span class="cs-address">[UnparsedAddress]</span>
                 <span class="cs-city">[City]</span>
+                <!-- //! CONFIRM — ClosePrice/CloseDate are not in this
+                     feed at all (verified against live data, not just
+                     unset on these records) — this token is IDX-tier,
+                     and sold price is normally VOW-gated at TRREB.
+                     Re-enable this block if that entitlement changes.
                 <p class="cs-outcome">
                   <span class="cs-ask"><span class="cs-sr">Asking </span>[ListPrice]</span>
                   <span class="cs-arrow" aria-hidden="true">&rarr;</span>
                   <span class="cs-close"><span class="cs-sr">sold for </span>[ClosePrice]</span>
                 </p>
+                -->
+                <span class="cs-close">[ListPrice]</span>
                 <span class="cs-meta">
                   [DaysOnMarket] days &middot; [BedroomsTotal] bed &middot; [BathroomsTotalInteger] bath
                 </span>
@@ -296,11 +362,7 @@ permalink: "/results/"
             rights with TRREB, and confirm whether co-operating brokerage
             attribution is required per record, before this page ships. #}
         <p class="cs-fine">
-          Sold and leased figures shown are transactions in which Jayden Kennedy
-          acted for the buyer, the seller, or both. Data is provided by the Toronto
-          Regional Real Estate Board and is deemed reliable but not guaranteed
-          accurate. Past results are not a guarantee of future results. Not intended
-          to solicit buyers or sellers currently under contract.
+          {{ disclosure.text }}
         </p>
       </div>
     </section>
@@ -312,31 +374,19 @@ permalink: "/results/"
     <section id="sale-ran" data-reveal>
       <div class="cs-container">
         <div class="cs-masthead cs-reveal">
-          <h2 class="cs-title">How this sale ran</h2>
-          <p class="cs-lede">One sale, start to finish, with the working shown.</p>
+          <h2 class="cs-title">{{ saleRan.heading }}</h2>
+          <p class="cs-lede">{{ saleRan.lede }}</p>
         </div>
 
         <div class="cs-columns">
+          {% for column in saleRan.columns %}
           <div class="cs-column cs-reveal">
-            <h3 class="cs-column-title">The recommendation</h3>
+            <h3 class="cs-column-title">{{ column.title }}</h3>
             <p class="cs-text">
-              [Recommended list price, and the three comparables inside four hundred metres that supported it.]
+              {{ column.text }}
             </p>
           </div>
-
-          <div class="cs-column cs-reveal">
-            <h3 class="cs-column-title">What we did differently</h3>
-            <p class="cs-text">
-              [The specific decision. Staging, timing, or holding the price.]
-            </p>
-          </div>
-
-          <div class="cs-column cs-reveal">
-            <h3 class="cs-column-title">The result</h3>
-            <p class="cs-text">
-              [Offer count, days on market, closing price against the original recommendation.]
-            </p>
-          </div>
+          {% endfor %}
         </div>
       </div>
     </section>
@@ -348,167 +398,22 @@ permalink: "/results/"
     <section id="cta" class="cs-on-dark" data-reveal>
       <div class="cs-container">
         <div class="cs-rail cs-reveal">
-          <h2>What would yours do?</h2>
+          <h2>{{ cta.heading }}</h2>
         </div>
 
         <div class="cs-content cs-reveal">
           <p class="cs-lede">
-            A personal analysis of your street,
-done by me.
+            {{ cta.lede }}
           </p>
 
           <div class="cs-actions">
-            <a href="/contact/" class="cs-button-script">Get my valuation</a>
+            <a href="/contact/" class="cs-button-script">{{ cta.buttonLabel }}</a>
           </div>
 
-          <p class="cs-fine">I answer every enquiry myself.</p>
+          <p class="cs-fine">{{ cta.fine }}</p>
         </div>
       </div>
     </section>
 
-<script>/**
- * Results archive.
- *
- * The filter form is a real GET form, so every state is linkable and the page
- * degrades to the unfiltered grid without JS. This reads the query string back
- * on load and restores the selects, the count and the applied-filter label —
- * the parts the static build cannot know.
- *
- * Wrapped in an IIFE. The declarations used to sit at file scope, which is
- * shared global scope for a classic script — so loading this file twice, or
- * beside any other page script declaring the same names, threw a redeclaration
- * SyntaxError and killed the whole file before a line ran.
- *
- * //! CONFIRM — filtering itself is not wired here. Until the TRREB feed lands
- * //! there is nothing to filter against, so this only restores UI state.
- */
-
-(function () {
-  const FIELDS = ["municipality", "tenure", "sort"];
-
-  function labelFor(select) {
-    const option = select.options[select.selectedIndex];
-    return option ? option.textContent.trim() : "";
-  }
-
-  /**
-   * Restores the selects from the query string and writes the applied
-   * label. Returns the count of meaningful filters so the collapsed
-   * toggle can show it — see initFilterToggle.
-   *
-   * Sort is excluded: it changes the order of the result set, not its
-   * membership, so counting it would tell someone a filter is hiding
-   * closings when none are.
-   *
-   * @returns {number} filters in effect, excluding sort
-   */
-  function restoreState() {
-    const params = new URLSearchParams(window.location.search);
-    const applied = [];
-
-    FIELDS.forEach((name) => {
-      const select = document.getElementById(name);
-      if (!select) return;
-
-      const value = params.get(name);
-      if (value !== null) select.value = value;
-
-      if (name === "sort") return;
-      if (select.value) applied.push(labelFor(select));
-    });
-
-    const meaningful = applied.filter(Boolean);
-
-    const appliedEl = document.querySelector("[data-applied]");
-    const labelEl = document.querySelector("[data-applied-label]");
-    if (!appliedEl || !labelEl) return meaningful.length;
-
-    if (meaningful.length) {
-      labelEl.textContent = meaningful.join(" \u00B7 ");
-      appliedEl.hidden = false;
-    } else {
-      appliedEl.hidden = true;
-    }
-
-    return meaningful.length;
-  }
-
-  function syncCount() {
-    const results = document.querySelector("[data-results]");
-    const countEl = document.querySelector("[data-count]");
-    if (!results || !countEl) return;
-
-    const total = results.querySelectorAll(".cs-item").length;
-    countEl.textContent = total === 1 ? "1 closing" : total + " closings";
-
-    const emptyEl = document.querySelector("[data-empty]");
-    const moreEl = document.querySelector("[data-more]");
-
-    if (emptyEl) emptyEl.hidden = total !== 0;
-    if (moreEl) moreEl.hidden = total === 0;
-    results.hidden = total === 0;
-  }
-
-  /**
-   * Sort is a form field now, so a plain submit carries it and the page
-   * works without a script. This only saves the reach for Apply, which is
-   * the behaviour it had when it lived in the results bar.
-   */
-  function initSort() {
-    const sort = document.getElementById("sort");
-    const form = document.getElementById("listings-form");
-    if (!sort || !form) return;
-
-    sort.addEventListener("change", () => {
-      form.submit();
-    });
-  }
-
-  /**
-   * Collapses the filter panel behind a button on phones.
-   *
-   * The collapse itself is CSS — .cs-open on the panel, gated on .js in
-   * results.less — so there is no flash of an open form before this
-   * runs, and no-JS gets the form open with no button at all.
-   *
-   * The class goes on the panel, not the form: the panel is the element
-   * that collapses, and keying its display off its own class keeps the
-   * state and the element together.
-   *
-   * The count is the whole point of the pattern. A collapsed bar reading
-   * only "Filters" lets someone stare at four closings without
-   * registering that a filter is hiding the rest; "Filters (2)" does not.
-   *
-   * @param {number} count - filters in effect, from restoreState
-   */
-  function initFilterToggle(count) {
-    const toggle = document.querySelector("[data-filter-toggle]");
-    const panel = document.querySelector("#listings-filters .cs-panel");
-    if (!toggle || !panel) return;
-
-    const countEl = toggle.querySelector("[data-filter-count]");
-    if (countEl) {
-      countEl.textContent = count;
-      countEl.hidden = count === 0;
-    }
-
-    // Open on arrival when something is already applied — landing on a
-    // filtered URL behind a closed bar hides the reason for the result.
-    if (count > 0) {
-      panel.classList.add("cs-open");
-      toggle.setAttribute("aria-expanded", "true");
-    }
-
-    toggle.addEventListener("click", () => {
-      const open = panel.classList.toggle("cs-open");
-      toggle.setAttribute("aria-expanded", String(open));
-    });
-  }
-
-  window.revealScan?.();
-  initFilterToggle(restoreState());
-  syncCount();
-  initSort();
-})();</script>
 
 {% endblock %}

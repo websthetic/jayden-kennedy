@@ -2,6 +2,21 @@
 title: "Home Value | Jayden Kennedy"
 description: "A comparative market analysis read by hand, not an automated estimate. Jayden Kennedy, Broker, Durham Region and the Greater Toronto Area."
 permalink: "/home-valuation/"
+hero:
+    heading: "How much is my home worth?"
+    lede: "Automated estimates can't see what makes your home, or your street, different. I can. I personally analyze your property, neighbourhood and recent comparable sales to determine its value. And if now isn't the right time to sell, I'll tell you."
+valuation:
+    heading: "What you get"
+    items:
+        - num: "01"
+          text: "A range rather than a single figure, so you can see how much room there actually is."
+        - num: "02"
+          text: "The comparables it rests on, and why each one counts."
+        - num: "03"
+          text: "The last ninety days on your street, including what didn't sell."
+        - num: "04"
+          text: "What would move the range up or down."
+    note: "Written by me. If the read is to wait, I'll tell you."
 ---
 
 {% extends "layouts/base.html" %}
@@ -20,12 +35,10 @@ permalink: "/home-valuation/"
     <div class="cs-container">
         <div class="cs-copy cs-reveal">
 
-            <h1>How much is my home worth?</h1>
+            <h1>{{ hero.heading }}</h1>
 
             <p class="cs-lede">
-                Automated estimates can't see what makes your home, or your street, different. I can.
-I personally analyze your property, neighbourhood and recent comparable sales to determine its value. And if
-now isn't the right time to sell, I'll tell you.
+                {{ hero.lede }}
             </p>
 
         </div>
@@ -39,29 +52,19 @@ now isn't the right time to sell, I'll tell you.
 <section id="valuation" data-reveal>
     <div class="cs-container">
         <div class="cs-copy cs-reveal">
-            <h2 class="cs-title">What you get</h2>
+            <h2 class="cs-title">{{ valuation.heading }}</h2>
 
             <ol class="cs-gets">
+                {% for item in valuation.items %}
                 <li class="cs-get">
-                    <span class="cs-num">01</span>
-                    <p class="cs-text">A range rather than a single figure, so you can see how much room there actually is.</p>
+                    <span class="cs-num">{{ item.num }}</span>
+                    <p class="cs-text">{{ item.text }}</p>
                 </li>
-                <li class="cs-get">
-                    <span class="cs-num">02</span>
-                    <p class="cs-text">The comparables it rests on, and why each one counts.</p>
-                </li>
-                <li class="cs-get">
-                    <span class="cs-num">03</span>
-                    <p class="cs-text">The last ninety days on your street, including what didn&rsquo;t sell.</p>
-                </li>
-                <li class="cs-get">
-                    <span class="cs-num">04</span>
-                    <p class="cs-text">What would move the range up or down.</p>
-                </li>
+                {% endfor %}
             </ol>
 
             <p class="cs-text cs-gets-note">
-                Written by me. If the read is to wait, I&rsquo;ll tell you.
+                {{ valuation.note }}
             </p>
         </div>
 
@@ -77,8 +80,12 @@ now isn't the right time to sell, I'll tell you.
                  uses to tell Netlify which form the payload belongs to;
                  without it the submission is rejected.
 
-                 data-netlify-honeypot names the trap field. Netlify
-                 accepts a submission with a filled trap and then
+                 netlify-honeypot names the trap field. //! CONFIRM fixed
+                 — this was previously misspelled data-netlify-honeypot,
+                 which Netlify's docs don't recognize at all (the
+                 documented attribute has no "data-" prefix), so the
+                 server-side spam filter was silently not configured.
+                 Netlify accepts a submission with a filled trap and then
                  silently discards it, which is the behaviour we want —
                  a bot that learns it was caught adapts.
 
@@ -91,7 +98,7 @@ now isn't the right time to sell, I'll tell you.
                 method="POST"
                 action="/home-valuation/"
                 data-netlify="true"
-                data-netlify-honeypot="company"
+                netlify-honeypot="company"
                 novalidate
             >
                 <input type="hidden" name="form-name" value="home-valuation">
@@ -143,9 +150,9 @@ now isn't the right time to sell, I'll tell you.
                           name, so it is now display: none — see .cs-trap
                           in home-value.less.
 
-                          Named to Netlify via data-netlify-honeypot on
-                          the form, so a filled trap is discarded server
-                          side as well as caught by the script below. -->
+                          Named to Netlify via netlify-honeypot on the
+                          form, so a filled trap is discarded server side
+                          as well as caught by the script below. -->
                     <div class="cs-trap" aria-hidden="true">
                         <label for="val-company">Company</label>
                         <input type="text" id="val-company" name="company" tabindex="-1" autocomplete="off">
@@ -437,7 +444,32 @@ now isn't the right time to sell, I'll tell you.
         // site, with form-name identifying the form. URLSearchParams
         // over FormData gives exactly that encoding, and the hidden
         // form-name input is already in the FormData.
-        const body = new URLSearchParams(new FormData(form)).toString();
+        const formData = new FormData(form);
+        const body = new URLSearchParams(formData).toString();
+
+        // Fire-and-forget, parallel to the Netlify Forms submission
+        // below — pushes the same lead into Follow Up Boss. Never
+        // chained onto the main .then()/.catch() flow: the confirmation
+        // step, the countdown and the new-tab search open all depend
+        // only on Netlify Forms succeeding, which is what actually
+        // stores the submission and emails Jayden (Site settings > Forms
+        // > Form notifications, not this code). A FUB failure is silent
+        // to the visitor and logged here only — the lead isn't lost
+        // either way, since Netlify already has it.
+        fetch('/.netlify/functions/home-valuation', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                address: formData.get('address') || '',
+                name: formData.get('name') || '',
+                email: formData.get('email') || '',
+                phone: formData.get('phone') || '',
+                timeframe: formData.get('timeframe') || '',
+                company: formData.get('company') || '',
+            }),
+        }).catch(function (err) {
+            console.warn('[home-valuation] Follow Up Boss post failed to send:', err.message);
+        });
 
         fetch(form.getAttribute('action') || '/', {
             method: 'POST',

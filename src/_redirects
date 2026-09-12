@@ -7,3 +7,32 @@
 
 /approach/*   /about/      301!
 /press/*      /speaking/   301!
+
+# ── Listing details ──────────────────────────────────────────────
+# One physical page (/listings/details/, built from listing-page.html)
+# serves every listing — there's no per-listing static file to build,
+# since inventory changes without a rebuild. This rewrite (200, not a
+# redirect) keeps the pretty /listings/<ListingKey>/ URL in the address
+# bar while quietly serving that one page underneath; its script reads
+# the key back out of the URL and fetches the real data client-side.
+#
+# //! CONFIRM — force (the trailing "!") is required: verified live that
+# a non-forced 200 rewrite here is silently never applied by netlify
+# dev's local redirect engine, even though the equivalent unforced 301
+# above works fine.
+#
+# Netlify's _redirects is evaluated top to bottom, first match wins, and
+# a forced rule overrides the "don't shadow a real file" default check
+# entirely (confirmed against Netlify's own docs) — so /listings/:key/
+# below would otherwise swallow every other real single-segment page
+# under /listings/, not just this one. The two rules just below exist
+# ONLY to win the match first for those real pages; without them, this
+# project's own /listings/map/ page 404'd its way into showing the
+# listing-detail template instead of the real map — caught by hand,
+# not by anything that would have failed loudly. Any future real page
+# added directly under /listings/<one-segment>/ needs the same kind of
+# guard added here, in front of the catch-all.
+/listings/details/  /listings/details/  200
+/listings/map/      /listings/map/      200
+
+/listings/:key/  /listings/details/  200!

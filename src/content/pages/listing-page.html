@@ -1,14 +1,33 @@
 ---
-title: "[UnparsedAddress], [City] | Jayden Kennedy"
-description: "[Beds] bed, [Baths] bath [PropertyType] in [City]. Listed by Jayden Kennedy, Broker, Keller Williams Energy Real Estate."
-permalink: "/listings/listing-one/"
+title: "Listing Details | Jayden Kennedy"
+description: "Property details, live from MLS, Greater Toronto Area. Listed by Jayden Kennedy, Broker, Keller Williams Energy Real Estate."
+permalink: "/listings/details/"
 ---
+
+{#
+  One physical page for every listing. There's no per-listing static
+  file to build at Eleventy's build time, since real inventory changes
+  without a rebuild — see src/_redirects, which rewrites the pretty
+  /listings/<ListingKey>/ URL to this file while keeping that URL in the
+  address bar. listing-detail.js (the script below) reads the key back
+  out of the URL and fetches the real record from the listing-detail
+  Netlify Function.
+
+  //! CONFIRM — SEO tradeoff worth knowing about: because this is one
+  shared template populated client-side, the <title>/description above
+  are generic fallbacks, not per-listing. listing-detail.js updates
+  document.title once data loads, which helps a visitor who bookmarks or
+  shares the page, but a crawler that doesn't execute JS (or executes it
+  before the fetch resolves) sees only the generic version — true
+  per-listing SEO would need build-time generation or server-side
+  rendering, a bigger change than this page makes on its own.
+#}
 
 {% extends "layouts/base.html" %}
 
 {% block head %}
-    <link rel="preload" as="image" href="{% getUrl "/assets/images/listings/listing-01.jpg" | resize({ width: 1400, height: 1050 }) | avif %}"/>
     <link rel="stylesheet" href="/assets/css/listing-page.css">
+    <script defer src="/assets/js/listing-detail.js"></script>
 {% endblock %}
 
 {% block body %}
@@ -17,53 +36,12 @@ permalink: "/listings/listing-one/"
 <!--                   Gallery                    -->
 <!-- ============================================ -->
 
-<!-- Three frames, full bleed, directly under the header. The lead frame
-     takes two thirds and the two stacked frames divide the same height,
-     so all three finish on one bottom edge.
-     //! CONFIRM — replace all three with this listing's real photography. -->
+<!-- Empty on load — listing-detail.js builds the lead + stack markup
+     from the real photo count (0 to many), rather than fixed slots.
+     Hidden until populated, so there's no flash of missing images. -->
 
-<section id="listing-gallery" data-reveal>
-    <div class="cs-container">
-
-        <picture class="cs-picture cs-picture-lead cs-reveal">
-            <img
-                class="cs-img"
-                src="/assets/images/listings/listing-01.jpg"
-                alt="[UnparsedAddress], exterior"
-                width="1400"
-                height="1050"
-                loading="eager"
-                decoding="async"
-            >
-        </picture>
-
-        <div class="cs-stack">
-            <picture class="cs-picture cs-reveal">
-                <img
-                    class="cs-img"
-                    src="/assets/images/listings/listing-02.jpg"
-                    alt="[UnparsedAddress], kitchen"
-                    width="700"
-                    height="525"
-                    loading="eager"
-                    decoding="async"
-                >
-            </picture>
-
-            <picture class="cs-picture cs-reveal">
-                <img
-                    class="cs-img"
-                    src="/assets/images/listings/listing-03.jpg"
-                    alt="[UnparsedAddress], dining room"
-                    width="700"
-                    height="525"
-                    loading="lazy"
-                    decoding="async"
-                >
-            </picture>
-        </div>
-
-    </div>
+<section id="listing-gallery" data-reveal hidden>
+    <div class="cs-container" data-gallery></div>
 </section>
 
 <!-- ============================================ -->
@@ -71,56 +49,65 @@ permalink: "/listings/listing-one/"
 <!-- ============================================ -->
 
 <!-- Copy on the left, enquiry card sticky on the right at 64rem. The
-     card unpins under reduced motion. -->
+     card unpins under reduced motion. Hidden until data loads, same as
+     the gallery — see data-not-found below for the alternate state. -->
 
-<section id="listing-main" data-reveal>
+<section id="listing-main" data-reveal hidden>
     <div class="cs-container">
 
         <div class="cs-content cs-reveal">
 
-            <span class="cs-status">[StandardStatus]</span>
+            <span class="cs-status" data-field="status"></span>
 
-            <h1 class="cs-title">[UnparsedAddress], [City]</h1>
+            <h1 class="cs-title" data-field="title"></h1>
 
-            <p class="cs-meta">
-                [ListPrice] &middot; [Beds] bed &middot; [Baths] bath &middot;
-                [LivingArea] sq ft &middot; [PropertyType]
-            </p>
+            <p class="cs-meta" data-field="meta"></p>
 
-            <h2 class="cs-heading">My note on this one</h2>
+            <h2 class="cs-heading">About this home</h2>
 
-            <p class="cs-note">
-                The number is supported by three sales inside four hundred metres,
-                all with finished basements and all closed in the last sixty days.
-                What it is not supported by is the kitchen. That work was done in
-                2011 and it will read as dated to anyone comparing against new
-                build. Budget for it, or negotiate for it.
-            </p>
+            <!-- The MLS listing description (PublicRemarks) — real copy
+                 written for this specific listing, not a fabricated
+                 "personal note". Rendered as plain paragraphs; RESO
+                 remarks are plain text, not HTML. -->
+            <div class="cs-note" data-field="remarks"></div>
 
-            <h2 class="cs-heading">What it costs to hold</h2>
+            <!-- Ownership-cost breakdown — meaningless for a lease listing
+                 (a tenant doesn't carry the mortgage, tax or maintenance;
+                 the rent shown in the meta line above is the whole cost).
+                 listing-detail.js hides this entire block when
+                 transactionType is "For Lease" rather than computing a
+                 mortgage payment against what is actually a monthly rent
+                 figure — that produced a nonsensical few-dollar "carrying
+                 cost" before this was caught. -->
+            <div data-field-group="ownership-costs">
+                <h2 class="cs-heading">What it costs to hold</h2>
 
-            <ul class="cs-costs">
-                <li class="cs-cost">
-                    <span class="cs-topper">Property tax</span>
-                    <span class="cs-figure">[TaxAnnualAmount]</span>
-                </li>
+                <ul class="cs-costs">
+                    <li class="cs-cost">
+                        <span class="cs-topper">Property tax</span>
+                        <span class="cs-figure" data-field="tax">&mdash;</span>
+                    </li>
 
-                <li class="cs-cost">
-                    <span class="cs-topper">Maintenance</span>
-                    <span class="cs-figure">[AssociationFee]</span>
-                </li>
+                    <li class="cs-cost" data-field-group="maintenance" hidden>
+                        <span class="cs-topper">Maintenance</span>
+                        <span class="cs-figure" data-field="maintenance"></span>
+                    </li>
 
-                <li class="cs-cost">
-                    <span class="cs-topper">Monthly carrying</span>
-                    <span class="cs-figure">[figure]</span>
-                </li>
-            </ul>
+                    <li class="cs-cost">
+                        <span class="cs-topper">Monthly carrying</span>
+                        <span class="cs-figure" data-field="carrying">&mdash;</span>
+                    </li>
+                </ul>
 
-            <p class="cs-footnote">
-                Calculated at [rate]% down over [term] years. Calculated, not quoted.
-                {# //! CONFIRM — the carrying figure and the rate and term behind it
-                   before this page goes live. #}
-            </p>
+                <!-- //! CONFIRM — down payment / rate / amortization are
+                     assumptions, not MLS data (nothing in the feed
+                     supplies them). Standard placeholders shown plainly
+                     rather than hidden, matching this page's own
+                     "calculated, not quoted" framing. See
+                     CARRYING_COST_ASSUMPTIONS in listing-detail.js to
+                     change them. -->
+                <p class="cs-footnote" data-field="carrying-footnote"></p>
+            </div>
 
         </div>
 
@@ -158,6 +145,46 @@ permalink: "/listings/listing-one/"
 
         <p class="cs-attribution cs-reveal">
             Listed by Jayden Kennedy, Broker &middot; {{ client.brokerage }}.
+            MLS&reg; <span data-field="mls-number"></span>.
+        </p>
+
+    </div>
+</section>
+
+<!-- ============================================ -->
+<!--                  Not Found                   -->
+<!-- ============================================ -->
+
+<!-- Shown instead of the two sections above when the URL's key isn't a
+     real, currently-visible listing — a stale link, a typo, or a
+     listing that's since opted out of internet display. Same shape as
+     src/404.html (numeral-as-topper, centred column, --fs-display
+     weight once) rather than a one-off look, since this is the same
+     kind of moment: a visitor followed a link and the destination isn't
+     there. The topper reads "Listing" instead of a numeral — there's no
+     HTTP status meaningful to a reader here, and the real information
+     (what's actually wrong) is closer to a real-estate fact: gone from
+     the market, not a broken URL. -->
+
+<section id="listing-not-found" data-reveal hidden>
+    <div class="cs-container">
+
+        <p class="cs-code cs-reveal">Listing</p>
+
+        <h1 class="cs-title cs-reveal">This one isn&rsquo;t available anymore</h1>
+
+        <p class="cs-lede cs-reveal">
+            It may have sold, been leased, or come off the market. The link itself might
+            also just be out of date. MLS numbers aren&rsquo;t reused once a listing closes.
+        </p>
+
+        <div class="cs-actions cs-reveal">
+            <a href="/listings/" class="cs-button">See current listings</a>
+            <a href="/results/" class="cs-button-outline">See recent closings</a>
+        </div>
+
+        <p class="cs-fine cs-reveal">
+            Looking for something specific? <a href="/contact/">Tell me</a> and I&rsquo;ll let you know what&rsquo;s out there.
         </p>
 
     </div>

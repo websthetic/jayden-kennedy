@@ -9,11 +9,85 @@
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <title>Content Manager</title>
+    <link rel="icon" type="image/png" href="/assets/favicons/favicon-96x96.png" sizes="96x96"/>
+    <link rel="icon" type="image/svg+xml" href="/assets/favicons/favicon.svg"/>
+    <link rel="shortcut icon" href="/assets/favicons/favicon.ico"/>
+
+    <title>Jayden Kennedy · Content Manager</title>
+
+    <!-- Decap's login screen (the pink "D" mark + "Decap" wordmark, and
+         the Login button) is baked into the decap-cms bundle itself —
+         there is no config option that reaches it, unlike logo_url/
+         site_url above, which only affect the app after login. CSS alone
+         isn't reliable here: Decap's own CSS-in-JS (emotion) inserts its
+         rules into the document at runtime, after this static block, so
+         an equal-specificity rule from emotion can win the cascade tie
+         and the swap silently fails. The script below fixes that by
+         directly hiding the SVG and inserting her logo as a real DOM
+         node, re-applied on every render via MutationObserver — so it
+         can't be out-raced by anything emotion injects later. -->
+    <style>
+        section[class*="StyledAuthenticationPage"] {
+            background-color: #faf5ef; /* --cashmere-100 */
+        }
+        button[class*="LoginButton"] {
+            background-color: #3b2a20 !important; /* --cocoa-500 */
+        }
+        button[class*="LoginButton"]:hover {
+            background-color: #2f2119 !important; /* --cocoa-700 */
+        }
+        span[class*="PageLogoIcon"] {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+        span[data-jk-branded="true"] > svg {
+            display: none !important;
+        }
+        img[data-jk-logo="true"] {
+            display: block;
+            width: auto;
+            height: 64px;
+        }
+    </style>
 </head>
 
 <body>
     <script src="https://unpkg.com/decap-cms@3.0.0/dist/decap-cms.js"></script>
+
+    <!-- Swaps Decap's own login-screen logo for Jayden Kennedy's site
+         mark. Runs on a MutationObserver rather than once on load,
+         because Decap re-renders this screen (e.g. after a failed login
+         attempt) and a one-shot swap would only survive the first paint. -->
+    <script>
+        (function () {
+            var LOGO_SRC = "https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-icon-logo.png";
+
+            function brandLoginLogo() {
+                var span = document.querySelector('span[class*="PageLogoIcon"]');
+                if (!span) return;
+
+                var svg = span.querySelector("svg");
+                if (svg) svg.style.setProperty("display", "none", "important");
+
+                if (!span.querySelector('img[data-jk-logo="true"]')) {
+                    var img = document.createElement("img");
+                    img.src = LOGO_SRC;
+                    img.alt = "Jayden Kennedy";
+                    img.setAttribute("data-jk-logo", "true");
+                    span.appendChild(img);
+                }
+
+                span.setAttribute("data-jk-branded", "true");
+            }
+
+            brandLoginLogo();
+            new MutationObserver(brandLoginLogo).observe(document.documentElement, {
+                childList: true,
+                subtree: true,
+            });
+        })();
+    </script>
 
     <!-- Decap CMS preview pane script -->
     <!-- Edit this script to customize the preview pane for your blog posts.  -->
@@ -59,8 +133,8 @@
             }
         });
 
-        // Register the elements and styles for the "blog" collection
-        CMS.registerPreviewTemplate("blog", BlogPreview);
+        // Register the elements and styles for the "journal" collection
+        CMS.registerPreviewTemplate("journal", BlogPreview);
         CMS.registerPreviewStyle("/admin/decap-preview-styles.css");
     </script>
 </body>

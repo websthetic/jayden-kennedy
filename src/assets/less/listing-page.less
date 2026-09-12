@@ -375,3 +375,131 @@
         --reveal-i: 2;
     }
 }
+
+/*-- -------------------------- -->
+<---        Not Found           -->
+<--- -------------------------- -*/
+
+/* Same shape as #not-found in 404.less — a centred column, vertically
+   balanced rather than pinned to the top, the --fs-display numeral-style
+   topper used once and nowhere else this heavy. Duplicated rather than
+   shared because the two sections carry different IDs on different
+   pages; kept in step by eye against 404.less rather than a shared
+   partial, since a single listing-not-found tweak has no reason to also
+   move the site's real 404 page.
+
+   //! CONFIRM fixed — 404.html's #not-found is never conditionally
+   hidden, so display: flex directly on that ID is harmless there. This
+   section IS toggled via the hidden attribute (see listing-detail.js),
+   and an author-origin display value on an element always beats the
+   browser's built-in [hidden] { display: none }, regardless of
+   selector specificity — so copying 404.less's rule verbatim made this
+   section visible at all times, hidden or not. listings.less already
+   solves this exact problem for #listings-results with its own
+   [hidden] { display: none !important; } guard; carried the same fix
+   here rather than reinventing it. */
+
+@media only screen and (min-width: 0rem) {
+    #listing-not-found {
+        min-height: 100svh;
+        padding: var(--section-padding);
+        padding-top: clamp(8rem, 20vw, 14rem);
+        display: flex;
+        align-items: center;
+        background-color: var(--paper);
+
+        &[hidden] {
+            display: none !important;
+        }
+
+        .cs-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1.25rem;
+        }
+
+        .cs-code {
+            font-family: var(--font-display);
+            font-size: var(--fs-display);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: var(--track-title);
+            color: var(--cocoa-300);
+            margin: 0;
+        }
+
+        .cs-title {
+            margin: 0;
+            max-width: 24ch;
+        }
+
+        .cs-lede {
+            max-width: 48ch;
+            color: var(--ink-soft);
+            margin-bottom: 0.5rem;
+            margin-inline: auto;
+        }
+
+        .cs-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .cs-fine {
+            font-size: var(--fs-caption);
+            color: var(--ink-soft);
+            margin-top: 1rem;
+
+            a {
+                color: inherit;
+                border-bottom: 1px solid var(--rule-strong);
+                text-decoration: none;
+                transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+
+                &:hover {
+                    color: var(--ink);
+                    border-bottom-color: var(--ink);
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 48rem) {
+    #listing-not-found {
+        .cs-actions {
+            flex-direction: row;
+            align-items: center;
+        }
+    }
+}
+
+/* Above the fold whenever this section is the one shown, same reasoning
+   as 404.less's identical block. */
+#listing-not-found {
+    .cs-code {
+        --reveal-i: 0;
+    }
+
+    .cs-title {
+        --reveal-i: 1;
+    }
+
+    .cs-lede {
+        --reveal-i: 2;
+    }
+
+    .cs-actions {
+        --reveal-i: 3;
+    }
+
+    .cs-fine {
+        --reveal-i: 4;
+    }
+}

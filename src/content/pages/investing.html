@@ -2,6 +2,43 @@
 title: "Investing | Jayden Kennedy"
 description: "Four things build wealth in property. Jayden Kennedy, Broker, Greater Toronto Area."
 permalink: "/investing/"
+hero:
+    heading: "Investing in Greater Toronto real estate"
+    lede: "Four things build wealth in property. Most people can only name one, and it's the one they control least."
+returns:
+    - num: "01"
+      title: "Amortisation"
+      text: "Forced savings. In year one, roughly half of each payment stays yours as principal, and that share grows every year you hold. The quietest of the four and the most reliable."
+    - num: "02"
+      title: "Leverage"
+      text: "You buy the whole asset with a fraction of the capital. At twenty percent down, a five percent move on the property is twenty five percent on your money. It works the same in reverse, which is why the carrying cost matters more than the price."
+    - num: "03"
+      title: "Income"
+      text: "Rent collected, or rent avoided. Taxed differently, and both worth reviewing with your accountant before you structure anything."
+    - num: "04"
+      title: "Appreciation"
+      text: "Reliable over a long enough hold here. Over three years it's a coin toss, and a coin toss isn't a plan."
+everyDeal:
+    heading: "What I run on every deal"
+    subtext: "Before you commit, not in your first year of owning it."
+    checks:
+        - num: "01"
+          text: "Rent evidence from the immediate area, not the city average."
+        - num: "02"
+          text: "A vacancy assumption stated openly instead of quietly set to zero."
+        - num: "03"
+          text: "Debt service coverage at today's rate, and at two points higher."
+        - num: "04"
+          text: "Full carrying cost, including the parts that get left off. Maintenance, turnover, and the month it sits empty."
+wontDo:
+    heading: "What I won't do"
+    subtext: "Build you a projection that only works if everything goes right."
+    text: "If a deal needs appreciation to make sense, it isn't a deal. It's a bet, and you should know you're placing one. I'd rather tell you that now than explain it in three years."
+cta:
+    heading: "Run the numbers"
+    lede: "Send me the listing and the numbers you're working with. I'll show you which assumptions the deal actually depends on."
+    buttonLabel: "ask about an investment"
+    fine: "I answer every enquiry myself."
 ---
 
 {% extends "layouts/base.html" %}
@@ -20,10 +57,10 @@ permalink: "/investing/"
     <div class="cs-container">
         <div class="cs-copy cs-reveal">
 
-            <h1>Investing in Greater Toronto real estate</h1>
+            <h1>{{ hero.heading }}</h1>
 
             <p class="cs-lede">
-                Four things build wealth in property. Most people can only name one, and it&rsquo;s the one they control least.
+                {{ hero.lede }}
             </p>
 
         </div>
@@ -54,53 +91,19 @@ permalink: "/investing/"
 <section id="four-returns">
     <div class="cs-container">
         <ol class="cs-returns">
+            {% for item in returns %}
             <li class="cs-return" data-reveal>
                 <div class="cs-reveal">
                     <div class="cs-return-head">
-                        <span class="cs-num">01</span>
-                        <h2 class="cs-return-title">Amortisation</h2>
+                        <span class="cs-num">{{ item.num }}</span>
+                        <h2 class="cs-return-title">{{ item.title }}</h2>
                     </div>
                     <p class="cs-text">
-                        Forced savings. In year one, roughly half of each payment stays yours as principal, and that share grows every year you hold. The quietest of the four and the most reliable.
+                        {{ item.text }}
                     </p>
                 </div>
             </li>
-
-            <li class="cs-return" data-reveal>
-                <div class="cs-reveal">
-                    <div class="cs-return-head">
-                        <span class="cs-num">02</span>
-                        <h2 class="cs-return-title">Leverage</h2>
-                    </div>
-                    <p class="cs-text">
-                        You buy the whole asset with a fraction of the capital. At twenty percent down, a five percent move on the property is twenty five percent on your money. It works the same in reverse, which is why the carrying cost matters more than the price.
-                    </p>
-                </div>
-            </li>
-
-            <li class="cs-return" data-reveal>
-                <div class="cs-reveal">
-                    <div class="cs-return-head">
-                        <span class="cs-num">03</span>
-                        <h2 class="cs-return-title">Income</h2>
-                    </div>
-                    <p class="cs-text">
-                        Rent collected, or rent avoided. Taxed differently, and both worth reviewing with your accountant before you structure anything.
-                    </p>
-                </div>
-            </li>
-
-            <li class="cs-return" data-reveal>
-                <div class="cs-reveal">
-                    <div class="cs-return-head">
-                        <span class="cs-num">04</span>
-                        <h2 class="cs-return-title">Appreciation</h2>
-                    </div>
-                    <p class="cs-text">
-                        Reliable over a long enough hold here. Over three years it&rsquo;s a coin toss, and a coin toss isn&rsquo;t a plan.
-                    </p>
-                </div>
-            </li>
+            {% endfor %}
         </ol>
     </div>
 </section>
@@ -112,28 +115,18 @@ permalink: "/investing/"
 <section id="every-deal" data-reveal>
     <div class="cs-container">
         <div class="cs-rail cs-reveal">
-            <h2 class="cs-title">What I run on every deal</h2>
-            <p class="cs-body-sm">Before you commit, not in your first year of owning it.</p>
+            <h2 class="cs-title">{{ everyDeal.heading }}</h2>
+            <p class="cs-body-sm">{{ everyDeal.subtext }}</p>
         </div>
 
         <div class="cs-content cs-reveal">
             <ol class="cs-checks">
+                {% for check in everyDeal.checks %}
                 <li class="cs-check">
-                    <span class="cs-num">01</span>
-                    <p class="cs-text">Rent evidence from the immediate area, not the city average.</p>
+                    <span class="cs-num">{{ check.num }}</span>
+                    <p class="cs-text">{{ check.text }}</p>
                 </li>
-                <li class="cs-check">
-                    <span class="cs-num">02</span>
-                    <p class="cs-text">A vacancy assumption stated openly instead of quietly set to zero.</p>
-                </li>
-                <li class="cs-check">
-                    <span class="cs-num">03</span>
-                    <p class="cs-text">Debt service coverage at today&rsquo;s rate, and at two points higher.</p>
-                </li>
-                <li class="cs-check">
-                    <span class="cs-num">04</span>
-                    <p class="cs-text">Full carrying cost, including the parts that get left off. Maintenance, turnover, and the month it sits empty.</p>
-                </li>
+                {% endfor %}
             </ol>
         </div>
     </div>
@@ -146,13 +139,13 @@ permalink: "/investing/"
 <section id="wont-do" data-reveal>
     <div class="cs-container">
         <div class="cs-rail cs-reveal">
-            <h2 class="cs-title">What I won&rsquo;t do</h2>
-            <p class="cs-body-sm">Build you a projection that only works if everything goes right.</p>
+            <h2 class="cs-title">{{ wontDo.heading }}</h2>
+            <p class="cs-body-sm">{{ wontDo.subtext }}</p>
         </div>
 
         <div class="cs-content cs-reveal">
             <p class="cs-text">
-                If a deal needs appreciation to make sense, it isn&rsquo;t a deal. It&rsquo;s a bet, and you should know you&rsquo;re placing one. I&rsquo;d rather tell you that now than explain it in three years.
+                {{ wontDo.text }}
             </p>
         </div>
     </div>
@@ -165,20 +158,19 @@ permalink: "/investing/"
 <section id="cta" class="cs-on-dark" data-reveal>
     <div class="cs-container">
         <div class="cs-rail cs-reveal">
-            <h2>Run the numbers</h2>
+            <h2>{{ cta.heading }}</h2>
         </div>
 
         <div class="cs-content cs-reveal">
             <p class="cs-lede">
-                Send me the listing and the numbers you're working with. I'll show you which assumptions the deal actually
-depends on.
+                {{ cta.lede }}
             </p>
 
             <div class="cs-actions">
-                <a href="/contact/" class="cs-button-script">ask about an investment</a>
+                <a href="/contact/" class="cs-button-script">{{ cta.buttonLabel }}</a>
             </div>
 
-            <p class="cs-fine">I answer every enquiry myself.</p>
+            <p class="cs-fine">{{ cta.fine }}</p>
         </div>
     </div>
 </section>

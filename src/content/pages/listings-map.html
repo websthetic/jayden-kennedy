@@ -1,0 +1,101 @@
+---
+title: "Listings Map | Jayden Kennedy"
+description: "Search every listing across the Greater Toronto Area on a map. Filter by city, price, type and size."
+permalink: "/listings/map/"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/listings.css">
+    <link rel="stylesheet" href="/assets/css/listings-map.css">
+    <!-- Mapbox GL JS — a public CDN library file, not an authenticated
+         call, so it loads the same way for every visitor regardless of
+         account. Pinned to an exact version rather than @latest, same
+         reasoning as any other third-party script: an unannounced
+         breaking release upstream shouldn't be able to break this page
+         without a deliberate version bump here. -->
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.2.0/mapbox-gl.js"></script>
+    <!-- base.html has no scripts block, so page scripts load here with
+         defer, same pattern as listings.html. listings.js is still
+         needed here for the filter form (region/city narrowing, the
+         mobile Filters toggle, restoring state from the query string)
+         — only the results list/gallery half of that file is inert on
+         this page, since #listings-results doesn't exist here. -->
+    <script defer src="/assets/js/listings.js"></script>
+    <script defer src="/assets/js/listings-map.js"></script>
+{% endblock %}
+
+{% block body %}
+
+    <section id="listings-intro">
+      <div class="cs-container">
+        <h1 class="cs-title">Homes for sale across the Greater Toronto Area</h1>
+        <p class="cs-text">
+          Filter by city, price, type and size. Save a search and I'll email you when something matches.
+        </p>
+      </div>
+    </section>
+
+    {% set formAction = "/listings/map/" %}
+    {% include "components/listings-filter-form.html" %}
+
+    <!-- #listings-results, same section ID listings.html uses — a
+         different page, so there's no DOM collision, and it means this
+         page gets .cs-summary/.cs-views/.cs-view/.cs-count/.cs-applied/
+         .cs-clear/.cs-empty/.cs-empty-title styling for free from
+         listings.less rather than that ~40 lines being duplicated here.
+         Only what's genuinely map-specific (#map, the popup) lives in
+         listings-map.less. -->
+    <section id="listings-results">
+      <div class="cs-summary">
+        <div class="cs-container">
+          <div class="cs-count-group">
+            <div class="cs-views">
+              <a class="cs-view" href="/listings/" data-view-link>List</a>
+              <a class="cs-view" href="/listings/map/" aria-current="page" data-view-link>Map</a>
+            </div>
+
+            <p class="cs-count" data-count aria-live="polite">Loading&hellip;</p>
+
+            <p class="cs-applied" data-applied hidden>
+              <span data-applied-label></span>
+              <a class="cs-clear" href="/listings/map/">Clear all</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs-container cs-map-container">
+        <!-- Full-width map, no side list — each pin's popup card (photo,
+             price, address, specs) is the "card" for that listing, open
+             automatically once plotted rather than waiting for a click.
+             Populated by listings-map.js. A visible token warning is the
+             graceful-degradation state when MAPBOX_TOKEN below is still
+             the placeholder — see that file. -->
+        <div id="map" data-map aria-label="Map of listings"></div>
+
+        <div class="cs-empty" data-empty hidden>
+          <p class="cs-empty-title">Nothing on the board matches that yet.</p>
+          <p class="cs-text">
+            Widen the price band or clear the filters. If you tell me what you are
+            looking for, I will send anything that comes up before it is listed.
+          </p>
+          <a class="cs-button" href="/contact/">Tell me what you are looking for</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="listings-disclosure">
+      <div class="cs-container">
+        <p class="cs-fine">
+          Listing data is provided by the Toronto Regional Real Estate Board and is
+          deemed reliable but not guaranteed accurate. Not intended to solicit buyers
+          or sellers currently under contract. Map pin positions are approximate,
+          geocoded from each listing's address.
+        </p>
+      </div>
+    </section>
+
+{% endblock %}

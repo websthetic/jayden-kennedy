@@ -5,32 +5,679 @@ backend:
 # Keep this to allow you to edit the cms locally
 local_backend: true
 
-# change url to a link to the image you want to use, no file paths, must be a URL
-logo_url: https://codestitch.app/frontend/images/logo.png
+# Jayden Kennedy Real Estate branding. Same mark used in the live site's
+# header (src/_includes/sections/header.html, .cs-mark-dark).
+logo_url: https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-icon-logo.png
+site_url: https://www.soldbykennedy.ca
+display_url: https://www.soldbykennedy.ca
 
 # Image folders
-media_folder: "src/assets/images/blog"
-public_folder: "/assets/images/blog"
+media_folder: "src/assets/images/journal"
+public_folder: "/assets/images/journal"
 
 # Decap CMS Collections
 collections:
-    - name: "blog"
-      label: "Blog"
-      folder: "src/content/blog"
+    # Points at src/_data/listingFilters.json — a pure data file, not a
+    # page. Both the /listings/ filter form and the two homepage search
+    # widgets render their Region/City <option> lists from this same
+    # file (Nunjucks {% for %} loops), and the listings-search Netlify
+    # Function reads it too (netlify/functions/lib/listingsFilter.js), so
+    # editing it here changes the search everywhere at once — no code
+    # change needed to add or remove a searchable area.
+    - name: "listing-filters"
+      label: "Listing Search Filters"
+      files:
+          - name: "listing-filters"
+            label: "Regions & Cities"
+            file: "src/_data/listingFilters.json"
+            fields:
+                - label: "Regions"
+                  name: "regions"
+                  widget: "list"
+                  hint: "Shown in the Region dropdown. Adding a region with no active listing in it doesn't break anything — that search just comes back empty until a listing exists there."
+                  fields:
+                      - { label: "Internal Value (lowercase, no spaces — e.g. \"durham\")", name: "value", widget: "string" }
+                      - { label: "Dropdown Label (e.g. \"Durham Region\")", name: "label", widget: "string" }
+                      - { label: "Exact MLS County/Region Name (must match PropTx's CountyOrParish field exactly, case-sensitive — e.g. \"Durham\")", name: "resoValue", widget: "string" }
+                - label: "Cities"
+                  name: "cities"
+                  widget: "list"
+                  hint: "Shown in the City dropdown, narrowed to whichever Region is selected. The Region field below must exactly match one of the Regions' \"Internal Value\" above."
+                  fields:
+                      - { label: "Internal Value (lowercase, no spaces — e.g. \"clarington\")", name: "value", widget: "string" }
+                      - { label: "Dropdown Label (e.g. \"Clarington\")", name: "label", widget: "string" }
+                      - { label: "Exact MLS City Name (must match PropTx's City field exactly, case-sensitive — e.g. \"Clarington\")", name: "resoValue", widget: "string" }
+                      - { label: "Region (must match a Region's Internal Value above — e.g. \"durham\")", name: "region", widget: "string" }
+                - label: "Result Municipalities"
+                  name: "resultsCities"
+                  widget: "list"
+                  hint: "Shown in the /results/ page's Municipality dropdown. A separate list from Cities above — a closed deal can be anywhere Jayden has ever transacted, not just the areas with current active inventory, so this isn't tied to a Region."
+                  fields:
+                      - { label: "Internal Value (lowercase, no spaces — e.g. \"ajax\")", name: "value", widget: "string" }
+                      - { label: "Dropdown Label (e.g. \"Ajax\")", name: "label", widget: "string" }
+                      - { label: "Exact MLS City Name (must match PropTx's City field exactly, case-sensitive — e.g. \"Ajax\")", name: "resoValue", widget: "string" }
+
+    # Points at src/content/journal, the folder Eleventy actually reads for
+    # the /journal/ index and each post's page (see journal.json, which
+    # tags every file here "post" and computes its permalink). Journal
+    # design and templates are untouched — this collection only edits the
+    # front matter and body those templates already read.
+    - name: "journal"
+      label: "Journal"
+      folder: "src/content/journal"
       create: true
       slug: "{{slug}}"
       fields:
-          - { label: "Title", name: "title", widget: "string" }
+          - label: "SEO Title"
+            name: "seoTitle"
+            widget: "string"
+            required: false
+            hint: "Shown in the browser tab and in Google/social previews. Starts out matching Title below — edit it if you want the search-engine snippet to read differently from the on-page headline."
+          - label: "SEO Description"
+            name: "seoDescription"
+            widget: "text"
+            required: false
+            hint: "Shown in Google/social previews. Starts out matching Description below — edit it if you want the search-engine snippet to read differently from the on-page dek."
+          - { label: "Title", name: "title", widget: "string", hint: "The on-page headline, shown as the H1 on the post and as the title on the journal index list." }
           - {
                 label: "URL Slug",
                 name: "url",
                 widget: "string",
-                hint: 'Specify where the page will be written to. If you use "Blog Post", the post will be accessible from "blog/blog-post"',
+                hint: 'Sets the page path. "How Property Creates Wealth" would need a url like "how-property-creates-wealth", making the post accessible from "/journal/how-property-creates-wealth/"',
             }
-          - { label: "Description", name: "description", widget: "string" }
-          - { label: "Author", name: "author", widget: "string" }
+          - { label: "Description", name: "description", widget: "text", hint: "The on-page dek, shown under the title on the post itself and as the excerpt on the journal index list." }
+          - { label: "Author", name: "author", widget: "string", default: "Jayden Kennedy" }
           - { label: "Date", name: "date", widget: "datetime" }
-          - { label: "Tags", name: "tags", widget: "list", default: ["post"] }
+          - { label: "Read Time (minutes)", name: "readTime", widget: "number", value_type: "int", required: false }
           - { label: "Featured Image", name: "image", widget: "image" }
-          - { label: "Image Caption", name: "imageAlt", widget: "string" }
+          - { label: "Image Alt Text", name: "imageAlt", widget: "string" }
           - { label: "Body", name: "body", widget: "markdown" }
+
+    # Static page collection. Each page is registered individually below
+    # because every page has its own bespoke section layout — fields map
+    # 1:1 to the front-matter blocks each template reads from.
+    - name: "pages"
+      label: "Pages"
+      files:
+          - name: "about"
+            label: "About"
+            file: "src/content/pages/about.html"
+            fields:
+                - { label: "SEO Title", name: "title", widget: "string" }
+                - { label: "SEO Description", name: "description", widget: "text" }
+                - label: "Intro"
+                  name: "intro"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                      - { label: "Portrait", name: "image", widget: "image", media_folder: "src/assets/images/pages", public_folder: "/assets/images/pages" }
+                      - { label: "Portrait Alt Text", name: "imageAlt", widget: "string" }
+                      - { label: "Rail Text", name: "railText", widget: "text" }
+                - label: "Speaking CTA"
+                  name: "cta"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                      - { label: "Body", name: "body", widget: "text" }
+                      - { label: "Button Label", name: "buttonLabel", widget: "string" }
+
+          - name: "contact"
+            label: "Contact"
+            file: "src/content/pages/contact.html"
+            fields:
+                - { label: "SEO Title", name: "title", widget: "string" }
+                - { label: "SEO Description", name: "description", widget: "text" }
+                - label: "Intro"
+                  name: "intro"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Text", name: "text", widget: "text" }
+                - label: "Form"
+                  name: "form"
+                  widget: "object"
+                  fields:
+                      - { label: "Success Message", name: "successMessage", widget: "string", hint: "Shown after a visitor submits the enquiry form." }
+
+          - name: "buying"
+            label: "Buying"
+            file: "src/content/pages/buying.html"
+            fields:
+                - { label: "SEO Title", name: "title", widget: "string" }
+                - { label: "SEO Description", name: "description", widget: "text" }
+                - label: "Hero"
+                  name: "hero"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                - label: "Before You Look"
+                  name: "financing"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                      - { label: "Body", name: "body", widget: "text" }
+                - label: "What You Get on Every Property"
+                  name: "everyProperty"
+                  widget: "object"
+                  fields:
+                      - { label: "Image", name: "image", widget: "image", media_folder: "src/assets/images/pages", public_folder: "/assets/images/pages" }
+                      - { label: "Image Alt Text", name: "imageAlt", widget: "string" }
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - label: "List Items"
+                        name: "items"
+                        widget: "list"
+                        fields:
+                            - { label: "Number", name: "num", widget: "string", hint: 'e.g. "01"' }
+                            - { label: "Text", name: "text", widget: "string" }
+                      - { label: "Footnote", name: "footnote", widget: "string" }
+                - label: "The Offer"
+                  name: "offer"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                      - label: "Notes"
+                        name: "notes"
+                        widget: "list"
+                        fields:
+                            - { label: "Title", name: "title", widget: "string" }
+                            - { label: "Text", name: "text", widget: "text" }
+                      - { label: "Footnote", name: "footnote", widget: "string" }
+                - label: "Closing CTA"
+                  name: "cta"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                      - { label: "Primary Button Label", name: "primaryButtonLabel", widget: "string" }
+                      - { label: "Secondary Button Label", name: "secondaryButtonLabel", widget: "string" }
+                      - { label: "Fine Print", name: "fine", widget: "string" }
+
+          - name: "investing"
+            label: "Investing"
+            file: "src/content/pages/investing.html"
+            fields:
+                - { label: "SEO Title", name: "title", widget: "string" }
+                - { label: "SEO Description", name: "description", widget: "text" }
+                - label: "Hero"
+                  name: "hero"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                - label: "The Four Returns"
+                  name: "returns"
+                  widget: "list"
+                  fields:
+                      - { label: "Number", name: "num", widget: "string", hint: 'e.g. "01"' }
+                      - { label: "Title", name: "title", widget: "string" }
+                      - { label: "Text", name: "text", widget: "text" }
+                - label: "What I Run on Every Deal"
+                  name: "everyDeal"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Subtext", name: "subtext", widget: "string" }
+                      - label: "Checks"
+                        name: "checks"
+                        widget: "list"
+                        fields:
+                            - { label: "Number", name: "num", widget: "string", hint: 'e.g. "01"' }
+                            - { label: "Text", name: "text", widget: "string" }
+                - label: "What I Won't Do"
+                  name: "wontDo"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Subtext", name: "subtext", widget: "string" }
+                      - { label: "Text", name: "text", widget: "text" }
+                - label: "Closing CTA"
+                  name: "cta"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                      - { label: "Button Label", name: "buttonLabel", widget: "string" }
+                      - { label: "Fine Print", name: "fine", widget: "string" }
+
+          - name: "selling"
+            label: "Selling"
+            file: "src/content/pages/selling.html"
+            fields:
+                - { label: "SEO Title", name: "title", widget: "string" }
+                - { label: "SEO Description", name: "description", widget: "text" }
+                - label: "Hero"
+                  name: "hero"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                - label: "How a Sale Runs"
+                  name: "saleRuns"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "string" }
+                      - label: "Stages"
+                        name: "stages"
+                        widget: "list"
+                        fields:
+                            - { label: "Number", name: "num", widget: "string", hint: 'e.g. "01"' }
+                            - { label: "Title", name: "title", widget: "string" }
+                            - { label: "Text", name: "text", widget: "text" }
+                - label: "The Analysis"
+                  name: "costs"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Subtext", name: "subtext", widget: "string" }
+                      - { label: "Text", name: "text", widget: "text" }
+                      - { label: "Statement", name: "statement", widget: "text" }
+                - label: "What I Need From You"
+                  name: "whatINeed"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Subtext", name: "subtext", widget: "string" }
+                      - label: "Asks"
+                        name: "asks"
+                        widget: "list"
+                        fields:
+                            - { label: "Number", name: "num", widget: "string", hint: 'e.g. "01"' }
+                            - { label: "Text", name: "text", widget: "string" }
+                      - { label: "Closing Line", name: "close", widget: "text" }
+                - label: "Closing CTA"
+                  name: "cta"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                      - { label: "Primary Button Label", name: "primaryButtonLabel", widget: "string" }
+                      - { label: "Secondary Button Label", name: "secondaryButtonLabel", widget: "string" }
+                      - { label: "Fine Print", name: "fine", widget: "string" }
+
+          - name: "reviews"
+            label: "Reviews"
+            file: "src/content/pages/reviews.html"
+            fields:
+                - { label: "SEO Title", name: "title", widget: "string" }
+                - { label: "SEO Description", name: "description", widget: "text" }
+                - label: "Intro"
+                  name: "intro"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                - label: "Reviews"
+                  name: "reviews"
+                  widget: "list"
+                  hint: "Each review's slug is linked to from the homepage (#slug). Do not change a slug without updating the homepage's matching link, and keep exactly one review marked Featured."
+                  fields:
+                      - { label: "Slug (do not change without updating the homepage)", name: "slug", widget: "string" }
+                      - { label: "Featured (green panel)", name: "featured", widget: "boolean", default: false }
+                      - { label: "Quote (first paragraph, always visible)", name: "quote", widget: "text" }
+                      - label: "Remaining Paragraphs (behind \"Read more\")"
+                        name: "restParagraphs"
+                        widget: "list"
+                        field: { label: "Paragraph", name: "paragraph", widget: "text" }
+                      - { label: "Star Rating", name: "stars", widget: "number", default: 5, min: 1, max: 5, value_type: "int" }
+                      - { label: "Reviewer Name", name: "reviewerName", widget: "string" }
+                      - { label: "Reviewer's Google Review Link", name: "reviewerLink", widget: "string" }
+                      - { label: "Date (YYYY-MM-DD)", name: "date", widget: "string", pattern: ['^\d{4}-\d{2}-\d{2}$', "Use YYYY-MM-DD"] }
+                      - { label: "Date Label (e.g. \"June 2026\")", name: "dateLabel", widget: "string" }
+                - label: "Closing CTA"
+                  name: "cta"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                      - { label: "Button Label", name: "buttonLabel", widget: "string" }
+                      - { label: "Button Link", name: "buttonLink", widget: "string" }
+
+          - name: "accessibility"
+            label: "Accessibility"
+            file: "src/content/pages/accessibility.html"
+            fields:
+                - { label: "SEO Title", name: "title", widget: "string" }
+                - { label: "SEO Description", name: "description", widget: "text" }
+                - label: "Hero"
+                  name: "hero"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Standfirst", name: "standfirst", widget: "text" }
+                      - { label: "Last Updated (YYYY-MM-DD)", name: "lastUpdated", widget: "string", pattern: ['^\d{4}-\d{2}-\d{2}$', "Use YYYY-MM-DD"] }
+                - label: "The Commitment"
+                  name: "commitment"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }
+                - label: "The Standard"
+                  name: "standard"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }
+                - label: "What Is Built In"
+                  name: "built"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - label: "Items"
+                        name: "items"
+                        widget: "list"
+                        fields:
+                            - { label: "Term", name: "term", widget: "string" }
+                            - { label: "Description", name: "description", widget: "text" }
+                - label: "Known Gaps"
+                  name: "gaps"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Intro", name: "intro", widget: "text" }
+                      - label: "Items"
+                        name: "items"
+                        widget: "list"
+                        fields:
+                            - { label: "Term", name: "term", widget: "string" }
+                            - { label: "Description", name: "description", widget: "text" }
+                - label: "Other Formats"
+                  name: "formats"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }
+                - label: "Feedback"
+                  name: "feedback"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Intro", name: "intro", widget: "text" }
+                      - { label: "Acknowledgement", name: "acknowledgement", widget: "text" }
+                      - { label: "Escalation", name: "escalation", widget: "text" }
+                      - { label: "Note", name: "note", widget: "text" }
+
+          - name: "privacy-policy"
+            label: "Privacy Policy"
+            file: "src/content/pages/privacy-policy.html"
+            fields:
+                - { label: "SEO Title", name: "title", widget: "string" }
+                - { label: "SEO Description", name: "description", widget: "text" }
+                - label: "Hero"
+                  name: "hero"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Standfirst", name: "standfirst", widget: "text" }
+                      - { label: "Last Updated (YYYY-MM-DD)", name: "lastUpdated", widget: "string", pattern: ['^\d{4}-\d{2}-\d{2}$', "Use YYYY-MM-DD"] }
+                - { label: "1 · Who I Am", name: "whoIAm", widget: "object", fields: [{ label: "Heading", name: "heading", widget: "string" }, { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }] }
+                - { label: "2 · Scope", name: "scope", widget: "object", fields: [{ label: "Heading", name: "heading", widget: "string" }, { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }] }
+                - label: "3 · What I Collect"
+                  name: "whatICollect"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Intro", name: "intro", widget: "text" }
+                      - { label: "Items", name: "items", widget: "list", fields: [{ label: "Term", name: "term", widget: "string" }, { label: "Description", name: "description", widget: "text" }] }
+                      - { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }
+                - { label: "4 · Why I Collect It", name: "why", widget: "object", fields: [{ label: "Heading", name: "heading", widget: "string" }, { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }] }
+                - { label: "5 · Listing Data", name: "listingData", widget: "object", fields: [{ label: "Heading", name: "heading", widget: "string" }, { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }] }
+                - { label: "6 · Reviews", name: "reviews", widget: "object", fields: [{ label: "Heading", name: "heading", widget: "string" }, { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }] }
+                - { label: "7 · Cookies and Analytics", name: "cookies", widget: "object", fields: [{ label: "Heading", name: "heading", widget: "string" }, { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }] }
+                - { label: "8 · Email, Calls, and Texts", name: "email", widget: "object", fields: [{ label: "Heading", name: "heading", widget: "string" }, { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }] }
+                - label: "9 · Who Else Sees It"
+                  name: "sharing"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }
+                      - { label: "Items", name: "items", widget: "list", fields: [{ label: "Term", name: "term", widget: "string" }, { label: "Description", name: "description", widget: "text" }] }
+                - { label: "10 · Where It Is Stored", name: "storage", widget: "object", fields: [{ label: "Heading", name: "heading", widget: "string" }, { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }] }
+                - { label: "11 · Security", name: "security", widget: "object", fields: [{ label: "Heading", name: "heading", widget: "string" }, { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }] }
+                - { label: "12 · How Long I Keep It", name: "retention", widget: "object", fields: [{ label: "Heading", name: "heading", widget: "string" }, { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }] }
+                - label: "13 · Your Rights and Choices"
+                  name: "yourChoices"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Items", name: "items", widget: "list", fields: [{ label: "Term", name: "term", widget: "string" }, { label: "Description", name: "description", widget: "text" }] }
+                      - { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }
+                - { label: "14 · Young People", name: "minors", widget: "object", fields: [{ label: "Heading", name: "heading", widget: "string" }, { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }] }
+                - { label: "15 · Other Websites", name: "thirdParties", widget: "object", fields: [{ label: "Heading", name: "heading", widget: "string" }, { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }] }
+                - { label: "16 · Changes to This Policy", name: "changes", widget: "object", fields: [{ label: "Heading", name: "heading", widget: "string" }, { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }] }
+                - label: "17 · Contact"
+                  name: "contact"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Paragraphs", name: "paragraphs", widget: "list", field: { label: "Paragraph", name: "paragraph", widget: "text" } }
+                      - { label: "Note", name: "note", widget: "text" }
+
+          - name: "media-and-press"
+            label: "Media and Press"
+            file: "src/content/pages/media-and-press.html"
+            fields:
+                - { label: "SEO Title", name: "title", widget: "string" }
+                - { label: "SEO Description", name: "description", widget: "text" }
+                - label: "Masthead"
+                  name: "masthead"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading, Line 1", name: "headingLine1", widget: "string" }
+                      - { label: "Heading, Line 2", name: "headingLine2", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                      - { label: "Image", name: "image", widget: "image", media_folder: "src/assets/images/pages", public_folder: "/assets/images/pages" }
+                      - { label: "Image Alt Text", name: "imageAlt", widget: "string" }
+                      - { label: "Note", name: "note", widget: "text" }
+                      - { label: "Button Label", name: "buttonLabel", widget: "string" }
+                - label: "Appearances"
+                  name: "appearances"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - label: "Featured Appearance"
+                        name: "feature"
+                        widget: "object"
+                        fields:
+                            - { label: "Badge", name: "badge", widget: "string" }
+                            - { label: "Title", name: "title", widget: "string" }
+                            - { label: "Text", name: "text", widget: "text" }
+                            - { label: "Link Label", name: "linkLabel", widget: "string" }
+                            - { label: "Link URL", name: "linkHref", widget: "string" }
+                            - { label: "Image", name: "image", widget: "image", media_folder: "src/assets/images/pages", public_folder: "/assets/images/pages" }
+                            - { label: "Image Alt Text", name: "imageAlt", widget: "string" }
+                - label: "Speaking Topics"
+                  name: "topics"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Topic One", name: "topicOne", widget: "object", fields: [{ label: "Index", name: "index", widget: "string" }, { label: "Title", name: "title", widget: "string" }, { label: "Text", name: "text", widget: "text" }] }
+                      - { label: "Image Between One and Two", name: "imageOne", widget: "image", media_folder: "src/assets/images/pages", public_folder: "/assets/images/pages" }
+                      - { label: "Topic Two", name: "topicTwo", widget: "object", fields: [{ label: "Index", name: "index", widget: "string" }, { label: "Title", name: "title", widget: "string" }, { label: "Text", name: "text", widget: "text" }] }
+                      - { label: "Image Between Two and Three", name: "imageTwo", widget: "image", media_folder: "src/assets/images/pages", public_folder: "/assets/images/pages" }
+                      - { label: "Topic Three", name: "topicThree", widget: "object", fields: [{ label: "Index", name: "index", widget: "string" }, { label: "Title", name: "title", widget: "string" }, { label: "Text", name: "text", widget: "text" }] }
+                - label: "For Producers"
+                  name: "producers"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Button Label", name: "buttonLabel", widget: "string" }
+                      - { label: "Format", name: "format", widget: "string" }
+                      - { label: "Preparation", name: "preparation", widget: "string" }
+                      - { label: "Press Kit", name: "pressKit", widget: "string" }
+                      - { label: "Based In", name: "basedIn", widget: "string" }
+
+          - name: "home-value"
+            label: "Home Value"
+            file: "src/content/pages/home-value.html"
+            fields:
+                - { label: "SEO Title", name: "title", widget: "string" }
+                - { label: "SEO Description", name: "description", widget: "text" }
+                - label: "Hero"
+                  name: "hero"
+                  widget: "object"
+                  hint: "The multi-step valuation form below this is not editable here — it's wired to Netlify Forms and validation script."
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                - label: "What You Get"
+                  name: "valuation"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - label: "Items"
+                        name: "items"
+                        widget: "list"
+                        fields:
+                            - { label: "Number", name: "num", widget: "string", hint: 'e.g. "01"' }
+                            - { label: "Text", name: "text", widget: "string" }
+                      - { label: "Note", name: "note", widget: "string" }
+
+          - name: "results"
+            label: "Results"
+            file: "src/content/pages/results.html"
+            fields:
+                - { label: "SEO Title", name: "title", widget: "string" }
+                - { label: "SEO Description", name: "description", widget: "text" }
+                - label: "Intro"
+                  name: "intro"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Text", name: "text", widget: "text" }
+                - label: "Disclosure"
+                  name: "disclosure"
+                  widget: "object"
+                  hint: "The filter form and the six closing cards below are not editable here — they render live TRREB data."
+                  fields:
+                      - { label: "Text", name: "text", widget: "text" }
+                - label: "How This Sale Ran"
+                  name: "saleRan"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                      - label: "Columns"
+                        name: "columns"
+                        widget: "list"
+                        fields:
+                            - { label: "Title", name: "title", widget: "string" }
+                            - { label: "Text", name: "text", widget: "text" }
+                - label: "Closing CTA"
+                  name: "cta"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                      - { label: "Button Label", name: "buttonLabel", widget: "string" }
+                      - { label: "Fine Print", name: "fine", widget: "string" }
+
+          - name: "home"
+            label: "Homepage"
+            file: "src/index.html"
+            fields:
+                - { label: "SEO Title", name: "title", widget: "string" }
+                - { label: "SEO Description", name: "description", widget: "text" }
+                - label: "Hero"
+                  name: "hero"
+                  widget: "object"
+                  hint: "The Find a Home search form below this is not editable here — its Region/City options come from the Listing Search Filters collection."
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                      - { label: "Buying Button Label", name: "buyingButtonLabel", widget: "string" }
+                      - { label: "Selling Button Label", name: "sellingButtonLabel", widget: "string" }
+                      - { label: "Valuation Button Label", name: "valuationButtonLabel", widget: "string" }
+                      - { label: "Background Image", name: "image", widget: "image", media_folder: "src/assets/images/pages", public_folder: "/assets/images/pages" }
+                - label: "On Record (Stats)"
+                  name: "record"
+                  widget: "object"
+                  fields:
+                      - label: "Stats"
+                        name: "stats"
+                        widget: "list"
+                        fields:
+                            - { label: "Figure", name: "figure", widget: "string", hint: 'e.g. "Top 1%"' }
+                            - { label: "Claim", name: "claim", widget: "string" }
+                - label: "Reviews Teaser"
+                  name: "reviewsTeaser"
+                  widget: "object"
+                  hint: "These 3 cards are excerpted from the same 3 reviews as the top of the Reviews page — keep both in sync by hand (there's no automatic link between the two)."
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                      - { label: "Button Label", name: "buttonLabel", widget: "string" }
+                      - label: "Cards"
+                        name: "cards"
+                        widget: "list"
+                        fields:
+                            - { label: "Slug (must match the review's id on /reviews/)", name: "slug", widget: "string" }
+                            - { label: "Quote (opening paragraph only)", name: "quote", widget: "text" }
+                            - { label: "Reviewer Name", name: "reviewerName", widget: "string" }
+                            - { label: "Reviewer's Google Review Link", name: "reviewerLink", widget: "string" }
+                            - { label: "Date (YYYY-MM-DD)", name: "date", widget: "string", pattern: ['^\d{4}-\d{2}-\d{2}$', "Use YYYY-MM-DD"] }
+                            - { label: "Date Label (e.g. \"June 2026\")", name: "dateLabel", widget: "string" }
+                - label: "Home Valuation Teaser"
+                  name: "valuation"
+                  widget: "object"
+                  hint: "The address field and Continue button below this are not editable here — that form hands off to the Home Value page."
+                  fields:
+                      - { label: "Heading, Line 1", name: "headingLine1", widget: "string" }
+                      - { label: "Heading, Line 2", name: "headingLine2", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                      - { label: "Text", name: "text", widget: "text" }
+                - label: "Where Do You Want to Begin"
+                  name: "process"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading, Line 1", name: "headingLine1", widget: "string" }
+                      - { label: "Heading, Line 2", name: "headingLine2", widget: "string" }
+                      - label: "Steps"
+                        name: "steps"
+                        widget: "list"
+                        fields:
+                            - { label: "Title", name: "title", widget: "string" }
+                            - { label: "Text", name: "text", widget: "text" }
+                            - { label: "Button Label", name: "buttonLabel", widget: "string" }
+                            - { label: "Link (do not change without moving it to the matching page)", name: "href", widget: "string" }
+                - label: "About Teaser"
+                  name: "about"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "Lede", name: "lede", widget: "text" }
+                      - { label: "Text", name: "text", widget: "text" }
+                      - { label: "Subheading", name: "subheading", widget: "string" }
+                      - { label: "\"More About Me\" Button Label", name: "moreButtonLabel", widget: "string" }
+                      - { label: "\"Speaking\" Button Label", name: "speakingButtonLabel", widget: "string" }
+                      - { label: "Portrait", name: "image", widget: "image", media_folder: "src/assets/images/pages", public_folder: "/assets/images/pages" }
+                      - { label: "Portrait Alt Text", name: "imageAlt", widget: "string" }
+                - label: "Market Notes"
+                  name: "notes"
+                  widget: "object"
+                  fields:
+                      - { label: "Heading", name: "heading", widget: "string" }
+                      - { label: "\"All Notes\" Button Label", name: "allNotesLabel", widget: "string" }
+                      - { label: "Aside Text", name: "asideText", widget: "text" }
+                      - label: "Video Frames"
+                        name: "frames"
+                        widget: "list"
+                        fields:
+                            - { label: "Caption", name: "title", widget: "string" }
+                            - { label: "Poster Image", name: "poster", widget: "image", media_folder: "src/assets/images/pages", public_folder: "/assets/images/pages" }
+                            - { label: "Video URL", name: "video", widget: "string", hint: "Paste the CDN link to the .mp4 file." }
+                - label: "Subscribe and Speaking"
+                  name: "subscribe"
+                  widget: "object"
+                  hint: "The email subscribe form in the first band is not editable here."
+                  fields:
+                      - { label: "\"Two Notes a Month\" Heading", name: "notesHeading", widget: "string" }
+                      - { label: "\"Two Notes a Month\" Text", name: "notesText", widget: "text" }
+                      - { label: "\"Talks and Workshops\" Heading", name: "talksHeading", widget: "string" }
+                      - { label: "\"Talks and Workshops\" Text", name: "talksText", widget: "text" }
+                      - { label: "\"Talks and Workshops\" Button Label", name: "talksButtonLabel", widget: "string" }

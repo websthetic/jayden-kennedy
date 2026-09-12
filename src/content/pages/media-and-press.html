@@ -2,6 +2,47 @@
 title: "Media and Press | Jayden Kennedy"
 description: "Interviews, panels and podcast appearances on financial literacy and how property carries its price. Booking details for producers."
 permalink: "/speaking/"
+masthead:
+    headingLine1: "Where the work"
+    headingLine2: "has been heard"
+    lede: "Interviews, panels and podcast appearances on financial literacy and how property carries its price. To book an appearance, send the date and the audience."
+    image: "https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-media-press-hero.jpg"
+    imageAlt: "Jayden Kennedy recording a segment in studio"
+    note: "Segments run thirty to sixty minutes, remote or in studio. Jayden brings her own material and local figures sent ahead of the recording."
+    buttonLabel: "request an appearance"
+appearances:
+    heading: "Appearances"
+    feature:
+        badge: "KW Insider"
+        title: "The game plan with Jayden Kennedy"
+        text: "A conversation about leaving professional sport, closing the financial literacy gap, and what she tells first time buyers before they start looking."
+        linkLabel: "Read the feature"
+        linkHref: "https://example.com/kw-insider-feature"
+        image: "https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder-1.jpg"
+        imageAlt: "Jayden Kennedy photographed for the KW Insider feature"
+topics:
+    heading: "Speaking topics"
+    topicOne:
+        index: "01"
+        title: "How property creates wealth"
+        text: "Amortisation, leverage, income, appreciation, and which of the four you actually control."
+    imageOne: "https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder-1.jpg"
+    topicTwo:
+        index: "02"
+        title: "Reading a market without a headline"
+        text: "What ninety days of local sales tell you that a national average cannot."
+    imageTwo: "https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/selling-home-image.jpg"
+    topicThree:
+        index: "03"
+        title: "The first purchase"
+        text: "Carrying costs, deposit structure, and the questions to ask before an offer."
+producers:
+    heading: "For producers"
+    buttonLabel: "request an appearance"
+    format: "Thirty to sixty minutes, remote or in studio"
+    preparation: "Own material, local figures sent ahead of the recording"
+    pressKit: "Headshots, short and long bio, brokerage disclosure"
+    basedIn: "Durham Region, Ontario"
 ---
 
 {% extends "layouts/base.html" %}
@@ -41,26 +82,24 @@ permalink: "/speaking/"
                  so the type is capped below 48rem to keep the
                  longer line inside the gutter. -->
             <h1 class="cs-title">
-                <span class="cs-line"><span>Where the work</span></span>
-                <span class="cs-line"><span>has been heard</span></span>
+                <span class="cs-line"><span>{{ masthead.headingLine1 }}</span></span>
+                <span class="cs-line"><span>{{ masthead.headingLine2 }}</span></span>
             </h1>
         </div>
 
         <div class="cs-body cs-reveal" style="--reveal-i: 1">
             <p class="cs-lede">
-                Interviews, panels and podcast appearances on financial literacy and how property carries its price. To book an appearance, send the date and the audience.
+                {{ masthead.lede }}
             </p>
         </div>
 
-        <!-- CONFIRM: wide studio or panel crop. Not the
-             portrait — that belongs on /about/. -->
         <figure class="cs-figure cs-reveal" style="--reveal-i: 2">
             <picture class="cs-picture">
-                <source media="(max-width: 63.9375rem)" srcset="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-media-press-hero.jpg">
-                <source media="(min-width: 64rem)" srcset="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-media-press-hero.jpg">
+                <source media="(max-width: 63.9375rem)" srcset="{{ masthead.image }}">
+                <source media="(min-width: 64rem)" srcset="{{ masthead.image }}">
                 <img
-                    src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-media-press-hero.jpg"
-                    alt="Jayden Kennedy recording a segment in studio"
+                    src="{{ masthead.image }}"
+                    alt="{{ masthead.imageAlt }}"
                     width="1600"
                     height="900"
                     loading="eager"
@@ -75,9 +114,9 @@ permalink: "/speaking/"
              sibling after the aside would fall into an implicit row. -->
         <div class="cs-note cs-reveal" style="--reveal-i: 3">
             <p class="cs-aside">
-                Segments run thirty to sixty minutes, remote or in studio. Jayden brings her own material and local figures sent ahead of the recording.
+                {{ masthead.note }}
             </p>
-            <a href="/contact/" class="cs-button-script">request an appearance</a>
+            <a href="/contact/" class="cs-button-script">{{ masthead.buttonLabel }}</a>
         </div>
     </div>
 </section>
@@ -99,21 +138,21 @@ permalink: "/speaking/"
 
     <section id="appearances" data-reveal>
         <div class="cs-container">
-            <h2 class="cs-reveal">Appearances</h2>
+            <h2 class="cs-reveal">{{ appearances.heading }}</h2>
 
             <article class="cs-feature cs-reveal">
                 <div class="cs-feature-copy">
-                    <span class="cs-badge">KW Insider</span>
-                    <h3>The game plan with Jayden Kennedy</h3>
+                    <span class="cs-badge">{{ appearances.feature.badge }}</span>
+                    <h3>{{ appearances.feature.title }}</h3>
                     <p class="cs-text">
-                        A conversation about leaving professional sport, closing the financial literacy gap, and what she tells first time buyers before they start looking.
+                        {{ appearances.feature.text }}
                     </p>
-                    <a href="https://example.com/kw-insider-feature" class="cs-button-ghost" rel="noopener">Read the feature</a>
+                    <a href="{{ appearances.feature.linkHref }}" class="cs-button-ghost" rel="noopener">{{ appearances.feature.linkLabel }}</a>
                 </div>
 
                 <picture class="cs-picture">
-                    <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder-1.jpg"
-                         alt="Jayden Kennedy photographed for the KW Insider feature"
+                    <img src="{{ appearances.feature.image }}"
+                         alt="{{ appearances.feature.imageAlt }}"
                          width="1400" height="1750"
                          loading="lazy" decoding="async">
                 </picture>
@@ -155,16 +194,16 @@ permalink: "/speaking/"
     <div class="cs-pin">
         <div class="cs-frame">
 
-            <h2 class="cs-title cs-reveal">Speaking topics</h2>
+            <h2 class="cs-title cs-reveal">{{ topics.heading }}</h2>
 
             <div class="cs-track">
 
                 <div class="cs-topic">
-                    <span class="cs-index">01</span>
+                    <span class="cs-index">{{ topics.topicOne.index }}</span>
                     <div class="cs-topic-body">
-                        <h3>How property creates wealth</h3>
+                        <h3>{{ topics.topicOne.title }}</h3>
                         <p class="cs-text">
-                            Amortisation, leverage, income, appreciation, and which of the four you actually control.
+                            {{ topics.topicOne.text }}
                         </p>
                     </div>
                 </div>
@@ -174,7 +213,7 @@ permalink: "/speaking/"
                      desks, streets; not headshots. -->
                 <figure class="cs-figure">
                     <img
-                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jk-hero-image-placeholder-1.jpg"
+                        src="{{ topics.imageOne }}"
                         alt=""
                         width="900"
                         height="1200"
@@ -184,18 +223,18 @@ permalink: "/speaking/"
                 </figure>
 
                 <div class="cs-topic">
-                    <span class="cs-index">02</span>
+                    <span class="cs-index">{{ topics.topicTwo.index }}</span>
                     <div class="cs-topic-body">
-                        <h3>Reading a market without a headline</h3>
+                        <h3>{{ topics.topicTwo.title }}</h3>
                         <p class="cs-text">
-                            What ninety days of local sales tell you that a national average cannot.
+                            {{ topics.topicTwo.text }}
                         </p>
                     </div>
                 </div>
 
                 <figure class="cs-figure">
                     <img
-                        src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/selling-home-image.jpg"
+                        src="{{ topics.imageTwo }}"
                         alt=""
                         width="900"
                         height="1200"
@@ -205,11 +244,11 @@ permalink: "/speaking/"
                 </figure>
 
                 <div class="cs-topic">
-                    <span class="cs-index">03</span>
+                    <span class="cs-index">{{ topics.topicThree.index }}</span>
                     <div class="cs-topic-body">
-                        <h3>The first purchase</h3>
+                        <h3>{{ topics.topicThree.title }}</h3>
                         <p class="cs-text">
-                            Carrying costs, deposit structure, and the questions to ask before an offer.
+                            {{ topics.topicThree.text }}
                         </p>
                     </div>
                 </div>
@@ -237,42 +276,42 @@ permalink: "/speaking/"
     <section id="producers" class="cs-on-dark" data-reveal>
         <div class="cs-container">
             <div class="cs-lead cs-reveal">
-                <h2>For producers</h2>
-                <a href="/contact/" class="cs-button-script">request an appearance</a>
+                <h2>{{ producers.heading }}</h2>
+                <a href="/contact/" class="cs-button-script">{{ producers.buttonLabel }}</a>
             </div>
 
             <dl class="cs-spec cs-reveal" style="--reveal-i: 1">
                 <div class="cs-spec-item">
                     <dt class="cs-spec-label">Format</dt>
-                    <dd class="cs-spec-value">Thirty to sixty minutes, remote or in studio</dd>
+                    <dd class="cs-spec-value">{{ producers.format }}</dd>
                 </div>
 
                 <div class="cs-spec-item">
                     <dt class="cs-spec-label">Preparation</dt>
-                    <dd class="cs-spec-value">Own material, local figures sent ahead of the recording</dd>
+                    <dd class="cs-spec-value">{{ producers.preparation }}</dd>
                 </div>
 
                 <div class="cs-spec-item">
                     <dt class="cs-spec-label">Press kit</dt>
-                    <dd class="cs-spec-value">Headshots, short and long bio, brokerage disclosure</dd>
+                    <dd class="cs-spec-value">{{ producers.pressKit }}</dd>
                 </div>
 
                 <div class="cs-spec-item">
                     <dt class="cs-spec-label">Based in</dt>
-                    <dd class="cs-spec-value">Durham Region, Ontario</dd>
+                    <dd class="cs-spec-value">{{ producers.basedIn }}</dd>
                 </div>
 
                 <div class="cs-spec-item">
                     <dt class="cs-spec-label">Direct</dt>
                     <dd class="cs-spec-value">
-                        <a href="tel:+12899437934" class="cs-spec-link">(289) 943-7934</a>
+                        <a href="tel:{{ client.phoneForTel }}" class="cs-spec-link">{{ client.phoneFormatted }}</a>
                     </dd>
                 </div>
 
                 <div class="cs-spec-item">
                     <dt class="cs-spec-label">Email</dt>
                     <dd class="cs-spec-value">
-                        <a href="mailto:jayden@soldbykennedy.ca" class="cs-spec-link">jayden@soldbykennedy.ca</a>
+                        <a href="mailto:{{ client.email }}" class="cs-spec-link">{{ client.email }}</a>
                     </dd>
                 </div>
             </dl>

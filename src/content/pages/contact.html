@@ -2,6 +2,11 @@
 title: "Contact | Jayden Kennedy"
 description: "Ask a question about a property. Jayden Kennedy answers every enquiry herself."
 permalink: "/contact/"
+intro:
+    heading: "Ask me anything about a property"
+    text: "I reply to every enquiry myself."
+form:
+    successMessage: "Thank you. Your message is with me and I will reply myself."
 ---
 
 {% extends "layouts/base.html" %}
@@ -23,9 +28,9 @@ permalink: "/contact/"
     <section id="contact-main" data-reveal>
         <div class="cs-container">
             <div class="cs-content">
-                <h1 class="cs-title cs-reveal">Ask me anything about a property</h1>
+                <h1 class="cs-title cs-reveal">{{ intro.heading }}</h1>
                 <p class="cs-text cs-reveal">
-                    I reply to every enquiry myself.
+                    {{ intro.text }}
                 </p>
             </div>
 
@@ -40,7 +45,7 @@ permalink: "/contact/"
                     data-netlify="true"
                     netlify-honeypot="company"
                     data-form
-                    data-success="Thank you. Your message is with me and I will reply myself."
+                    data-success="{{ form.successMessage }}"
                 >
                     <input type="hidden" name="form-name" value="enquiry">
 

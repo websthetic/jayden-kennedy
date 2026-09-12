@@ -1,0 +1,48 @@
+---
+title: "Page Not Found | Jayden Kennedy"
+description: "The page you're looking for doesn't exist. Browse listings or get in touch with Jayden Kennedy, Broker, Greater Toronto Area."
+permalink: "/404.html"
+---
+
+{% extends "layouts/base.html" %}
+
+{% block head %}
+    <link rel="stylesheet" href="/assets/css/404.css">
+{% endblock %}
+
+{% block body %}
+
+<!-- ============================================ -->
+<!--                  Not Found                   -->
+<!-- ============================================ -->
+
+<!-- One centred column, no photograph — matching the tone of a wrong
+     turn rather than a marketing moment. The numeral carries the
+     status the way a topper would elsewhere on the site; a screen
+     reader gets it read naturally since it's meaningful, not
+     decorative. -->
+
+<section id="not-found" data-reveal>
+    <div class="cs-container">
+
+        <p class="cs-code cs-reveal">404</p>
+
+        <h1 class="cs-title cs-reveal">This page doesn't exist</h1>
+
+        <p class="cs-lede cs-reveal">
+            The address may have moved, or the link was mistyped. Here's how to find what you were looking for instead.
+        </p>
+
+        <div class="cs-actions cs-reveal">
+            <a href="/" class="cs-button">Back to homepage</a>
+            <a href="/listings/" class="cs-button-outline">Browse listings</a>
+        </div>
+
+        <p class="cs-fine cs-reveal">
+            If you followed a link on this site to get here, <a href="/contact/">tell me</a> and I'll fix it.
+        </p>
+
+    </div>
+</section>
+
+{% endblock %}

@@ -1,7 +1,28 @@
 ---
-title: "About Jayden Kennedy | Broker, Greater Toronto Area"
-description: "Broker with Keller Williams Energy Real Estate, based in Oshawa and serving the Greater Toronto Area. A practice built on financial literacy."
-permalink: "/about/"
+title: About Jayden Kennedy | Broker, Greater Toronto Area
+description: Broker with Keller Williams Energy Real Estate, based in Oshawa and
+  serving the Greater Toronto Area. A practice built on financial literacy.
+permalink: /about/
+intro:
+  heading: About Jayden
+  lede: I'm a Broker with Keller Williams Energy Real Estate, Brokerage,
+    Independently Owned & Operated, based in Oshawa and serving Durham Region
+    and the Greater Toronto Area. I came to real estate from a professional
+    volleyball career, and the part I kept was the preparation.
+  image: https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-portrait-img.jpg
+  imageAlt: Jayden Kennedy
+  railText: "My practice is built on financial literacy: I teach the mechanics of
+    how property creates wealth, then let you decide. I reply to every enquiry
+    myself."
+cta:
+  heading: Speaking
+  lede: Financial literacy, in plain terms. Talks for schools, brokerages and
+    community groups on how property creates wealth and what the numbers
+    actually mean.
+  body: Sessions run thirty to sixty minutes and are built around real figures
+    from the local market rather than national averages. A podcast is in
+    planning.
+  buttonLabel: Enquire about a talk
 ---
 
 {% extends "layouts/base.html" %}
@@ -31,25 +52,21 @@ permalink: "/about/"
 <section id="about-intro" data-reveal>
     <div class="cs-container">
 
-        <h1 class="cs-title cs-reveal">About Jayden</h1>
+        <h1 class="cs-title cs-reveal">{{ intro.heading }}</h1>
 
         <div class="cs-body">
 
             <div class="cs-prose cs-reveal">
                 <p class="cs-lede">
-                    I'm a Broker with {{ client.brokerage }}, based in
-                    {{ client.address.city }} and serving Durham Region and the Greater
-                    Toronto Area. I came to real estate from a professional volleyball
-                    career, and the part I kept was the preparation.
+                    {{ intro.lede }}
                 </p>
             </div>
 
             <picture class="cs-picture cs-reveal">
-                {# //! CONFIRM — replace with the real portrait. #}
                 <img
                     class="cs-img"
-                    src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/jayden-kennedy-portrait-img.jpg"
-                    alt="Jayden Kennedy"
+                    src="{{ intro.image }}"
+                    alt="{{ intro.imageAlt }}"
                     width="900"
                     height="1100"
                     loading="eager"
@@ -60,8 +77,7 @@ permalink: "/about/"
             <div class="cs-rail cs-reveal">
 
                 <p class="cs-text cs-text-soft">
-                    My practice is built on financial literacy: I teach the mechanics of
-                    how property creates wealth, then let you decide. I reply to every enquiry myself.
+                    {{ intro.railText }}
                 </p>
 
                 <ul class="cs-details">
@@ -147,20 +163,16 @@ permalink: "/about/"
 
 <section id="cta" class="cs-on-dark" data-reveal>
     <div class="cs-container">
-        <h2 class="cs-title cs-reveal">Speaking</h2>
+        <h2 class="cs-title cs-reveal">{{ cta.heading }}</h2>
 
         <div class="cs-content cs-reveal">
             <p class="cs-lede">
-                Financial literacy, in plain terms. Talks for schools, brokerages and
-                community groups on how property creates wealth and what the numbers
-                actually mean.
+                {{ cta.lede }}
             </p>
             <p class="cs-text">
-                Sessions run thirty to sixty minutes and are built around real figures
-                from the local market rather than national averages. A podcast is in
-                planning.
+                {{ cta.body }}
             </p>
-            <a href="/contact/" class="cs-button-script">Enquire about a talk</a>
+            <a href="/contact/" class="cs-button-script">{{ cta.buttonLabel }}</a>
         </div>
     </div>
 </section>

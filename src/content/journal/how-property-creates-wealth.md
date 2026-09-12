@@ -1,4 +1,6 @@
 ---
+seoTitle: How property creates wealth
+seoDescription: Four mechanisms. Most people can only name one, and it is the one they control least.
 title: How property creates wealth
 url: how-property-creates-wealth
 description: Four mechanisms. Most people can only name one, and it is the one they control least.

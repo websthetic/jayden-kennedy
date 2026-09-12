@@ -1,0 +1,118 @@
+{#
+  Shared between listings.html (List view) and listings-map.html (Map
+  view) — same fields, same options, same JS (listings.js's
+  initLiveResults/initRegionCity guard on #region existing, which both
+  pages have). Only the form's action differs per view, passed in as
+  formAction so a filter change resubmits to whichever view the visitor
+  is currently on rather than bouncing them back to List.
+#}
+<section id="listings-filters">
+  <div class="cs-container">
+    <!-- Phone only, and JS only. CSS keeps this hidden until the .js
+         class lands, so without a script the form is simply open and
+         the button never appears — nothing is reachable only by a
+         control that cannot work. -->
+    <div class="cs-bar">
+      <button
+        class="cs-toggle"
+        type="button"
+        data-filter-toggle
+        aria-expanded="false"
+        aria-controls="listings-form"
+      >
+        Filters<span class="cs-toggle-count" data-filter-count hidden></span>
+      </button>
+    </div>
+
+    <div class="cs-panel">
+      <!-- Control names are query string params, not RESO fields. The
+           card below reads from the feed; this reads from the URL. -->
+      <form class="cs-form" id="listings-form" method="get" action="{{ formAction }}" role="search" aria-label="Filter listings">
+        <div class="cs-field cs-field-lg">
+          <label class="cs-label" for="region">Region</label>
+          <!-- Options come from src/_data/listingFilters.json, editable
+               in the CMS under Listing Search Filters — see that file
+               for why the label and the actual MLS field value are
+               kept separate. Add a region with no listing behind it
+               and the search just returns zero results, not an error. -->
+          <select class="cs-select" id="region" name="region" data-region>
+            <option value="" selected>All areas</option>
+            {% for region in listingFilters.regions %}
+            <option value="{{ region.value }}">{{ region.label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="cs-field cs-field-lg">
+          <label class="cs-label" for="city">City</label>
+          <!-- Options carry data-region so the city list can narrow
+               when a region is chosen. Without JS every city stays
+               selectable and the server filters on submit. -->
+          <select class="cs-select" id="city" name="city" data-city>
+            <option value="">All cities</option>
+            {% for city in listingFilters.cities %}
+            <option value="{{ city.value }}" data-region="{{ city.region }}">{{ city.label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="cs-field cs-field-md">
+          <label class="cs-label" for="price">Price</label>
+          <select class="cs-select" id="price" name="price">
+            <option value="">Any</option>
+            <option value="0-600000">Under $600k</option>
+            <option value="600000-800000">$600k to $800k</option>
+            <option value="800000-1000000">$800k to $1M</option>
+            <option value="1000000-1500000">$1M to $1.5M</option>
+            <option value="1500000-">$1.5M and up</option>
+          </select>
+        </div>
+
+        <div class="cs-field cs-field-sm">
+          <label class="cs-label" for="beds">Beds</label>
+          <select class="cs-select" id="beds" name="beds">
+            <option value="">Any</option>
+            <option value="1">1+</option>
+            <option value="2">2+</option>
+            <option value="3">3+</option>
+            <option value="4">4+</option>
+            <option value="5">5+</option>
+          </select>
+        </div>
+
+        <div class="cs-field cs-field-sm">
+          <label class="cs-label" for="baths">Baths</label>
+          <select class="cs-select" id="baths" name="baths">
+            <option value="">Any</option>
+            <option value="1">1+</option>
+            <option value="2">2+</option>
+            <option value="3">3+</option>
+            <option value="4">4+</option>
+          </select>
+        </div>
+
+        <div class="cs-field cs-field-md">
+          <label class="cs-label" for="type">Property type</label>
+          <select class="cs-select" id="type" name="type">
+            <option value="">Any</option>
+            <option value="detached">Detached</option>
+            <option value="semi-detached">Semi-detached</option>
+            <option value="townhouse">Townhouse</option>
+            <option value="condo">Condo</option>
+            <option value="multiplex">Multiplex</option>
+          </select>
+        </div>
+
+        <div class="cs-field cs-field-md">
+          <label class="cs-label" for="status">Status</label>
+          <select class="cs-select" id="status" name="status">
+            <option value="active" selected>For sale</option>
+            <option value="any">For sale and sold</option>
+          </select>
+        </div>
+
+        <button class="cs-button" type="submit">Apply</button>
+      </form>
+    </div>
+  </div>
+</section>

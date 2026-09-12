@@ -1,0 +1,127 @@
+/*-- -------------------------- -->
+<---      Listings — Map        -->
+<--- -------------------------- -*/
+
+/* listings-map.html reuses the #listings-results section ID from
+   listings.html (a different page — no DOM collision), which gets it
+   .cs-summary/.cs-views/.cs-view/.cs-count/.cs-applied/.cs-clear/
+   .cs-empty/.cs-empty-title styling for free from listings.less. Only
+   what's genuinely map-specific — the map container and the token
+   error state — lives here. */
+
+/* Full-width map, no side list — each pin's own popup (photo, price,
+   address, specs) is the "card" for that listing. Popups open
+   automatically once plotted (see listings-map.js) rather than waiting
+   for a click, so the page reads the same as List/Results at a glance:
+   here is what's available, not here is a map you must interact with
+   first to see anything. */
+
+@media only screen and (min-width: 0rem) {
+    #listings-results {
+        .cs-map-container {
+            padding-top: 1.5rem;
+        }
+
+        #map {
+            width: 100%;
+            height: 32rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background-color: var(--cashmere-300);
+        }
+
+        .cs-map-error {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+            color: var(--ink-soft);
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---   Map — Tablet and up      -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 48rem) {
+    #listings-results {
+        #map {
+            height: 40rem;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---      Map Pin Popup         -->
+<--- -------------------------- -*/
+
+/* Mapbox GL's own popup chrome (.mapboxgl-popup-content) is left as-is
+   — overriding a third-party library's structural wrapper is fragile
+   across versions. Everything below is this project's own content
+   inside that wrapper, unscoped since Mapbox renders popups into its
+   own container appended to <body>, outside #listings-results. */
+
+.mapboxgl-popup-content {
+    padding: 0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+/* .cs-map-popup is the pin's popup body; .cs-map-popup-card is each
+   listing inside it. Usually the two are the same size — one listing,
+   one card — but a shared street address (two of this token's current
+   listings sit at the same building, unit letter aside) puts more than
+   one card in a single pin's popup, laid out in a row rather than
+   stacked so the popup grows sideways, not into a long scroll. */
+.cs-map-popup {
+    display: flex;
+    align-items: stretch;
+}
+
+.cs-map-popup-multi {
+    .cs-map-popup-card {
+        border-right: 1px solid var(--rule);
+
+        &:last-child {
+            border-right: none;
+        }
+    }
+}
+
+.cs-map-popup-card {
+    display: flex;
+    flex-direction: column;
+    width: 14rem;
+    text-decoration: none;
+    color: var(--ink);
+
+    img {
+        width: 100%;
+        height: 8rem;
+        object-fit: cover;
+        display: block;
+    }
+}
+
+.cs-map-popup-price {
+    padding: 0.625rem 0.75rem 0;
+    font-family: var(--font-display);
+    font-size: var(--fs-body);
+    font-weight: 500;
+}
+
+.cs-map-popup-address {
+    padding: 0 0.75rem;
+    font-size: var(--fs-body-sm);
+    color: var(--ink-soft);
+}
+
+.cs-map-popup-specs {
+    padding: 0 0.75rem 0.625rem;
+    font-size: var(--fs-body-sm);
+    color: var(--ink-soft);
+}

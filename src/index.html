@@ -1,9 +1,96 @@
 ---
 title: "Jayden Kennedy | Real Estate"
-description: "Top 1% real estate broker in the GTA. Buying, selling or investing, I'll show you the numbers behind every
-decision."
+description: "Top 1% real estate broker in the GTA. Buying, selling or investing, I'll show you the numbers behind every decision."
 permalink: "/"
 tags: "sitemap" # content/content.json will make sure that all pages in content/ are marked with a "sitemap" tag, for automatic sitemap generation. As index.html is not in content/, we need to add it here to ensure the root page is included in the sitemap generation
+hero:
+    heading: "Top 1% real estate broker in the GTA"
+    lede: "Buying, selling, or investing across the Greater Toronto Area? I'll show you the numbers behind every decision, so you can move with confidence."
+    buyingButtonLabel: "I'm looking to buy"
+    sellingButtonLabel: "I'm thinking of selling"
+    valuationButtonLabel: "What's my home worth"
+    image: "https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-hero-portrait.jpg"
+record:
+    stats:
+        - figure: "Top 1%"
+          claim: "Real estate broker in the Greater Toronto Area"
+        - figure: "Top 20"
+          claim: "Individual agent, Keller Williams Canada, 2025 and 2026"
+        - figure: "150+"
+          claim: "Five star reviews on Google"
+reviewsTeaser:
+    heading: "Reviewed by 150+ clients"
+    lede: "Hear directly from the clients I've had the privilege of helping."
+    buttonLabel: "Read all Google reviews"
+    cards:
+        - slug: "vesta-mourato"
+          quote: "We couldn't have asked for a better realtor. We've bought and sold homes with several different realtors over the last 3 years, and she was by far the best we've ever worked with — truly a 12/10 experience from start to finish."
+          reviewerName: "Vesta Mourato"
+          reviewerLink: "https://maps.app.goo.gl/mEBHs3D5ehpkS5ZQ7"
+          date: "2026-06-15"
+          dateLabel: "June 2026"
+        - slug: "hailey-kinnear"
+          quote: "I can't even begin to put into words how grateful we are for Jayden. From the moment we found out we were moving, the stress hit hard. We had a small window to sell, buy, and move across provinces. The minute Jayden stepped in, an enormous weight lifted off our shoulders."
+          reviewerName: "Hailey Kinnear"
+          reviewerLink: "https://maps.app.goo.gl/8bQ4RKi4YtoY1BMB8"
+          date: "2025-12-15"
+          dateLabel: "December 2025"
+        - slug: "rosh"
+          quote: "As first-time homebuyers, we honestly believed purchasing a home was a distant dream, until we worked with Jayden."
+          reviewerName: "Rosh"
+          reviewerLink: "https://maps.app.goo.gl/F5iKKrZFTB2NAm9k9"
+          date: "2026-02-15"
+          dateLabel: "February 2026"
+valuation:
+    headingLine1: "How much is"
+    headingLine2: "my home worth?"
+    lede: "Automated estimates can't see what makes your home, or your street, different. I can. I personally analyze your property, neighbourhood and recent comparable sales to determine its value. And if now isn't the right time to sell, I'll tell you."
+    text: "Every analysis is written by hand. If the read is to wait, I'll tell you."
+process:
+    headingLine1: "Where do you"
+    headingLine2: "want to begin?"
+    steps:
+        - title: "Buying"
+          text: "Whether it's your first home or your fifth, I'll walk you through the carrying costs, the deposit and what to ask before you make an offer."
+          buttonLabel: "Buying a home"
+          href: "/buying/"
+        - title: "Selling"
+          text: "I'll show you the comparable sales your price is based on, so you can see where the number comes from."
+          buttonLabel: "Selling a home"
+          href: "/selling/"
+        - title: "Investing"
+          text: "I'll show you the local rent evidence, a realistic vacancy assumption and whether the deal covers its debt, before you commit."
+          buttonLabel: "Investment property"
+          href: "/investing/"
+about:
+    heading: "Jayden Kennedy, Broker"
+    lede: "Nobody taught me how property builds wealth. I learned it by reading the numbers for a living."
+    text: "I came to real estate from professional sport and kept the preparation. Based in Oshawa, working across the Greater Toronto Area with Keller Williams Energy. I do every analysis personally, so by the time you make an offer you have seen the comparable sales and what the home will actually cost you each month."
+    subheading: "If a property is wrong for you, I'll say so."
+    moreButtonLabel: "More about me"
+    speakingButtonLabel: "Speaking"
+    image: "https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-portrait-img.png"
+    imageAlt: "Jayden Kennedy, seated portrait"
+notes:
+    heading: "Market notes"
+    allNotesLabel: "all notes"
+    asideText: "Short pieces on the mechanics: what a comparable really proves, how deposits are read, where the carrying cost hides."
+    frames:
+        - title: "What deposit structure signals to a seller"
+          poster: "https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-poster-1.jpg"
+          video: "https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-reel-1.mp4"
+        - title: "Reading ninety days of comparables on one street"
+          poster: "https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-poster-2.jpg"
+          video: "https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-reel-2.mp4"
+        - title: "The five numbers I check before writing an offer"
+          poster: "https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-poster-3.jpg"
+          video: "https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-reel-3.mp4"
+subscribe:
+    notesHeading: "Two notes a month"
+    notesText: "What the numbers are doing across the GTA. Nothing else."
+    talksHeading: "Talks and workshops"
+    talksText: "I speak to schools, brokerages and community groups on how property builds wealth, using real local figures instead of national averages."
+    talksButtonLabel: "Book me to speak"
 ---
 
 {% extends "layouts/base.html" %}
@@ -29,6 +116,15 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 
     <script defer src="/assets/js/homepage.js"></script>
     <script defer src="/assets/js/finder-relocate.js"></script>
+    <script defer src="/assets/js/featured-listings.js"></script>
+    <!-- Only for initRegionCity() — the hero #finder and the #listings
+         section's inline finder both need the same region-narrows-city
+         behaviour the real /listings/ board uses. Every other function
+         in this file (initLiveResults, initFilterToggle, initSort, ...)
+         guards on IDs this page doesn't have (#listings-form, #region,
+         [data-results], etc.) and bails immediately — confirmed none of
+         those IDs exist here before adding this. -->
+    <script defer src="/assets/js/listings.js"></script>
 
     <!-- To ensure proper validation, prevent errors, and encourage developers to check, schema's are an opt-in feature. They're very bespoke and requires some customising  -->
     <!-- Uncomment the code below to enable Structured Data, and test it when you deploy to Netlify - https://developers.google.com/search/docs/appearance/structured-data -->
@@ -53,7 +149,7 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 
 <section id="hero" class="cs-on-dark" data-hero>
     <picture class="cs-background">
-        <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-hero-portrait.jpg"
+        <img src="{{ hero.image }}"
              alt=""
              width="2600" height="1500"
              loading="eager" fetchpriority="high" decoding="async">
@@ -62,19 +158,18 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
     <div class="cs-scrim" aria-hidden="true"></div>
 
     <div class="cs-container">
-        <h1>Top 1% real estate broker in the GTA</h1>
+        <h1>{{ hero.heading }}</h1>
 
         <p class="cs-lede">
-        Buying, selling, or investing across the Greater Toronto Area? I'll show you the numbers behind every
-        decision, so you can move with confidence.
+        {{ hero.lede }}
         </p>
 
         <!-- Stacked below 48rem, one row above it. .cs-button-ghost carries
              the underline, the 44px target and the .cs-on-dark inversion. -->
         <div class="cs-actions">
-            <a href="/buying/" class="cs-button-ghost">I'm looking to buy</a>
-            <a href="/selling/" class="cs-button-ghost">I'm thinking of selling</a>
-            <a href="/home-valuation/" class="cs-button-ghost">What's my home worth</a>
+            <a href="/buying/" class="cs-button-ghost">{{ hero.buyingButtonLabel }}</a>
+            <a href="/selling/" class="cs-button-ghost">{{ hero.sellingButtonLabel }}</a>
+            <a href="/home-valuation/" class="cs-button-ghost">{{ hero.valuationButtonLabel }}</a>
         </div>
     </div>
 </section>
@@ -88,24 +183,23 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
         <form class="cs-form" action="/listings/" method="get">
             <div class="cs-field">
                 <label class="cs-label" for="finder-region">Region</label>
-                <select class="cs-select" id="finder-region" name="region">
-                    <option value="durham">Durham Region</option>
-                    <option value="toronto">Toronto</option>
-                    <option value="york">York Region</option>
-                    <option value="peel">Peel Region</option>
+                <!-- Options come from src/_data/listingFilters.json,
+                     editable in the CMS under Listing Search Filters. -->
+                <select class="cs-select" id="finder-region" name="region" data-region>
+                    <option value="" selected>All areas</option>
+                    {% for region in listingFilters.regions %}
+                    <option value="{{ region.value }}">{{ region.label }}</option>
+                    {% endfor %}
                 </select>
             </div>
 
             <div class="cs-field">
                 <label class="cs-label" for="finder-city">City</label>
-                <select class="cs-select" id="finder-city" name="city">
+                <select class="cs-select" id="finder-city" name="city" data-city>
                     <option value="">All cities</option>
-                    <option value="whitby">Whitby</option>
-                    <option value="oshawa">Oshawa</option>
-                    <option value="ajax">Ajax</option>
-                    <option value="pickering">Pickering</option>
-                    <option value="bowmanville">Bowmanville</option>
-                    <option value="courtice">Courtice</option>
+                    {% for city in listingFilters.cities %}
+                    <option value="{{ city.value }}" data-region="{{ city.region }}">{{ city.label }}</option>
+                    {% endfor %}
                 </select>
             </div>
 
@@ -123,37 +217,12 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
 
     <div class="cs-container">
         <ul class="cs-stats">
-
-            <!--! CONFIRM: "Top 1%" — against what population, measured by
-                  whom, over what period? Board-wide, brokerage-wide, by
-                  volume or by units? The claim needs a source before it
-                  ships, and the source line is what makes it credible
-                  rather than decorative. -->
+            {% for stat in record.stats %}
             <li class="cs-stat cs-reveal">
-                <span class="cs-figure">Top 1%</span>
-                <p class="cs-claim">Real estate broker in the Greater Toronto Area</p>
+                <span class="cs-figure">{{ stat.figure }}</span>
+                <p class="cs-claim">{{ stat.claim }}</p>
             </li>
-
-            <!--! CONFIRM: 2026 is not over. If the Top 20 standing for
-                  2026 is a partial-year or interim figure, it cannot be
-                  stated flat alongside a completed 2025. Either confirm
-                  the award has been issued for 2026, or drop to 2025
-                  alone until it is. -->
-            <li class="cs-stat cs-reveal">
-                <span class="cs-figure">Top 20</span>
-                <p class="cs-claim">Individual agent, Keller Williams Canada, 2025 and 2026</p>
-            </li>
-
-            <!--! CONFIRM: exact review count, and the Google Business
-                  Profile URL — same open item as the reviews page. A
-                  number this specific should link to the place it can be
-                  checked; wrap .cs-figure and .cs-claim in an <a> once
-                  the URL lands. -->
-            <li class="cs-stat cs-reveal">
-                <span class="cs-figure">150+</span>
-                <p class="cs-claim">Five star reviews on Google</p>
-            </li>
-
+            {% endfor %}
         </ul>
     </div>
 </section>
@@ -203,22 +272,22 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
                 <!--! CONFIRM: "150+" also appears in #record a few
                       sections up. If both stay, one of the two should
                       carry something other than the count. -->
-                <h2>Reviewed by 150+ clients</h2>
+                <h2>{{ reviewsTeaser.heading }}</h2>
                 <p class="cs-lede">
-                    Hear directly from the clients I've had the privilege of helping.
+                    {{ reviewsTeaser.lede }}
                 </p>
             </div>
         </div>
 
         <ul class="cs-cards">
-
+            {% for card in reviewsTeaser.cards %}
             <li class="cs-card cs-reveal">
 
                 <blockquote class="cs-quote">
-                    <p class="cs-quote-lead">We couldn't have asked for a better realtor. We've bought and sold homes with several different realtors over the last 3 years, and she was by far the best we've ever worked with &mdash; truly a 12/10 experience from start to finish.</p>
+                    <p class="cs-quote-lead">{{ card.quote }}</p>
                 </blockquote>
 
-                <a class="cs-read" href="/reviews/#vesta-mourato">Read the full review</a>
+                <a class="cs-read" href="/reviews/#{{ card.slug }}">Read the full review</a>
 
                 <div class="cs-attrib">
                     <span class="cs-stars" role="img" aria-label="Five out of five stars">
@@ -229,52 +298,10 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
                         <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
                     </span>
 
-                    <span class="cs-who"><a class="cs-review-link" href="https://maps.app.goo.gl/mEBHs3D5ehpkS5ZQ7" target="_blank" rel="noopener" aria-label="Read Vesta Mourato’s review on Google">Vesta Mourato</a> &middot; <time datetime="2026-06-15" data-relative>June 2026</time></span>
+                    <span class="cs-who"><a class="cs-review-link" href="{{ card.reviewerLink }}" target="_blank" rel="noopener" aria-label="Read {{ card.reviewerName }}’s review on Google">{{ card.reviewerName }}</a> &middot; <time datetime="{{ card.date }}" data-relative>{{ card.dateLabel }}</time></span>
                 </div>
             </li>
-
-            <li class="cs-card cs-reveal">
-
-                <blockquote class="cs-quote">
-                    <p class="cs-quote-lead">I can't even begin to put into words how grateful we are for Jayden. From the moment we found out we were moving, the stress hit hard. We had a small window to sell, buy, and move across provinces. The minute Jayden stepped in, an enormous weight lifted off our shoulders.</p>
-                </blockquote>
-
-                <a class="cs-read" href="/reviews/#hailey-kinnear">Read the full review</a>
-
-                <div class="cs-attrib">
-                    <span class="cs-stars" role="img" aria-label="Five out of five stars">
-                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                    </span>
-
-                    <span class="cs-who"><a class="cs-review-link" href="https://maps.app.goo.gl/8bQ4RKi4YtoY1BMB8" target="_blank" rel="noopener" aria-label="Read Hailey Kinnear’s review on Google">Hailey Kinnear</a> &middot; <time datetime="2025-12-15" data-relative>December 2025</time></span>
-                </div>
-            </li>
-
-            <li class="cs-card cs-reveal">
-
-                <blockquote class="cs-quote">
-                    <p class="cs-quote-lead">As first-time homebuyers, we honestly believed purchasing a home was a distant dream, until we worked with Jayden.</p>
-                </blockquote>
-
-                <a class="cs-read" href="/reviews/#rosh">Read the full review</a>
-
-                <div class="cs-attrib">
-                    <span class="cs-stars" role="img" aria-label="Five out of five stars">
-                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l3 6.9 7.5.7-5.6 5 1.6 7.4-6.5-4-6.5 4 1.6-7.4-5.6-5 7.5-.7z"/></svg>
-                    </span>
-
-                    <span class="cs-who"><a class="cs-review-link" href="https://maps.app.goo.gl/F5iKKrZFTB2NAm9k9" target="_blank" rel="noopener" aria-label="Read Rosh’s review on Google">Rosh</a> &middot; <time datetime="2026-02-15" data-relative>February 2026</time></span>
-                </div>
-            </li>
-
+            {% endfor %}
         </ul>
 
         <!-- Rosemartin. .cs-button-script forces lowercase, so this renders
@@ -289,7 +316,7 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
              elements, two different stylesheets. The per-card link above
              is .cs-read for exactly that reason; do not "tidy" the two
              into one name without renaming this link first. -->
-        <a href="/reviews/" class="cs-button-script cs-more cs-reveal">Read all Google reviews</a>
+        <a href="/reviews/" class="cs-button-script cs-more cs-reveal">{{ reviewsTeaser.buttonLabel }}</a>
     </div>
 </section>
 
@@ -319,24 +346,23 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
             <div class="cs-form">
                 <div class="cs-field">
                     <label class="cs-label" for="listings-region">Region</label>
-                    <select class="cs-select" id="listings-region" name="region">
-                        <option value="durham">Durham Region</option>
-                        <option value="toronto">Toronto</option>
-                        <option value="york">York Region</option>
-                        <option value="peel">Peel Region</option>
-                        <option value="halton">Halton Region</option>
+                    <!-- Options come from src/_data/listingFilters.json,
+                         editable in the CMS under Listing Search Filters. -->
+                    <select class="cs-select" id="listings-region" name="region" data-region>
+                        <option value="" selected>All areas</option>
+                        {% for region in listingFilters.regions %}
+                        <option value="{{ region.value }}">{{ region.label }}</option>
+                        {% endfor %}
                     </select>
                 </div>
 
                 <div class="cs-field">
                     <label class="cs-label" for="listings-city">City</label>
-                    <select class="cs-select" id="listings-city" name="city">
+                    <select class="cs-select" id="listings-city" name="city" data-city>
                         <option value="">All cities</option>
-                        <option value="whitby">Whitby</option>
-                        <option value="oshawa">Oshawa</option>
-                        <option value="ajax">Ajax</option>
-                        <option value="pickering">Pickering</option>
-                        <option value="clarington">Clarington</option>
+                        {% for city in listingFilters.cities %}
+                        <option value="{{ city.value }}" data-region="{{ city.region }}">{{ city.label }}</option>
+                        {% endfor %}
                     </select>
                 </div>
 
@@ -434,16 +460,14 @@ tags: "sitemap" # content/content.json will make sure that all pages in content/
     <div class="cs-container">
         <div class="cs-grid">
             <div class="cs-copy cs-reveal">
-                <h2>How much is<br> my home worth?</h2>
+                <h2>{{ valuation.headingLine1 }}<br> {{ valuation.headingLine2 }}</h2>
 
                 <p class="cs-lede">
-                    Automated estimates can't see what makes your home, or your street, different. I can.
-I personally analyze your property, neighbourhood and recent comparable sales to determine its value. And if
-now isn't the right time to sell, I'll tell you.
+                    {{ valuation.lede }}
                 </p>
 
                 <p class="cs-text">
-                    Every analysis is written by hand. If the read is to wait, I&rsquo;ll tell you.
+                    {{ valuation.text }}
                 </p>
             </div>
 
@@ -479,39 +503,23 @@ now isn't the right time to sell, I'll tell you.
 <section id="process" data-reveal>
     <div class="cs-container">
         <div class="cs-intro cs-reveal">
-            
-            <h2>Where do you<br> want to begin?</h2>
-            
+
+            <h2>{{ process.headingLine1 }}<br> {{ process.headingLine2 }}</h2>
+
         </div>
 
         <!-- ul, not ol. These are three audiences, not three stages —
              an ordered list would assert a sequence that isn't there. -->
         <ul class="cs-steps">
+            {% for step in process.steps %}
             <li class="cs-step cs-reveal">
-                <h3>Buying</h3>
+                <h3>{{ step.title }}</h3>
                 <p class="cs-text">
-                    Whether it's your first home or your fifth, I'll walk you through the carrying costs, the deposit and what to
-ask before you make an offer.
+                    {{ step.text }}
                 </p>
-                <a href="/buying/" class="cs-button-script cs-step-link">Buying a home</a>
+                <a href="{{ step.href }}" class="cs-button-script cs-step-link">{{ step.buttonLabel }}</a>
             </li>
-
-            <li class="cs-step cs-reveal">
-                <h3>Selling</h3>
-                <p class="cs-text">
-                    I'll show you the comparable sales your price is based on, so you can see where the number comes from.
-                </p>
-                <a href="/selling/" class="cs-button-script cs-step-link">Selling a home</a>
-            </li>
-
-            <li class="cs-step cs-reveal">
-                <h3>Investing</h3>
-                <p class="cs-text">
-                    I'll show you the local rent evidence, a realistic vacancy assumption and whether the deal covers its debt,
-before you commit.
-                </p>
-                <a href="/investing/" class="cs-button-script cs-step-link">Investment property</a>
-            </li>
+            {% endfor %}
         </ul>
     </div>
 </section>
@@ -529,28 +537,27 @@ before you commit.
     <div class="cs-container">
 
         <div class="cs-copy cs-reveal">
-            <h2>Jayden Kennedy, Broker</h2>
+            <h2>{{ about.heading }}</h2>
 
             <p class="cs-lede">
-                Nobody taught me how property builds wealth. I learned it by reading the numbers for a living.
+                {{ about.lede }}
             </p>
 
             <p class="cs-text">
-                I came to real estate from professional sport and kept the preparation. Based in Oshawa, working across the Greater Toronto Area with Keller Williams Energy. I do every analysis personally, so by the time
-                you make an offer you have seen the comparable sales and what the home will actually cost you each month.
+                {{ about.text }}
             </p>
 
-            <h3>If a property is wrong for you, I&rsquo;ll say so.</h3>
+            <h3>{{ about.subheading }}</h3>
 
             <div class="cs-actions">
-                <a href="/about/" class="cs-button-script">More about me</a>
-                <a href="/speaking/" class="cs-button-script">Speaking</a>
+                <a href="/about/" class="cs-button-script">{{ about.moreButtonLabel }}</a>
+                <a href="/speaking/" class="cs-button-script">{{ about.speakingButtonLabel }}</a>
             </div>
         </div>
 
         <picture class="cs-picture cs-reveal">
-            <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-portrait-img.png"
-                 alt="Jayden Kennedy, seated portrait"
+            <img src="{{ about.image }}"
+                 alt="{{ about.imageAlt }}"
                  width="880" height="1100"
                  loading="lazy" decoding="async">
         </picture>
@@ -570,8 +577,8 @@ before you commit.
 <section id="notes" data-reveal>
   <div class="cs-container">
     <div class="cs-header cs-reveal">
-      <h2>Market notes</h2>
-      <a href="/" class="cs-button-script">all notes</a>
+      <h2>{{ notes.heading }}</h2>
+      <a href="/journal/" class="cs-button-script">{{ notes.allNotesLabel }}</a>
     </div>
 
     <!-- .cs-body exists so the aside can sit outside .cs-row.
@@ -580,85 +587,37 @@ before you commit.
          belong under the track, not in it. -->
     <div class="cs-body">
       <div class="cs-row">
+        {% for frame in notes.frames %}
         <div class="cs-frame cs-reveal">
           <picture class="cs-picture">
-            <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-poster-1.jpg"
+            <img src="{{ frame.poster }}"
                  alt=""
                  width="1080" height="1920"
                  loading="lazy" decoding="async">
           </picture>
           <video class="cs-video"
-                 src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-reel-1.mp4"
-                 poster="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-poster-1.jpg"
+                 src="{{ frame.video }}"
+                 poster="{{ frame.poster }}"
                  muted playsinline webkit-playsinline
-                 preload="auto" disablepictureinpicture></video>
+                 preload="{{ 'auto' if loop.first else 'metadata' }}" disablepictureinpicture></video>
           <span class="cs-scrim" aria-hidden="true"></span>
           <button class="cs-sound" type="button" aria-label="Turn sound on"></button>
           <span class="cs-sound-state" aria-hidden="true">
             <svg class="cs-icon-muted" viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm15.5 3l2.5 2.5-1 1L18.5 13 16 15.5l-1-1L17.5 12 15 9.5l1-1 2.5 2.5L21 8.5l1 1L19.5 12z"/></svg>
             <svg class="cs-icon-loud" viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm12.5 3a4.5 4.5 0 00-2.5-4v8a4.5 4.5 0 002.5-4zM14 1.2v2.1a8.5 8.5 0 010 17.4v2.1A10.6 10.6 0 0014 1.2z"/></svg>
           </span>
-          <span class="cs-frame-title">What deposit structure signals to a seller</span>
+          <span class="cs-frame-title">{{ frame.title }}</span>
           <button class="cs-control" type="button" aria-label="Play">
             <svg class="cs-icon-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>
             <svg class="cs-icon-pause" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
           </button>
         </div>
-
-        <div class="cs-frame cs-reveal">
-          <picture class="cs-picture">
-            <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-poster-2.jpg"
-                 alt=""
-                 width="1080" height="1920"
-                 loading="lazy" decoding="async">
-          </picture>
-          <video class="cs-video"
-                 src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-reel-2.mp4"
-                 poster="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-poster-2.jpg"
-                 muted playsinline webkit-playsinline
-                 preload="metadata" disablepictureinpicture></video>
-          <span class="cs-scrim" aria-hidden="true"></span>
-          <button class="cs-sound" type="button" aria-label="Turn sound on"></button>
-          <span class="cs-sound-state" aria-hidden="true">
-            <svg class="cs-icon-muted" viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm15.5 3l2.5 2.5-1 1L18.5 13 16 15.5l-1-1L17.5 12 15 9.5l1-1 2.5 2.5L21 8.5l1 1L19.5 12z"/></svg>
-            <svg class="cs-icon-loud" viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm12.5 3a4.5 4.5 0 00-2.5-4v8a4.5 4.5 0 002.5-4zM14 1.2v2.1a8.5 8.5 0 010 17.4v2.1A10.6 10.6 0 0014 1.2z"/></svg>
-          </span>
-          <span class="cs-frame-title">Reading ninety days of comparables on one street</span>
-          <button class="cs-control" type="button" aria-label="Play">
-            <svg class="cs-icon-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>
-            <svg class="cs-icon-pause" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
-          </button>
-        </div>
-
-        <div class="cs-frame cs-reveal">
-          <picture class="cs-picture">
-            <img src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-poster-3.jpg"
-                 alt=""
-                 width="1080" height="1920"
-                 loading="lazy" decoding="async">
-          </picture>
-          <video class="cs-video"
-                 src="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-reel-3.mp4"
-                 poster="https://websthetic.tor1.cdn.digitaloceanspaces.com/jayden-kennedy/landing-page/jayden-kennedy-poster-3.jpg"
-                 muted playsinline webkit-playsinline
-                 preload="metadata" disablepictureinpicture></video>
-          <span class="cs-scrim" aria-hidden="true"></span>
-          <button class="cs-sound" type="button" aria-label="Turn sound on"></button>
-          <span class="cs-sound-state" aria-hidden="true">
-            <svg class="cs-icon-muted" viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm15.5 3l2.5 2.5-1 1L18.5 13 16 15.5l-1-1L17.5 12 15 9.5l1-1 2.5 2.5L21 8.5l1 1L19.5 12z"/></svg>
-            <svg class="cs-icon-loud" viewBox="0 0 24 24"><path d="M4 9v6h4l5 5V4L8 9H4zm12.5 3a4.5 4.5 0 00-2.5-4v8a4.5 4.5 0 002.5-4zM14 1.2v2.1a8.5 8.5 0 010 17.4v2.1A10.6 10.6 0 0014 1.2z"/></svg>
-          </span>
-          <span class="cs-frame-title">The five numbers I check before writing an offer</span>
-          <button class="cs-control" type="button" aria-label="Play">
-            <svg class="cs-icon-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>
-            <svg class="cs-icon-pause" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
-          </button>
-        </div>
+        {% endfor %}
       </div>
 
       <div class="cs-aside cs-reveal">
         <p class="cs-text">
-          Short pieces on the mechanics: what a comparable really proves, how deposits are read, where the carrying cost hides.
+          {{ notes.asideText }}
         </p>
         
       </div>
@@ -683,10 +642,10 @@ before you commit.
         <div class="cs-container">
             <div class="cs-row">
                 <div class="cs-copy cs-reveal">
-                    <h2>Two notes a month</h2>
+                    <h2>{{ subscribe.notesHeading }}</h2>
 
                     <p class="cs-text">
-                        What the numbers are doing across the GTA. Nothing else.
+                        {{ subscribe.notesText }}
                     </p>
                 </div>
 
@@ -712,14 +671,14 @@ before you commit.
         <div class="cs-container">
             <div class="cs-row">
                 <div class="cs-copy cs-reveal">
-                    <h2>Talks and workshops</h2>
+                    <h2>{{ subscribe.talksHeading }}</h2>
 
                     <p class="cs-text">
-                        I speak to schools, brokerages and community groups on how property builds wealth, using real local figures instead of national averages.
+                        {{ subscribe.talksText }}
                     </p>
                 </div>
 
-                <a href="/speaking/" class="cs-button-script cs-action cs-reveal">Book me to speak</a>
+                <a href="/speaking/" class="cs-button-script cs-action cs-reveal">{{ subscribe.talksButtonLabel }}</a>
             </div>
         </div>
     </div>

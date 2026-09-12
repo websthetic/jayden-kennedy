@@ -1,0 +1,123 @@
+/*-- -------------------------- -->
+<---         Not Found          -->
+<--- -------------------------- -*/
+
+/* One centred column, vertically balanced in the viewport rather than
+   pinned to the top like an interior hero — there's no content below
+   it to lead into, so the page should feel settled, not like the top
+   of something longer.
+
+   The numeral borrows --fs-display, the largest step on the scale,
+   normally reserved for the homepage hero. It's used once here and
+   nowhere else this heavy, which is the point: this page is not a
+   destination, and shouldn't compete with one. */
+
+@media only screen and (min-width: 0rem) {
+    #not-found {
+        min-height: 100svh;
+        padding: var(--section-padding);
+        padding-top: clamp(8rem, 20vw, 14rem);
+        display: flex;
+        align-items: center;
+        background-color: var(--paper);
+
+        .cs-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 1.25rem;
+        }
+
+        .cs-code {
+            font-family: var(--font-display);
+            font-size: var(--fs-display);
+            font-weight: 500;
+            line-height: 1;
+            letter-spacing: var(--track-title);
+            color: var(--cocoa-300);
+            margin: 0;
+        }
+
+        .cs-title {
+            margin: 0;
+            max-width: 20ch;
+        }
+
+        .cs-lede {
+            color: var(--ink-soft);
+            margin-bottom: 0.5rem;
+            margin-inline: auto;
+        }
+
+        .cs-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            width: 100%;
+        }
+
+        .cs-fine {
+            font-size: var(--fs-caption);
+            color: var(--ink-soft);
+            margin-top: 1rem;
+
+            a {
+                color: inherit;
+                border-bottom: 1px solid var(--rule-strong);
+                text-decoration: none;
+                transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+
+                &:hover {
+                    color: var(--ink);
+                    border-bottom-color: var(--ink);
+                }
+            }
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---           Desktop          -->
+<--- -------------------------- -*/
+
+@media only screen and (min-width: 48rem) {
+    #not-found {
+        .cs-actions {
+            flex-direction: row;
+            align-items: center;
+        }
+    }
+}
+
+/*-- -------------------------- -->
+<---       Reveal Indices       -->
+<--- -------------------------- -*/
+
+/* Above the fold on every viewport this page can render at, so the
+   observer fires on its first callback rather than on scroll — same
+   reasoning as #contact-main and #about-intro. */
+
+#not-found {
+    .cs-code {
+        --reveal-i: 0;
+    }
+
+    .cs-title {
+        --reveal-i: 1;
+    }
+
+    .cs-lede {
+        --reveal-i: 2;
+    }
+
+    .cs-actions {
+        --reveal-i: 3;
+    }
+
+    .cs-fine {
+        --reveal-i: 4;
+    }
+}

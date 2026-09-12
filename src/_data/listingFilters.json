@@ -1,0 +1,46 @@
+{
+  "regions": [
+    {
+      "value": "durham",
+      "label": "Durham Region",
+      "resoValue": "Durham"
+    },
+    {
+      "value": "york",
+      "label": "York Region",
+      "resoValue": "York"
+    },
+    {
+      "value": "brantford",
+      "label": "Brantford",
+      "resoValue": "Brantford"
+    }
+  ],
+  "cities": [
+    {
+      "value": "clarington",
+      "label": "Clarington",
+      "resoValue": "Clarington",
+      "region": "durham"
+    },
+    {
+      "value": "newmarket",
+      "label": "Newmarket",
+      "resoValue": "Newmarket",
+      "region": "york"
+    },
+    {
+      "value": "brantford",
+      "label": "Brantford",
+      "resoValue": "Brantford",
+      "region": "brantford"
+    }
+  ],
+  "resultsCities": [
+    { "value": "ajax", "label": "Ajax", "resoValue": "Ajax" },
+    { "value": "oshawa", "label": "Oshawa", "resoValue": "Oshawa" },
+    { "value": "whitby", "label": "Whitby", "resoValue": "Whitby" },
+    { "value": "milton", "label": "Milton", "resoValue": "Milton" },
+    { "value": "quinte-west", "label": "Quinte West", "resoValue": "Quinte West" }
+  ]
+}

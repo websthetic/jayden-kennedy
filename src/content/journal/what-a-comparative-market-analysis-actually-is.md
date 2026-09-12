@@ -1,4 +1,6 @@
 ---
+seoTitle: What a comparative market analysis actually is
+seoDescription: An automated valuation divides by square footage. This is the same question answered by someone who has walked the street.
 title: What a comparative market analysis actually is
 url: what-a-comparative-market-analysis-actually-is
 description: An automated valuation divides by square footage. This is the same question answered by someone who has walked the street.

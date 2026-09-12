@@ -2,3 +2,13 @@
 .cache
 node_modules
 public
+.env
+.env.local
+.env.*.local
+netlify/functions/.env
+# Local Netlify folder
+.netlify
+
+# Deno bootstrap lockfile — generated locally by `netlify dev` spinning
+# up its Edge Functions tooling; this project has no edge functions.
+deno.lock
